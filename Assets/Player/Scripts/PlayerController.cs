@@ -16,27 +16,55 @@ namespace Millivolt
     {
         public class PlayerController : MonoBehaviour
         {
+            // components
             private CharacterController m_characterController;
-            private Camera m_camera;
 
-            [Header("Player Details")]
+            [Header("Movement")]
             [SerializeField] private float m_moveSpeed;
-            [SerializeField] private float m_lookSpeed;
-
-            // input system controls
             private Vector2 m_moveDirection;
+
+            [Header("Camera")]
+            [SerializeField] private Camera m_camera;
+            [SerializeField] private float m_lookSensitivity;
+            [SerializeField] private Vector2 m_cameraVerticalLook;
+            private bool m_cursorIsLocked = false;
+            public bool cursorIsLocked
+            {
+                get { return m_cursorIsLocked; }
+                set
+                {
+                    if (value != m_cursorIsLocked)
+                    {
+                        if (value)
+                        {
+                            Cursor.visible = false;
+                            Cursor.lockState = CursorLockMode.Locked;
+                        }
+                        else
+                        {
+                            Cursor.visible = true;
+                            Cursor.lockState = CursorLockMode.Confined;
+                        }
+                        m_cursorIsLocked = value;
+                    }
+                }
+            }
             private Vector2 m_lookDirection;
             
             void Start()
             {
                 m_characterController = GetComponent<CharacterController>();
-                m_camera = GetComponentInChildren<Camera>();
+                cursorIsLocked = true;
+            }
+
+            private void Update()
+            {
+                LookPlayer();
             }
 
             private void FixedUpdate()
             {
                 MovePlayer();
-                LookPlayer();
             }
 
             // Input System methods
@@ -58,7 +86,20 @@ namespace Millivolt
 
             private void LookPlayer()
             {
-                //m_characterController.
+                // keep value between 0 and 360
+                if (m_lookDirection.x >= 360f)
+                    m_lookDirection.x -= 360;
+                else if (m_lookDirection.x < 0)
+                    m_lookDirection.x += 360;
+
+                // clamp vertical look
+                m_lookDirection.y = Mathf.Clamp(m_lookDirection.y, m_cameraVerticalLook.x, m_cameraVerticalLook.y);
+
+                // apply vertical rotation
+                m_camera.transform.eulerAngles = Vector3.right * m_lookDirection.y;
+
+                // apply rotation
+                transform.Rotate(Vector3.up * m_lookDirection.x);
             }
         }
     }

@@ -1614,7 +1614,19 @@ MonoBehaviour:
     m_ActionId: b34f26d9-d207-4b0f-9845-b27e77045932
     m_ActionName: Player/Move[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1133253457}
+        m_TargetAssemblyTypeName: Millivolt.Player.PlayerController, Assembly-CSharp
+        m_MethodName: Look
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 56a2281e-ee8f-4560-aa20-4e709b0bb47c
     m_ActionName: Player/Look[/Mouse/delta,/Pen/delta]
   - m_PersistentCalls:
@@ -1696,8 +1708,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b56d66cfc24343c43b68b99310dc4e80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_moveSpeed: 0
-  m_lookSpeed: 0
+  m_moveSpeed: 5
+  m_camera: {fileID: 815285516}
+  m_lookSensitivity: 5
+  m_cameraVerticalLook: {x: -80, y: 80}
 --- !u!4 &1133253458
 Transform:
   m_ObjectHideFlags: 0
