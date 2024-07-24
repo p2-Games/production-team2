@@ -1,11 +1,12 @@
 ///<summary>
 /// Author: Halen Finlay
 ///
-/// Handles the player movement and look logic.
+/// Handles the player movement, jumping, and look logic.
 /// 
 ///</summary>
 
 using Cinemachine;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -13,13 +14,19 @@ namespace Millivolt
 {
     namespace Player
     {
-        [RequireComponent(typeof(Collider), typeof(PlayerInput))]
+        [RequireComponent(typeof(CharacterController), typeof(PlayerInput))]
         public class PlayerController : MonoBehaviour
         {
             void Start()
             {
-                m_collider = GetComponent<CapsuleCollider>();
+                m_characterController = GetComponent<CharacterController>();
                 cursorIsLocked = true;
+            }
+
+            private void Update()
+            {
+                // set rotation of player object to face camera
+                transform.rotation = Quaternion.Euler(0, Camera.main.transform.eulerAngles.y, 0);
             }
 
             private void FixedUpdate()
@@ -43,7 +50,7 @@ namespace Millivolt
 
             [Header("Movement")]
             [SerializeField] private float m_moveSpeed;
-            private CapsuleCollider m_collider;
+            private CharacterController m_characterController;
             private Vector2 m_moveDirection;
 
             public void Move(InputAction.CallbackContext context)
@@ -57,8 +64,8 @@ namespace Millivolt
             private void MovePlayer()
             {
                 // get camera directions
-                Vector3 camRight = m_mainCamera.transform.right;
-                Vector3 camForward = m_mainCamera.transform.forward;
+                Vector3 camRight = Camera.main.transform.right;
+                Vector3 camForward = Camera.main.transform.forward;
 
                 // 'flatten'
                 camRight.y = 0;
@@ -97,11 +104,14 @@ namespace Millivolt
                 Vector3 movement = horizontalRelativeInput + verticalRelativeInput + m_verticalVelocity;
                 
                 // move player
-                transform.Translate(movement * Time.deltaTime, Space.World);
+                //transform.Translate(movement * Time.deltaTime, Space.World);
+                m_characterController.Move(movement * Time.deltaTime);
             }
 
             [Header("Jumping")]
             [SerializeField] private float m_jumpSpeed;
+            [SerializeField, Range(0,0.5f)] private float m_groundCheckOffset;
+            [SerializeField, Range(0,1)] private float m_groundCheckRadius;
             private bool m_groundedLastFrame;
             private Vector3 m_verticalVelocity = Vector3.zero;
             private bool m_willJump = false;
@@ -113,9 +123,9 @@ namespace Millivolt
             {
                 get
                 {
-                    float radius = m_collider.radius;
-                    //Vector3 playerBottom = new Vector3
-                    if (Physics.BoxCast(transform.position, new Vector3(radius, 0.2f, radius), -transform.up, Quaternion.identity, m_collider.height / 2f))
+                    Vector3 playerFeet = new Vector3(transform.position.x, transform.position.y - m_characterController.height / 2, transform.position.z);
+                    // check the space underneath the player
+                    if (Physics.CheckBox(playerFeet, new Vector3(m_groundCheckRadius, m_groundCheckOffset, m_groundCheckRadius), Quaternion.identity))
                     {
                         return true;
                     }
@@ -135,7 +145,6 @@ namespace Millivolt
             }
 
             [Header("Camera")]
-            [SerializeField] private Camera m_mainCamera;
             [SerializeField] private CinemachineVirtualCamera m_virtualCam;
             private bool m_cursorIsLocked = false;
             public bool cursorIsLocked
@@ -171,6 +180,16 @@ namespace Millivolt
                 pov.m_HorizontalAxis.m_MaxSpeed = hSpeed;
                 pov.m_VerticalAxis.m_MaxSpeed = vSpeed;
             }
+
+#if UNITY_EDITOR
+            private void OnDrawGizmos()
+            {
+                Handles.color = Color.green;
+                if (m_characterController)
+                    Handles.DrawWireCube(new Vector3(transform.position.x, transform.position.y - m_characterController.height / 2, transform.position.z),
+                        new Vector3(m_groundCheckRadius * 2, m_groundCheckOffset * 2, m_groundCheckRadius * 2));
+            }
+#endif
         }
     }
 }

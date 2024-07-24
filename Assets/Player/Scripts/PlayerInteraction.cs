@@ -23,6 +23,11 @@ namespace Millivolt
                 m_trigger.enabled = false;
             }
 
+            private void Update()
+            {
+                transform.localRotation = Quaternion.Euler(Camera.main.transform.eulerAngles.x, 0, 0);
+            }
+
             public void Interact(InputAction.CallbackContext context)
             {
                 if (context.started)
