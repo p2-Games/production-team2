@@ -13,6 +13,7 @@ namespace Millivolt
 {
     namespace Player
     {
+        [RequireComponent(typeof(Collider), typeof(PlayerInput))]
         public class PlayerController : MonoBehaviour
         {
             void Start()
