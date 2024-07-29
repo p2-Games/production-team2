@@ -10,9 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 2666262149321555059}
   - component: {fileID: 2666262149321555056}
+  - component: {fileID: 8139358264548552186}
   - component: {fileID: 2666262149321555054}
   - component: {fileID: 1610945076}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PlayerPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -50,13 +51,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_mass: 5
-  m_gravity: {x: 0, y: -0.5, z: 0}
+  m_defaultGravity: {x: 0, y: -0.5, z: 0}
+  m_terminalVelocity: 20
+  m_walkableLayers:
+    serializedVersion: 2
+    m_Bits: 64
   m_moveSpeed: 3
   m_jumpSpeed: 8
   m_groundCheckOffset: 0.1
   m_groundCheckRadius: 0.4
-  m_mainCamera: {fileID: 0}
   m_virtualCam: {fileID: 0}
+--- !u!114 &8139358264548552186
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2666262149321555055}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 326e3088e6f91594997572117d8a3944, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_maxHealth: 100
 --- !u!114 &2666262149321555054
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -162,9 +179,9 @@ MonoBehaviour:
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2035491571557423416}
-        m_TargetAssemblyTypeName: Millivolt.PlayerInteraction, Assembly-CSharp
+        m_TargetAssemblyTypeName: Millivolt.Player.PlayerInteraction, Assembly-CSharp
         m_MethodName: Interact
-        m_Mode: 1
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -207,7 +224,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2666262149422882367}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Head Position
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -240,7 +257,7 @@ GameObject:
   - component: {fileID: 8343344830816277180}
   - component: {fileID: 2035491571557423416}
   - component: {fileID: 9084407201692848635}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: InteractionObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -274,6 +291,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da77af12dbdc98a4a9904c6dbbde251b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_interactFrames: 10
 --- !u!135 &9084407201692848635
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -298,6 +316,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Model
+      objectReference: {fileID: 0}
+    - target: {fileID: 4950199202765903824, guid: fa458ade2cca1e944ba049a9ad2c45c3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4950199202765903824, guid: fa458ade2cca1e944ba049a9ad2c45c3,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4950199202765903827, guid: fa458ade2cca1e944ba049a9ad2c45c3,
         type: 3}
@@ -353,6 +381,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6036209363204540048, guid: fa458ade2cca1e944ba049a9ad2c45c3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fa458ade2cca1e944ba049a9ad2c45c3, type: 3}

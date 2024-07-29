@@ -13,24 +13,27 @@ namespace Millivolt
 	{
 		public abstract class LevelObject : MonoBehaviour
 		{
-			protected bool m_isActive;
-			public bool isActive { get { return m_isActive; } }
+			[SerializeField] protected bool m_isActive;
 
 			/// <summary>
 			/// Used for changing the active state of the Level Object.
 			/// </summary>
 			/// <param name="value">The state to set the Level Object to.</param>
 			/// <returns>If the active state of the Level Object was changed.</returns>
-			public bool SetActive(bool value)
+			public virtual bool isActive
 			{
-				// if value is changed
-				if (m_isActive != value)
-				{
-					m_isActive = value;
-					return true;
-				}
-				return false;
+				get { return m_isActive; }
+				set { m_isActive = value; }
 			}
-		}
+
+#if UNITY_EDITOR
+            [SerializeField, TextArea] protected string m_description = "";
+#endif
+
+            private void Start()
+            {
+				isActive = m_isActive;
+            }
+        }
 	}
 }

@@ -21,6 +21,7 @@ namespace Millivolt
             {
                 m_characterController = GetComponent<CharacterController>();
                 cursorIsLocked = true;
+                m_currentGravity = m_defaultGravity;
             }
 
             private void Update()
@@ -35,8 +36,16 @@ namespace Millivolt
             }
 
             [Header("Physics")]
+            [Tooltip("The mass of the player in Kg. Effects how much it is affected by other objects.")]
             [SerializeField] private float m_mass;
-            [SerializeField] private Vector3 m_gravity;
+            [Tooltip("The default acceleration of gravity in units per second per second.")]
+            [SerializeField] private Vector3 m_defaultGravity;
+            [Tooltip("The maximum speed the player can travel in units per second.")]
+            [SerializeField] private float m_terminalVelocity;
+            [Tooltip("The layers of objects that the CharacterController can interact with.")]
+            [SerializeField] private LayerMask m_walkableLayers;
+
+            private Vector3 m_currentGravity;
 
             public void SetMass(float value)
             {
@@ -45,11 +54,13 @@ namespace Millivolt
 
             public void SetGravity(Vector3 value)
             {
-                m_gravity = value;
+                m_currentGravity = value;
             }
 
             [Header("Movement")]
+            [Tooltip("The movement speed of the player in units per second.")]
             [SerializeField] private float m_moveSpeed;
+
             private CharacterController m_characterController;
             private Vector2 m_moveDirection;
 
@@ -98,10 +109,13 @@ namespace Millivolt
 
                 // apply gravity if player is NOT grounded
                 if (!thisFrameIsGrounded)
-                    m_verticalVelocity += m_gravity;
+                    m_verticalVelocity += m_currentGravity;
 
                 // calculate movement vector
                 Vector3 movement = horizontalRelativeInput + verticalRelativeInput + m_verticalVelocity;
+
+                // clamp to terminal velocity
+                movement = Vector3.ClampMagnitude(movement, m_terminalVelocity);
                 
                 // move player
                 //transform.Translate(movement * Time.deltaTime, Space.World);
@@ -109,9 +123,13 @@ namespace Millivolt
             }
 
             [Header("Jumping")]
+            [Tooltip("The velocity added to the player in units per second when they jump.")]
             [SerializeField] private float m_jumpSpeed;
+            [Tooltip("The height of the grounded check.")]
             [SerializeField, Range(0,0.5f)] private float m_groundCheckOffset;
+            [Tooltip("The width of the grounded check.")]
             [SerializeField, Range(0,1)] private float m_groundCheckRadius;
+
             private bool m_groundedLastFrame;
             private Vector3 m_verticalVelocity = Vector3.zero;
             private bool m_willJump = false;
@@ -123,9 +141,9 @@ namespace Millivolt
             {
                 get
                 {
-                    Vector3 playerFeet = new Vector3(transform.position.x, transform.position.y - m_characterController.height / 2, transform.position.z);
                     // check the space underneath the player
-                    if (Physics.CheckBox(playerFeet, new Vector3(m_groundCheckRadius, m_groundCheckOffset, m_groundCheckRadius), Quaternion.identity))
+                    Vector3 playerFeet = new Vector3(transform.position.x, transform.position.y - m_characterController.height / 2, transform.position.z);
+                    if (Physics.CheckBox(playerFeet, new Vector3(m_groundCheckRadius, m_groundCheckOffset, m_groundCheckRadius), Quaternion.identity, m_walkableLayers))
                     {
                         return true;
                     }
