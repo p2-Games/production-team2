@@ -5,6 +5,7 @@
 ///
 ///</summary>
 
+using Millivolt.UI;
 using UnityEngine;
 
 namespace Millivolt
@@ -15,6 +16,8 @@ namespace Millivolt
         {
             [SerializeField] private float m_maxHealth;
             private float m_currentHealth;
+            [SerializeField] private PlayerHurtEffect m_playerHurtEffect;
+
 
             private void Start()
             {
@@ -27,6 +30,8 @@ namespace Millivolt
 
                 if (m_currentHealth <= 0)
                     Die();
+
+                m_playerHurtEffect.ChangeVignetteAlpha(m_currentHealth, m_maxHealth);
             }
 
             public void Die()
