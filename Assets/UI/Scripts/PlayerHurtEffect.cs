@@ -21,16 +21,16 @@ namespace Millivolt
 				m_vignette = GetComponentInChildren<Image>();
             }
 
-            public void ChangeVignetteAlpha(float currentHealth, float maxhealth)
+            public void ChangeVignetteAlpha(float currentHealth, float maxHealth)
 			{
-				if ((maxhealth/currentHealth) <= 0.4f)
+				if ((currentHealth/maxHealth) <= 0.4f)
 				{
-					float alphaAmount = (1 - (maxhealth / currentHealth));
-					m_vignette.color = new Color(m_vignette.color.r, m_vignette.color.g, m_vignette.color.b, alphaAmount);
+					float alphaAmount = (1 - (currentHealth / maxHealth));
+					m_vignette.color = new Color(m_vignette.color.r, m_vignette.color.g, m_vignette.color.b, Mathf.Lerp(m_vignette.color.a, alphaAmount, 0.1f));
 				}
 				else
 				{
-                    m_vignette.color = new Color(m_vignette.color.r, m_vignette.color.g, m_vignette.color.b, 0);
+                    m_vignette.color = new Color(m_vignette.color.r, m_vignette.color.g, m_vignette.color.b, Mathf.Lerp(m_vignette.color.a, 0, 0.1f));
                 }
 			}
         }
