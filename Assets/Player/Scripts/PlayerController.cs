@@ -1,12 +1,12 @@
 ///<summary>
 /// Author: Halen Finlay
 ///
-/// Handles the player movement and look logic.
+/// Handles the player movement, jumping, and look logic.
 /// 
 ///</summary>
 
-using System.Collections;
-using System.Collections.Generic;
+using Cinemachine;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -14,19 +14,156 @@ namespace Millivolt
 {
     namespace Player
     {
+        [RequireComponent(typeof(CharacterController), typeof(PlayerInput))]
         public class PlayerController : MonoBehaviour
         {
-            // components
-            private CharacterController m_characterController;
+            void Start()
+            {
+                m_characterController = GetComponent<CharacterController>();
+                cursorIsLocked = true;
+                m_currentGravity = m_defaultGravity;
+            }
+
+            private void Update()
+            {
+                // set rotation of player object to face camera
+                transform.rotation = Quaternion.Euler(0, Camera.main.transform.eulerAngles.y, 0);
+            }
+
+            private void FixedUpdate()
+            {
+                MovePlayer();
+            }
+
+            [Header("Physics")]
+            [Tooltip("The mass of the player in Kg. Effects how much it is affected by other objects.")]
+            [SerializeField] private float m_mass;
+            [Tooltip("The default acceleration of gravity in units per second per second.")]
+            [SerializeField] private Vector3 m_defaultGravity;
+            [Tooltip("The maximum speed the player can travel in units per second.")]
+            [SerializeField] private float m_terminalVelocity;
+            [Tooltip("The layers of objects that the CharacterController can interact with.")]
+            [SerializeField] private LayerMask m_walkableLayers;
+
+            private Vector3 m_currentGravity;
+
+            public void SetMass(float value)
+            {
+                m_mass = value;
+            }
+
+            public void SetGravity(Vector3 value)
+            {
+                m_currentGravity = value;
+            }
 
             [Header("Movement")]
+            [Tooltip("The movement speed of the player in units per second.")]
             [SerializeField] private float m_moveSpeed;
+
+            private CharacterController m_characterController;
             private Vector2 m_moveDirection;
 
+            public void Move(InputAction.CallbackContext context)
+            {
+                m_moveDirection = context.ReadValue<Vector2>();
+            }
+
+            /// <summary>
+            /// Calculate how much the player should move this frame and apply it.
+            /// </summary>
+            private void MovePlayer()
+            {
+                // get camera directions
+                Vector3 camRight = Camera.main.transform.right;
+                Vector3 camForward = Camera.main.transform.forward;
+
+                // 'flatten'
+                camRight.y = 0;
+                camForward.y = 0;
+
+                // re-normalise now value has been edited
+                camRight = camRight.normalized;
+                camForward = camForward.normalized;
+
+                // apply direction and speed
+                Vector3 horizontalRelativeInput = m_moveDirection.x * camRight * m_moveSpeed;
+                Vector3 verticalRelativeInput = m_moveDirection.y * camForward * m_moveSpeed;
+
+                // only do the boxcast once per frame
+                bool thisFrameIsGrounded = isGrounded;
+
+                // if player just landed, reset their vertical velocity to 0
+                if (!m_groundedLastFrame && thisFrameIsGrounded)
+                    m_verticalVelocity = Vector3.zero;
+
+                // update for next check
+                m_groundedLastFrame = thisFrameIsGrounded;
+
+                // if the player should jump, add the jump velocity
+                if (m_willJump)
+                {
+                    m_verticalVelocity += transform.up * m_jumpSpeed;
+                    m_willJump = false;
+                }
+
+                // apply gravity if player is NOT grounded
+                if (!thisFrameIsGrounded)
+                    m_verticalVelocity += m_currentGravity;
+
+                // calculate movement vector
+                Vector3 movement = horizontalRelativeInput + verticalRelativeInput + m_verticalVelocity;
+
+                // clamp to terminal velocity
+                movement = Vector3.ClampMagnitude(movement, m_terminalVelocity);
+                
+                // move player
+                //transform.Translate(movement * Time.deltaTime, Space.World);
+                m_characterController.Move(movement * Time.deltaTime);
+            }
+
+            [Header("Jumping")]
+            [Tooltip("The velocity added to the player in units per second when they jump.")]
+            [SerializeField] private float m_jumpSpeed;
+            [Tooltip("The height of the grounded check.")]
+            [SerializeField, Range(0,0.5f)] private float m_groundCheckOffset;
+            [Tooltip("The width of the grounded check.")]
+            [SerializeField, Range(0,1)] private float m_groundCheckRadius;
+
+            private bool m_groundedLastFrame;
+            private Vector3 m_verticalVelocity = Vector3.zero;
+            private bool m_willJump = false;
+
+            /// <summary>
+            /// If the player is standing on floor or another object.
+            /// </summary>
+            public bool isGrounded
+            {
+                get
+                {
+                    // check the space underneath the player
+                    Vector3 playerFeet = new Vector3(transform.position.x, transform.position.y - m_characterController.height / 2, transform.position.z);
+                    if (Physics.CheckBox(playerFeet, new Vector3(m_groundCheckRadius, m_groundCheckOffset, m_groundCheckRadius), Quaternion.identity, m_walkableLayers))
+                    {
+                        return true;
+                    }
+                    return false;
+                }
+            }
+
+            /// <summary>
+            /// Make the player jump next time MovePlayer is called.
+            /// </summary>
+            public void Jump(InputAction.CallbackContext context)
+            {
+                if (context.started && m_groundedLastFrame)
+                {
+                    m_willJump = true;
+                }
+            }
+
             [Header("Camera")]
-            [SerializeField] private Camera m_camera;
-            [SerializeField] private float m_lookSensitivity;
-            [SerializeField] private Vector2 m_cameraVerticalLook;
+            [SerializeField] private CinemachineVirtualCamera m_virtualCam;
             private bool m_cursorIsLocked = false;
             public bool cursorIsLocked
             {
@@ -49,58 +186,28 @@ namespace Millivolt
                     }
                 }
             }
-            private Vector2 m_lookDirection;
-            
-            void Start()
+
+            /// <summary>
+            /// Change the move-speed of the camera.
+            /// </summary>
+            /// <param name="hSpeed">Horizontal camera speed.</param>
+            /// <param name="vSpeed">Vertical camera speed.</param>
+            public void SetCameraSensitivity(float hSpeed, float vSpeed)
             {
-                m_characterController = GetComponent<CharacterController>();
-                cursorIsLocked = true;
+                var pov = m_virtualCam.GetCinemachineComponent<CinemachinePOV>();
+                pov.m_HorizontalAxis.m_MaxSpeed = hSpeed;
+                pov.m_VerticalAxis.m_MaxSpeed = vSpeed;
             }
 
-            private void Update()
+#if UNITY_EDITOR
+            private void OnDrawGizmos()
             {
-                LookPlayer();
+                Handles.color = Color.green;
+                if (m_characterController)
+                    Handles.DrawWireCube(new Vector3(transform.position.x, transform.position.y - m_characterController.height / 2, transform.position.z),
+                        new Vector3(m_groundCheckRadius * 2, m_groundCheckOffset * 2, m_groundCheckRadius * 2));
             }
-
-            private void FixedUpdate()
-            {
-                MovePlayer();
-            }
-
-            // Input System methods
-            public void Move(InputAction.CallbackContext context)
-            {
-                m_moveDirection = context.ReadValue<Vector2>();
-            }
-
-            public void Look(InputAction.CallbackContext context)
-            {
-                m_lookDirection = context.ReadValue<Vector2>();
-            }
-
-            // private methods
-            private void MovePlayer()
-            {
-                m_characterController.Move(new Vector3(m_moveDirection.x, 0, m_moveDirection.y) * m_moveSpeed * Time.deltaTime);
-            }
-
-            private void LookPlayer()
-            {
-                // keep value between 0 and 360
-                if (m_lookDirection.x >= 360f)
-                    m_lookDirection.x -= 360;
-                else if (m_lookDirection.x < 0)
-                    m_lookDirection.x += 360;
-
-                // clamp vertical look
-                m_lookDirection.y = Mathf.Clamp(m_lookDirection.y, m_cameraVerticalLook.x, m_cameraVerticalLook.y);
-
-                // apply vertical rotation
-                m_camera.transform.eulerAngles = Vector3.right * m_lookDirection.y;
-
-                // apply rotation
-                transform.Rotate(Vector3.up * m_lookDirection.x);
-            }
+#endif
         }
     }
 }
