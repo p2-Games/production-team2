@@ -18,13 +18,11 @@ namespace Millivolt
             [Header("Health Bar Propetries")]
 			[SerializeField] private Image m_healthBarFill;
             [SerializeField] private Image m_healthBarColour;
-            private float m_previousFill;
 
 
             private void Start()
             {
                 m_healthBarColour.color = new Color(0.6f, 0.85f, 1, 1);
-                m_previousFill = 1;
             }
 
             /// <summary>
@@ -34,9 +32,7 @@ namespace Millivolt
             /// <param name="maxHealth"></param>
             public void UpdateHealthBar(float currentHealth, float maxHealth)
 			{
-				m_healthBarFill.fillAmount = Mathf.Lerp(m_previousFill, (currentHealth / maxHealth), 0.01f);
-
-                m_previousFill = (currentHealth / maxHealth);
+				m_healthBarFill.fillAmount = (currentHealth / maxHealth);
 
                 if ((currentHealth / maxHealth) <= 0.4f)
                 {
