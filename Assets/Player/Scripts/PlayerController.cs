@@ -14,14 +14,14 @@ namespace Millivolt
 {
     namespace Player
     {
-        [RequireComponent(typeof(CharacterController), typeof(PlayerInput))]
+        [RequireComponent(typeof(CapsuleCollider), typeof(Rigidbody), typeof(PlayerInput))]
         public class PlayerController : MonoBehaviour
         {
             void Start()
             {
-                m_characterController = GetComponent<CharacterController>();
+                InitialiseRigidbody();
+                InitialiseCollider();
                 cursorIsLocked = true;
-                m_currentGravity = m_defaultGravity;
             }
 
             private void Update()
@@ -36,33 +36,44 @@ namespace Millivolt
             }
 
             [Header("Physics")]
-            [Tooltip("The mass of the player in Kg. Effects how much it is affected by other objects.")]
-            [SerializeField] private float m_mass;
-            [Tooltip("The default acceleration of gravity in units per second per second.")]
-            [SerializeField] private Vector3 m_defaultGravity;
-            [Tooltip("The maximum speed the player can travel in units per second.")]
-            [SerializeField] private float m_terminalVelocity;
+            [Tooltip("The acceleration of gravity of the player.")]
+            [SerializeField] private Vector3 m_gravity;
             [Tooltip("The layers of objects that the CharacterController can interact with.")]
             [SerializeField] private LayerMask m_walkableLayers;
 
-            private Vector3 m_currentGravity;
+            private Rigidbody m_rb;
+            private CapsuleCollider m_collider;
+            private Vector3 m_walkVelocity;
 
-            public void SetMass(float value)
+            [ContextMenu("Initialise Rigidbody")]
+            private void InitialiseRigidbody()
             {
-                m_mass = value;
+                m_rb = GetComponent<Rigidbody>();
             }
 
-            public void SetGravity(Vector3 value)
+            [ContextMenu("Initialise Collider")]
+            private void InitialiseCollider()
             {
-                m_currentGravity = value;
+                m_collider = GetComponent<CapsuleCollider>();
+
+                PhysicMaterial pm = new PhysicMaterial();
+                pm.frictionCombine = PhysicMaterialCombine.Minimum;
+                pm.staticFriction = 0f;
+                pm.dynamicFriction = 0f;
+                pm.bounceCombine = PhysicMaterialCombine.Minimum;
+                pm.bounciness = 0f;
+
+                m_collider.material = pm;
             }
 
             [Header("Movement")]
             [Tooltip("The movement speed of the player in units per second.")]
-            [SerializeField] private float m_moveSpeed;
+            [SerializeField] private float m_topSpeed;
+            [SerializeField] private float m_acceleration;
+            [SerializeField] private float m_decceleration;
 
-            private CharacterController m_characterController;
             private Vector2 m_moveDirection;
+            private Vector3 m_verticalVelocity;
 
             public void Move(InputAction.CallbackContext context)
             {
@@ -74,6 +85,9 @@ namespace Millivolt
             /// </summary>
             private void MovePlayer()
             {
+                // only do the boxcast once per frame
+                m_groundedLastFrame = isGrounded;
+
                 // get camera directions
                 Vector3 camRight = Camera.main.transform.right;
                 Vector3 camForward = Camera.main.transform.forward;
@@ -87,18 +101,20 @@ namespace Millivolt
                 camForward = camForward.normalized;
 
                 // apply direction and speed
-                Vector3 horizontalRelativeInput = m_moveDirection.x * camRight * m_moveSpeed;
-                Vector3 verticalRelativeInput = m_moveDirection.y * camForward * m_moveSpeed;
+                Vector3 horizontalRelativeInput = m_moveDirection.x * camRight;
+                Vector3 verticalRelativeInput = m_moveDirection.y * camForward;
 
-                // only do the boxcast once per frame
-                bool thisFrameIsGrounded = isGrounded;
+                // calc movement vector
+                Vector3 targetVelocity = (horizontalRelativeInput + verticalRelativeInput) * m_topSpeed;
 
-                // if player just landed, reset their vertical velocity to 0
-                if (!m_groundedLastFrame && thisFrameIsGrounded)
+                // calculate velocity change vector
+                m_walkVelocity = Vector3.MoveTowards(m_walkVelocity, targetVelocity, m_moveDirection == Vector2.zero ? m_decceleration : m_acceleration);
+                
+                // only apply gravity if not grounded
+                if (m_groundedLastFrame)
                     m_verticalVelocity = Vector3.zero;
-
-                // update for next check
-                m_groundedLastFrame = thisFrameIsGrounded;
+                else 
+                    m_verticalVelocity += m_gravity * Time.deltaTime;
 
                 // if the player should jump, add the jump velocity
                 if (m_willJump)
@@ -107,19 +123,8 @@ namespace Millivolt
                     m_willJump = false;
                 }
 
-                // apply gravity if player is NOT grounded
-                if (!thisFrameIsGrounded)
-                    m_verticalVelocity += m_currentGravity;
-
-                // calculate movement vector
-                Vector3 movement = horizontalRelativeInput + verticalRelativeInput + m_verticalVelocity;
-
-                // clamp to terminal velocity
-                movement = Vector3.ClampMagnitude(movement, m_terminalVelocity);
-                
                 // move player
-                //transform.Translate(movement * Time.deltaTime, Space.World);
-                m_characterController.Move(movement * Time.deltaTime);
+                m_rb.velocity = m_walkVelocity + m_verticalVelocity;
             }
 
             [Header("Jumping")]
@@ -127,11 +132,10 @@ namespace Millivolt
             [SerializeField] private float m_jumpSpeed;
             [Tooltip("The height of the grounded check.")]
             [SerializeField, Range(0,0.5f)] private float m_groundCheckOffset;
-            [Tooltip("The width of the grounded check.")]
+            [Tooltip("The radius of the grounded check.")]
             [SerializeField, Range(0,1)] private float m_groundCheckRadius;
 
             private bool m_groundedLastFrame;
-            private Vector3 m_verticalVelocity = Vector3.zero;
             private bool m_willJump = false;
 
             /// <summary>
@@ -142,12 +146,8 @@ namespace Millivolt
                 get
                 {
                     // check the space underneath the player
-                    Vector3 playerFeet = new Vector3(transform.position.x, transform.position.y - m_characterController.height / 2, transform.position.z);
-                    if (Physics.CheckBox(playerFeet, new Vector3(m_groundCheckRadius, m_groundCheckOffset, m_groundCheckRadius), Quaternion.identity, m_walkableLayers))
-                    {
-                        return true;
-                    }
-                    return false;
+                    Vector3 playerBottom = GetPlayerBottom();
+                    return Physics.CheckBox(playerBottom, new Vector3(m_groundCheckRadius, m_groundCheckOffset, m_groundCheckRadius), Quaternion.identity, m_walkableLayers);
                 }
             }
 
@@ -160,6 +160,11 @@ namespace Millivolt
                 {
                     m_willJump = true;
                 }
+            }
+
+            private Vector3 GetPlayerBottom()
+            {
+                return new Vector3(transform.position.x, transform.position.y - m_collider.height / 2, transform.position.z);
             }
 
             [Header("Camera")]
@@ -200,12 +205,17 @@ namespace Millivolt
             }
 
 #if UNITY_EDITOR
+            [Header("Debug"), SerializeField] private bool m_drawGizmos;
             private void OnDrawGizmos()
             {
-                Handles.color = Color.green;
-                if (m_characterController)
-                    Handles.DrawWireCube(new Vector3(transform.position.x, transform.position.y - m_characterController.height / 2, transform.position.z),
-                        new Vector3(m_groundCheckRadius * 2, m_groundCheckOffset * 2, m_groundCheckRadius * 2));
+                if (!m_drawGizmos)
+                    return;
+
+                if (m_collider)
+                {
+                    Handles.color = Color.green;
+                    Handles.DrawWireCube(GetPlayerBottom(), new Vector3(m_groundCheckRadius, m_groundCheckOffset, m_groundCheckRadius));
+                }
             }
 #endif
         }

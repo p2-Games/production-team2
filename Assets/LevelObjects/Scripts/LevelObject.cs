@@ -28,14 +28,7 @@ namespace Millivolt
 
 			public bool CanTrigger(GameObject obj) => obj.GetComponent<Player.PlayerController>() || obj.GetComponent<LevelObject>();
 
-#if UNITY_EDITOR
             [SerializeField, TextArea] protected string m_description = "";
-#endif
-
-            private void Start()
-            {
-				isActive = m_isActive;
-            }
         }
 	}
 }

@@ -35,6 +35,11 @@ namespace Millivolt
 				}
 			}
 
+            private void Start()
+            {
+				m_isActive = isActive;
+            }
+
             public void Interact()
 			{
 				// if the object is not currently being interacted with

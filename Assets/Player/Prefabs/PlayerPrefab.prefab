@@ -11,9 +11,10 @@ GameObject:
   - component: {fileID: 2666262149321555059}
   - component: {fileID: 2666262149321555056}
   - component: {fileID: 8139358264548552186}
+  - component: {fileID: 2582566654869210086}
+  - component: {fileID: 8730322765743250305}
   - component: {fileID: 2666262149321555054}
-  - component: {fileID: 1610945076}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PlayerPrefab
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -50,17 +51,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b56d66cfc24343c43b68b99310dc4e80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_mass: 5
-  m_defaultGravity: {x: 0, y: -0.5, z: 0}
-  m_terminalVelocity: 20
+  m_gravity: {x: 0, y: -18, z: 0}
   m_walkableLayers:
     serializedVersion: 2
     m_Bits: 64
-  m_moveSpeed: 3
-  m_jumpSpeed: 8
+  m_topSpeed: 3
+  m_acceleration: 2
+  m_decceleration: 0.5
+  m_jumpSpeed: 5
   m_groundCheckOffset: 0.1
   m_groundCheckRadius: 0.4
   m_virtualCam: {fileID: 0}
+  m_drawGizmos: 1
 --- !u!114 &8139358264548552186
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -74,6 +76,36 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_maxHealth: 100
+--- !u!54 &2582566654869210086
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2666262149321555055}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0.1
+  m_AngularDrag: 0
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 1
+  m_Constraints: 112
+  m_CollisionDetection: 1
+--- !u!136 &8730322765743250305
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2666262149321555055}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &2666262149321555054
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -197,24 +229,6 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!143 &1610945076
-CharacterController:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2666262149321555055}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Height: 2
-  m_Radius: 0.5
-  m_SlopeLimit: 45
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2666262149422882364
 GameObject:
   m_ObjectHideFlags: 0
