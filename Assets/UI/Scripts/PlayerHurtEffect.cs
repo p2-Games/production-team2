@@ -21,6 +21,11 @@ namespace Millivolt
 				m_vignette = GetComponentInChildren<Image>();
             }
 
+			/// <summary>
+			/// This will change the alpha of the image of the vignette image
+			/// </summary>
+			/// <param name="currentHealth"></param>
+			/// <param name="maxHealth"></param>
             public void ChangeVignetteAlpha(float currentHealth, float maxHealth)
 			{
 				if ((currentHealth/maxHealth) <= 0.4f)

@@ -17,6 +17,7 @@ namespace Millivolt
             [SerializeField] private float m_maxHealth;
             private float m_currentHealth;
             [SerializeField] private PlayerHurtEffect m_playerHurtEffect;
+            [SerializeField] private PlayerHealthBarUI m_playerHealthbar;
 
 
             private void Start()
@@ -31,6 +32,7 @@ namespace Millivolt
                 if (m_currentHealth <= 0)
                     Die();
 
+                m_playerHealthbar.UpdateHealthBar(m_currentHealth, m_maxHealth);
                 m_playerHurtEffect.ChangeVignetteAlpha(m_currentHealth, m_maxHealth);
             }
 
