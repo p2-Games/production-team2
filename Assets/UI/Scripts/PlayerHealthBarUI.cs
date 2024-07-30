@@ -34,7 +34,7 @@ namespace Millivolt
             /// <param name="maxHealth"></param>
             public void UpdateHealthBar(float currentHealth, float maxHealth)
 			{
-				m_healthBarFill.fillAmount = Mathf.Lerp(m_previousFill, (currentHealth / maxHealth), 0.1f);
+				m_healthBarFill.fillAmount = Mathf.Lerp(m_previousFill, (currentHealth / maxHealth), 0.01f);
 
                 m_previousFill = (currentHealth / maxHealth);
 
