@@ -74,7 +74,8 @@ namespace Millivolt
 
             private Vector2 m_moveDirection;
             private Vector3 m_walkVelocity;
-            private Vector3 m_externalVelocity;
+            private Vector3 m_externalObjectVelocity;
+            private Vector3 m_externalAirVelocity;
             private float m_verticalVelocity;
 
             public void Move(InputAction.CallbackContext context)
@@ -124,7 +125,12 @@ namespace Millivolt
                 }
 
                 // move player
-                m_rb.velocity = m_walkVelocity + m_verticalVelocity * transform.up + m_externalVelocity;
+                m_rb.velocity = m_walkVelocity + m_verticalVelocity * transform.up + m_externalObjectVelocity;
+            }
+
+            public void AddVelocity(Vector3 value)
+            {
+                m_rb.velocity += value;
             }
 
             [Header("Jumping")]
@@ -172,14 +178,14 @@ namespace Millivolt
                         // if the hit object has a rigidbody, apply its velocity to the player.
                         if (hit.rigidbody)
                         {
-                            m_externalVelocity = hit.rigidbody.GetPointVelocity(hit.point);
+                            m_externalObjectVelocity = hit.rigidbody.GetPointVelocity(hit.point);
                         }
 
                         // TODO: reduce over time instead of set to zero
                         else
                         {
-                            if (m_externalVelocity != Vector3.zero)
-                                m_externalVelocity = Vector3.zero;
+                            if (m_externalObjectVelocity != Vector3.zero)
+                                m_externalObjectVelocity = Vector3.zero;
 
                             // float currentLength = m_externalVelocity.magnitude;
                             // m_externalVelocity.Normalize();
