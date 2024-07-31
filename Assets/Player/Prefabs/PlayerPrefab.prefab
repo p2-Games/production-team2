@@ -51,13 +51,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b56d66cfc24343c43b68b99310dc4e80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_gravity: {x: 0, y: -18, z: 0}
+  m_gravity: -18
   m_walkableLayers:
     serializedVersion: 2
     m_Bits: 64
-  m_topSpeed: 3
-  m_acceleration: 2
-  m_decceleration: 0.5
+  m_topSpeed: 2.5
+  m_acceleration: 20
+  m_decceleration: 15
+  m_slopeLimit: 80
   m_jumpSpeed: 5
   m_groundCheckDistance: 0.01
   m_groundCheckRadius: 0.4
@@ -224,6 +225,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: a4aaba8e-000e-4546-b410-766488036193
     m_ActionName: Player/Interact[/Keyboard/e]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2666262149321555056}
+        m_TargetAssemblyTypeName: Millivolt.Player.PlayerController, Assembly-CSharp
+        m_MethodName: Press
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: cc5a4f5d-beb8-446a-a667-e0d836a087f5
+    m_ActionName: Player/Press[/Keyboard/e,/Keyboard/w]
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: Keyboard&Mouse
   m_DefaultActionMap: Player

@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1361855575252022029
+--- !u!1 &6123666865484932324
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,75 +8,70 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 6743922878606193098}
-  - component: {fileID: 3708220487139173338}
-  - component: {fileID: 9044428905131475549}
-  - component: {fileID: 8932411595368827591}
+  - component: {fileID: 1984628243712747043}
+  - component: {fileID: 944090072819620038}
+  - component: {fileID: 4294655947393209780}
+  - component: {fileID: 4461844551644814638}
   m_Layer: 6
-  m_Name: TriggeredPlatform
+  m_Name: BouncingPlatformPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &6743922878606193098
+--- !u!4 &1984628243712747043
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1361855575252022029}
+  m_GameObject: {fileID: 6123666865484932324}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 7201593073410990518}
+  - {fileID: 2732796849400608351}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3708220487139173338
+--- !u!114 &944090072819620038
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1361855575252022029}
+  m_GameObject: {fileID: 6123666865484932324}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b3be4d33f041732469e0570bda2d02b7, type: 3}
+  m_Script: {fileID: 11500000, guid: fc4bbfbd31b6e974ea8cdfea22e02709, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_isActive: 0
-  m_description: A platform that moves towards the end of a position array while
-    active and towards the start of the array while inactive.
+  m_isActive: 1
+  m_description: A moving object that bounces back and forth along its path.
   m_movementSpeed: 2
-  m_startAtEnd: 0
-  m_path:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
---- !u!65 &9044428905131475549
+  m_path: []
+  m_startsMovingBackward: 0
+--- !u!65 &4294655947393209780
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1361855575252022029}
+  m_GameObject: {fileID: 6123666865484932324}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 2.5, y: 0.5, z: 2.5}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!54 &8932411595368827591
+--- !u!54 &4461844551644814638
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1361855575252022029}
+  m_GameObject: {fileID: 6123666865484932324}
   serializedVersion: 2
   m_Mass: 1
   m_Drag: 0
@@ -86,18 +81,13 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!1001 &2774324648939259212
+--- !u!1001 &6961873904652882597
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 6743922878606193098}
+    m_TransformParent: {fileID: 1984628243712747043}
     m_Modifications:
-    - target: {fileID: 532653494992621495, guid: d0513ef0ec24a1144bd706f9a06dc280,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 3124330768781479262, guid: d0513ef0ec24a1144bd706f9a06dc280,
         type: 3}
       propertyPath: m_Mesh
@@ -185,9 +175,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d0513ef0ec24a1144bd706f9a06dc280, type: 3}
---- !u!4 &7201593073410990518 stripped
+--- !u!4 &2732796849400608351 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5003872123021812986, guid: d0513ef0ec24a1144bd706f9a06dc280,
     type: 3}
-  m_PrefabInstance: {fileID: 2774324648939259212}
+  m_PrefabInstance: {fileID: 6961873904652882597}
   m_PrefabAsset: {fileID: 0}

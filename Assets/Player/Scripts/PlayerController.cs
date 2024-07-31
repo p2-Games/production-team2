@@ -1,7 +1,7 @@
 ///<summary>
 /// Author: Halen Finlay
 ///
-/// Handles the player movement, jumping, and look logic.
+/// Handles the player physics, movement, jumping, and camera logic.
 /// 
 ///</summary>
 
@@ -27,7 +27,7 @@ namespace Millivolt
             private void Update()
             {
                 // set rotation of player object to face camera
-                transform.rotation = Quaternion.Euler(0, Camera.main.transform.eulerAngles.y, 0);
+                transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, Camera.main.transform.eulerAngles.y, transform.rotation.eulerAngles.z);
             }
 
             private void FixedUpdate()
@@ -36,8 +36,8 @@ namespace Millivolt
             }
 
             [Header("Physics")]
-            [Tooltip("The acceleration of gravity of the player.")]
-            [SerializeField] private Vector3 m_gravity;
+            [Tooltip("The acceleration of gravity of the player, on the player's transform.up axis.")]
+            [SerializeField] private float m_gravity;
             [Tooltip("The layers of objects that the CharacterController can interact with.")]
             [SerializeField] private LayerMask m_walkableLayers;
 
@@ -70,11 +70,12 @@ namespace Millivolt
             [SerializeField] private float m_topSpeed;
             [SerializeField] private float m_acceleration;
             [SerializeField] private float m_decceleration;
+            [SerializeField, Range(0, 90)] private float m_slopeLimit;
 
             private Vector2 m_moveDirection;
             private Vector3 m_walkVelocity;
-            private Vector3 m_verticalVelocity;
             private Vector3 m_externalVelocity;
+            private float m_verticalVelocity;
 
             public void Move(InputAction.CallbackContext context)
             {
@@ -87,7 +88,7 @@ namespace Millivolt
             private void MovePlayer()
             {
                 // only do the boxcast once per frame
-                m_groundedLastFrame = isGrounded;
+                m_isGrounded = isGrounded;
 
                 // get camera directions
                 Vector3 camRight = Camera.main.transform.right;
@@ -109,23 +110,21 @@ namespace Millivolt
                 Vector3 targetVelocity = (horizontalRelativeInput + verticalRelativeInput) * m_topSpeed;
 
                 // calculate velocity change vector
-                m_walkVelocity = Vector3.MoveTowards(m_walkVelocity, targetVelocity, m_moveDirection == Vector2.zero ? m_decceleration : m_acceleration);
+                m_walkVelocity = Vector3.MoveTowards(m_walkVelocity, targetVelocity, (m_moveDirection == Vector2.zero ? m_decceleration : m_acceleration) * Time.fixedDeltaTime);
                 
                 // only apply gravity if not grounded
-                if (m_groundedLastFrame)
-                    m_verticalVelocity = Vector3.zero;
-                else 
-                    m_verticalVelocity += m_gravity * Time.deltaTime;
+                if (!m_isGrounded)
+                    m_verticalVelocity += m_gravity * Time.fixedDeltaTime;
 
                 // if the player should jump, add the jump velocity
                 if (m_willJump)
                 {
-                    m_verticalVelocity += transform.up * m_jumpSpeed;
+                    m_verticalVelocity += m_jumpSpeed;
                     m_willJump = false;
                 }
 
                 // move player
-                m_rb.velocity = m_walkVelocity + m_verticalVelocity + m_externalVelocity;
+                m_rb.velocity = m_walkVelocity + m_verticalVelocity * transform.up + m_externalVelocity;
             }
 
             [Header("Jumping")]
@@ -136,48 +135,74 @@ namespace Millivolt
             [Tooltip("The radius of the grounded check.")]
             [SerializeField, Range(0,1)] private float m_groundCheckRadius;
 
-            private bool m_groundedLastFrame;
+            private bool m_isGrounded;
             private bool m_willJump = false;
 
             /// <summary>
-            /// If the player is standing on a Walkable collider.
-            /// </summary>
-            public bool isGrounded
-            {
-                get
-                {
-                    // check the space underneath the player
-                    bool value = Physics.BoxCast(transform.position + m_collider.center, new Vector3(m_groundCheckRadius, m_groundCheckDistance, m_groundCheckRadius),
-                        -transform.up, out RaycastHit hit, Quaternion.identity, m_collider.height / 2, m_walkableLayers);
-
-                    // if the hit object has a rigidbody, apply its velocity to the player.
-                    if (hit.rigidbody)
-                        m_externalVelocity = hit.rigidbody.GetPointVelocity(hit.point);
-                    // otherwise reduce the external velocity based on decceleration
-                    else
-                    {
-                        m_externalVelocity = Vector3.zero;
-                        // float currentLength = m_externalVelocity.magnitude;
-                        // m_externalVelocity.Normalize();
-                        // m_externalVelocity *= currentLength / m_decceleration;
-                    }
-
-                    return value;
-
-                    // checkbox (working)
-                    //return Physics.CheckBox(new Vector3(transform.position.x, transform.position.y - m_collider.height / 2, transform.position.z), 
-                    //   new Vector3(m_groundCheckRadius, m_groundCheckDistance, m_groundCheckRadius), Quaternion.identity, m_walkableLayers);
-                }
-            }
-
             /// <summary>
             /// Make the player jump next time MovePlayer is called.
             /// </summary>
             public void Jump(InputAction.CallbackContext context)
             {
-                if (context.started && m_groundedLastFrame)
+                if (context.started && m_isGrounded)
                 {
                     m_willJump = true;
+                }
+            }
+
+            /// Returns if the player is standing on a Walkable collider.
+            /// </summary>
+            public bool isGrounded
+            {
+                get
+                {
+                    // check the space underneath the player to determine if grounded
+                    // if there is no walkable object under the player, they are not grounded
+                    if (!Physics.BoxCast(transform.position + m_collider.center, new Vector3(m_groundCheckRadius, m_groundCheckDistance, m_groundCheckRadius),
+                        -transform.up, out RaycastHit hit, Quaternion.identity, m_collider.height / 2, m_walkableLayers))
+                        return false;
+                    // if the player is on a walkable object
+                    else
+                    {
+                        // if the object does not meet the slope limit requirements, then the player is NOT standing on it
+                        // STRETCH: snap to slopes
+                        if (Vector3.Angle(hit.normal, transform.up) > m_slopeLimit)
+                            return false;
+
+                        // if the hit object has a rigidbody, apply its velocity to the player.
+                        if (hit.rigidbody)
+                        {
+                            m_externalVelocity = hit.rigidbody.GetPointVelocity(hit.point);
+                        }
+
+                        // TODO: reduce over time instead of set to zero
+                        else
+                        {
+                            if (m_externalVelocity != Vector3.zero)
+                                m_externalVelocity = Vector3.zero;
+
+                            // float currentLength = m_externalVelocity.magnitude;
+                            // m_externalVelocity.Normalize();
+                            // m_externalVelocity *= currentLength / m_decceleration;
+                        }
+
+                        return true;
+                    }
+
+                    // ALTERNATE METHOD: checkbox
+                    //return Physics.CheckBox(new Vector3(transform.position.x, transform.position.y - m_collider.height / 2, transform.position.z), 
+                    //   new Vector3(m_groundCheckRadius, m_groundCheckDistance, m_groundCheckRadius), Quaternion.identity, m_walkableLayers);
+                }
+            }
+
+            private void OnCollisionStay(Collision collision)
+            {
+                // if the colliding game object's layer is a walkable layer AND the player is currently grounded, meaning the player is standing on that object
+                if ((m_walkableLayers & (1 << collision.gameObject.layer)) != 0 && m_isGrounded)
+                {
+                    // if player is moving dowwnards
+                    if (m_verticalVelocity < 0)
+                        m_verticalVelocity = 0;
                 }
             }
 
