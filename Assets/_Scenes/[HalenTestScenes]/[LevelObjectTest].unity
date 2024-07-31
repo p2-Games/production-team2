@@ -1691,6 +1691,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e1541fa3ab9f1ec4da831f420911e002, type: 3}
+--- !u!114 &886039423 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2666262149321555056, guid: 2e9f84256aeabd24bba7af362f17877f,
+    type: 3}
+  m_PrefabInstance: {fileID: 1280716465}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b56d66cfc24343c43b68b99310dc4e80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!43 &912260859
 Mesh:
   m_ObjectHideFlags: 0
@@ -2103,6 +2115,56 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2666262149321555054, guid: 2e9f84256aeabd24bba7af362f17877f,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.size
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 2666262149321555054, guid: 2e9f84256aeabd24bba7af362f17877f,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.data[14].m_ActionId
+      value: cc5a4f5d-beb8-446a-a667-e0d836a087f5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2666262149321555054, guid: 2e9f84256aeabd24bba7af362f17877f,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.data[14].m_ActionName
+      value: Player/Press[/Keyboard/e,/Keyboard/w]
+      objectReference: {fileID: 0}
+    - target: {fileID: 2666262149321555054, guid: 2e9f84256aeabd24bba7af362f17877f,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.data[14].m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2666262149321555054, guid: 2e9f84256aeabd24bba7af362f17877f,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.data[14].m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2666262149321555054, guid: 2e9f84256aeabd24bba7af362f17877f,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.data[14].m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 886039423}
+    - target: {fileID: 2666262149321555054, guid: 2e9f84256aeabd24bba7af362f17877f,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.data[14].m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2666262149321555054, guid: 2e9f84256aeabd24bba7af362f17877f,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.data[14].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Press
+      objectReference: {fileID: 0}
+    - target: {fileID: 2666262149321555054, guid: 2e9f84256aeabd24bba7af362f17877f,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.data[14].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Millivolt.Player.PlayerController, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2666262149321555054, guid: 2e9f84256aeabd24bba7af362f17877f,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.data[14].m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 2666262149321555055, guid: 2e9f84256aeabd24bba7af362f17877f,
         type: 3}
       propertyPath: m_Name
@@ -2942,26 +3004,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: TriggeredPlatform
       objectReference: {fileID: 0}
-    - target: {fileID: 1361855575252022029, guid: 621cf2d72f977cc4498cf639aa64301e,
-        type: 3}
-      propertyPath: m_Layer
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 2204024201697091067, guid: 621cf2d72f977cc4498cf639aa64301e,
-        type: 3}
-      propertyPath: m_Layer
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 2442142978744339195, guid: 621cf2d72f977cc4498cf639aa64301e,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 1618552}
-    - target: {fileID: 3708220487139173338, guid: 621cf2d72f977cc4498cf639aa64301e,
-        type: 3}
-      propertyPath: m_path.Array.size
-      value: 4
-      objectReference: {fileID: 0}
     - target: {fileID: 3708220487139173338, guid: 621cf2d72f977cc4498cf639aa64301e,
         type: 3}
       propertyPath: m_path.Array.data[0]
@@ -2980,16 +3022,6 @@ PrefabInstance:
     - target: {fileID: 3708220487139173338, guid: 621cf2d72f977cc4498cf639aa64301e,
         type: 3}
       propertyPath: m_path.Array.data[3]
-      value: 
-      objectReference: {fileID: 561087561}
-    - target: {fileID: 3708220487139173338, guid: 621cf2d72f977cc4498cf639aa64301e,
-        type: 3}
-      propertyPath: m_path.Array.data[4]
-      value: 
-      objectReference: {fileID: 561087561}
-    - target: {fileID: 3708220487139173338, guid: 621cf2d72f977cc4498cf639aa64301e,
-        type: 3}
-      propertyPath: m_path.Array.data[5]
       value: 
       objectReference: {fileID: 561087561}
     - target: {fileID: 6743922878606193098, guid: 621cf2d72f977cc4498cf639aa64301e,
@@ -3052,11 +3084,6 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1618552}
-    - target: {fileID: 8753264950998626938, guid: 621cf2d72f977cc4498cf639aa64301e,
-        type: 3}
-      propertyPath: m_Layer
-      value: 6
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 621cf2d72f977cc4498cf639aa64301e, type: 3}
 --- !u!4 &7526257552659452252 stripped

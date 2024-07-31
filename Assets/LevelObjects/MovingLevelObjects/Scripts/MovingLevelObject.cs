@@ -1,7 +1,7 @@
 ///<summary>
-/// Author:
+/// Author: Halen
 ///
-///
+/// Base class for level objects that move.
 ///
 ///</summary>
 

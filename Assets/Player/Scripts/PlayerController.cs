@@ -43,7 +43,6 @@ namespace Millivolt
 
             private Rigidbody m_rb;
             private CapsuleCollider m_collider;
-            private Vector3 m_walkVelocity;
 
             [ContextMenu("Initialise Rigidbody")]
             private void InitialiseRigidbody()
@@ -73,7 +72,9 @@ namespace Millivolt
             [SerializeField] private float m_decceleration;
 
             private Vector2 m_moveDirection;
+            private Vector3 m_walkVelocity;
             private Vector3 m_verticalVelocity;
+            private Vector3 m_externalVelocity;
 
             public void Move(InputAction.CallbackContext context)
             {
@@ -124,14 +125,14 @@ namespace Millivolt
                 }
 
                 // move player
-                m_rb.velocity = m_walkVelocity + m_verticalVelocity;
+                m_rb.velocity = m_walkVelocity + m_verticalVelocity + m_externalVelocity;
             }
 
             [Header("Jumping")]
             [Tooltip("The velocity added to the player in units per second when they jump.")]
             [SerializeField] private float m_jumpSpeed;
-            [Tooltip("The height of the grounded check.")]
-            [SerializeField, Range(0,0.5f)] private float m_groundCheckOffset;
+            [Tooltip("Distance below bottom of player for grounded check.")]
+            [SerializeField, Range(0,0.5f)] private float m_groundCheckDistance;
             [Tooltip("The radius of the grounded check.")]
             [SerializeField, Range(0,1)] private float m_groundCheckRadius;
 
@@ -139,15 +140,33 @@ namespace Millivolt
             private bool m_willJump = false;
 
             /// <summary>
-            /// If the player is standing on floor or another object.
+            /// If the player is standing on a Walkable collider.
             /// </summary>
             public bool isGrounded
             {
                 get
                 {
                     // check the space underneath the player
-                    Vector3 playerBottom = GetPlayerBottom();
-                    return Physics.CheckBox(playerBottom, new Vector3(m_groundCheckRadius, m_groundCheckOffset, m_groundCheckRadius), Quaternion.identity, m_walkableLayers);
+                    bool value = Physics.BoxCast(transform.position + m_collider.center, new Vector3(m_groundCheckRadius, m_groundCheckDistance, m_groundCheckRadius),
+                        -transform.up, out RaycastHit hit, Quaternion.identity, m_collider.height / 2, m_walkableLayers);
+
+                    // if the hit object has a rigidbody, apply its velocity to the player.
+                    if (hit.rigidbody)
+                        m_externalVelocity = hit.rigidbody.GetPointVelocity(hit.point);
+                    // otherwise reduce the external velocity based on decceleration
+                    else
+                    {
+                        m_externalVelocity = Vector3.zero;
+                        // float currentLength = m_externalVelocity.magnitude;
+                        // m_externalVelocity.Normalize();
+                        // m_externalVelocity *= currentLength / m_decceleration;
+                    }
+
+                    return value;
+
+                    // checkbox (working)
+                    //return Physics.CheckBox(new Vector3(transform.position.x, transform.position.y - m_collider.height / 2, transform.position.z), 
+                    //   new Vector3(m_groundCheckRadius, m_groundCheckDistance, m_groundCheckRadius), Quaternion.identity, m_walkableLayers);
                 }
             }
 
@@ -160,11 +179,6 @@ namespace Millivolt
                 {
                     m_willJump = true;
                 }
-            }
-
-            private Vector3 GetPlayerBottom()
-            {
-                return new Vector3(transform.position.x, transform.position.y - m_collider.height / 2, transform.position.z);
             }
 
             [Header("Camera")]
@@ -214,7 +228,8 @@ namespace Millivolt
                 if (m_collider)
                 {
                     Handles.color = Color.green;
-                    Handles.DrawWireCube(GetPlayerBottom(), new Vector3(m_groundCheckRadius, m_groundCheckOffset, m_groundCheckRadius));
+                    Handles.DrawWireCube(transform.position + m_collider.center + -transform.up * m_collider.height / 2,
+                        new Vector3(m_groundCheckRadius, m_groundCheckDistance, m_groundCheckRadius));
                 }
             }
 #endif
