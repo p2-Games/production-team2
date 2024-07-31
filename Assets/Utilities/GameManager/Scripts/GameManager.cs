@@ -6,6 +6,7 @@
 ///</summary>
 
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Millivolt
 {
@@ -23,6 +24,10 @@ namespace Millivolt
 		{
 			[SerializeField] protected Vector3 m_gravity = new Vector3(0, -9.81f, 0);
 			private GameState m_gameState;
+
+			[SerializeField] private int m_currentLevel;
+
+			[SerializeField] LevelData[] m_levels;
 
 			public GameState gameState
 			{
@@ -62,6 +67,22 @@ namespace Millivolt
 						break;
 				}
 			}
+
+			/// <summary>
+			/// Load the next level as set up in the current levels leveldata
+			/// </summary>
+			public void LoadNextLevel()
+			{
+				SceneManager.LoadScene(m_levels[m_currentLevel].nextLevel.name);
+			}
+
+            /// <summary>
+            /// Load the previous level as set up in the current levels leveldata
+            /// </summary>
+            public void LoadLastLevel()
+			{
+                SceneManager.LoadScene(m_levels[m_currentLevel].prevLevel.name);
+            }
 		}
 	}
 }
