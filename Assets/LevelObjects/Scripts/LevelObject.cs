@@ -26,14 +26,9 @@ namespace Millivolt
 				set { m_isActive = value; }
 			}
 
-#if UNITY_EDITOR
-            [SerializeField, TextArea] protected string m_description = "";
-#endif
+			public bool CanTrigger(GameObject obj) => obj.GetComponent<Player.PlayerController>() || obj.GetComponent<LevelObject>();
 
-            private void Start()
-            {
-				isActive = m_isActive;
-            }
+            [SerializeField, TextArea] protected string m_description = "";
         }
 	}
 }

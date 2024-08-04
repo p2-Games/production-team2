@@ -16,15 +16,19 @@ namespace Millivolt
         {
             public class DamageWires : HazardObject
             {
+                [SerializeField] private GameObject m_particleObject;
                 private Collider[] m_triggers;
 
                 public override bool isActive
                 {
-                    get { return m_isActive; }
+                    get => base.isActive;
                     set
                     {
+                        m_particleObject.SetActive(value);
+
                         foreach (Collider trigger in m_triggers)
                             trigger.enabled = value;
+
                         m_isActive = value;
                     }
                 }
@@ -36,9 +40,12 @@ namespace Millivolt
 
                 private void OnTriggerStay(Collider other)
                 {
-                    PlayerStatus player = other.GetComponent<PlayerStatus>();
-                    if (player)
-                        player.TakeDamage(m_damage * Time.deltaTime);
+                    if (m_isActive)
+                    {
+                        PlayerStatus player = other.GetComponent<PlayerStatus>();
+                        if (player)
+                            player.TakeDamage(m_damage * Time.deltaTime);
+                    }
                 }
             }
         }
