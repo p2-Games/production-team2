@@ -35,11 +35,7 @@ namespace Millivolt
 				set { m_gameState = value; }
 			}
 
-			public Vector3 gravity
-			{
-				get { return m_gravity; }
-				set { m_gravity = value; }
-			}
+			public Vector3 gravity => m_gravity;
 
             public void ChangeGravity(Vector3 newGravity)
             {

@@ -41,8 +41,12 @@ namespace Millivolt
             [Tooltip("The layers of objects that the CharacterController can interact with.")]
             [SerializeField] private LayerMask m_walkableLayers;
 
+            public float height => m_collider.height;
+
             private Rigidbody m_rb;
             private CapsuleCollider m_collider;
+
+            public float gravity => m_gravity;
 
             [ContextMenu("Initialise Rigidbody")]
             private void InitialiseRigidbody()
@@ -74,8 +78,8 @@ namespace Millivolt
 
             private Vector2 m_moveDirection;
             private Vector3 m_walkVelocity;
-            private Vector3 m_externalObjectVelocity;
-            private Vector3 m_externalAirVelocity;
+            private Vector3 m_externalVelocity;
+            private Vector3 m_constantExternalVelocity;
             private float m_verticalVelocity;
 
             public void Move(InputAction.CallbackContext context)
@@ -111,8 +115,11 @@ namespace Millivolt
                 Vector3 targetVelocity = (horizontalRelativeInput + verticalRelativeInput) * m_topSpeed;
 
                 // calculate velocity change vector
-                m_walkVelocity = Vector3.MoveTowards(m_walkVelocity, targetVelocity, (m_moveDirection == Vector2.zero ? m_decceleration : m_acceleration) * Time.fixedDeltaTime);
-                
+                if (m_constantExternalVelocity == Vector3.zero)
+                    m_walkVelocity = Vector3.MoveTowards(m_walkVelocity, targetVelocity, (m_moveDirection == Vector2.zero ? m_decceleration : m_acceleration) * Time.fixedDeltaTime);
+                else
+                    m_walkVelocity = Vector3.zero;
+
                 // only apply gravity if not grounded
                 if (!m_isGrounded)
                     m_verticalVelocity += m_gravity * Time.fixedDeltaTime;
@@ -125,12 +132,14 @@ namespace Millivolt
                 }
 
                 // move player
-                m_rb.velocity = m_walkVelocity + m_verticalVelocity * transform.up + m_externalObjectVelocity;
+                m_rb.velocity = m_walkVelocity + m_verticalVelocity * transform.up + m_externalVelocity + m_constantExternalVelocity;
             }
 
-            public void AddVelocity(Vector3 value)
+            public void SetExternalVelocity(Vector3 value)
             {
-                m_rb.velocity += value;
+                m_constantExternalVelocity = value;
+                m_constantExternalVelocity.y = 0;
+                m_verticalVelocity = value.y;
             }
 
             [Header("Jumping")]
@@ -142,6 +151,7 @@ namespace Millivolt
             [SerializeField, Range(0,1)] private float m_groundCheckRadius;
 
             private bool m_isGrounded;
+
             private bool m_willJump = false;
 
             /// <summary>
@@ -178,14 +188,14 @@ namespace Millivolt
                         // if the hit object has a rigidbody, apply its velocity to the player.
                         if (hit.rigidbody)
                         {
-                            m_externalObjectVelocity = hit.rigidbody.GetPointVelocity(hit.point);
+                            m_externalVelocity = hit.rigidbody.GetPointVelocity(hit.point);
                         }
 
                         // TODO: reduce over time instead of set to zero
                         else
                         {
-                            if (m_externalObjectVelocity != Vector3.zero)
-                                m_externalObjectVelocity = Vector3.zero;
+                            if (m_externalVelocity != Vector3.zero)
+                                m_externalVelocity = Vector3.zero;
 
                             // float currentLength = m_externalVelocity.magnitude;
                             // m_externalVelocity.Normalize();
@@ -199,6 +209,13 @@ namespace Millivolt
                     //return Physics.CheckBox(new Vector3(transform.position.x, transform.position.y - m_collider.height / 2, transform.position.z), 
                     //   new Vector3(m_groundCheckRadius, m_groundCheckDistance, m_groundCheckRadius), Quaternion.identity, m_walkableLayers);
                 }
+            }
+
+            private void OnCollisionEnter(Collision collision)
+            {
+                // give control back to player
+                if (m_constantExternalVelocity != Vector3.zero)
+                    m_constantExternalVelocity = Vector3.zero;
             }
 
             private void OnCollisionStay(Collision collision)
