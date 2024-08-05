@@ -10,6 +10,8 @@ using UnityEngine.InputSystem;
 
 namespace Millivolt
 {
+    using InteractableObject = LevelObjects.InteractableObject;
+
     namespace Player
     {
         public class PlayerInteraction : MonoBehaviour
@@ -35,38 +37,33 @@ namespace Millivolt
             private void FixedUpdate()
             {
                 if (m_frameCounter == 0)
+                {
                     m_trigger.enabled = false;
+                }
                 m_frameCounter--;
             }
 
             public void Interact(InputAction.CallbackContext context)
             {
-                if (context.started)
+                if (context.started && !m_trigger.enabled)
                 {
                     m_trigger.enabled = true;
                     m_frameCounter = m_interactFrames;
                 }
             }
 
-            private void InteractWithInteractableObject(GameObject obj)
-            {
-                Debug.Log(obj.name + " was interacted with.");
-
-                // LOGIC HERE
-
-                m_trigger.enabled = false;
-            }
-
             private void OnTriggerEnter(Collider other)
             {
-                if (other.CompareTag("Interactable"))
-                    InteractWithInteractableObject(other.gameObject);
+                InteractableObject obj = other.GetComponent<InteractableObject>();
+                if (obj)
+                    InteractWithObject(obj);
             }
 
-            private void OnCollisionEnter(Collision collision)
+            private void InteractWithObject(InteractableObject obj)
             {
-                if (collision.gameObject.CompareTag("Interactable"))
-                    InteractWithInteractableObject(collision.gameObject);
+                obj.Interact();
+
+                m_trigger.enabled = false;
             }
         }
     }
