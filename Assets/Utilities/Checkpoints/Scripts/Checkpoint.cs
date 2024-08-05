@@ -5,6 +5,7 @@
 ///
 ///</summary>
 
+using Cinemachine;
 using UnityEngine;
 
 namespace Millivolt
@@ -16,13 +17,18 @@ namespace Millivolt
 			[SerializeField] private Transform m_respawnPoint;
 			[SerializeField] public bool activeCheckpoint;
 
-			public int checkpointID;
+            public int checkpointID;
 
 			private LevelData m_lvlData;
 
+			[SerializeField] private Vector2 m_respawnCamDir;
+
+            [SerializeField] private CinemachineVirtualCamera m_fpsCam;
+
             private void OnEnable()
             {
-				m_lvlData = FindAnyObjectByType<LevelData>();
+				m_lvlData = FindObjectOfType<LevelData>();
+				m_fpsCam = FindObjectOfType<CinemachineVirtualCamera>();
 				if (m_respawnPoint == null)
 				{
 					m_respawnPoint = transform;
@@ -35,9 +41,12 @@ namespace Millivolt
             /// <param name="player"></param>
             public void RespawnPlayer(GameObject player)
 			{
-				player.transform.rotation = m_respawnPoint.rotation;
 				player.transform.position = m_respawnPoint.position;
-			}
+
+                CinemachinePOV pov = m_fpsCam.GetCinemachineComponent<CinemachinePOV>();
+                pov.m_VerticalAxis.Value = m_respawnCamDir.x;
+                pov.m_HorizontalAxis.Value = m_respawnCamDir.y;
+            }
 
             private void OnTriggerEnter(Collider other)
             {

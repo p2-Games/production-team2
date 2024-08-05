@@ -6,6 +6,7 @@
 ///
 ///</summary>
 
+using Cinemachine;
 using Millivolt.UI;
 using Millivolt.Utilities;
 using System.Collections;
@@ -18,7 +19,9 @@ namespace Millivolt
         public class PlayerStatus : MonoBehaviour
         {
             [SerializeField] private float m_maxHealth;
+            public float maxHealth => m_maxHealth;
             private float m_currentHealth;
+
 
             [Header("Health Canvas References")]
             [SerializeField] private PlayerHurtEffect m_playerHurtEffect;
@@ -67,7 +70,7 @@ namespace Millivolt
 
                 // LOGIC HERE
                 m_currentHealth = m_maxHealth;
-                m_lvlData.GetActiveCheckpoint().RespawnPlayer(gameObject);
+                m_lvlData.GetActiveCheckpoint().RespawnPlayer(gameObject);                
                 m_playerHealthbar.ResetUI();
                 m_playerHurtEffect.ResetUI();
             }
