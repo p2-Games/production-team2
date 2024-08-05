@@ -15,11 +15,16 @@ namespace Millivolt
 
 		public class InteractableObject : LevelObject
 		{
-			[Header("Interactable Details"), Tooltip("How long in seconds it takes for an object to be interacted with before it can be interacted with again.")]
-			[SerializeField] private float m_interactTime;
+			[Header("Interactable Details"), Tooltip("If true, the player is able to interact with this object directly.")]
+			[SerializeField] private bool m_playerCanInteract = true;
 			[Tooltip("If true, the object cannot change from active to inactive.")]
 			[SerializeField] private bool m_staysActive;
+			[Tooltip("How long in seconds it takes for an object to be interacted with before it can be interacted with again.")]
+			[SerializeField, Min(0)] private float m_interactTime;
+			[Tooltip("The events that will occur when the object's active state is changed.")]
 			[SerializeField] private Event[] m_events;
+
+			public bool playerCanInteract => m_playerCanInteract;
 
 			private float m_timer;
 

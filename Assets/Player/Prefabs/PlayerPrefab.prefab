@@ -77,6 +77,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_maxHealth: 100
+  m_playerHurtEffect: {fileID: 0}
+  m_playerHealthbar: {fileID: 0}
+  m_healthRegenTime: 0
+  m_healthRegenRate: 0
+  m_healthRegenAmount: 0
 --- !u!54 &2582566654869210086
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -306,7 +311,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 6230274073235386681}
   m_Father: {fileID: 2666262149321555059}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -323,6 +329,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_interactFrames: 10
+  m_pickupOffset: {fileID: 6230274073235386681}
+  m_pickupMaxSpeed: 20
+  m_pickupAcceleration: 2
 --- !u!135 &9084407201692848635
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -336,6 +345,37 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 1
   m_Center: {x: 0, y: 0, z: 1.5}
+--- !u!1 &9112134217044718841
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6230274073235386681}
+  m_Layer: 3
+  m_Name: Held Object Position
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6230274073235386681
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9112134217044718841}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.4, z: 1.65}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8343344830816277180}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &7039923082231546672
 PrefabInstance:
   m_ObjectHideFlags: 0
