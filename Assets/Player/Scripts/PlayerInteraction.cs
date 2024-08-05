@@ -76,7 +76,7 @@ namespace Millivolt
                     Vector3 diff = m_pickupOffset.position - m_heldPickup.transform.position;
                     float magnitudeSqr = diff.magnitude * diff.magnitude;
                     m_heldPickup.velocity = Vector3.MoveTowards(m_heldPickup.velocity,
-                        diff.normalized * m_pickupMaxSpeed * magnitudeSqr,
+                        diff * m_pickupMaxSpeed,
                         m_pickupAcceleration * magnitudeSqr);
                 }
             }
