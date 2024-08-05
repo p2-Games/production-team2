@@ -38,6 +38,11 @@ namespace Millivolt
                     m_vignette.color = new Color(m_vignette.color.r, m_vignette.color.g, m_vignette.color.b, Mathf.Lerp(m_vignette.color.a, 0, 0.1f));
                 }
 			}
+
+			public void ResetUI()
+			{
+                m_vignette.color = new Color(m_vignette.color.r, m_vignette.color.g, m_vignette.color.b, 0);
+            }
         }
 	}
 }
