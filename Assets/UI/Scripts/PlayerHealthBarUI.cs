@@ -5,7 +5,6 @@
 ///
 ///</summary>
 
-using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -42,6 +41,12 @@ namespace Millivolt
                 {
                     m_healthBarColour.color = Color.Lerp(m_healthBarColour.color, new Color(0.6f, 0.85f, 1, 1), 0.2f);
                 }
+            }
+
+            public void ResetUI()
+            {
+                m_healthBarFill.fillAmount = 1;
+                m_healthBarColour.color = new Color(0.6f, 0.85f, 1, 1);
             }
 		}
 	}
