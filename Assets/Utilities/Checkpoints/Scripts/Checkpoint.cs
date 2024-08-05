@@ -14,12 +14,32 @@ namespace Millivolt
 		public class Checkpoint : MonoBehaviour
 		{
 			[SerializeField] private Transform m_respawnPoint;
+			[SerializeField] private bool m_activeCheckpoint;
 
-			public void RespawnPlayer(GameObject player)
+			private LevelData m_lvlData;
+
+            private void OnEnable()
+            {
+				m_lvlData = FindAnyObjectByType<LevelData>();
+				if (m_respawnPoint == null)
+				{
+					m_respawnPoint = transform;
+				}
+            }
+
+            /// <summary>
+            /// This will be called to load the player to checkpoint position
+            /// </summary>
+            /// <param name="player"></param>
+            public void RespawnPlayer(GameObject player)
 			{
-				//WOW SO COMPLEX AHAHAHAHAHAHAHAH
 				player.transform.position = m_respawnPoint.position;
 			}
-		}
+
+            private void OnTriggerEnter(Collider other)
+            {
+				m_lvlData.SetActiveCheckpoint();
+            }
+        }
 	}
 }

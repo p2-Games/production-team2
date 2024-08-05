@@ -14,6 +14,7 @@ namespace Millivolt
 	{
 		public class LevelData : MonoBehaviour
 		{
+			[Header("Scene Properties")]
 			[SerializeField] private SceneAsset m_prevLevel;
 			[SerializeField] private SceneAsset m_nextLevel;
 
@@ -29,7 +30,14 @@ namespace Millivolt
 				set { m_nextLevel = value; }
 			}
 
+			[Header("Checkpoint Properties")]
+			[SerializeField] private int m_currentCheckpoint;
 			[SerializeField] private Checkpoint[] m_levelCheckpoints;
+
+			public void SetActiveCheckpoint()
+			{
+
+			}
 		}
 	}
 }

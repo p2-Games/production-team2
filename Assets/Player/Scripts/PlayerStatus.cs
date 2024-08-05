@@ -1,11 +1,13 @@
 ///<summary>
-/// Author: Halen
+/// Author: Halen, Emily
 ///
 /// Tracks the status of the player.
+/// Calls functions related to the player, such as UI updates and call respawn for death
 ///
 ///</summary>
 
 using Millivolt.UI;
+using Millivolt.Utilities;
 using System.Collections;
 using UnityEngine;
 
@@ -21,6 +23,9 @@ namespace Millivolt
             [Header("Health Canvas References")]
             [SerializeField] private PlayerHurtEffect m_playerHurtEffect;
             [SerializeField] private PlayerHealthBarUI m_playerHealthbar;
+
+            [Header("LevelData Reference")]
+            [SerializeField] LevelData m_lvlData;
 
             [Header("Health Regen Properties")]
             [Tooltip("This will be the number of seconds after taking damage that the player will begine to regen health")]
