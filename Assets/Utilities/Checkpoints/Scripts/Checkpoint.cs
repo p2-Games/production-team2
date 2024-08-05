@@ -5,6 +5,7 @@
 ///
 ///</summary>
 
+using Cinemachine;
 using UnityEngine;
 
 namespace Millivolt
@@ -14,12 +15,47 @@ namespace Millivolt
 		public class Checkpoint : MonoBehaviour
 		{
 			[SerializeField] private Transform m_respawnPoint;
+			[SerializeField] public bool activeCheckpoint;
 
-			public void RespawnPlayer(GameObject player)
+            public int checkpointID;
+
+			private LevelData m_lvlData;
+
+			[SerializeField] private Vector2 m_respawnCamDir;
+
+            [SerializeField] private CinemachineVirtualCamera m_fpsCam;
+
+            private void OnEnable()
+            {
+				m_lvlData = FindObjectOfType<LevelData>();
+				m_fpsCam = FindObjectOfType<CinemachineVirtualCamera>();
+				if (m_respawnPoint == null)
+				{
+					m_respawnPoint = transform;
+				}
+            }
+
+            /// <summary>
+            /// This will be called to load the player to checkpoint position
+            /// </summary>
+            /// <param name="player"></param>
+            public void RespawnPlayer(GameObject player)
 			{
-				//WOW SO COMPLEX AHAHAHAHAHAHAHAH
 				player.transform.position = m_respawnPoint.position;
-			}
-		}
+
+                CinemachinePOV pov = m_fpsCam.GetCinemachineComponent<CinemachinePOV>();
+                pov.m_VerticalAxis.Value = m_respawnCamDir.x;
+                pov.m_HorizontalAxis.Value = m_respawnCamDir.y;
+            }
+
+            private void OnTriggerEnter(Collider other)
+            {
+				if (other.tag == "Player" && this != m_lvlData.GetActiveCheckpoint())
+				{
+					Debug.Log("Checkpoint set to Checkpoint " + checkpointID);
+					m_lvlData.SetActiveCheckpoint(checkpointID);
+				}
+            }
+        }
 	}
 }
