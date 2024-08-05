@@ -40,7 +40,7 @@ namespace Millivolt
             {
                 fakeScrew.SetActive(false);
                 m_animator.Play("AccessDoorAMove");
-                other.gameObject.SetActive(true);
+                other.gameObject.SetActive(false);
             }
 
         }
