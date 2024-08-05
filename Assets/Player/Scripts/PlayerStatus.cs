@@ -39,6 +39,7 @@ namespace Millivolt
             private void Start()
             {
                 m_currentHealth = m_maxHealth;
+                m_lvlData = FindObjectOfType<LevelData>();
             }
 
             public void TakeDamage(float value)
@@ -62,6 +63,11 @@ namespace Millivolt
                 Debug.Log("You are dead.");
 
                 // LOGIC HERE
+                m_currentHealth = m_maxHealth;
+                m_playerHealthbar.UpdateHealthBar(m_currentHealth, m_maxHealth);
+                m_playerHurtEffect.ChangeVignetteAlpha(m_currentHealth, m_maxHealth);
+                m_lvlData.GetActiveCheckpoint().RespawnPlayer(gameObject);
+
             }
 
             /*private void RegenHealth()

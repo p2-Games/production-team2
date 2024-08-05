@@ -31,12 +31,43 @@ namespace Millivolt
 			}
 
 			[Header("Checkpoint Properties")]
-			[SerializeField] private int m_currentCheckpoint;
+			[SerializeField] public int currentCheckpoint;
 			[SerializeField] private Checkpoint[] m_levelCheckpoints;
 
-			public void SetActiveCheckpoint()
-			{
+            private void Start()
+            {
+				InitialiseCheckpoints();
+            }
 
+			private void InitialiseCheckpoints()
+			{
+				int id = 0;
+				foreach (Checkpoint point in m_levelCheckpoints)
+				{
+					point.checkpointID = id;
+					id++;
+				}
+			}
+
+            public void SetActiveCheckpoint(int id)
+			{
+				currentCheckpoint = id;
+				foreach (Checkpoint point in m_levelCheckpoints)
+				{
+					if (point.checkpointID == id)
+					{
+						point.activeCheckpoint = true;
+					}
+					else
+					{
+						point.activeCheckpoint = false;
+					}
+				}
+			}
+
+			public Checkpoint GetActiveCheckpoint()
+			{
+				return m_levelCheckpoints[currentCheckpoint];
 			}
 		}
 	}

@@ -14,7 +14,9 @@ namespace Millivolt
 		public class Checkpoint : MonoBehaviour
 		{
 			[SerializeField] private Transform m_respawnPoint;
-			[SerializeField] private bool m_activeCheckpoint;
+			[SerializeField] public bool activeCheckpoint;
+
+			public int checkpointID;
 
 			private LevelData m_lvlData;
 
@@ -34,11 +36,13 @@ namespace Millivolt
             public void RespawnPlayer(GameObject player)
 			{
 				player.transform.position = m_respawnPoint.position;
+				player.transform.rotation = m_respawnPoint.rotation;
 			}
 
             private void OnTriggerEnter(Collider other)
             {
-				m_lvlData.SetActiveCheckpoint();
+				Debug.Log("Checkpoint set to Checkpoint " + checkpointID);
+				m_lvlData.SetActiveCheckpoint(checkpointID);
             }
         }
 	}
