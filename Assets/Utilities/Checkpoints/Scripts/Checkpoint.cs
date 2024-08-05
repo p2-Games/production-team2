@@ -35,14 +35,17 @@ namespace Millivolt
             /// <param name="player"></param>
             public void RespawnPlayer(GameObject player)
 			{
-				player.transform.position = m_respawnPoint.position;
 				player.transform.rotation = m_respawnPoint.rotation;
+				player.transform.position = m_respawnPoint.position;
 			}
 
             private void OnTriggerEnter(Collider other)
             {
-				Debug.Log("Checkpoint set to Checkpoint " + checkpointID);
-				m_lvlData.SetActiveCheckpoint(checkpointID);
+				if (other.tag == "Player" && this != m_lvlData.GetActiveCheckpoint())
+				{
+					Debug.Log("Checkpoint set to Checkpoint " + checkpointID);
+					m_lvlData.SetActiveCheckpoint(checkpointID);
+				}
             }
         }
 	}

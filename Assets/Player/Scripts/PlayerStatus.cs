@@ -49,35 +49,33 @@ namespace Millivolt
 
                 m_currentHealth -= value;
 
-                if (m_currentHealth <= 0)
-                    Die();
 
                 m_playerHealthbar.UpdateHealthBar(m_currentHealth, m_maxHealth);
                 m_playerHurtEffect.ChangeVignetteAlpha(m_currentHealth, m_maxHealth);
 
                 m_regen = StartCoroutine(RegenHealth());
+                if (m_currentHealth <= 0)
+                    Die();
             }
 
+            /// <summary>
+            /// This will be called once the players health has hit 0, thiswill load the player to their last checkpoint and give them full health
+            /// </summary>
             public void Die()
             {
                 Debug.Log("You are dead.");
 
                 // LOGIC HERE
                 m_currentHealth = m_maxHealth;
-                m_playerHealthbar.UpdateHealthBar(m_currentHealth, m_maxHealth);
-                m_playerHurtEffect.ChangeVignetteAlpha(m_currentHealth, m_maxHealth);
                 m_lvlData.GetActiveCheckpoint().RespawnPlayer(gameObject);
-
+                m_playerHealthbar.ResetUI();
+                m_playerHurtEffect.ResetUI();
             }
 
-            /*private void RegenHealth()
-            {
-                m_currentHealth += m_healthRegenAmount;
-                m_playerHealthbar.UpdateHealthBar(m_currentHealth, m_maxHealth);
-                m_playerHurtEffect.ChangeVignetteAlpha(m_currentHealth, m_maxHealth);
-                Invoke("RegenHealth", m_healthRegenRate);
-            }*/
-
+            /// <summary>
+            /// IEnumerator for gradually giving the player back health as a regen effect
+            /// </summary>
+            /// <returns></returns>
             IEnumerator RegenHealth()
             {
                 yield return new WaitForSeconds(m_healthRegenTime);

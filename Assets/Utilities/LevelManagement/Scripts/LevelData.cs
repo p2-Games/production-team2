@@ -39,6 +39,9 @@ namespace Millivolt
 				InitialiseCheckpoints();
             }
 
+			/// <summary>
+			/// Give all checkpoints in the level an ID
+			/// </summary>
 			private void InitialiseCheckpoints()
 			{
 				int id = 0;
@@ -49,6 +52,10 @@ namespace Millivolt
 				}
 			}
 
+			/// <summary>
+			/// Sets a specific checkpoint to active by its id and then sets the rest inactive
+			/// </summary>
+			/// <param name="id"></param>
             public void SetActiveCheckpoint(int id)
 			{
 				currentCheckpoint = id;
@@ -65,6 +72,10 @@ namespace Millivolt
 				}
 			}
 
+			/// <summary>
+			/// Returns the currently active checkpoint
+			/// </summary>
+			/// <returns></returns>
 			public Checkpoint GetActiveCheckpoint()
 			{
 				return m_levelCheckpoints[currentCheckpoint];
