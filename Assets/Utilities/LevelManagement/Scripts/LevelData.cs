@@ -44,8 +44,14 @@ namespace Millivolt
 
             private void Start()
             {
+				FindAllCheckpoints();
 				InitialiseCheckpoints();
             }
+
+			private void FindAllCheckpoints()
+			{
+				m_levelCheckpoints = Object.FindObjectsOfType<Checkpoint>();
+			}
 
 			/// <summary>
 			/// Give all checkpoints in the level an ID
