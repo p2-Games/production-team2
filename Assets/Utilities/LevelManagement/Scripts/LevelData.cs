@@ -68,6 +68,8 @@ namespace Millivolt
 				if (m_autoAddCheckpoints)
 					FindAllCheckpoints();
 				InitialiseCheckpoints();
+
+				ChangeGravity(new Vector3(0, 0, -90), 3);
             }
 
 			private void FindAllCheckpoints()
