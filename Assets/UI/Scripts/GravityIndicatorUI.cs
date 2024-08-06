@@ -20,7 +20,7 @@ namespace Millivolt
 
             private void Start()
             {
-				m_gravText.color = new Color(1, 0, 0, 0);
+                m_gravText.color = new Color(1, 0, 0, 0);
 				foreach (TextMeshProUGUI text in m_indicators)
 				{
 					text.color = new Color(1, 0, 0, 0);

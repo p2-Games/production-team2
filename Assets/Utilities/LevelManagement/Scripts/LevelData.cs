@@ -56,6 +56,7 @@ namespace Millivolt
 
             private void Start()
             {
+				m_gravityUI.gameObject.SetActive(true);
 				if (m_autoAddCheckpoints)
 					FindAllCheckpoints();
 				InitialiseCheckpoints();
