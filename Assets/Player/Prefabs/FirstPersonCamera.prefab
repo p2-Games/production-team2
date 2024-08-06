@@ -98,8 +98,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1485060474990263031}
   - component: {fileID: 1485060474990263028}
-  - component: {fileID: 1485060474990263029}
-  - component: {fileID: 1485060474990263030}
+  - component: {fileID: 1828429116}
   m_Layer: 0
   m_Name: cm
   m_TagString: Untagged
@@ -134,20 +133,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac0b09e7857660247b1477e93731de29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1485060474990263029
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1485060474990263032}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36d1163fa822e8b418a0a603ec078d5c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Damping: 0.1
---- !u!114 &1485060474990263030
+--- !u!114 &1828429116
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -166,7 +152,7 @@ MonoBehaviour:
     m_MaxSpeed: 1
     m_AccelTime: 0.1
     m_DecelTime: 0.1
-    m_InputAxisName: 
+    m_InputAxisName: Mouse Y
     m_InputAxisValue: 0
     m_InvertInput: 1
     m_MinValue: -70
@@ -190,7 +176,7 @@ MonoBehaviour:
     m_MaxSpeed: 1
     m_AccelTime: 0.1
     m_DecelTime: 0.1
-    m_InputAxisName: 
+    m_InputAxisName: Mouse X
     m_InputAxisValue: 0
     m_InvertInput: 0
     m_MinValue: -180
