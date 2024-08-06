@@ -31,6 +31,8 @@ namespace Millivolt
 
             private int m_collidingObjects;
 
+            public bool CanTrigger(GameObject obj) => obj.GetComponent<Player.PlayerController>() || obj.GetComponent<LevelObject>();
+
             private void Start()
             {
                 m_collidingObjects = 0;

@@ -76,7 +76,10 @@ namespace Millivolt
                         return;
 
                     if (t == m_targetIndex)
+                    {
                         Handles.color = Color.green;
+                        Handles.DrawDottedLine(transform.position, m_path[t].position, 1);
+                    }
                     else
                         Handles.color = Color.white;
 

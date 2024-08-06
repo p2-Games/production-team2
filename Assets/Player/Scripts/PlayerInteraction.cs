@@ -13,6 +13,7 @@ using UnityEngine.InputSystem;
 namespace Millivolt
 {
     using LevelObjects;
+    using UnityEditorInternal;
 
     namespace Player
     {
@@ -22,7 +23,8 @@ namespace Millivolt
             Holding, // currently holding an object
             Closed // unable to interact with or pick up objects
         }
-        
+
+        [RequireComponent(typeof(Collider))]
         public class PlayerInteraction : MonoBehaviour
         {
             // interaction state
@@ -41,13 +43,11 @@ namespace Millivolt
             private float m_frameCounter;
             public bool canInteract => m_frameCounter == 0 && m_state != InteractionState.Closed;
 
-            [Header("Pickups"), SerializeField] private Transform m_pickupOffset;
-            [SerializeField] private float m_pickupMaxSpeed;
-            [SerializeField] private float m_pickupAcceleration;
+            [SerializeField] private Transform m_pickupOffset;
 
             // components
             private Collider m_trigger;
-            private Rigidbody m_heldPickup;
+            private PickupObject m_heldPickup;
 
             // methods
             private void Start()
@@ -59,7 +59,7 @@ namespace Millivolt
 
             private void Update()
             {
-                transform.localRotation = Quaternion.Euler(Camera.main.transform.eulerAngles.x, 0, 0);
+                transform.rotation = Camera.main.transform.rotation;
             }
 
             private void FixedUpdate()
@@ -73,11 +73,17 @@ namespace Millivolt
                 // update picked up object position
                 if (m_state == InteractionState.Holding)
                 {
-                    Vector3 diff = m_pickupOffset.position - m_heldPickup.transform.position;
-                    float magnitudeSqr = diff.magnitude * diff.magnitude;
-                    m_heldPickup.velocity = Vector3.MoveTowards(m_heldPickup.velocity,
-                        diff * m_pickupMaxSpeed,
-                        m_pickupAcceleration * magnitudeSqr);
+                    // ensure object still exists
+                    if (m_heldPickup)
+                    {
+                        Vector3 diff = m_pickupOffset.position - m_heldPickup.transform.position;
+                        float magnitudeSqr = diff.magnitude * diff.magnitude;
+                        m_heldPickup.velocity = Vector3.MoveTowards(m_heldPickup.velocity,
+                                                    diff * m_heldPickup.followMaxSpeed,
+                                                    m_heldPickup.followAcceleration * magnitudeSqr);
+                    }
+                    else
+                        m_state = InteractionState.Open;
                 }
             }
 
@@ -108,20 +114,21 @@ namespace Millivolt
             private void OnTriggerEnter(Collider other)
             {
                 // check if the object is a pickup object
-                if (other.tag == "Pickup")
+                PickupObject pickupObj = other.GetComponent<PickupObject>();
+                if (pickupObj)
                 {
-                    PickUpObject(other.transform);
+                    PickUpObject(pickupObj);
                     m_trigger.enabled = false;
                 }
                 // otherwise check if object is interactable object
                 else
                 {
-                    InteractableObject obj = other.GetComponent<InteractableObject>();
-                    if (obj)
+                    InteractableObject interactObj = other.GetComponent<InteractableObject>();
+                    if (interactObj)
                     {
-                        if (obj.playerCanInteract)
+                        if (interactObj.playerCanInteract)
                         {
-                            obj.Interact();
+                            interactObj.Interact();
                             // disable the trigger after object has been found
                             m_trigger.enabled = false;
                         }
@@ -130,9 +137,9 @@ namespace Millivolt
             }
 
             // picking up and dropping objects
-            public void PickUpObject(Transform obj)
+            public void PickUpObject(PickupObject obj)
             {
-                m_heldPickup = obj.GetComponent<Rigidbody>();
+                m_heldPickup = obj;
                 m_heldPickup.useGravity = false;
 
                 m_state = InteractionState.Holding;
