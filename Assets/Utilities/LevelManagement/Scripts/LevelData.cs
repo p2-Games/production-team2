@@ -47,9 +47,9 @@ namespace Millivolt
 			/// By Default gravity is set at (0, -9.81, 0)
 			/// </summary>
 			/// <param name="newGravity"></param>
-            public void ChangeGravity(Vector3 newGravity, float gravityChangeTime)
+            public void ChangeGravity(/*Vector3 newGravity, */float gravityChangeTime)
             {
-                float indicatorFlashInterval = (gravityChangeTime / 5);
+                float indicatorFlashInterval = (gravityChangeTime / 6);
 				m_gravityUI.StartCoroutine(m_gravityUI.GravityUIFlashing(indicatorFlashInterval));
                 //CHANGE PLAYER ROTATION AFTER TIME
             }
@@ -58,7 +58,7 @@ namespace Millivolt
             {
 				if (m_autoAddCheckpoints)
 					FindAllCheckpoints();
-				InitialiseCheckpoints();				
+				InitialiseCheckpoints();
             }
 
 			private void FindAllCheckpoints()

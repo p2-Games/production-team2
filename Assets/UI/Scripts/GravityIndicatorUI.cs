@@ -29,9 +29,20 @@ namespace Millivolt
 
 			public IEnumerator GravityUIFlashing(float intervalTime)
 			{
-				foreach (TextMeshProUGUI text in m_indicators)
+				for (int i = 0; i < m_indicators.Length + 1; i++)
 				{
                     yield return new WaitForSeconds(intervalTime);
+                    for (int j = 0; j < i; j++)
+					{
+                        m_indicators[j].color = new Color(1, 0, 0, 1);
+                    }
+                    m_gravText.color = new Color(1, 0, 0, 1);
+                    yield return new WaitForSeconds(intervalTime);
+                    for (int j = 0; j < i; j++)
+                    {
+                        m_indicators[j].color = new Color(1, 0, 0, 0);
+                    }
+                    m_gravText.color = new Color(1, 0, 0, 0);                    
                 }
 			}
         }
