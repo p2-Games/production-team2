@@ -34,6 +34,14 @@ namespace Millivolt
 			[SerializeField] public int currentCheckpoint;
 			[SerializeField] private Checkpoint[] m_levelCheckpoints;
 
+			[Header("Level Gravity Settings")]
+            [SerializeField] protected Vector3 m_gravity = new Vector3(0, -9.81f, 0);
+            public Vector3 gravity => m_gravity;
+            public void ChangeGravity(Vector3 newGravity)
+            {
+                m_gravity = newGravity;
+            }
+
             private void Start()
             {
 				InitialiseCheckpoints();
