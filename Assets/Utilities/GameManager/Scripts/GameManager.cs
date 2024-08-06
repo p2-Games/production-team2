@@ -21,10 +21,10 @@ namespace Millivolt
 		}
 
 		public class GameManager : MonoBehaviour
-		{
-			[SerializeField] protected Vector3 m_gravity = new Vector3(0, -9.81f, 0);
+		{			
 			private GameState m_gameState;
 
+			[Header("Level Properties")]
 			[SerializeField] private int m_currentLevel;
 
 			[SerializeField] LevelData[] m_levels;
@@ -34,17 +34,6 @@ namespace Millivolt
 				get { return m_gameState; }
 				set { m_gameState = value; }
 			}
-
-			public Vector3 gravity
-			{
-				get { return m_gravity; }
-				set { m_gravity = value; }
-			}
-
-            public void ChangeGravity(Vector3 newGravity)
-            {
-                m_gravity = newGravity;
-            }
 
             private void Start()
             {
