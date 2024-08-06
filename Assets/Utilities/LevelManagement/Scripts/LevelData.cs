@@ -8,6 +8,7 @@
 using UnityEditor;
 using UnityEngine;
 using Millivolt.UI;
+using Millivolt.Player;
 
 namespace Millivolt
 {
@@ -38,21 +39,28 @@ namespace Millivolt
 			[SerializeField] private bool m_autoAddCheckpoints;
 
 			[Header("Level Gravity Settings")]
-            [SerializeField] protected Vector3 m_gravity = new Vector3(0, -9.81f, 0);
-            public Vector3 gravity => m_gravity;
+            [SerializeField] protected float m_gravity;
+            public float gravity => m_gravity;
 			[SerializeField] private GravityIndicatorUI m_gravityUI;
 
+			[Header("Player Reference")]
+			[SerializeField] private PlayerController m_player;
+
 			/// <summary>
-			/// Call to change the gravity in the level.
-			/// By Default gravity is set at (0, -9.81, 0)
+			/// Gravity is just rotation of the player so use this function to set the players rotation
+			/// By Default gravity is set at 0
 			/// </summary>
 			/// <param name="newGravity"></param>
-            public void ChangeGravity(/*Vector3 newGravity, */float gravityChangeTime)
+            public void ChangeGravity(Vector3 newGravity, float gravityChangeTime)
             {
                 float indicatorFlashInterval = (gravityChangeTime / 6);
-				m_gravityUI.StartCoroutine(m_gravityUI.GravityUIFlashing(indicatorFlashInterval));
-                //CHANGE PLAYER ROTATION AFTER TIME
+				m_gravityUI.StartCoroutine(m_gravityUI.GravityUIFlashing(indicatorFlashInterval, newGravity));
             }
+
+			public void SetPlayerUp(Vector3 value)
+			{
+				m_player.transform.up = value;
+			}
 
             private void Start()
             {

@@ -8,6 +8,7 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using Millivolt.Utilities;
 
 namespace Millivolt
 {
@@ -18,8 +19,11 @@ namespace Millivolt
 			[SerializeField] private TextMeshProUGUI m_gravText;
 			[SerializeField] private TextMeshProUGUI[] m_indicators;
 
+            private LevelData m_lvlData;
+
             private void Start()
             {
+                m_lvlData = FindObjectOfType<LevelData>();
                 m_gravText.color = new Color(1, 0, 0, 0);
 				foreach (TextMeshProUGUI text in m_indicators)
 				{
@@ -27,7 +31,7 @@ namespace Millivolt
                 }
             }
 
-			public IEnumerator GravityUIFlashing(float intervalTime)
+			public IEnumerator GravityUIFlashing(float intervalTime, Vector3 transform)
 			{
 				for (int i = 0; i < m_indicators.Length + 1; i++)
 				{
@@ -44,6 +48,8 @@ namespace Millivolt
                     }
                     m_gravText.color = new Color(1, 0, 0, 0);                    
                 }
+
+                m_lvlData.SetPlayerUp(transform);
 			}
         }
 	}
