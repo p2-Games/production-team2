@@ -40,7 +40,7 @@ namespace Millivolt
 			[Header("Level Gravity Settings")]
             [SerializeField] protected Vector3 m_gravity = new Vector3(0, -9.81f, 0);
             public Vector3 gravity => m_gravity;
-			[SerializeField]
+			[SerializeField] private GravityIndicatorUI m_gravityUI;
 
 			/// <summary>
 			/// Call to change the gravity in the level.
@@ -50,7 +50,8 @@ namespace Millivolt
             public void ChangeGravity(Vector3 newGravity, float gravityChangeTime)
             {
                 float indicatorFlashInterval = (gravityChangeTime / 5);
-                m_gravity = newGravity;
+				m_gravityUI.StartCoroutine(m_gravityUI.GravityUIFlashing(indicatorFlashInterval));
+                //CHANGE PLAYER ROTATION AFTER TIME
             }
 
             private void Start()

@@ -5,6 +5,7 @@
 ///
 ///</summary>
 
+using System.Collections;
 using TMPro;
 using UnityEngine;
 
@@ -26,9 +27,12 @@ namespace Millivolt
                 }
             }
 
-			public void GravityUIFlashing(float intervalTime)
+			public IEnumerator GravityUIFlashing(float intervalTime)
 			{
-
+				foreach (TextMeshProUGUI text in m_indicators)
+				{
+                    yield return new WaitForSeconds(intervalTime);
+                }
 			}
         }
 	}
