@@ -7,6 +7,7 @@
 
 using UnityEditor;
 using UnityEngine;
+using Millivolt.UI;
 
 namespace Millivolt
 {
@@ -39,8 +40,16 @@ namespace Millivolt
 			[Header("Level Gravity Settings")]
             [SerializeField] protected Vector3 m_gravity = new Vector3(0, -9.81f, 0);
             public Vector3 gravity => m_gravity;
-            public void ChangeGravity(Vector3 newGravity)
+			[SerializeField]
+
+			/// <summary>
+			/// Call to change the gravity in the level.
+			/// By Default gravity is set at (0, -9.81, 0)
+			/// </summary>
+			/// <param name="newGravity"></param>
+            public void ChangeGravity(Vector3 newGravity, float gravityChangeTime)
             {
+                float indicatorFlashInterval = (gravityChangeTime / 5);
                 m_gravity = newGravity;
             }
 
@@ -48,7 +57,7 @@ namespace Millivolt
             {
 				if (m_autoAddCheckpoints)
 					FindAllCheckpoints();
-				InitialiseCheckpoints();
+				InitialiseCheckpoints();				
             }
 
 			private void FindAllCheckpoints()
