@@ -11,6 +11,8 @@ namespace Millivolt
 {
 	namespace LevelObjects
 	{
+		using Events;
+
 		public abstract class LevelObject : MonoBehaviour
 		{
 			[SerializeField] protected bool m_isActive;
@@ -26,9 +28,11 @@ namespace Millivolt
 				set { m_isActive = value; }
 			}
 
-			public bool CanTrigger(GameObject obj) => obj.GetComponent<Player.PlayerController>() || obj.GetComponent<LevelObject>();
-
             [SerializeField, TextArea] protected string m_description = "";
+
+			// spawn parent, if it exists
+			private SpawnObjectEvent m_parent;
+			public SpawnObjectEvent spawnParent { get => m_parent; set => m_parent = value; }
         }
 	}
 }

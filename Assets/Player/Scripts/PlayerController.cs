@@ -6,6 +6,7 @@
 ///</summary>
 
 using Cinemachine;
+using Pixelplacement.TweenSystem;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -24,15 +25,10 @@ namespace Millivolt
                 cursorIsLocked = true;
             }
 
-            private void Update()
-            {
-                // set rotation of player object to face camera
-                transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, Camera.main.transform.eulerAngles.y, transform.rotation.eulerAngles.z);
-            }
-
             private void FixedUpdate()
             {
                 MovePlayer();
+                //RotateCamera();
             }
 
             [Header("Physics")]
@@ -175,7 +171,7 @@ namespace Millivolt
                     // check the space underneath the player to determine if grounded
                     // if there is no walkable object under the player, they are not grounded
                     if (!Physics.BoxCast(transform.position + m_collider.center, new Vector3(m_groundCheckRadius, m_groundCheckDistance, m_groundCheckRadius),
-                        -transform.up, out RaycastHit hit, Quaternion.identity, m_collider.height / 2, m_walkableLayers))
+                        -transform.up, out RaycastHit hit, transform.rotation, m_collider.height / 2, m_walkableLayers))
                         return false;
                     // if the player is on a walkable object
                     else
@@ -211,8 +207,20 @@ namespace Millivolt
                 }
             }
 
+            public bool hittingHead
+            {
+                get
+                {
+                    return Physics.BoxCast(transform.position + m_collider.center, new Vector3(m_groundCheckRadius, m_groundCheckDistance, m_groundCheckRadius),
+                        transform.up, out RaycastHit hit, transform.rotation, m_collider.height / 2);
+                }
+            }
+
             private void OnCollisionEnter(Collision collision)
             {
+                if (hittingHead)
+                    m_verticalVelocity = 0;
+                
                 // give control back to player
                 if (m_constantExternalVelocity != Vector3.zero)
                     m_constantExternalVelocity = Vector3.zero;
@@ -229,7 +237,7 @@ namespace Millivolt
                 }
             }
 
-            [Header("Camera")]
+            [Header("Cinemachine Camera")]
             [SerializeField] private CinemachineVirtualCamera m_virtualCam;
             private bool m_cursorIsLocked = false;
             public bool cursorIsLocked
@@ -254,6 +262,11 @@ namespace Millivolt
                 }
             }
 
+            private void Update()
+            {
+                //transform.Rotate(transform.up, m_mouseDelta.x, Space.World);
+            }
+
             /// <summary>
             /// Change the move-speed of the camera.
             /// </summary>
@@ -276,7 +289,11 @@ namespace Millivolt
                 if (m_collider)
                 {
                     Handles.color = Color.green;
-                    Handles.DrawWireCube(transform.position + m_collider.center + -transform.up * m_collider.height / 2,
+                    Handles.DrawWireCube(transform.position + m_collider.center - transform.up * m_collider.height / 2,
+                        new Vector3(m_groundCheckRadius, m_groundCheckDistance, m_groundCheckRadius));
+
+                    Handles.color = Color.cyan;
+                    Handles.DrawWireCube(transform.position + m_collider.center + transform.up * m_collider.height / 2,
                         new Vector3(m_groundCheckRadius, m_groundCheckDistance, m_groundCheckRadius));
                 }
             }
