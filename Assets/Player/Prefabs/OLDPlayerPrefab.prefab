@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 8730322765743250305}
   - component: {fileID: 2666262149321555054}
   m_Layer: 3
-  m_Name: PlayerPrefab
+  m_Name: OLDPlayerPrefab
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -35,7 +35,6 @@ Transform:
   m_Children:
   - {fileID: 2666262148144207075}
   - {fileID: 8343344830816277180}
-  - {fileID: 3844317706762972592}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -62,7 +61,6 @@ MonoBehaviour:
   m_jumpSpeed: 5
   m_groundCheckDistance: 0.01
   m_groundCheckRadius: 0.4
-  m_virtualCam: {fileID: 0}
   m_drawGizmos: 1
 --- !u!114 &8139358264548552186
 MonoBehaviour:
@@ -157,9 +155,9 @@ MonoBehaviour:
     m_ActionName: Player/Move[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2666262149321555056}
-        m_TargetAssemblyTypeName: Millivolt.Player.PlayerController, Assembly-CSharp
-        m_MethodName: Look
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: Millivolt.Player.FirstPersonCameraController, Assembly-CSharp
+        m_MethodName: LookInput
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -340,81 +338,6 @@ Transform:
   m_Father: {fileID: 8343344830816277180}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &2432572943498774409
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 2666262149321555059}
-    m_Modifications:
-    - target: {fileID: 1485060474828581433, guid: 24dce08c778660b4a854634ee0841727,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1485060474828581433, guid: 24dce08c778660b4a854634ee0841727,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1485060474828581433, guid: 24dce08c778660b4a854634ee0841727,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1485060474828581433, guid: 24dce08c778660b4a854634ee0841727,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1485060474828581433, guid: 24dce08c778660b4a854634ee0841727,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1485060474828581433, guid: 24dce08c778660b4a854634ee0841727,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1485060474828581433, guid: 24dce08c778660b4a854634ee0841727,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1485060474828581433, guid: 24dce08c778660b4a854634ee0841727,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1485060474828581433, guid: 24dce08c778660b4a854634ee0841727,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1485060474828581433, guid: 24dce08c778660b4a854634ee0841727,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1485060474828581433, guid: 24dce08c778660b4a854634ee0841727,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1485060474828581436, guid: 24dce08c778660b4a854634ee0841727,
-        type: 3}
-      propertyPath: m_Name
-      value: FirstPersonCamera
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 24dce08c778660b4a854634ee0841727, type: 3}
---- !u!4 &3844317706762972592 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1485060474828581433, guid: 24dce08c778660b4a854634ee0841727,
-    type: 3}
-  m_PrefabInstance: {fileID: 2432572943498774409}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7039923082231546672
 PrefabInstance:
   m_ObjectHideFlags: 0

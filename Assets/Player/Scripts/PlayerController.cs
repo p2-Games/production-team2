@@ -15,20 +15,18 @@ namespace Millivolt
 {
     namespace Player
     {
-        [RequireComponent(typeof(CapsuleCollider), typeof(Rigidbody), typeof(PlayerInput))]
+        [RequireComponent(typeof(CapsuleCollider), typeof(PlayerInput))]
         public class PlayerController : MonoBehaviour
         {
             void Start()
             {
                 InitialiseRigidbody();
                 InitialiseCollider();
-                cursorIsLocked = true;
             }
 
             private void FixedUpdate()
             {
                 MovePlayer();
-                //RotateCamera();
             }
 
             [Header("Physics")]
@@ -47,7 +45,7 @@ namespace Millivolt
             [ContextMenu("Initialise Rigidbody")]
             private void InitialiseRigidbody()
             {
-                m_rb = GetComponent<Rigidbody>();
+                m_rb = GetComponentInParent<Rigidbody>();
             }
 
             [ContextMenu("Initialise Collider")]
@@ -95,9 +93,9 @@ namespace Millivolt
                 Vector3 camRight = Camera.main.transform.right;
                 Vector3 camForward = Camera.main.transform.forward;
 
-                // 'flatten'
-                camRight.y = 0;
-                camForward.y = 0;
+                // 'flatten' based on player transform
+                camRight = Vector3.Project(camRight, transform.right);
+                camForward = Vector3.Project(camForward, transform.forward);
 
                 // re-normalise now value has been edited
                 camRight = camRight.normalized;
@@ -171,7 +169,7 @@ namespace Millivolt
                     // check the space underneath the player to determine if grounded
                     // if there is no walkable object under the player, they are not grounded
                     if (!Physics.BoxCast(transform.position + m_collider.center, new Vector3(m_groundCheckRadius, m_groundCheckDistance, m_groundCheckRadius),
-                        -transform.up, out RaycastHit hit, transform.rotation, m_collider.height / 2, m_walkableLayers))
+                        -transform.up, out RaycastHit hit, transform.rotation, m_collider.height / 2, m_walkableLayers, QueryTriggerInteraction.Ignore))
                         return false;
                     // if the player is on a walkable object
                     else
@@ -212,7 +210,7 @@ namespace Millivolt
                 get
                 {
                     return Physics.BoxCast(transform.position + m_collider.center, new Vector3(m_groundCheckRadius, m_groundCheckDistance, m_groundCheckRadius),
-                        transform.up, out RaycastHit hit, transform.rotation, m_collider.height / 2);
+                        transform.up, out RaycastHit hit, transform.rotation, m_collider.height / 2, ~(1 << LayerMask.NameToLayer("Player")), QueryTriggerInteraction.Ignore);
                 }
             }
 
@@ -235,49 +233,7 @@ namespace Millivolt
                     if (m_verticalVelocity < 0)
                         m_verticalVelocity = 0;
                 }
-            }
-
-            [Header("Cinemachine Camera")]
-            [SerializeField] private CinemachineVirtualCamera m_virtualCam;
-            private bool m_cursorIsLocked = false;
-            public bool cursorIsLocked
-            {
-                get { return m_cursorIsLocked; }
-                set
-                {
-                    if (value != m_cursorIsLocked)
-                    {
-                        if (value)
-                        {
-                            Cursor.visible = false;
-                            Cursor.lockState = CursorLockMode.Locked;
-                        }
-                        else
-                        {
-                            Cursor.visible = true;
-                            Cursor.lockState = CursorLockMode.Confined;
-                        }
-                        m_cursorIsLocked = value;
-                    }
-                }
-            }
-
-            private void Update()
-            {
-                //transform.Rotate(transform.up, m_mouseDelta.x, Space.World);
-            }
-
-            /// <summary>
-            /// Change the move-speed of the camera.
-            /// </summary>
-            /// <param name="hSpeed">Horizontal camera speed.</param>
-            /// <param name="vSpeed">Vertical camera speed.</param>
-            public void SetCameraSensitivity(float hSpeed, float vSpeed)
-            {
-                var pov = m_virtualCam.GetCinemachineComponent<CinemachinePOV>();
-                pov.m_HorizontalAxis.m_MaxSpeed = hSpeed;
-                pov.m_VerticalAxis.m_MaxSpeed = vSpeed;
-            }
+            }            
 
 #if UNITY_EDITOR
             [Header("Debug"), SerializeField] private bool m_drawGizmos;
