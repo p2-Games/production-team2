@@ -39,6 +39,8 @@ namespace Millivolt
             [SerializeField] private float m_healthRegenAmount;
             private Coroutine m_regen;
 
+            [SerializeField] private Vector3 m_gravity;
+
             private void Start()
             {
                 m_currentHealth = m_maxHealth;
