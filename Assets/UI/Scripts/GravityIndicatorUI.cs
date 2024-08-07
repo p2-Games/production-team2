@@ -9,6 +9,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using Millivolt.Utilities;
+using Millivolt.Player;
 
 namespace Millivolt
 {
@@ -19,11 +20,11 @@ namespace Millivolt
 			[SerializeField] private TextMeshProUGUI m_gravText;
 			[SerializeField] private TextMeshProUGUI[] m_indicators;
 
-            private LevelData m_lvlData;
+            private PlayerStatus m_playerStatus;
 
             private void Start()
             {
-                m_lvlData = FindObjectOfType<LevelData>();
+                m_playerStatus = FindObjectOfType<PlayerStatus>();
                 m_gravText.color = new Color(1, 0, 0, 0);
 				foreach (TextMeshProUGUI text in m_indicators)
 				{
@@ -48,9 +49,8 @@ namespace Millivolt
                     }
                     m_gravText.color = new Color(1, 0, 0, 0);                    
                 }
-
-                m_lvlData.SetPlayerUp(transform);
-			}
+                m_playerStatus.transform.up = transform;
+            }
         }
 	}
 }
