@@ -56,11 +56,6 @@ namespace Millivolt
                 m_camera.transform.localPosition = m_offset;
             }
 
-            private void Update()
-            {
-                //transform.position = m_player.position;
-            }
-
             private void FixedUpdate()
             {
                 // get input value
@@ -73,13 +68,7 @@ namespace Millivolt
                 // rotate camera vertically with damping
                 float tCamera = Damper.Damp(1, m_damping, Time.fixedDeltaTime);
                 Quaternion newVerticalRotation = Quaternion.Euler(m_targetRotation.y, 0, 0);
-                m_camera.transform.localRotation = Quaternion.Slerp(m_camera.transform.localRotation, newVerticalRotation, tCamera);
-
-                /*
-                float t = Damper.Damp(1, m_damping, Time.deltaTime);
-                Quaternion newRotation = Quaternion.LookRotation(m_mouseDelta.normalized, m_virtualCam.transform.up);
-                m_virtualCam.transform.rotation = Quaternion.Slerp(m_virtualCam.transform.rotation, newRotation, t);
-                */
+                m_camera.transform.localRotation = Quaternion.Lerp(m_camera.transform.localRotation, newVerticalRotation, tCamera);
 
                 // wrap the horizontal rotation
                 m_targetRotation.x += input.x;
@@ -91,14 +80,28 @@ namespace Millivolt
                 // rotate player horizontally with damping
                 float tPlayer = Damper.Damp(1, m_damping, Time.fixedDeltaTime);
                 Quaternion newHorizontalRotation = Quaternion.Euler(0, m_targetRotation.x, 0);
-                m_player.transform.localRotation = Quaternion.Slerp(m_player.transform.localRotation, newHorizontalRotation, tPlayer);
+                m_player.transform.localRotation = Quaternion.Lerp(m_player.transform.localRotation, newHorizontalRotation, tPlayer);
+            }
 
-                /*
-                float tPlayer = Damper.Damp(1, 0.1f, Time.deltaTime);
-                Vector3 forward = Vector3.Project(m_virtualCam.transform.forward, transform.forward);
-                Quaternion newPlayerRotation = Quaternion.LookRotation(forward, transform.up);
-                transform.rotation = Quaternion.Slerp(transform.rotation, newPlayerRotation, tPlayer);
-                */
+            public void SetLookRotation(float x, float y)
+            {
+                m_targetRotation = new Vector2(x, y);
+            }
+
+            public void SetLookRotation(Vector2 value)
+            {
+                m_targetRotation = value;
+            }
+
+            public void SetLookRotation(Vector3 eulers)
+            {
+                m_targetRotation = new Vector2(eulers.y, eulers.x);
+            }
+
+            public void SetLookRotation(Quaternion value)
+            {
+                Vector3 eulers = value.eulerAngles;
+                m_targetRotation = new Vector2(eulers.y, eulers.x);
             }
 
             /// <summary>
@@ -127,11 +130,9 @@ namespace Millivolt
             }
 
             /// <summary>
-            /// Change the move-speed of the camera.
+            /// Change the sensitivity of the camera.
             /// </summary>
-            /// <param name="hSpeed">Horizontal camera speed.</param>
-            /// <param name="vSpeed">Vertical camera speed.</param>
-            public void SetCameraSensitivity(float value)
+            public void SetSensitivity(float value)
             {
                 m_sensitivity = value;
             }
@@ -143,7 +144,7 @@ namespace Millivolt
                     return;
 
                 Handles.color = Color.magenta;
-                Handles.DrawLine(m_player.transform.position + m_player.transform.up * -1.5f, m_player.transform.position + m_player.transform.up * 1.5f);
+                Handles.DrawLine(m_player.transform.position + transform.up * -1.5f, m_player.transform.position + transform.up * 1.5f);
             }
 #endif
         }

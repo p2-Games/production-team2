@@ -15,13 +15,14 @@ namespace Millivolt
 {
     namespace Player
     {
-        [RequireComponent(typeof(CapsuleCollider), typeof(PlayerInput))]
+        [RequireComponent(typeof(CapsuleCollider), typeof(Rigidbody), typeof(PlayerInput))]
         public class PlayerController : MonoBehaviour
         {
             void Start()
             {
                 InitialiseRigidbody();
                 InitialiseCollider();
+                m_cameraController = transform.parent.GetComponent<FirstPersonCameraController>();
             }
 
             private void FixedUpdate()
@@ -29,23 +30,44 @@ namespace Millivolt
                 MovePlayer();
             }
 
+            private FirstPersonCameraController m_cameraController;
+
             [Header("Physics")]
             [Tooltip("The acceleration of gravity of the player, on the player's transform.up axis.")]
             [SerializeField] private float m_gravity;
             [Tooltip("The layers of objects that the CharacterController can interact with.")]
             [SerializeField] private LayerMask m_walkableLayers;
 
-            public float height => m_collider.height;
-
             private Rigidbody m_rb;
             private CapsuleCollider m_collider;
 
+            public float height => m_collider.height;
             public float gravity => m_gravity;
+
+            public void SetGravity(Vector3 value)
+            {
+                // move the parent to the location of the player and reset the player's position so the player is rotated correctly
+                transform.parent.position = transform.position;
+                transform.localPosition = Vector3.zero;
+
+                // change orientation and gravity
+                transform.parent.rotation = Quaternion.FromToRotation(Vector3.up, -value.normalized); ;
+                m_gravity = -value.magnitude;
+
+                // set rotation of camera
+                m_cameraController.SetLookRotation(transform.rotation);
+            }
 
             [ContextMenu("Initialise Rigidbody")]
             private void InitialiseRigidbody()
             {
-                m_rb = GetComponentInParent<Rigidbody>();
+                m_rb = GetComponent<Rigidbody>();
+                m_rb.mass = 1;
+                m_rb.drag = 0;
+                m_rb.angularDrag = 0;
+                m_rb.interpolation = RigidbodyInterpolation.Interpolate;
+                m_rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
+                m_rb.constraints = RigidbodyConstraints.FreezeRotation;
             }
 
             [ContextMenu("Initialise Collider")]
