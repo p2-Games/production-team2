@@ -8,10 +8,12 @@
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Collections.Generic;
 
 namespace Millivolt
 {
     using LevelObjects.PickupObjects;
+    using System.Linq;
 
     namespace Player
     {
@@ -43,7 +45,7 @@ namespace Millivolt
 
             public Transform parent => transform.parent;
             public float height => m_collider.height;
-            public Vector3 gravity => Mathf.Abs(m_gravity) * (Quaternion.Euler(parent.eulerAngles) * Vector3.back);
+            public Vector3 gravity => Mathf.Abs(m_gravity) * (Quaternion.Euler(parent.eulerAngles) * Vector3.down);
 
             public void SetGravity(float magnitude, Vector3 eulerDirection)
             {
@@ -60,10 +62,13 @@ namespace Millivolt
                 Quaternion priorRotation = parent.rotation; 
 
                 // change orientation and gravity
-                //parent.rotation = Quaternion.FromToRotation(Vector3.up, -value.normalized);
                 Vector3 targetDirection = Quaternion.Euler(eulerDirection) * Vector3.back;
                 parent.rotation = Quaternion.FromToRotation(Vector3.up, targetDirection);
 
+                // could also try:
+                // Quaternion.LookRotation(Vector3.down, targetDirection);
+
+                // set magnitude/value of gravity
                 m_gravity = -Mathf.Abs(magnitude);
 
                 // set rotation of camera
@@ -202,15 +207,25 @@ namespace Millivolt
                 {
                     // check the space underneath the player to determine if grounded
                     // if there is no walkable object under the player, they are not grounded
-                    if (!Physics.BoxCast(transform.position + m_collider.center, new Vector3(m_groundCheckRadius, m_groundCheckDistance, m_groundCheckRadius),
-                        -transform.up, out RaycastHit hit, transform.rotation, m_collider.height / 2, m_walkableLayers, QueryTriggerInteraction.Ignore))
+                    RaycastHit[] hits = Physics.BoxCastAll(transform.position + m_collider.center,
+                        new Vector3(m_groundCheckRadius, m_groundCheckDistance, m_groundCheckRadius),
+                        -transform.up, transform.rotation, m_collider.height / 2, m_walkableLayers, QueryTriggerInteraction.Ignore);
+                    if (hits.Length == 0)
                         return false;
-
                     // if the player is on a walkable object
                     else
                     {
-                        // if the object does not meet the slope limit requirements, then the player is NOT standing on it
-                        // STRETCH: snap to slopes
+                        // get closest hit walkable object
+                        Vector3 playerFeet = m_collider.center - transform.up * m_collider.height / 2;
+                        RaycastHit hit = hits[0];
+                        for (int h = 1; h < hits.Length; h++)
+                        {
+                            if (Vector3.Distance(hits[h].point, transform.position) < Vector3.Distance(hit.point, transform.position))
+                                hit = hits[h];
+                        }
+
+                        // if the closest object does not meet the slope limit requirements, then the player is NOT standing on it
+                        // TODO: snap to slopes
                         if (Vector3.Angle(hit.normal, transform.up) > m_slopeLimit)
                             return false;
 
@@ -279,14 +294,18 @@ namespace Millivolt
 
                 if (m_collider)
                 {
-                    Handles.color = Color.green;
                     Handles.matrix = transform.localToWorldMatrix;
+                    Handles.color = Color.green;
                     Handles.DrawWireCube(m_collider.center - Vector3.up * m_collider.height / 2,
-                        new Vector3(m_groundCheckRadius, m_groundCheckDistance, m_groundCheckRadius));
+                        new Vector3(m_groundCheckRadius * 2, m_groundCheckDistance * 2, m_groundCheckRadius * 2));
 
                     Handles.color = Color.cyan;
                     Handles.DrawWireCube(m_collider.center + Vector3.up * m_collider.height / 2,
-                        new Vector3(m_groundCheckRadius, m_groundCheckDistance, m_groundCheckRadius));
+                        new Vector3(m_groundCheckRadius * 2, m_groundCheckDistance * 2, m_groundCheckRadius * 2));
+
+                    Handles.color = Color.magenta;
+                    Handles.ArrowHandleCap(0, m_collider.center - Vector3.up * m_collider.height / 2,
+                                            Quaternion.LookRotation(Vector3.down, gravity.normalized), 1, EventType.Repaint);
                 }
             }
 #endif

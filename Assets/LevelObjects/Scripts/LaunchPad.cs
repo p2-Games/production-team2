@@ -68,16 +68,20 @@ namespace Millivolt
             {
                 PlayerController player = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
 
-                Handles.color = Color.blue;
-
                 Vector3 lastPoint = transform.position;
                 Vector3 velocity = m_initialVelocity;
+
+                // draw gravity
+                Handles.color = Color.magenta;
+                Handles.DrawLine(Vector3.zero, player.gravity.normalized);
+
+                Handles.color = Color.blue;
 
                 for (int p = 1; p < m_debugPointsToDraw; p++)
                 {
                     float t = p * m_debugTimeBetweenPoints;
 
-                    Vector3 nextPoint = transform.position + velocity;
+                    Vector3 nextPoint = transform.position + m_initialVelocity * t + 0.5f * player.gravity * t * t;
 
                     if (Physics.Raycast(lastPoint, (nextPoint - lastPoint).normalized, out RaycastHit hit, Vector3.Distance(lastPoint, nextPoint), ~(1 << LayerMask.NameToLayer("Player")), QueryTriggerInteraction.Ignore))
                     {
@@ -94,8 +98,7 @@ namespace Millivolt
                         else
                             Handles.DrawWireCube(nextPoint, new Vector3(0.5f, 0.5f, 0.5f));
                     }
-
-                    velocity += player.gravity;
+;
                     lastPoint = nextPoint;
                 }
             }

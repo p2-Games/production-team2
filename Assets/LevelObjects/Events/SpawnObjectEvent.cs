@@ -37,6 +37,14 @@ namespace Millivolt
                         SpawnObject();
                 }
 
+                private void Update()
+                {
+                    if (m_objectCanSpawn && m_spawnAtStart && (!m_spawnedObject || !m_spawnedObject.gameObject.activeSelf))
+                    { 
+                        SpawnObject();
+                    }
+                }
+
                 public void SetCanSpawnObject(bool value)
                 {
                     m_objectCanSpawn = value;
