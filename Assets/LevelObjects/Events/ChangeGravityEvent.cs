@@ -23,25 +23,28 @@ namespace Millivolt
                 [Tooltip("If true, the event will change the direction and magnitude of gravity instantly.")]
                 [SerializeField] private bool m_changeInstantaneously;
 
-                [Tooltip("How long it will take before gravity changes.")]
-                [SerializeField] private float m_gravityChangeTime;
+                [Tooltip("How long it will take before gravity changes if change instantaneously is false.")]
+                [SerializeField] private float m_changeTime;
 
-                [Tooltip("The magnitude and direction of gravity when this event triggers.")]
-                [SerializeField] private Vector3 m_gravity;
+                [Header("Gravity"), Tooltip("The acceleration of gravity in units per second squared.")]
+                [SerializeField] private float m_gravityMagnitude;
+
+                [Tooltip("The direction of gravity when this event triggers.")]
+                [SerializeField] private Vector3 m_gravityEulerDirection;
 
                 private float m_timer;
                 private bool m_active = false;
 
                 public void ChangeGravityAfterTime()
                 {
-                    float indicatorFlashInterval = (m_gravityChangeTime / 5);
+                    float indicatorFlashInterval = (m_changeTime / 5);
                     m_gravityUI.StartCoroutine(m_gravityUI.GravityUIFlashing(indicatorFlashInterval));
                     m_active = true;
                 }
 
                 public void ChangeGravity()
                 {
-                    GameObject.FindWithTag("Player").GetComponent<PlayerController>().SetGravity(m_gravity);
+                    GameObject.FindWithTag("Player").GetComponent<PlayerController>().SetGravity(m_gravityMagnitude, m_gravityEulerDirection);
                     m_active = false;
                 }
 
@@ -52,7 +55,7 @@ namespace Millivolt
                     else
                     {
                         ChangeGravityAfterTime();
-                        m_timer = m_gravityChangeTime;
+                        m_timer = m_changeTime;
                     }
                 }
 
@@ -68,10 +71,10 @@ namespace Millivolt
                 private void OnDrawGizmos()
                 {
                     Handles.color = Color.yellow;
-                    Vector3 direction = m_gravity.normalized;
+                    Vector3 direction = Quaternion.Euler(m_gravityEulerDirection) * Vector3.forward;
                     Vector3 endPoint = transform.position + direction;
                     Handles.DrawLine(transform.position, endPoint);
-                    Handles.ArrowHandleCap(0, endPoint, Quaternion.LookRotation(direction), 1, EventType.Repaint);
+                    Handles.ArrowHandleCap(0, endPoint, Quaternion.Euler(m_gravityEulerDirection), 1, EventType.Repaint);
                 }
 #endif
             }

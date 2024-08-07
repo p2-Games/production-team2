@@ -15,22 +15,6 @@ namespace Millivolt
 
 		public class InteractableObject : LevelObject
 		{
-			[Header("Interactable Details"), Tooltip("If true, the player is able to interact with this object directly.")]
-			[SerializeField] protected bool m_playerCanInteract = true;
-
-			[Tooltip("If true, the object cannot change from active to inactive.")]
-			[SerializeField] protected bool m_staysActive;
-
-			[Tooltip("How long in seconds it takes for an object to be able to be interacted with again after being interacted with.")]
-			[SerializeField, Min(0)] protected float m_interactTime;
-
-			[Tooltip("The events that will occur when the object's active state is changed.")]
-			[SerializeField] protected Event[] m_events;
-
-			public bool playerCanInteract => m_playerCanInteract;
-
-			protected float m_timer;
-
             public override bool isActive
 			{   
 				get => base.isActive;
@@ -49,7 +33,23 @@ namespace Millivolt
 				}
 			}
 
-            public void Interact()
+			[Header("Interactable Details"), Tooltip("If true, the player is able to interact with this object directly.")]
+			[SerializeField] protected bool m_playerCanInteract = true;
+
+			[Tooltip("If true, the object cannot change from active to inactive.")]
+			[SerializeField] protected bool m_staysActive;
+
+			[Tooltip("How long in seconds it takes for an object to be able to be interacted with again after being interacted with.")]
+			[SerializeField, Min(0)] protected float m_interactTime;
+
+			[Tooltip("The events that will occur when the object's active state is changed.")]
+			[SerializeField] protected Event[] m_events;
+
+			public bool playerCanInteract => m_playerCanInteract;
+
+			protected float m_timer;
+
+            public virtual void Interact()
 			{
 				// if the object is not currently being interacted with
 				if (m_timer <= 0)
@@ -62,7 +62,7 @@ namespace Millivolt
                 }
 			}
 
-            protected void Update()
+            protected virtual void Update()
             {
 				if (m_timer > 0)
 					m_timer -= Time.deltaTime;

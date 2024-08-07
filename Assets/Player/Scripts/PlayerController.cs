@@ -5,14 +5,14 @@
 /// 
 ///</summary>
 
-using Cinemachine;
-using Pixelplacement.TweenSystem;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace Millivolt
 {
+    using LevelObjects.PickupObjects;
+
     namespace Player
     {
         [RequireComponent(typeof(CapsuleCollider), typeof(Rigidbody), typeof(PlayerInput))]
@@ -22,7 +22,7 @@ namespace Millivolt
             {
                 InitialiseRigidbody();
                 InitialiseCollider();
-                m_cameraController = transform.parent.GetComponent<FirstPersonCameraController>();
+                m_cameraController = parent.GetComponent<FirstPersonCameraController>();
             }
 
             private void FixedUpdate()
@@ -41,21 +41,33 @@ namespace Millivolt
             private Rigidbody m_rb;
             private CapsuleCollider m_collider;
 
+            public Transform parent => transform.parent;
             public float height => m_collider.height;
-            public float gravity => m_gravity;
+            public Vector3 gravity => Mathf.Abs(m_gravity) * (Quaternion.Euler(parent.eulerAngles) * Vector3.back);
 
-            public void SetGravity(Vector3 value)
+            public void SetGravity(float magnitude, Vector3 eulerDirection)
             {
+                // if the player is holding a heavy object, dont flip them
+                PickupObject pickupObject = GetComponentInChildren<PlayerInteraction>().heldPickupObject;
+                if (pickupObject && pickupObject.pickupType == PickupType.Heavy)
+                    return;
+                
                 // move the parent to the location of the player and reset the player's position so the player is rotated correctly
-                transform.parent.position = transform.position;
+                parent.position = transform.position;
                 transform.localPosition = Vector3.zero;
 
+                // save rotation before changing for camera details
+                Quaternion priorRotation = parent.rotation; 
+
                 // change orientation and gravity
-                transform.parent.rotation = Quaternion.FromToRotation(Vector3.up, -value.normalized); ;
-                m_gravity = -value.magnitude;
+                //parent.rotation = Quaternion.FromToRotation(Vector3.up, -value.normalized);
+                Vector3 targetDirection = Quaternion.Euler(eulerDirection) * Vector3.back;
+                parent.rotation = Quaternion.FromToRotation(Vector3.up, targetDirection);
+
+                m_gravity = -Mathf.Abs(magnitude);
 
                 // set rotation of camera
-                m_cameraController.SetLookRotation(transform.rotation);
+                m_cameraController.SetLookRotation(priorRotation);
             }
 
             [ContextMenu("Initialise Rigidbody")]
@@ -193,6 +205,7 @@ namespace Millivolt
                     if (!Physics.BoxCast(transform.position + m_collider.center, new Vector3(m_groundCheckRadius, m_groundCheckDistance, m_groundCheckRadius),
                         -transform.up, out RaycastHit hit, transform.rotation, m_collider.height / 2, m_walkableLayers, QueryTriggerInteraction.Ignore))
                         return false;
+
                     // if the player is on a walkable object
                     else
                     {
@@ -267,11 +280,12 @@ namespace Millivolt
                 if (m_collider)
                 {
                     Handles.color = Color.green;
-                    Handles.DrawWireCube(transform.position + m_collider.center - transform.up * m_collider.height / 2,
+                    Handles.matrix = transform.localToWorldMatrix;
+                    Handles.DrawWireCube(m_collider.center - Vector3.up * m_collider.height / 2,
                         new Vector3(m_groundCheckRadius, m_groundCheckDistance, m_groundCheckRadius));
 
                     Handles.color = Color.cyan;
-                    Handles.DrawWireCube(transform.position + m_collider.center + transform.up * m_collider.height / 2,
+                    Handles.DrawWireCube(m_collider.center + Vector3.up * m_collider.height / 2,
                         new Vector3(m_groundCheckRadius, m_groundCheckDistance, m_groundCheckRadius));
                 }
             }
