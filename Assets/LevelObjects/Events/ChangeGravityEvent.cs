@@ -1,7 +1,7 @@
 ///<summary>
 /// Author: Emily McDonald
 ///
-/// Changes gravity when called
+/// Changes player up transform to a specific vector3 when event is called
 ///
 ///</summary>
 
@@ -29,13 +29,16 @@ namespace Millivolt
                 /// <param name="newGravity"></param>
                 public void ChangeGravity(Vector3 newGravity, float gravityChangeTime)
                 {
-                    float indicatorFlashInterval = (gravityChangeTime / 6);
+                    float indicatorFlashInterval = (gravityChangeTime / 5);
                     m_gravityUI.StartCoroutine(m_gravityUI.GravityUIFlashing(indicatorFlashInterval, newGravity));
                 }
 
                 public override void DoEvent(bool value)
                 {
-                    ChangeGravity(m_newGravity, m_gravSwitchTime);
+                    if (value)
+                    {
+                        ChangeGravity(m_newGravity, m_gravSwitchTime);
+                    }
                 }
             }
         }
