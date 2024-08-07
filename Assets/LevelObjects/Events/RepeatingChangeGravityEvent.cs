@@ -26,6 +26,9 @@ namespace Millivolt
                 [SerializeField] private float m_repeatTime;
                 [SerializeField] private int m_currentGravity;
 
+                [Tooltip("An initial delay before the repeating function starts")]
+                [SerializeField] private float m_initialDelay;
+
                 private Coroutine m_uiFlashing;
 
                 private bool isRepeating;
@@ -56,7 +59,7 @@ namespace Millivolt
                         if (!isRepeating)
                         {
                             isRepeating = true;
-                            InvokeRepeating("ChangeGravity", 0, m_gravSwitchTime + m_repeatTime);                        
+                            InvokeRepeating("ChangeGravity", m_initialDelay, m_gravSwitchTime + m_repeatTime);                        
                         }
                         else
                         {
