@@ -13,7 +13,7 @@ using UnityEngine.InputSystem;
 namespace Millivolt
 {
     using LevelObjects;
-    using UnityEditorInternal;
+    using LevelObjects.PickupObjects;
 
     namespace Player
     {
@@ -40,12 +40,12 @@ namespace Millivolt
             // player details
             [Tooltip("How many fixed update frames the interact trigger stays active for.\nThere are 50 fixed update frames each second by default.")]
             [SerializeField] private float m_interactFrames;
-            private float m_frameCounter;
-            public bool canInteract => m_frameCounter == 0 && m_state != InteractionState.Closed;
-
             [SerializeField] private Transform m_pickupOffset;
 
-            // components
+            public bool canInteract => m_frameCounter == 0 && m_state != InteractionState.Closed;
+            public PickupObject heldPickupObject => m_heldPickup;
+
+            private float m_frameCounter;
             private Collider m_trigger;
             private PickupObject m_heldPickup;
 
@@ -76,11 +76,30 @@ namespace Millivolt
                     // ensure object still exists
                     if (m_heldPickup)
                     {
-                        Vector3 diff = m_pickupOffset.position - m_heldPickup.transform.position;
-                        float magnitudeSqr = diff.magnitude * diff.magnitude;
-                        m_heldPickup.velocity = Vector3.MoveTowards(m_heldPickup.velocity,
-                                                    diff * m_heldPickup.followMaxSpeed,
-                                                    m_heldPickup.followAcceleration * magnitudeSqr);
+                        switch (m_heldPickup.pickupType)
+                        {
+                            case PickupType.Standard:
+                                // move the pickup object towards the offset position
+                                Vector3 offsetDiff = m_pickupOffset.position - m_heldPickup.transform.position;
+                                float magnitudeSqr = offsetDiff.magnitude * offsetDiff.magnitude;
+                                m_heldPickup.velocity = Vector3.MoveTowards(m_heldPickup.velocity,
+                                                                            offsetDiff * m_heldPickup.followMaxSpeed,
+                                                                            m_heldPickup.followAcceleration * magnitudeSqr);
+                                break;
+                            case PickupType.Heavy:
+                                // cannot move heavy pickups, keep player bound to it
+                                Vector3 playerDiff = m_heldPickup.transform.position - transform.position;
+                                float offsetDistance = Vector3.Distance(transform.position, m_pickupOffset.position);
+                                float furtherThanDistance = playerDiff.magnitude / offsetDistance;
+
+                                // if player is too far from pickup, move towards it
+                                if (playerDiff.magnitude > offsetDistance)
+                                    GetComponentInParent<PlayerController>().SetExternalVelocity(playerDiff.normalized * m_heldPickup.followMaxSpeed);
+                                else
+                                    GetComponentInParent<PlayerController>().SetExternalVelocity(Vector3.zero);
+
+                                break;
+                        }
                     }
                     else
                         m_state = InteractionState.Open;
@@ -113,9 +132,9 @@ namespace Millivolt
 
             private void OnTriggerEnter(Collider other)
             {
-                // check if the object is a pickup object
+                // check if the object is a pickup object and if it can be picked up
                 PickupObject pickupObj = other.GetComponent<PickupObject>();
-                if (pickupObj)
+                if (pickupObj && pickupObj.pickupType != PickupType.Immovable)
                 {
                     PickUpObject(pickupObj);
                     m_trigger.enabled = false;

@@ -5,14 +5,16 @@
 /// 
 ///</summary>
 
-using Cinemachine;
-using Pixelplacement.TweenSystem;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Collections.Generic;
 
 namespace Millivolt
 {
+    using LevelObjects.PickupObjects;
+    using System.Linq;
+
     namespace Player
     {
         [RequireComponent(typeof(CapsuleCollider), typeof(Rigidbody), typeof(PlayerInput))]
@@ -22,14 +24,15 @@ namespace Millivolt
             {
                 InitialiseRigidbody();
                 InitialiseCollider();
-                cursorIsLocked = true;
+                m_cameraController = parent.GetComponent<FirstPersonCameraController>();
             }
 
             private void FixedUpdate()
             {
                 MovePlayer();
-                //RotateCamera();
             }
+
+            private FirstPersonCameraController m_cameraController;
 
             [Header("Physics")]
             [Tooltip("The acceleration of gravity of the player, on the player's transform.up axis.")]
@@ -37,17 +40,51 @@ namespace Millivolt
             [Tooltip("The layers of objects that the CharacterController can interact with.")]
             [SerializeField] private LayerMask m_walkableLayers;
 
-            public float height => m_collider.height;
-
             private Rigidbody m_rb;
             private CapsuleCollider m_collider;
 
-            public float gravity => m_gravity;
+            public Transform parent => transform.parent;
+            public float height => m_collider.height;
+            public Vector3 gravity => Mathf.Abs(m_gravity) * (Quaternion.Euler(parent.eulerAngles) * Vector3.down);
+
+            public void SetGravity(float magnitude, Vector3 eulerDirection)
+            {
+                // if the player is holding a heavy object, dont flip them
+                PickupObject pickupObject = GetComponentInChildren<PlayerInteraction>().heldPickupObject;
+                if (pickupObject && pickupObject.pickupType == PickupType.Heavy)
+                    return;
+                
+                // move the parent to the location of the player and reset the player's position so the player is rotated correctly
+                parent.position = transform.position;
+                transform.localPosition = Vector3.zero;
+
+                // save rotation before changing for camera details
+                Quaternion priorRotation = parent.rotation; 
+
+                // change orientation and gravity
+                Vector3 targetDirection = Quaternion.Euler(eulerDirection) * Vector3.back;
+                parent.rotation = Quaternion.FromToRotation(Vector3.up, targetDirection);
+
+                // could also try:
+                // Quaternion.LookRotation(Vector3.down, targetDirection);
+
+                // set magnitude/value of gravity
+                m_gravity = -Mathf.Abs(magnitude);
+
+                // set rotation of camera
+                m_cameraController.SetLookRotation(priorRotation);
+            }
 
             [ContextMenu("Initialise Rigidbody")]
             private void InitialiseRigidbody()
             {
                 m_rb = GetComponent<Rigidbody>();
+                m_rb.mass = 1;
+                m_rb.drag = 0;
+                m_rb.angularDrag = 0;
+                m_rb.interpolation = RigidbodyInterpolation.Interpolate;
+                m_rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
+                m_rb.constraints = RigidbodyConstraints.FreezeRotation;
             }
 
             [ContextMenu("Initialise Collider")]
@@ -95,9 +132,9 @@ namespace Millivolt
                 Vector3 camRight = Camera.main.transform.right;
                 Vector3 camForward = Camera.main.transform.forward;
 
-                // 'flatten'
-                camRight.y = 0;
-                camForward.y = 0;
+                // 'flatten' based on player transform
+                camRight = Vector3.Project(camRight, transform.right);
+                camForward = Vector3.Project(camForward, transform.forward);
 
                 // re-normalise now value has been edited
                 camRight = camRight.normalized;
@@ -170,14 +207,25 @@ namespace Millivolt
                 {
                     // check the space underneath the player to determine if grounded
                     // if there is no walkable object under the player, they are not grounded
-                    if (!Physics.BoxCast(transform.position + m_collider.center, new Vector3(m_groundCheckRadius, m_groundCheckDistance, m_groundCheckRadius),
-                        -transform.up, out RaycastHit hit, transform.rotation, m_collider.height / 2, m_walkableLayers))
+                    RaycastHit[] hits = Physics.BoxCastAll(transform.position + m_collider.center,
+                        new Vector3(m_groundCheckRadius, m_groundCheckDistance, m_groundCheckRadius),
+                        -transform.up, transform.rotation, m_collider.height / 2, m_walkableLayers, QueryTriggerInteraction.Ignore);
+                    if (hits.Length == 0)
                         return false;
                     // if the player is on a walkable object
                     else
                     {
-                        // if the object does not meet the slope limit requirements, then the player is NOT standing on it
-                        // STRETCH: snap to slopes
+                        // get closest hit walkable object
+                        Vector3 playerFeet = m_collider.center - transform.up * m_collider.height / 2;
+                        RaycastHit hit = hits[0];
+                        for (int h = 1; h < hits.Length; h++)
+                        {
+                            if (Vector3.Distance(hits[h].point, transform.position) < Vector3.Distance(hit.point, transform.position))
+                                hit = hits[h];
+                        }
+
+                        // if the closest object does not meet the slope limit requirements, then the player is NOT standing on it
+                        // TODO: snap to slopes
                         if (Vector3.Angle(hit.normal, transform.up) > m_slopeLimit)
                             return false;
 
@@ -212,7 +260,7 @@ namespace Millivolt
                 get
                 {
                     return Physics.BoxCast(transform.position + m_collider.center, new Vector3(m_groundCheckRadius, m_groundCheckDistance, m_groundCheckRadius),
-                        transform.up, out RaycastHit hit, transform.rotation, m_collider.height / 2);
+                        transform.up, out RaycastHit hit, transform.rotation, m_collider.height / 2, ~(1 << LayerMask.NameToLayer("Player")), QueryTriggerInteraction.Ignore);
                 }
             }
 
@@ -235,49 +283,7 @@ namespace Millivolt
                     if (m_verticalVelocity < 0)
                         m_verticalVelocity = 0;
                 }
-            }
-
-            [Header("Cinemachine Camera")]
-            [SerializeField] private CinemachineVirtualCamera m_virtualCam;
-            private bool m_cursorIsLocked = false;
-            public bool cursorIsLocked
-            {
-                get { return m_cursorIsLocked; }
-                set
-                {
-                    if (value != m_cursorIsLocked)
-                    {
-                        if (value)
-                        {
-                            Cursor.visible = false;
-                            Cursor.lockState = CursorLockMode.Locked;
-                        }
-                        else
-                        {
-                            Cursor.visible = true;
-                            Cursor.lockState = CursorLockMode.Confined;
-                        }
-                        m_cursorIsLocked = value;
-                    }
-                }
-            }
-
-            private void Update()
-            {
-                //transform.Rotate(transform.up, m_mouseDelta.x, Space.World);
-            }
-
-            /// <summary>
-            /// Change the move-speed of the camera.
-            /// </summary>
-            /// <param name="hSpeed">Horizontal camera speed.</param>
-            /// <param name="vSpeed">Vertical camera speed.</param>
-            public void SetCameraSensitivity(float hSpeed, float vSpeed)
-            {
-                var pov = m_virtualCam.GetCinemachineComponent<CinemachinePOV>();
-                pov.m_HorizontalAxis.m_MaxSpeed = hSpeed;
-                pov.m_VerticalAxis.m_MaxSpeed = vSpeed;
-            }
+            }            
 
 #if UNITY_EDITOR
             [Header("Debug"), SerializeField] private bool m_drawGizmos;
@@ -288,13 +294,18 @@ namespace Millivolt
 
                 if (m_collider)
                 {
+                    Handles.matrix = transform.localToWorldMatrix;
                     Handles.color = Color.green;
-                    Handles.DrawWireCube(transform.position + m_collider.center - transform.up * m_collider.height / 2,
-                        new Vector3(m_groundCheckRadius, m_groundCheckDistance, m_groundCheckRadius));
+                    Handles.DrawWireCube(m_collider.center - Vector3.up * m_collider.height / 2,
+                        new Vector3(m_groundCheckRadius * 2, m_groundCheckDistance * 2, m_groundCheckRadius * 2));
 
                     Handles.color = Color.cyan;
-                    Handles.DrawWireCube(transform.position + m_collider.center + transform.up * m_collider.height / 2,
-                        new Vector3(m_groundCheckRadius, m_groundCheckDistance, m_groundCheckRadius));
+                    Handles.DrawWireCube(m_collider.center + Vector3.up * m_collider.height / 2,
+                        new Vector3(m_groundCheckRadius * 2, m_groundCheckDistance * 2, m_groundCheckRadius * 2));
+
+                    Handles.color = Color.magenta;
+                    Handles.ArrowHandleCap(0, m_collider.center - Vector3.up * m_collider.height / 2,
+                                            Quaternion.LookRotation(Vector3.down, gravity.normalized), 1, EventType.Repaint);
                 }
             }
 #endif

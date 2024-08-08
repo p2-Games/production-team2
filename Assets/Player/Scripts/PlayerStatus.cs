@@ -22,7 +22,6 @@ namespace Millivolt
             public float maxHealth => m_maxHealth;
             private float m_currentHealth;
 
-
             [Header("Health Canvas References")]
             [SerializeField] private PlayerHurtEffect m_playerHurtEffect;
             [SerializeField] private PlayerHealthBarUI m_playerHealthbar;
@@ -38,8 +37,6 @@ namespace Millivolt
             [Tooltip("The amount of health that will be restored by the regen rate")]
             [SerializeField] private float m_healthRegenAmount;
             private Coroutine m_regen;
-
-            [SerializeField] private Vector3 m_gravity;
 
             private void Start()
             {

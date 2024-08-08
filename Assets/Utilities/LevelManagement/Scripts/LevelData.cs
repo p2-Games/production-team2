@@ -38,9 +38,9 @@ namespace Millivolt
 			[Tooltip("This will find all the checkpoints in the scene and add them to the list automatically on play.\nWILL NOT SORT PROPERLY")]
 			[SerializeField] private bool m_autoAddCheckpoints;
 
-			[Header("Level Gravity Settings")]
-            [SerializeField] protected Vector3 m_gravity;
-            public Vector3 gravity => m_gravity;
+			[Header("Level Settings")]
+            [SerializeField] protected Vector3 m_defaultGravity;
+            public Vector3 defaultGravity => m_defaultGravity;
 
             private void Start()
             {
@@ -49,9 +49,12 @@ namespace Millivolt
 				InitialiseCheckpoints();
             }
 
+			[ContextMenu("Find Checkpoints")]
 			private void FindAllCheckpoints()
 			{
 				m_levelCheckpoints = FindObjectsByType<Checkpoint>(FindObjectsSortMode.None);
+				if (m_levelCheckpoints.Length == 0)
+					Debug.Log("No checkpoints found in scene!");
 			}
 
 			/// <summary>
