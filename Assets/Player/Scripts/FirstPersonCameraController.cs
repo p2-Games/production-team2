@@ -30,6 +30,9 @@ namespace Millivolt
             private Vector2 m_mouseDelta;
             private Vector2 m_targetRotation;
 
+            private Quaternion m_targetPlayerRotation;
+            private Quaternion m_targetCameraRotation;
+
             public void LookInput(InputAction.CallbackContext context)
             {
                 m_mouseDelta = context.ReadValue<Vector2>();
@@ -56,6 +59,15 @@ namespace Millivolt
                 m_camera.transform.localPosition = m_offset;
             }
 
+            private void Update()
+            {
+                float tCamera = Damper.Damp(1, m_damping, Time.deltaTime);
+                m_camera.transform.localRotation = Quaternion.Slerp(m_camera.transform.localRotation, m_targetCameraRotation, tCamera);
+
+                float tPlayer = Damper.Damp(1, m_damping, Time.fixedDeltaTime);
+                m_player.transform.localRotation = Quaternion.Slerp(m_player.transform.localRotation, m_targetPlayerRotation, tPlayer);
+            }
+
             private void FixedUpdate()
             {
                 // get input value
@@ -66,10 +78,8 @@ namespace Millivolt
                 m_targetRotation.y = Mathf.Clamp(m_targetRotation.y, -m_verticalLookClamp, m_verticalLookClamp);
 
                 // rotate camera vertically with damping
-                float tCamera = Damper.Damp(1, m_damping, Time.fixedDeltaTime);
-                Quaternion newVerticalRotation = Quaternion.Euler(m_targetRotation.y, 0, 0);
-                m_camera.transform.localRotation = Quaternion.Lerp(m_camera.transform.localRotation, newVerticalRotation, tCamera);
-
+                m_targetCameraRotation = Quaternion.Euler(m_targetRotation.y, 0, 0);
+                
                 // wrap the horizontal rotation
                 m_targetRotation.x += input.x;
                 if (m_targetRotation.x > 360f)
@@ -78,9 +88,7 @@ namespace Millivolt
                     m_targetRotation.x += 360f;
 
                 // rotate player horizontally with damping
-                float tPlayer = Damper.Damp(1, m_damping, Time.fixedDeltaTime);
-                Quaternion newHorizontalRotation = Quaternion.Euler(0, m_targetRotation.x, 0);
-                m_player.transform.localRotation = Quaternion.Lerp(m_player.transform.localRotation, newHorizontalRotation, tPlayer);
+                m_targetPlayerRotation = Quaternion.Euler(0, m_targetRotation.x, 0);
             }
 
             public void SetLookRotation(float x, float y)

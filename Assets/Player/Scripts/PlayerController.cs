@@ -8,12 +8,10 @@
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using System.Collections.Generic;
 
 namespace Millivolt
 {
     using LevelObjects.PickupObjects;
-    using System.Linq;
 
     namespace Player
     {
