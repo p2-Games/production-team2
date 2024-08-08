@@ -9,8 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5073049076077742404}
-  - component: {fileID: 2064494978085300717}
-  - component: {fileID: 127808965202001926}
+  - component: {fileID: 132867910122771703}
   m_Layer: 0
   m_Name: VentDoor
   m_TagString: Untagged
@@ -34,20 +33,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &2064494978085300717
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4590604258378958642}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.2591884, y: 1.997234, z: 1.9712822}
-  m_Center: {x: 0.0062664, y: 0.030687153, z: 0.0014185905}
---- !u!95 &127808965202001926
+--- !u!95 &132867910122771703
 Animator:
   serializedVersion: 5
   m_ObjectHideFlags: 0
@@ -83,12 +69,12 @@ PrefabInstance:
     - target: {fileID: 17676870743453561, guid: a2b2f319fe211054680ef4f870d50f91,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.0311817
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 17676870743453561, guid: a2b2f319fe211054680ef4f870d50f91,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.031181898
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 17676870743453561, guid: a2b2f319fe211054680ef4f870d50f91,
         type: 3}
@@ -137,6 +123,25 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a2b2f319fe211054680ef4f870d50f91, type: 3}
+--- !u!1 &2168904933996606224 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3838210339829488216, guid: a2b2f319fe211054680ef4f870d50f91,
+    type: 3}
+  m_PrefabInstance: {fileID: 3124777395025946952}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &1527255089543962398
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2168904933996606224}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2, y: 0.2, z: 2}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!4 &3126550894147421745 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 17676870743453561, guid: a2b2f319fe211054680ef4f870d50f91,
