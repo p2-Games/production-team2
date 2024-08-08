@@ -32,7 +32,7 @@ namespace Millivolt
                 }
             }
 
-			public IEnumerator GravityUIFlashing(float intervalTime, Vector3 transform)
+			public IEnumerator GravityUIFlashing(float intervalTime)
 			{
 				for (int i = 0; i < m_indicators.Length + 1; i++)
 				{
@@ -49,7 +49,6 @@ namespace Millivolt
                     m_gravText.color = new Color(1, 0, 0, 0);                    
                     yield return new WaitForSeconds(intervalTime);
                 }
-                m_playerStatus.transform.up = transform;
             }
         }
 	}

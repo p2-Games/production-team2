@@ -33,6 +33,8 @@ namespace Millivolt
 			// spawn parent, if it exists
 			private SpawnObjectEvent m_parent;
 			public SpawnObjectEvent spawnParent { get => m_parent; set => m_parent = value; }
+
+            protected bool CanTrigger(GameObject obj) => obj.GetComponent<Player.PlayerController>() || obj.GetComponent<LevelObject>();
         }
 	}
 }
