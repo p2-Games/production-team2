@@ -30,6 +30,11 @@ namespace Millivolt
 
             protected abstract void FixedUpdate();
 
+            public void SetMovementSpeed(float value)
+            {
+                m_movementSpeed = value;
+            }
+
             // returns if this object is at the provided position
             protected bool IsAtTransform(int index)
             {
@@ -70,6 +75,9 @@ namespace Millivolt
 #if UNITY_EDITOR
             private void OnDrawGizmos()
             {
+                if (m_path.Length == 0)
+                    return;
+
                 for (int t = 0; t < m_path.Length; t++)
                 {
                     if (m_path[t] == null)

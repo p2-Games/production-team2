@@ -15,13 +15,11 @@ namespace Millivolt
         {
             public class SpinningObject : MovingLevelObject
             {
-                private void Update()
+                protected override void FixedUpdate()
                 {
-                    m_rb.velocity = Vector3.zero;
-                    m_rb.angularVelocity = transform.forward * m_movementSpeed;
+                    Quaternion newRotation = transform.rotation * Quaternion.AngleAxis(m_movementSpeed, transform.up);
+                    m_rb.MoveRotation(newRotation);
                 }
-
-                protected override void FixedUpdate() { }
             }
         }
     }
