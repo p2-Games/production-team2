@@ -9,6 +9,7 @@ using Millivolt.Player;
 using Millivolt.UI;
 using UnityEditor;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 namespace Millivolt
 {
@@ -18,53 +19,25 @@ namespace Millivolt
         {
             public class ChangeGravityEvent : Event
             {
-                [SerializeField] private GravityIndicatorUI m_gravityUI;
-
-                [Tooltip("If true, the event will change the direction and magnitude of gravity instantly.")]
-                [SerializeField] private bool m_changeInstantaneously;
-
-                [Tooltip("How long it will take before gravity changes if change instantaneously is false.")]
-                [SerializeField] private float m_changeTime;
-
                 [Header("Gravity"), Tooltip("The acceleration of gravity in units per second squared.")]
                 [SerializeField] private float m_gravityMagnitude;
 
                 [Tooltip("The direction of gravity when this event triggers.")]
-                [SerializeField] private Vector3 m_gravityEulerDirection;
+                [SerializeField] private Vector2 m_gravityEulerDirection;
 
-                private float m_timer;
-                private bool m_active = false;
+                protected Vector2 FlippedEulerDirection(Vector2 direction) => new Vector2(-direction.x, direction.y + 180);
 
-                public void ChangeGravityAfterTime()
+                protected void ChangeGravity(bool flip)
                 {
-                    float indicatorFlashInterval = (m_changeTime / 5);
-                    m_gravityUI.StartCoroutine(m_gravityUI.GravityUIFlashing(indicatorFlashInterval));
-                    m_active = true;
-                }
-
-                public void ChangeGravity()
-                {
-                    GameObject.FindWithTag("Player").GetComponent<PlayerController>().SetGravity(m_gravityMagnitude, m_gravityEulerDirection);
-                    m_active = false;
+                    if (flip)
+                        GameObject.FindWithTag("Player").GetComponent<PlayerController>().SetGravity(m_gravityMagnitude, m_gravityEulerDirection);
+                    else
+                        GameObject.FindWithTag("Player").GetComponent<PlayerController>().SetGravity(m_gravityMagnitude, FlippedEulerDirection(m_gravityEulerDirection));
                 }
 
                 public override void DoEvent(bool value)
                 {
-                    if (m_changeInstantaneously)
-                        ChangeGravity();
-                    else
-                    {
-                        ChangeGravityAfterTime();
-                        m_timer = m_changeTime;
-                    }
-                }
-
-                private void Update()
-                {
-                    if (m_timer > 0)
-                        m_timer -= Time.deltaTime;
-                    else if (m_active)
-                        ChangeGravity();
+                    ChangeGravity(value);
                 }
 
 #if UNITY_EDITOR

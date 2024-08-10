@@ -55,11 +55,14 @@ namespace Millivolt
                 {
                     Vector3 newObjectPosition = transform.position;
                     newObjectPosition.y += other.gameObject.GetComponent<Collider>().bounds.extents.y;
-                    other.gameObject.transform.position = newObjectPosition;
+                    Rigidbody rb = other.gameObject.GetComponent<Rigidbody>();
+                    rb.MovePosition(newObjectPosition);
 
                     PlayerController player = other.GetComponent<PlayerController>();
                     if (player)
-                        player.SetExternalVelocity(m_initialVelocity);   
+                        player.SetExternalVelocity(m_initialVelocity);
+                    else
+                        rb.velocity = m_initialVelocity;
                 }
             }
 
