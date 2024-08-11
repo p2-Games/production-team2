@@ -33,7 +33,7 @@ namespace Millivolt
 
                 public void ChangeGravityAfterTime(bool flip)
                 {
-                    float indicatorFlashInterval = (m_delay / 5);
+                    float indicatorFlashInterval = (m_delay / 8);
                     m_gravityUI.StartCoroutine(m_gravityUI.GravityUIFlashing(indicatorFlashInterval));
                     m_willSwitch = true;
                     m_flipping = flip;
