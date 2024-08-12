@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8232873406082172621}
   - component: {fileID: 2531142611323637874}
   - component: {fileID: 5931931982741730650}
+  - component: {fileID: 5535232120906112246}
   - component: {fileID: 6061983207143800256}
   m_Layer: 6
   m_Name: LoopingPlatformPrefab
@@ -69,6 +70,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 2.5, y: 0.5, z: 2.5}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!65 &5535232120906112246
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4409157011543049226}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.5, y: 0.1, z: 2.5}
+  m_Center: {x: 0, y: 0.3, z: 0}
 --- !u!54 &6061983207143800256
 Rigidbody:
   m_ObjectHideFlags: 0
