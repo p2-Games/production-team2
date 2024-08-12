@@ -74,10 +74,6 @@ namespace Millivolt
                 Vector3 lastPoint = transform.position;
                 Vector3 velocity = m_initialVelocity;
 
-                // draw gravity
-                Handles.color = Color.magenta;
-                Handles.DrawLine(Vector3.zero, player.gravity.normalized);
-
                 Handles.color = Color.blue;
 
                 for (int p = 1; p < m_debugPointsToDraw; p++)
