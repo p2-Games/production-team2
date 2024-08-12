@@ -110,7 +110,8 @@ namespace Millivolt
             private Vector2 m_moveDirection;
             private Vector3 m_walkVelocity;
             private Vector3 m_externalVelocity;
-            private Vector3 m_constantExternalVelocity;
+            private Vector3 m_platformVelocity;
+
             private float m_verticalVelocity;
 
             public void Move(InputAction.CallbackContext context)
@@ -146,7 +147,7 @@ namespace Millivolt
                 Vector3 targetVelocity = (horizontalRelativeInput + verticalRelativeInput) * m_topSpeed;
 
                 // calculate velocity change vector
-                if (m_constantExternalVelocity == Vector3.zero)
+                if (m_externalVelocity == Vector3.zero)
                     m_walkVelocity = Vector3.MoveTowards(m_walkVelocity, targetVelocity, (m_moveDirection == Vector2.zero ? m_decceleration : m_acceleration) * Time.fixedDeltaTime);
                 else
                     m_walkVelocity = Vector3.zero;
@@ -163,15 +164,21 @@ namespace Millivolt
                 }
 
                 // move player
-                m_rb.velocity = m_walkVelocity + m_verticalVelocity * transform.up + m_externalVelocity + m_constantExternalVelocity;
+                m_rb.velocity = m_walkVelocity + m_verticalVelocity * transform.up + m_platformVelocity + m_externalVelocity;
             }
 
-            public void SetExternalVelocity(Vector3 value)
-            {
-                m_constantExternalVelocity = value;
-                m_constantExternalVelocity.y = 0;
-                m_verticalVelocity = value.y;
-            }
+            /// <summary>
+            /// Set the velocity of the player to the velocity of the platform they are standing on.
+            /// </summary>
+            /// <param name="value"></param>
+            public void SetPlatformVelocity(Vector3 value) => m_platformVelocity = value;
+
+            /// <summary>
+            /// Set the velocity of the player to a value.
+            /// Takes control away from the player until they land back on the ground.
+            /// </summary>
+            /// <param name="value"></param>
+            public void SetExternalVelocity(Vector3 value) => m_externalVelocity = value;
 
             [Header("Jumping")]
             [Tooltip("The velocity added to the player in units per second when they jump.")]
@@ -208,17 +215,28 @@ namespace Millivolt
                     RaycastHit[] hits = Physics.BoxCastAll(transform.position + m_collider.center,
                         new Vector3(m_groundCheckRadius, m_groundCheckDistance, m_groundCheckRadius),
                         -transform.up, transform.rotation, m_collider.height / 2, m_walkableLayers, QueryTriggerInteraction.Ignore);
+
+                    // if no hits, the player is not standing on anything
                     if (hits.Length == 0)
                         return false;
                     // if the player is on a walkable object
                     else
                     {
+                        // if the player is changing from not grounded to grounded aka landing,
+                        // reset their various velocities to 0
+                        if (!m_isGrounded)
+                        {
+                            m_verticalVelocity = 0;
+                            m_platformVelocity = Vector3.zero;
+                            m_externalVelocity = Vector3.zero;
+                        }
+
                         // get closest hit walkable object
-                        Vector3 playerFeet = m_collider.center - transform.up * m_collider.height / 2;
+                        Vector3 playerFeet = transform.position + m_collider.center - transform.up * m_collider.height / 2;
                         RaycastHit hit = hits[0];
                         for (int h = 1; h < hits.Length; h++)
                         {
-                            if (Vector3.Distance(hits[h].point, transform.position) < Vector3.Distance(hit.point, transform.position))
+                            if (Vector3.Distance(hits[h].point, playerFeet) < Vector3.Distance(hit.point, playerFeet))
                                 hit = hits[h];
                         }
 
@@ -226,23 +244,6 @@ namespace Millivolt
                         // TODO: snap to slopes
                         if (Vector3.Angle(hit.normal, transform.up) > m_slopeLimit)
                             return false;
-
-                        // if the hit object has a rigidbody, apply its velocity to the player.
-                        if (hit.rigidbody)
-                        {
-                            m_externalVelocity = hit.rigidbody.GetPointVelocity(hit.point);
-                        }
-
-                        // TODO: reduce over time instead of set to zero
-                        else
-                        {
-                            if (m_externalVelocity != Vector3.zero)
-                                m_externalVelocity = Vector3.zero;
-
-                            // float currentLength = m_externalVelocity.magnitude;
-                            // m_externalVelocity.Normalize();
-                            // m_externalVelocity *= currentLength / m_decceleration;
-                        }
 
                         return true;
                     }
@@ -264,24 +265,10 @@ namespace Millivolt
 
             private void OnCollisionEnter(Collision collision)
             {
+                // check if the player is hitting their head on the ceiling
                 if (hittingHead)
                     m_verticalVelocity = 0;
-                
-                // give control back to player
-                if (m_constantExternalVelocity != Vector3.zero)
-                    m_constantExternalVelocity = Vector3.zero;
             }
-
-            private void OnCollisionStay(Collision collision)
-            {
-                // if the colliding game object's layer is a walkable layer AND the player is currently grounded, meaning the player is standing on that object
-                if ((m_walkableLayers & (1 << collision.gameObject.layer)) != 0 && m_isGrounded)
-                {
-                    // if player is moving dowwnards
-                    if (m_verticalVelocity < 0)
-                        m_verticalVelocity = 0;
-                }
-            }            
 
 #if UNITY_EDITOR
             [Header("Debug"), SerializeField] private bool m_drawGizmos;
