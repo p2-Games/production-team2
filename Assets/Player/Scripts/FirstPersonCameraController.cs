@@ -30,6 +30,8 @@ namespace Millivolt
             private Vector2 m_mouseDelta;
             private Vector2 m_targetRotation;
 
+            public Vector2 targetRotation => m_targetRotation;
+
             private Quaternion m_targetPlayerRotation;
             private Quaternion m_targetCameraRotation;
 
