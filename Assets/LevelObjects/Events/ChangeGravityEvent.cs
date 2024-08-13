@@ -30,17 +30,17 @@ namespace Millivolt
                 protected void ChangeGravity(bool flip)
                 {
                     Vector3 currentLookDir = GameObject.FindWithTag("Player").transform.rotation.eulerAngles;
-                    //Debug.Log(currentLookDir);
-                    //Vector2 holdLookDir = GameObject.FindWithTag("Player").GetComponentInParent<FirstPersonCameraController>().targetRotation;
+                    Debug.Log(currentLookDir);
+                    //Vector2 currentLookDir = GameObject.FindWithTag("Player").GetComponentInParent<FirstPersonCameraController>().targetRotation;
                     if (flip)
                     {                        
                         GameObject.FindWithTag("Player").GetComponent<PlayerController>().SetGravity(m_gravityMagnitude, m_gravityEulerDirection); 
-                        GameObject.FindWithTag("Player").GetComponentInParent<FirstPersonCameraController>().SetLookRotation(new Vector2(0, currentLookDir.y + 180));
+                        GameObject.FindWithTag("Player").GetComponentInParent<FirstPersonCameraController>().SetLookRotation(new Vector2(currentLookDir.x, currentLookDir.y + 180));
                     }
                     else
                     {                  
                         GameObject.FindWithTag("Player").GetComponent<PlayerController>().SetGravity(m_gravityMagnitude, FlippedEulerDirection(m_gravityEulerDirection));
-                        GameObject.FindWithTag("Player").GetComponentInParent<FirstPersonCameraController>().SetLookRotation(new Vector2(0, currentLookDir.y + 180));
+                        GameObject.FindWithTag("Player").GetComponentInParent<FirstPersonCameraController>().SetLookRotation(new Vector2(currentLookDir.x, currentLookDir.y + 180));
                     }
                 }
 
