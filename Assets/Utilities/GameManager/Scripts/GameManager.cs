@@ -62,7 +62,7 @@ namespace Millivolt
 			/// </summary>
 			public void LoadNextLevel()
 			{
-				SceneManager.LoadScene(m_levels[m_currentLevel].nextLevel.name);
+				//SceneManager.LoadScene(m_levels[m_currentLevel].nextLevel.name);
 			}
 
             /// <summary>
@@ -70,7 +70,7 @@ namespace Millivolt
             /// </summary>
             public void LoadLastLevel()
 			{
-                SceneManager.LoadScene(m_levels[m_currentLevel].prevLevel.name);
+               // SceneManager.LoadScene(m_levels[m_currentLevel].prevLevel.name);
             }
 		}
 	}
