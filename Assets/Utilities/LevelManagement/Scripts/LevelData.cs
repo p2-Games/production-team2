@@ -5,8 +5,10 @@
 ///
 ///</summary>
 
-using UnityEditor;
+//using UnityEditor;
 using UnityEngine;
+using Millivolt.UI;
+using Millivolt.Player;
 
 namespace Millivolt
 {
@@ -15,29 +17,45 @@ namespace Millivolt
 		public class LevelData : MonoBehaviour
 		{
 			[Header("Scene Properties")]
-			[SerializeField] private SceneAsset m_prevLevel;
-			[SerializeField] private SceneAsset m_nextLevel;
+			//[SerializeField] private SceneAsset m_prevLevel;
+			//[SerializeField] private SceneAsset m_nextLevel;
 
-			public SceneAsset prevLevel
-			{
-				get { return m_prevLevel; }
-				set { m_prevLevel = value; }
-			}
+			//public SceneAsset prevLevel
+			//{
+			//	get { return m_prevLevel; }
+			//	set { m_prevLevel = value; }
+			//}
 
-			public SceneAsset nextLevel
-			{
-				get { return m_nextLevel; }
-				set { m_nextLevel = value; }
-			}
+			//public SceneAsset nextLevel
+			//{
+			//	get { return m_nextLevel; }
+			//	set { m_nextLevel = value; }
+			//}
 
 			[Header("Checkpoint Properties")]
 			[SerializeField] public int currentCheckpoint;
 			[SerializeField] private Checkpoint[] m_levelCheckpoints;
+			[Tooltip("This will find all the checkpoints in the scene and add them to the list automatically on play.\nWILL NOT SORT PROPERLY")]
+			[SerializeField] private bool m_autoAddCheckpoints;
+
+			[Header("Level Settings")]
+            [SerializeField] protected Vector3 m_defaultGravity;
+            public Vector3 defaultGravity => m_defaultGravity;
 
             private void Start()
             {
+				if (m_autoAddCheckpoints)
+					FindAllCheckpoints();
 				InitialiseCheckpoints();
             }
+
+			[ContextMenu("Find Checkpoints")]
+			private void FindAllCheckpoints()
+			{
+				m_levelCheckpoints = FindObjectsByType<Checkpoint>(FindObjectsSortMode.None);
+				if (m_levelCheckpoints.Length == 0)
+					Debug.Log("No checkpoints found in scene!");
+			}
 
 			/// <summary>
 			/// Give all checkpoints in the level an ID
