@@ -5,7 +5,7 @@
 ///
 ///</summary>
 
-//using UnityEditor;
+using UnityEditor;
 using UnityEngine;
 using Millivolt.UI;
 using Millivolt.Player;
@@ -17,22 +17,13 @@ namespace Millivolt
 		public class LevelData : MonoBehaviour
 		{
 			[Header("Scene Properties")]
-			//[SerializeField] private SceneAsset m_prevLevel;
-			//[SerializeField] private SceneAsset m_nextLevel;
+            [HideInInspector, SerializeField] private string m_prevLevelName;
+            [HideInInspector, SerializeField] private string m_nextLevelName;
 
-			//public SceneAsset prevLevel
-			//{
-			//	get { return m_prevLevel; }
-			//	set { m_prevLevel = value; }
-			//}
+			public string prevLevelName => m_prevLevelName;
+			public string nextLevelName => m_nextLevelName;
 
-			//public SceneAsset nextLevel
-			//{
-			//	get { return m_nextLevel; }
-			//	set { m_nextLevel = value; }
-			//}
-
-			[Header("Checkpoint Properties")]
+            //[Header("Checkpoint Properties")]
 			[SerializeField] public int currentCheckpoint;
 			[SerializeField] private Checkpoint[] m_levelCheckpoints;
 			[Tooltip("This will find all the checkpoints in the scene and add them to the list automatically on play.\nWILL NOT SORT PROPERLY")]
@@ -49,6 +40,9 @@ namespace Millivolt
 				InitialiseCheckpoints();
             }
 
+			/// <summary>
+			/// Will search through the level for any checkpoints and add them to the array
+			/// </summary>
 			[ContextMenu("Find Checkpoints")]
 			private void FindAllCheckpoints()
 			{
