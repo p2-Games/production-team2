@@ -8,6 +8,7 @@
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Cinemachine;
 
 namespace Millivolt
 {
@@ -22,15 +23,14 @@ namespace Millivolt
             {
                 InitialiseRigidbody();
                 InitialiseCollider();
-                m_cameraController = parent.GetComponent<FirstPersonCameraController>();
+                if (parent)
+                    m_cameraController = parent.GetComponent<FirstPersonCameraController>();
             }
 
             private void FixedUpdate()
             {
                 MovePlayer();
             }
-
-            private FirstPersonCameraController m_cameraController;
 
             [Header("Physics")]
             [Tooltip("The acceleration of gravity of the player, on the player's transform.up axis.")]
@@ -43,7 +43,16 @@ namespace Millivolt
 
             public Transform parent => transform.parent;
             public float height => m_collider.height;
-            public Vector3 gravity => Mathf.Abs(m_gravity) * (Quaternion.Euler(parent.eulerAngles) * Vector3.down);
+            public Vector3 gravity
+            {
+                get
+                {
+                    if (parent)
+                        return Mathf.Abs(m_gravity) * (Quaternion.Euler(parent.eulerAngles) * Vector3.down);
+                    else
+                        return Mathf.Abs(m_gravity) * -transform.up;
+                }
+            }
 
             public void SetGravity(float magnitude, Vector3 eulerDirection)
             {
@@ -51,10 +60,6 @@ namespace Millivolt
                 PickupObject pickupObject = GetComponentInChildren<PlayerInteraction>().heldPickupObject;
                 if (pickupObject && pickupObject.pickupType == PickupType.Heavy)
                     return;
-                
-                // move the parent to the location of the player and reset the player's position so the player is rotated correctly
-                parent.position = transform.position;
-                transform.localPosition = Vector3.zero;
 
                 // save rotation before changing for camera details
                 Quaternion priorRotation = parent.rotation; 
@@ -70,7 +75,8 @@ namespace Millivolt
                 m_gravity = -Mathf.Abs(magnitude);
 
                 // set rotation of camera
-                m_cameraController.SetLookRotation(priorRotation);
+                if (m_cameraController)
+                    m_cameraController.SetLookRotation(priorRotation);
             }
 
             [ContextMenu("Initialise Rigidbody")]
@@ -124,26 +130,22 @@ namespace Millivolt
             /// </summary>
             private void MovePlayer()
             {
-                // only do the boxcast once per frame
+                // only do the boxcast once per physics frame
                 m_isGrounded = isGrounded;
 
-                // get camera directions
-                Vector3 camRight = Camera.main.transform.right;
-                Vector3 camForward = Camera.main.transform.forward;
+                // project camera direction onto player direction for relative movement
+                Vector3 camRight = Vector3.ProjectOnPlane(Camera.main.transform.right, transform.up);
+                Vector3 camForward = Vector3.ProjectOnPlane(Camera.main.transform.forward, transform.up);
 
-                // 'flatten' based on player transform
-                camRight = Vector3.Project(camRight, transform.right);
-                camForward = Vector3.Project(camForward, transform.forward);
-
-                // re-normalise now value has been edited
+                // normalise value
                 camRight = camRight.normalized;
                 camForward = camForward.normalized;
 
-                // apply direction and speed
+                // apply input value
                 Vector3 horizontalRelativeInput = m_moveDirection.x * camRight;
                 Vector3 verticalRelativeInput = m_moveDirection.y * camForward;
 
-                // calc movement vector
+                // combine and apply movement speed
                 Vector3 targetVelocity = (horizontalRelativeInput + verticalRelativeInput) * m_topSpeed;
 
                 // calculate velocity change vector
@@ -259,7 +261,7 @@ namespace Millivolt
                 get
                 {
                     return Physics.BoxCast(transform.position + m_collider.center, new Vector3(m_groundCheckRadius, m_groundCheckDistance, m_groundCheckRadius),
-                        transform.up, out RaycastHit hit, transform.rotation, m_collider.height / 2, ~(1 << LayerMask.NameToLayer("Player")), QueryTriggerInteraction.Ignore);
+                        transform.up, /*out RaycastHit hit,*/ transform.rotation, m_collider.height / 2, ~(1 << LayerMask.NameToLayer("Player")), QueryTriggerInteraction.Ignore);
                 }
             }
 
@@ -270,6 +272,11 @@ namespace Millivolt
                     m_verticalVelocity = 0;
             }
 
+            [Header("Camera")]
+            [SerializeField] private CinemachineFreeLook m_freeLookCam;
+
+            private FirstPersonCameraController m_cameraController;
+
 #if UNITY_EDITOR
             [Header("Debug"), SerializeField] private bool m_drawGizmos;
             private void OnDrawGizmos()
@@ -277,9 +284,12 @@ namespace Millivolt
                 if (!m_drawGizmos)
                     return;
 
+
                 if (m_collider)
                 {
+                    Matrix4x4 original = Handles.matrix;
                     Handles.matrix = transform.localToWorldMatrix;
+
                     Handles.color = Color.green;
                     Handles.DrawWireCube(m_collider.center - Vector3.up * m_collider.height / 2,
                         new Vector3(m_groundCheckRadius * 2, m_groundCheckDistance * 2, m_groundCheckRadius * 2));
@@ -291,6 +301,8 @@ namespace Millivolt
                     Handles.color = Color.magenta;
                     Handles.ArrowHandleCap(0, m_collider.center - Vector3.up * m_collider.height / 2,
                                             Quaternion.LookRotation(Vector3.down, gravity.normalized), 1, EventType.Repaint);
+
+                    Handles.matrix = original;
                 }
             }
 #endif
