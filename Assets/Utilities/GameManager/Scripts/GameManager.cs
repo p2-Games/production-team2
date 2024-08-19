@@ -5,6 +5,7 @@
 ///
 ///</summary>
 
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -62,7 +63,7 @@ namespace Millivolt
 			/// </summary>
 			public void LoadNextLevel()
 			{
-				//SceneManager.LoadScene(m_levels[m_currentLevel].nextLevel.name);
+				SceneManager.LoadScene(m_levels[m_currentLevel].nextLevelName);
 			}
 
             /// <summary>
@@ -70,7 +71,7 @@ namespace Millivolt
             /// </summary>
             public void LoadLastLevel()
 			{
-               // SceneManager.LoadScene(m_levels[m_currentLevel].prevLevel.name);
+               SceneManager.LoadScene(m_levels[m_currentLevel].prevLevelName);
             }
 		}
 	}
