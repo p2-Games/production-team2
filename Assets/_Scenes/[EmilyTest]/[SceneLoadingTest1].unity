@@ -385,12 +385,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2e9f84256aeabd24bba7af362f17877f, type: 3}
---- !u!4 &571357037 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2666262149422882367, guid: 2e9f84256aeabd24bba7af362f17877f,
-    type: 3}
-  m_PrefabInstance: {fileID: 571357036}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &576435411
 GameObject:
   m_ObjectHideFlags: 0
@@ -545,7 +539,7 @@ MonoBehaviour:
   m_Priority: 10
   m_StandbyUpdate: 2
   m_LookAt: {fileID: 0}
-  m_Follow: {fileID: 571357037}
+  m_Follow: {fileID: 0}
   m_Lens:
     FieldOfView: 80
     OrthographicSize: 5
@@ -948,7 +942,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee67195f91790cc4dbab4e502ff2c450, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_gravity: {x: 0, y: -9.81, z: 0}
   m_currentLevel: 0
   m_levels:
   - {fileID: 1542898397}
@@ -981,9 +974,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58324326b74b7ec489eee54185d0580f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_prevLevel: {fileID: 0}
-  m_nextLevel: {fileID: 102900000, guid: 189c6cf7638edb447bec224a563665bf, type: 3}
+  m_prevLevelName: '[R2Greybox]'
+  m_nextLevelName: '[SceneLoadingTest2]'
+  prevLevel: {fileID: 0}
+  nextLevel: {fileID: 0}
+  currentCheckpoint: 0
   m_levelCheckpoints: []
+  m_autoAddCheckpoints: 0
+  m_defaultGravity: {x: 0, y: 0, z: 0}
 --- !u!4 &1542898398
 Transform:
   m_ObjectHideFlags: 0

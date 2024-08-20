@@ -7,6 +7,7 @@
 
 using Cinemachine;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Millivolt
 {
@@ -42,10 +43,10 @@ namespace Millivolt
             public void RespawnPlayer(GameObject player)
 			{
 				player.transform.position = m_respawnPoint.position;
-
-                CinemachinePOV pov = m_fpsCam.GetCinemachineComponent<CinemachinePOV>();
-                pov.m_VerticalAxis.Value = m_respawnCamDir.x;
-                pov.m_HorizontalAxis.Value = m_respawnCamDir.y;
+				SceneManager.LoadScene("[MicrowavePrototyping01]");
+                //CinemachinePOV pov = m_fpsCam.GetCinemachineComponent<CinemachinePOV>();
+                //pov.m_VerticalAxis.Value = m_respawnCamDir.x;
+                //pov.m_HorizontalAxis.Value = m_respawnCamDir.y;
             }
 
             private void OnTriggerEnter(Collider other)

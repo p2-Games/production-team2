@@ -22,7 +22,6 @@ namespace Millivolt
             public float maxHealth => m_maxHealth;
             private float m_currentHealth;
 
-
             [Header("Health Canvas References")]
             [SerializeField] private PlayerHurtEffect m_playerHurtEffect;
             [SerializeField] private PlayerHealthBarUI m_playerHealthbar;

@@ -21,26 +21,15 @@ namespace Millivolt
 		}
 
 		public class GameManager : MonoBehaviour
-		{
-			[SerializeField] protected Vector3 m_gravity = new Vector3(0, -9.81f, 0);
+		{			
 			private GameState m_gameState;
 
+			[Header("Level Properties")]
 			[SerializeField] private int m_currentLevel;
 
 			[SerializeField] LevelData[] m_levels;
 
-			public GameState gameState
-			{
-				get { return m_gameState; }
-				set { m_gameState = value; }
-			}
-
-			public Vector3 gravity => m_gravity;
-
-            public void ChangeGravity(Vector3 newGravity)
-            {
-                m_gravity = newGravity;
-            }
+			public GameState gameState => m_gameState;
 
             private void Start()
             {
@@ -69,7 +58,7 @@ namespace Millivolt
 			/// </summary>
 			public void LoadNextLevel()
 			{
-				SceneManager.LoadScene(m_levels[m_currentLevel].nextLevel.name);
+				SceneManager.LoadScene(m_levels[m_currentLevel].nextLevelName);
 			}
 
             /// <summary>
@@ -77,8 +66,18 @@ namespace Millivolt
             /// </summary>
             public void LoadLastLevel()
 			{
-                SceneManager.LoadScene(m_levels[m_currentLevel].prevLevel.name);
+               SceneManager.LoadScene(m_levels[m_currentLevel].prevLevelName);
             }
+
+			public void PauseGame()
+			{
+				m_gameState = GameState.PAUSE;
+			}
+
+			public void UnpauseGame()
+			{
+				m_gameState = GameState.PLAYING;
+			}
 		}
 	}
 }

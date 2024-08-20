@@ -35,49 +35,57 @@ namespace Millivolt
             [SerializeField] private int m_debugPointsToDraw;
             [SerializeField] private float m_debugTimeBetweenPoints;
 
-            private PlayerController m_player;
             private Collider m_trigger;
 
             private void Start()
             {
                 m_trigger = GetComponent<Collider>();
-                m_player = FindObjectOfType<PlayerController>();
+            }
+
+            private Quaternion PlayerVerticalRotation(PlayerController player)
+            {
+                Vector3 euler = player.parent.rotation.eulerAngles;
+                euler.y = 0;
+                return Quaternion.Inverse(Quaternion.Euler(euler));
             }
 
             private void OnTriggerEnter(Collider other)
             {;
-                if (other.gameObject == m_player.gameObject)
+                if (CanTrigger(other.gameObject))
                 {
-                    Vector3 newPlayerPosition = transform.position;
-                    newPlayerPosition.y += m_player.height / 2;
-                    m_player.transform.position = newPlayerPosition;
-                    m_player.SetExternalVelocity(m_initialVelocity);
+                    Vector3 newObjectPosition = transform.position;
+                    newObjectPosition.y += other.gameObject.GetComponent<Collider>().bounds.extents.y;
+                    Rigidbody rb = other.gameObject.GetComponent<Rigidbody>();
+                    rb.MovePosition(newObjectPosition);
+
+                    PlayerController player = other.GetComponent<PlayerController>();
+                    if (player)
+                        player.SetExternalVelocity(m_initialVelocity);
+                    else
+                        rb.velocity = m_initialVelocity;
                 }
             }
 
 #if UNITY_EDITOR
             private void OnDrawGizmos()
             {
-                if (!m_player)
-                    m_player = FindObjectOfType<PlayerController>();
+                PlayerController player = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
+
+                Vector3 lastPoint = transform.position;
+                Vector3 velocity = m_initialVelocity;
 
                 Handles.color = Color.blue;
-
-                Vector3 lastPosition = transform.position;
 
                 for (int p = 1; p < m_debugPointsToDraw; p++)
                 {
                     float t = p * m_debugTimeBetweenPoints;
-                    Vector3 nextPoint = m_initialVelocity;
-                    nextPoint *= t;
-                    nextPoint.y = m_initialVelocity.y * t + 0.5f * m_player.gravity * t * t;
 
-                    Vector3 position = transform.position + nextPoint;
+                    Vector3 nextPoint = transform.position + m_initialVelocity * t + 0.5f * player.gravity * t * t;
 
-                    if (Physics.Raycast(lastPosition, (position - lastPosition).normalized, out RaycastHit hit, Vector3.Distance(lastPosition, position), ~(1 << LayerMask.NameToLayer("Player")), QueryTriggerInteraction.Ignore))
+                    if (Physics.Raycast(lastPoint, (nextPoint - lastPoint).normalized, out RaycastHit hit, Vector3.Distance(lastPoint, nextPoint), ~(1 << LayerMask.NameToLayer("Player")), QueryTriggerInteraction.Ignore))
                     {
                         if (m_drawLines)
-                            Handles.DrawLine(lastPosition, hit.point);
+                            Handles.DrawLine(lastPoint, hit.point);
                         Handles.color = Color.red;
                         Handles.DrawWireCube(hit.point, new Vector3(0.5f, 0.5f, 0.5f));
                         break;
@@ -85,12 +93,12 @@ namespace Millivolt
                     else
                     {
                         if (m_drawLines)
-                            Handles.DrawLine(lastPosition, position);
+                            Handles.DrawLine(lastPoint, nextPoint);
                         else
-                            Handles.DrawWireCube(position, new Vector3(0.5f, 0.5f, 0.5f));
+                            Handles.DrawWireCube(nextPoint, new Vector3(0.5f, 0.5f, 0.5f));
                     }
-
-                    lastPosition = position;
+;
+                    lastPoint = nextPoint;
                 }
             }
 #endif
