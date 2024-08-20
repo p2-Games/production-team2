@@ -5,7 +5,6 @@
 ///
 ///</summary>
 
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -30,11 +29,7 @@ namespace Millivolt
 
 			[SerializeField] LevelData[] m_levels;
 
-			public GameState gameState
-			{
-				get { return m_gameState; }
-				set { m_gameState = value; }
-			}
+			public GameState gameState => m_gameState;
 
             private void Start()
             {
@@ -73,6 +68,16 @@ namespace Millivolt
 			{
                SceneManager.LoadScene(m_levels[m_currentLevel].prevLevelName);
             }
+
+			public void PauseGame()
+			{
+				m_gameState = GameState.PAUSE;
+			}
+
+			public void UnpauseGame()
+			{
+				m_gameState = GameState.PLAYING;
+			}
 		}
 	}
 }

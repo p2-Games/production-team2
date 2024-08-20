@@ -29,20 +29,12 @@ namespace Millivolt
                 }
             }
 
-            private int m_collidingObjects;
-
-            private void Start()
-            {
-                m_collidingObjects = 0;
-            }
-
             private void OnTriggerEnter(Collider other)
             {
                 if (CanTrigger(other.gameObject))
                 {
-                    if (m_collidingObjects == 0)
+                    if (!m_isActive)
                         isActive = true;
-                    m_collidingObjects++;
                 }
             }
 
@@ -50,8 +42,7 @@ namespace Millivolt
             {
                 if (CanTrigger(other.gameObject))
                 {
-                    m_collidingObjects--;
-                    if (m_collidingObjects == 0)
+                    if (m_isActive)
                         isActive = false;
                 }
             }
