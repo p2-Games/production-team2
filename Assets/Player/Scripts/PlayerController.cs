@@ -68,6 +68,9 @@ namespace Millivolt
                 Vector3 targetDirection = Quaternion.Euler(eulerDirection) * Vector3.back;
                 parent.rotation = Quaternion.FromToRotation(Vector3.up, targetDirection);
 
+                // set the physics gravity
+                Physics.gravity = targetDirection * magnitude;
+
                 // could also try:
                 // Quaternion.LookRotation(Vector3.down, targetDirection);
 
@@ -306,8 +309,6 @@ namespace Millivolt
             }
 
             [Header("Camera")]
-            [SerializeField] private CinemachineFreeLook m_freeLookCam;
-
             private FirstPersonCameraController m_cameraController;
 
 #if UNITY_EDITOR
@@ -317,26 +318,22 @@ namespace Millivolt
                 if (!m_drawGizmos)
                     return;
 
+                if (!m_collider)
+                    InitialiseCollider();
 
-                if (m_collider)
-                {
-                    Matrix4x4 original = Handles.matrix;
-                    Handles.matrix = transform.localToWorldMatrix;
+                Handles.matrix = transform.localToWorldMatrix;
 
-                    Handles.color = Color.green;
-                    Handles.DrawWireCube(m_collider.center - Vector3.up * m_collider.height / 2,
-                        new Vector3(m_groundCheckRadius * 2, m_groundCheckDistance * 2, m_groundCheckRadius * 2));
+                Handles.color = Color.green;
+                Handles.DrawWireCube(m_collider.center - Vector3.up * m_collider.height / 2,
+                    new Vector3(m_groundCheckRadius * 2, m_groundCheckDistance * 2, m_groundCheckRadius * 2));
 
-                    Handles.color = Color.cyan;
-                    Handles.DrawWireCube(m_collider.center + Vector3.up * m_collider.height / 2,
-                        new Vector3(m_groundCheckRadius * 2, m_groundCheckDistance * 2, m_groundCheckRadius * 2));
+                Handles.color = Color.cyan;
+                Handles.DrawWireCube(m_collider.center + Vector3.up * m_collider.height / 2,
+                    new Vector3(m_groundCheckRadius * 2, m_groundCheckDistance * 2, m_groundCheckRadius * 2));
 
-                    Handles.color = Color.magenta;
-                    Handles.ArrowHandleCap(0, m_collider.center - Vector3.up * m_collider.height / 2,
-                                            Quaternion.LookRotation(Vector3.down, gravity.normalized), 1, EventType.Repaint);
-
-                    Handles.matrix = original;
-                }
+                Handles.color = Color.magenta;
+                Handles.ArrowHandleCap(0, m_collider.center - Vector3.up * m_collider.height / 2,
+                                        Quaternion.LookRotation(Vector3.down, gravity.normalized), 1, EventType.Repaint);
             }
 #endif
         }
