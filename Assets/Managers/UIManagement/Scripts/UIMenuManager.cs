@@ -16,6 +16,8 @@ namespace Millivolt
 			[SerializeField] private UIMenu[] m_sceneMenus;
 			[SerializeField] private int m_currentMenu;
 
+			bool test = true;
+
 			/// <summary>
 			/// This will call the activate function of the 
 			/// </summary>
@@ -26,6 +28,26 @@ namespace Millivolt
 				m_sceneMenus[menuIndex].ActivateMenu();
 				m_currentMenu = menuIndex;
 			}
-		}
+
+            private void Start()
+            {
+				Invoke("ActivateDeactivateTest", 5f);
+				Invoke("ActivateDeactivateTest", 10f);
+            }
+
+			private void ActivateDeactivateTest()
+			{
+				if (test)
+				{
+					m_sceneMenus[m_currentMenu].ActivateMenu();
+					test = false;
+				}
+				else
+				{
+                    m_sceneMenus[m_currentMenu].DeactivateMenu();
+                }
+
+			}
+        }
 	}
 }
