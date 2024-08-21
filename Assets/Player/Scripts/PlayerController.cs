@@ -68,6 +68,9 @@ namespace Millivolt
                 Vector3 targetDirection = Quaternion.Euler(eulerDirection) * Vector3.back;
                 parent.rotation = Quaternion.FromToRotation(Vector3.up, targetDirection);
 
+                // set the physics gravity
+                Physics.gravity = targetDirection * magnitude;
+
                 // could also try:
                 // Quaternion.LookRotation(Vector3.down, targetDirection);
 
@@ -113,16 +116,18 @@ namespace Millivolt
             [SerializeField] private float m_decceleration;
             [SerializeField, Range(0, 90)] private float m_slopeLimit;
 
-            private Vector2 m_moveDirection;
+            private Vector2 m_moveInput;
             private Vector3 m_walkVelocity;
             private Vector3 m_externalVelocity;
             private Vector3 m_platformVelocity;
 
             private float m_verticalVelocity;
 
+            private Vector3 m_surfaceNormal;
+
             public void Move(InputAction.CallbackContext context)
             {
-                m_moveDirection = context.ReadValue<Vector2>();
+                m_moveInput = context.ReadValue<Vector2>();
             }
 
             /// <summary>
@@ -142,17 +147,28 @@ namespace Millivolt
                 camForward = camForward.normalized;
 
                 // apply input value
-                Vector3 horizontalRelativeInput = m_moveDirection.x * camRight;
-                Vector3 verticalRelativeInput = m_moveDirection.y * camForward;
+                Vector3 horizontalRelativeInput = m_moveInput.x * camRight;
+                Vector3 verticalRelativeInput = m_moveInput.y * camForward;
 
                 // combine and apply movement speed
-                Vector3 targetVelocity = (horizontalRelativeInput + verticalRelativeInput) * m_topSpeed;
+                Vector3 targetVelocity = (horizontalRelativeInput + verticalRelativeInput).normalized * m_topSpeed;
 
                 // calculate velocity change vector
                 if (m_externalVelocity == Vector3.zero)
-                    m_walkVelocity = Vector3.MoveTowards(m_walkVelocity, targetVelocity, (m_moveDirection == Vector2.zero ? m_decceleration : m_acceleration) * Time.fixedDeltaTime);
+                    m_walkVelocity = Vector3.MoveTowards(m_walkVelocity, targetVelocity, (m_moveInput == Vector2.zero ? m_decceleration : m_acceleration) * Time.fixedDeltaTime);
                 else
                     m_walkVelocity = Vector3.zero;
+
+                // project onto surface the player is currently standing on
+                if (m_surfaceNormal != Vector3.zero)
+                    m_walkVelocity = Vector3.ProjectOnPlane(m_walkVelocity, m_surfaceNormal)/*.normalized * m_walkVelocity.magnitude*/;
+
+                // calc target rotation for player body
+                if (targetVelocity != Vector3.zero)
+                {
+                    m_targetBodyRotation = Quaternion.LookRotation(targetVelocity.normalized, transform.up);
+                    //m_targetBodyRotation += Vector3.SignedAngle(transform.forward, targetVelocity.normalized, transform.up);
+                }
 
                 // only apply gravity if not grounded
                 if (!m_isGrounded)
@@ -181,6 +197,21 @@ namespace Millivolt
             /// </summary>
             /// <param name="value"></param>
             public void SetExternalVelocity(Vector3 value) => m_externalVelocity = value;
+
+            [Header("Heading")]
+            [SerializeField] private float m_rotationAcceleration;
+            private Quaternion m_targetBodyRotation;
+            //private float m_currentBodyRotation;
+
+            private void Update()
+            {
+                // move player to face correct direction when move direction is not zero
+                //m_currentBodyRotation = Mathf.MoveTowardsAngle(m_currentBodyRotation, m_targetBodyRotation, m_rotationAcceleration);
+                //transform.localEulerAngles = new Vector3(0, m_currentBodyRotation, 0);
+                transform.localEulerAngles = new Vector3(0,
+                    Quaternion.RotateTowards(transform.localRotation, m_targetBodyRotation, m_rotationAcceleration * Time.deltaTime).eulerAngles.y,
+                    0);
+            }
 
             [Header("Jumping")]
             [Tooltip("The velocity added to the player in units per second when they jump.")]
@@ -220,7 +251,10 @@ namespace Millivolt
 
                     // if no hits, the player is not standing on anything
                     if (hits.Length == 0)
+                    {
+                        m_surfaceNormal = Vector3.zero;
                         return false;
+                    }
                     // if the player is on a walkable object
                     else
                     {
@@ -243,9 +277,11 @@ namespace Millivolt
                         }
 
                         // if the closest object does not meet the slope limit requirements, then the player is NOT standing on it
-                        // TODO: snap to slopes
                         if (Vector3.Angle(hit.normal, transform.up) > m_slopeLimit)
                             return false;
+
+                        // save the normal of the surface the player is standing on
+                        m_surfaceNormal = hit.normal;
 
                         return true;
                     }
@@ -273,8 +309,6 @@ namespace Millivolt
             }
 
             [Header("Camera")]
-            [SerializeField] private CinemachineFreeLook m_freeLookCam;
-
             private FirstPersonCameraController m_cameraController;
 
 #if UNITY_EDITOR
@@ -284,26 +318,22 @@ namespace Millivolt
                 if (!m_drawGizmos)
                     return;
 
+                if (!m_collider)
+                    InitialiseCollider();
 
-                if (m_collider)
-                {
-                    Matrix4x4 original = Handles.matrix;
-                    Handles.matrix = transform.localToWorldMatrix;
+                Handles.matrix = transform.localToWorldMatrix;
 
-                    Handles.color = Color.green;
-                    Handles.DrawWireCube(m_collider.center - Vector3.up * m_collider.height / 2,
-                        new Vector3(m_groundCheckRadius * 2, m_groundCheckDistance * 2, m_groundCheckRadius * 2));
+                Handles.color = Color.green;
+                Handles.DrawWireCube(m_collider.center - Vector3.up * m_collider.height / 2,
+                    new Vector3(m_groundCheckRadius * 2, m_groundCheckDistance * 2, m_groundCheckRadius * 2));
 
-                    Handles.color = Color.cyan;
-                    Handles.DrawWireCube(m_collider.center + Vector3.up * m_collider.height / 2,
-                        new Vector3(m_groundCheckRadius * 2, m_groundCheckDistance * 2, m_groundCheckRadius * 2));
+                Handles.color = Color.cyan;
+                Handles.DrawWireCube(m_collider.center + Vector3.up * m_collider.height / 2,
+                    new Vector3(m_groundCheckRadius * 2, m_groundCheckDistance * 2, m_groundCheckRadius * 2));
 
-                    Handles.color = Color.magenta;
-                    Handles.ArrowHandleCap(0, m_collider.center - Vector3.up * m_collider.height / 2,
-                                            Quaternion.LookRotation(Vector3.down, gravity.normalized), 1, EventType.Repaint);
-
-                    Handles.matrix = original;
-                }
+                Handles.color = Color.magenta;
+                Handles.ArrowHandleCap(0, m_collider.center - Vector3.up * m_collider.height / 2,
+                                        Quaternion.LookRotation(Vector3.down, gravity.normalized), 1, EventType.Repaint);
             }
 #endif
         }

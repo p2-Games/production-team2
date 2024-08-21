@@ -7,7 +7,7 @@
 ///</summary>
 
 using Cinemachine;
-using Millivolt.UI;
+using Millivolt.Player.UI;
 using Millivolt.Utilities;
 using System.Collections;
 using UnityEngine;
