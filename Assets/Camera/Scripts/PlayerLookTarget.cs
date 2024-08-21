@@ -38,14 +38,20 @@ namespace Millivolt
                 }
             }
 
+            [Tooltip("The target Transform.\n Should be the Player's Motor or the Player Follower")]
+            [SerializeField] private Transform m_target;
+
+            [Tooltip("The max distance it can be from its target.")]
             [SerializeField] private float m_followDistance;
+            [Tooltip("For Look Types that don't have a set target, the speed at which the object moves towards its target.")]
             [SerializeField] private float m_followSpeed;
+            [Tooltip("A static offset value for the look target.")]
             [SerializeField] private Vector3 m_followOffset;
+            [Tooltip("How smooth movement is.")]
             [SerializeField] private float m_dampingStrength;
 
             [Space, SerializeField] private bool m_drawGizmos;
 
-            private Transform m_player;
             private Transform m_camera;
             private Vector3 m_targetPosition;
             private Vector3 m_variableTarget;
@@ -53,9 +59,9 @@ namespace Millivolt
             private Vector2 m_mouseDelta;
             private Vector2 m_inputDirection;
 
-            private Vector3 positionWithOffset => m_player.position + followOffset;
+            private Vector3 targetPosition => m_target.position + followOffset;
             public Vector3 followOffset {
-                get => m_followOffset.x * m_player.right + m_followOffset.y * m_player.up + m_followOffset.z * m_player.forward;
+                get => m_followOffset.x * m_target.right + m_followOffset.y * m_target.up + m_followOffset.z * m_target.forward;
                 set => m_followOffset = value;
             }
 
@@ -64,7 +70,6 @@ namespace Millivolt
 
             private void Start()
             {
-                m_player = GameObject.FindWithTag("Player").transform;
                 m_camera = GameObject.FindWithTag("MainCamera").transform;
             }
 
@@ -79,27 +84,33 @@ namespace Millivolt
                 switch (m_lookType)
                 {
                     case LookType.Forward:
-                        m_targetPosition = positionWithOffset + m_player.forward * m_followDistance;
+                        m_targetPosition = targetPosition + m_target.forward * m_followDistance;
                         break;
 
                     case LookType.Movement:
-                        m_variableTarget += (m_inputDirection.x * Vector3.ProjectOnPlane(m_camera.right, m_player.up) +
-                                             m_inputDirection.y * Vector3.ProjectOnPlane(m_camera.forward, m_player.up)).normalized * m_followSpeed;
+                        m_variableTarget += (m_inputDirection.x * Vector3.ProjectOnPlane(m_camera.right, m_target.up) +
+                                             m_inputDirection.y * Vector3.ProjectOnPlane(m_camera.forward, m_target.up)).normalized * m_followSpeed;
                         m_variableTarget = Vector3.ClampMagnitude(m_variableTarget, m_followDistance);
-                        m_targetPosition = positionWithOffset + m_variableTarget;
+                        m_targetPosition = targetPosition + m_variableTarget;
                         break;
 
                     case LookType.Look:
-                        m_variableTarget += (m_mouseDelta.x * Vector3.ProjectOnPlane(m_camera.right, m_player.up) +
-                                             m_mouseDelta.y * Vector3.ProjectOnPlane(m_camera.forward, m_player.up)).normalized * m_followSpeed;
+                        m_variableTarget += (m_mouseDelta.x * Vector3.ProjectOnPlane(m_camera.right, m_target.up) +
+                                             m_mouseDelta.y * Vector3.ProjectOnPlane(m_camera.forward, m_target.up)).normalized * m_followSpeed;
                         m_variableTarget = Vector3.ClampMagnitude(m_variableTarget, m_followDistance);
-                        m_targetPosition = positionWithOffset + m_variableTarget;
+                        m_targetPosition = targetPosition + m_variableTarget;
                         break;
 
                     case LookType.StrictOffset:
-                        m_targetPosition = positionWithOffset;
+                        m_targetPosition = targetPosition;
                         break;
                 }
+            }
+
+            [ContextMenu("Reset position")]
+            public void SetToPlayerPosition()
+            {
+                transform.position = m_target.position;
             }
 
 #if UNITY_EDITOR
@@ -108,7 +119,7 @@ namespace Millivolt
                 if (!m_drawGizmos)
                     return;
 
-                if (!m_player)
+                if (!m_camera)
                     Start();
 
                 if (!Application.isPlaying)
