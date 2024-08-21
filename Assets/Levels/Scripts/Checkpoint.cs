@@ -43,10 +43,7 @@ namespace Millivolt
             public void RespawnPlayer(GameObject player)
 			{
 				player.transform.position = m_respawnPoint.position;
-				//Add Logic for turning the player to the rotation of the checkpoint
-
-
-				//SceneManager.LoadScene("[MicrowavePrototyping01]");
+				SceneManager.LoadScene("[MicrowavePrototyping01]");
                 //CinemachinePOV pov = m_fpsCam.GetCinemachineComponent<CinemachinePOV>();
                 //pov.m_VerticalAxis.Value = m_respawnCamDir.x;
                 //pov.m_HorizontalAxis.Value = m_respawnCamDir.y;
