@@ -108,6 +108,7 @@ GameObject:
   - component: {fileID: 3448478237505982629}
   - component: {fileID: 3448478237505982628}
   - component: {fileID: 3448478237505982631}
+  - component: {fileID: 7285760213518000863}
   m_Layer: 0
   m_Name: Spawn_PressurePlate
   m_TagString: Untagged
@@ -161,6 +162,27 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.5, y: 1, z: 1.5}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!95 &7285760213518000863
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3448478237505982630}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 5ba64f8c00419124c9a20a7448de9396, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &3448478238345550211
 GameObject:
   m_ObjectHideFlags: 0
