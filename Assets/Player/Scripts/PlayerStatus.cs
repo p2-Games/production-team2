@@ -27,7 +27,7 @@ namespace Millivolt
             [SerializeField] private PlayerHealthBarUI m_playerHealthbar;
 
             [Header("LevelData Reference")]
-            [SerializeField] LevelData m_lvlData;
+            [SerializeField] LevelManager m_lvlData;
 
             [Header("Health Regen Properties")]
             [Tooltip("This will be the number of seconds after taking damage that the player will begine to regen health")]
@@ -41,7 +41,7 @@ namespace Millivolt
             private void Start()
             {
                 m_currentHealth = m_maxHealth;
-                m_lvlData = FindObjectOfType<LevelData>();
+                m_lvlData = FindObjectOfType<LevelManager>();
             }
 
             public void TakeDamage(float value)
