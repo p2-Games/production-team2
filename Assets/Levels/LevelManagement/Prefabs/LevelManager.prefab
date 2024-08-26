@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6098003028203135338}
-  - component: {fileID: 6098003028203135339}
+  - component: {fileID: -7243825555886614746}
   m_Layer: 0
-  m_Name: LevelData
+  m_Name: LevelManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32,7 +32,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6098003028203135339
+--- !u!114 &-7243825555886614746
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,12 +41,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 6098003028203135336}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 58324326b74b7ec489eee54185d0580f, type: 3}
+  m_Script: {fileID: 11500000, guid: 985219edccb029d41b0c6fb337c311f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_prevLevel: {fileID: 0}
-  m_nextLevel: {fileID: 0}
+  m_prevLevelName: 
+  m_nextLevelName: 
   currentCheckpoint: 0
   m_levelCheckpoints: []
   m_autoAddCheckpoints: 0
-  m_defaultGravity: {x: 0, y: -18, z: 0}
+  m_defaultGravity: {x: 0, y: 0, z: 0}
+  m_lvlData: {fileID: 0}

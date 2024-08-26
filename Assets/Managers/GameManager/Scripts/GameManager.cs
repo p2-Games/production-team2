@@ -27,7 +27,7 @@ namespace Millivolt
 			[Header("Level Properties")]
 			[SerializeField] private int m_currentLevel;
 
-			[SerializeField] LevelData[] m_levels;
+			[SerializeField] LevelManager[] m_levels;
 
 			public GameState gameState => m_gameState;
 
