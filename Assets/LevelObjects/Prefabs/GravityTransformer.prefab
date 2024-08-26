@@ -44,10 +44,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fb8353bed0fee149b91354965586e3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_gravityUI: {fileID: 0}
-  m_changeInstantaneously: 1
-  m_gravityChangeTime: 0
-  m_newGravity: {x: -18, y: 0, z: 0}
+  m_isActive: 0
+  m_description: 
+  m_typeFilter: []
+  m_magnitude: 0
+  m_direction: {x: 0, y: 0, z: 0}
 --- !u!1 &6089494136468464892
 GameObject:
   m_ObjectHideFlags: 0
@@ -57,6 +58,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6089494136468464893}
+  - component: {fileID: 125077970684087769}
   m_Layer: 0
   m_Name: GravityTransformer
   m_TagString: Untagged
@@ -81,6 +83,25 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &125077970684087769
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6089494136468464892}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fb8353bed0fee149b91354965586e3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_isActive: 0
+  m_description: Changes the gravity to the desired value.
+  m_typeFilter:
+  - Player
+  - LevelObject
+  m_magnitude: 18
+  m_direction: {x: 0, y: 0, z: 180}
 --- !u!1001 &7226494133749309730
 PrefabInstance:
   m_ObjectHideFlags: 0

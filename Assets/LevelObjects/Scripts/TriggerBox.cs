@@ -11,23 +11,8 @@ namespace Millivolt
 {
     namespace LevelObjects
     {
-        using Events;
-        public class TriggerBox : LevelObject
+        public class TriggerBox : EventObject
         {
-            [SerializeField] private Event[] m_events;
-
-            public override bool isActive
-            {
-                get => base.isActive;
-                set
-                {
-                    foreach (Event ev in m_events)
-                        ev.DoEvent(value);
-
-                    m_isActive = value;
-                }
-            }
-
             private int m_collidingObjects;
 
             private void Start()

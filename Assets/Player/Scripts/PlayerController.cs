@@ -54,32 +54,19 @@ namespace Millivolt
                 }
             }
 
-            public void SetGravity(float magnitude, Vector3 eulerDirection)
+            public void SetGravity(float magnitude, Vector3 direction)
             {
-                // if the player is holding a heavy object, dont flip them
-                PickupObject pickupObject = GetComponentInChildren<PlayerInteraction>().heldPickupObject;
-                if (pickupObject && pickupObject.pickupType == PickupType.Heavy)
-                    return;
-
                 // save rotation before changing for camera details
-                Quaternion priorRotation = parent.rotation; 
+                Quaternion priorRotation = parent.rotation;
 
-                // change orientation and gravity
-                Vector3 targetDirection = Quaternion.Euler(eulerDirection) * Vector3.back;
-                parent.rotation = Quaternion.FromToRotation(Vector3.up, targetDirection);
+                // set parent rotation
+                parent.rotation = Quaternion.Euler(direction) * Quaternion.FromToRotation(Vector3.forward, Vector3.down);
 
                 // set the physics gravity
-                Physics.gravity = targetDirection * magnitude;
-
-                // could also try:
-                // Quaternion.LookRotation(Vector3.down, targetDirection);
+                Physics.gravity = -parent.up * magnitude;
 
                 // set magnitude/value of gravity
                 m_gravity = -Mathf.Abs(magnitude);
-
-                // set rotation of camera
-                if (m_cameraController)
-                    m_cameraController.SetLookRotation(priorRotation);
             }
 
             [ContextMenu("Initialise Rigidbody")]
@@ -125,6 +112,9 @@ namespace Millivolt
 
             private Vector3 m_surfaceNormal;
 
+            public bool canMove { get { return m_canMove; } set { m_canMove = value; } }
+            private bool m_canMove = true;
+
             public void Move(InputAction.CallbackContext context)
             {
                 m_moveInput = context.ReadValue<Vector2>();
@@ -154,7 +144,7 @@ namespace Millivolt
                 Vector3 targetVelocity = (horizontalRelativeInput + verticalRelativeInput).normalized * m_topSpeed;
 
                 // calculate velocity change vector
-                if (m_externalVelocity == Vector3.zero)
+                if (canMove)
                     m_walkVelocity = Vector3.MoveTowards(m_walkVelocity, targetVelocity, (m_moveInput == Vector2.zero ? m_decceleration : m_acceleration) * Time.fixedDeltaTime);
                 else
                     m_walkVelocity = Vector3.zero;
@@ -196,7 +186,11 @@ namespace Millivolt
             /// Takes control away from the player until they land back on the ground.
             /// </summary>
             /// <param name="value"></param>
-            public void SetExternalVelocity(Vector3 value) => m_externalVelocity = value;
+            public void SetExternalVelocity(Vector3 value)
+            {
+                m_externalVelocity = value;
+                m_canMove = false;
+            }
 
             [Header("Heading")]
             [SerializeField] private float m_rotationAcceleration;
@@ -263,8 +257,15 @@ namespace Millivolt
                         if (!m_isGrounded)
                         {
                             m_verticalVelocity = 0;
-                            m_platformVelocity = Vector3.zero;
-                            m_externalVelocity = Vector3.zero;
+
+                            if (m_platformVelocity != Vector3.zero)
+                                m_platformVelocity = Vector3.zero;
+
+                            if (m_externalVelocity != Vector3.zero)
+                            {
+                                m_externalVelocity = Vector3.zero;
+                                m_canMove = true;
+                            }
                         }
 
                         // get closest hit walkable object
@@ -285,10 +286,6 @@ namespace Millivolt
 
                         return true;
                     }
-
-                    // ALTERNATE METHOD: checkbox
-                    //return Physics.CheckBox(new Vector3(transform.position.x, transform.position.y - m_collider.height / 2, transform.position.z), 
-                    //   new Vector3(m_groundCheckRadius, m_groundCheckDistance, m_groundCheckRadius), Quaternion.identity, m_walkableLayers);
                 }
             }
 

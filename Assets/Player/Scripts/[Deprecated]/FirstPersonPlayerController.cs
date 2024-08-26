@@ -48,9 +48,9 @@ namespace Millivolt
             public void SetGravity(float magnitude, Vector3 eulerDirection)
             {
                 // if the player is holding a heavy object, dont flip them
-                PickupObject pickupObject = GetComponentInChildren<PlayerInteraction>().heldPickupObject;
-                if (pickupObject && pickupObject.pickupType == PickupType.Heavy)
-                    return;
+                // PickupObject pickupObject = GetComponentInChildren<PlayerInteraction>().heldPickupObject;
+                // if (pickupObject && pickupObject.pickupType == PickupType.Heavy)
+                //     return;
                 
                 // move the parent to the location of the player and reset the player's position so the player is rotated correctly
                 parent.position = transform.position;

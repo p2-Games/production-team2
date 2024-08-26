@@ -38,6 +38,7 @@ namespace Millivolt
 
                 [SerializeField] private PickupType m_type;
                 public PickupType pickupType => m_type;
+                public bool playerCanGrab => m_type == PickupType.Immovable;
 
                 public Vector3 velocity
                 {

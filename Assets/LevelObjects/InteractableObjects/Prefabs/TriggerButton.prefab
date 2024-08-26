@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 212409736027426635}
   - component: {fileID: 1427533278458593079}
   m_Layer: 6
-  m_Name: PressableButton
+  m_Name: TriggerButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45,16 +45,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 7049356846749252190}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fcdae7ca312f29b43b48c30194189c55, type: 3}
+  m_Script: {fileID: 11500000, guid: f26d1c84a633cee4e861bd69f6c602cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_isActive: 0
-  m_description: A button the player can press by interacting with it.
+  m_description: 
   m_playerCanInteract: 1
   m_staysActive: 0
-  m_interactTime: 0.7
-  m_events:
-  - {fileID: 0}
+  m_interactTime: 0
+  m_events: []
 --- !u!135 &5164365305421513023
 SphereCollider:
   m_ObjectHideFlags: 0

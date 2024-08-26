@@ -9,10 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3257926173079996400}
-  - component: {fileID: 3257926173079996403}
+  - component: {fileID: 238560178211184478}
   - component: {fileID: 3257926173079996401}
   m_Layer: 0
-  m_Name: PressurePlateLOB
+  m_Name: PressurePlate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -34,7 +34,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3257926173079996403
+--- !u!114 &238560178211184478
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -43,13 +43,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 3257926173079996402}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be974033ec0bbb74e986086224301f33, type: 3}
+  m_Script: {fileID: 11500000, guid: 116025d2872aacf418b35c24fcb7256a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_isActive: 0
-  m_description: Stand on it activate all events.
-  m_events:
-  - {fileID: 0}
+  m_description: 
+  m_events: []
 --- !u!65 &3257926173079996401
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -88,7 +87,7 @@ PrefabInstance:
     - target: {fileID: 9059883725355468389, guid: 4a356a2fd114d45469a6173756227e40,
         type: 3}
       propertyPath: m_VersionIndex
-      value: 762
+      value: 765
       objectReference: {fileID: 0}
     - target: {fileID: 9059883726615343013, guid: 4a356a2fd114d45469a6173756227e40,
         type: 3}
