@@ -20,7 +20,7 @@ namespace Millivolt
 
             public int checkpointID;
 
-			private LevelData m_lvlData;
+			private LevelManager m_lvlData;
 
 			[SerializeField] private Vector2 m_respawnCamDir;
 
@@ -28,7 +28,7 @@ namespace Millivolt
 
             private void OnEnable()
             {
-				m_lvlData = FindObjectOfType<LevelData>();
+				m_lvlData = FindObjectOfType<LevelManager>();
 				m_fpsCam = FindObjectOfType<CinemachineVirtualCamera>();
 				if (m_respawnPoint == null)
 				{

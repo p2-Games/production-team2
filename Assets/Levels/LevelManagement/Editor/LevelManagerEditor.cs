@@ -14,12 +14,12 @@ namespace Millivolt
 	{
 		using EGL = EditorGUILayout;
 
-		[CustomEditor(typeof(LevelData))]
-		public class LevelDataEditor : Editor
+		[CustomEditor(typeof(LevelManager))]
+		public class LevelManagerEditor : Editor
 		{
 			private SceneAsset m_prev, m_next;
 			
-			protected SerializedProperty m_currentCheckpoint, m_levelCheckpoints, m_prevLevelName, m_nextLevelName, m_autoAddCheckpoints;
+			protected SerializedProperty m_currentCheckpoint, m_levelCheckpoints, m_prevLevelName, m_nextLevelName, m_autoAddCheckpoints, m_lvlData;
 
 			protected bool hasBeenChanged;
 
@@ -84,6 +84,12 @@ namespace Millivolt
                 EGL.PropertyField(m_levelCheckpoints);
 				EGL.PropertyField(m_autoAddCheckpoints);
                 EGL.EndVertical();
+
+                EGL.Space(10, false);
+
+				EGL.BeginHorizontal();
+				EGL.PropertyField(m_lvlData);
+				EGL.EndHorizontal();
             }
 
             protected void GetSerializedProperties()
@@ -96,6 +102,7 @@ namespace Millivolt
 				m_prevLevelName = serializedObject.FindProperty("m_prevLevelName");
 				m_nextLevelName = serializedObject.FindProperty("m_nextLevelName");
 				m_autoAddCheckpoints = serializedObject.FindProperty("m_autoAddCheckpoints");
+				m_lvlData = serializedObject.FindProperty("m_lvlData");
 			}
         }
 	}
