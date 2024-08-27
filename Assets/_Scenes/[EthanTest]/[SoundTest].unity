@@ -123,22 +123,17 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1001 &783424258
+--- !u!1001 &153493579
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 533785080986299010, guid: 114f0aac45558d34a974b052bc00f8f1,
-        type: 3}
-      propertyPath: m_clipCollections.Array.data[0].m_collectionName
-      value: footsteps
-      objectReference: {fileID: 0}
     - target: {fileID: 1406492273165564207, guid: 114f0aac45558d34a974b052bc00f8f1,
         type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1406492273165564207, guid: 114f0aac45558d34a974b052bc00f8f1,
         type: 3}
@@ -197,6 +192,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 114f0aac45558d34a974b052bc00f8f1, type: 3}
+--- !u!114 &153493580 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 533785080986299010, guid: 114f0aac45558d34a974b052bc00f8f1,
+    type: 3}
+  m_PrefabInstance: {fileID: 153493579}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b7f6ceffd480a949a45c53178fa95f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &783931270
 GameObject:
   m_ObjectHideFlags: 0
@@ -408,7 +415,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!114 &1247580522
 MonoBehaviour:
@@ -430,18 +437,6 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
---- !u!114 &1459433983 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 533785080986299010, guid: 114f0aac45558d34a974b052bc00f8f1,
-    type: 3}
-  m_PrefabInstance: {fileID: 783424258}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b7f6ceffd480a949a45c53178fa95f2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2003614534
 GameObject:
   m_ObjectHideFlags: 0
@@ -471,10 +466,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b3756cead3aa2e4cb17cc2d021c2646, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controller: {fileID: 1459433983}
+  controller: {fileID: 153493580}
   place: {fileID: 2003614536}
-  collectionToPlay: footsteps
-  clipToPlay: footstep1
+  collectionToPlay: Footsteps
+  clipToPlay: Footstep1
 --- !u!4 &2003614536
 Transform:
   m_ObjectHideFlags: 0
@@ -488,5 +483,5 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
