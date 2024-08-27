@@ -23,7 +23,7 @@ namespace Millivolt
             private float m_currentHealth;
 
             [Header("LevelData Reference")]
-            [SerializeField] LevelManager m_lvlData;
+            [SerializeField] LevelManager m_levelManager;
 
             [Header("Health Regen Properties")]
             [Tooltip("This will be the number of seconds after taking damage that the player will begine to regen health")]
@@ -44,7 +44,7 @@ namespace Millivolt
             {
                 m_currentHealth = m_maxHealth;
                 UpdateVignetteEffect();
-                m_lvlData = FindObjectOfType<LevelManager>();
+                m_levelManager = FindObjectOfType<LevelManager>();
             }
 
             public void TakeDamage(float value)
@@ -72,6 +72,7 @@ namespace Millivolt
                 m_currentHealth = m_maxHealth;
                 UpdateVignetteEffect();
                 Instantiate(m_deathCanvas);
+                m_levelManager.GetActiveCheckpoint().RespawnPlayer();
             }
 
             /// <summary>
