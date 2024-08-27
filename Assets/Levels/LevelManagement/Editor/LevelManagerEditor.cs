@@ -47,7 +47,10 @@ namespace Millivolt
 
 			protected virtual void OnGUI()
 			{
-				EGL.BeginHorizontal();
+				using (new EditorGUI.DisabledScope(true)) 
+					EditorGUILayout.ObjectField("Script", MonoScript.FromMonoBehaviour((MonoBehaviour)target), GetType(), false);
+
+                EGL.BeginHorizontal();
 				EGL.LabelField(new GUIContent("Previous Scene"), EditorStyles.boldLabel);
                 EGL.LabelField(new GUIContent("Next Scene"), EditorStyles.boldLabel);
 				EGL.EndHorizontal();
