@@ -22,10 +22,6 @@ namespace Millivolt
             public float maxHealth => m_maxHealth;
             private float m_currentHealth;
 
-            [Header("Health Canvas References")]
-            [SerializeField] private PlayerHurtEffect m_playerHurtEffect;
-            [SerializeField] private PlayerHealthBarUI m_playerHealthbar;
-
             [Header("LevelData Reference")]
             [SerializeField] LevelManager m_lvlData;
 
@@ -38,9 +34,16 @@ namespace Millivolt
             [SerializeField] private float m_healthRegenAmount;
             private Coroutine m_regen;
 
+            [Header("Hurt and Death effect references")]
+            [Tooltip("This needs the screen effect material for the hurt effect")]
+            [SerializeField] private Material m_staticVignette;
+
+            [SerializeField] private GameObject m_deathCanvas;
+
             private void Start()
             {
                 m_currentHealth = m_maxHealth;
+                UpdateVignetteEffect();
                 m_lvlData = FindObjectOfType<LevelManager>();
             }
 
@@ -51,9 +54,7 @@ namespace Millivolt
 
                 m_currentHealth -= value;
 
-
-                m_playerHealthbar.UpdateHealthBar(m_currentHealth, m_maxHealth);
-                m_playerHurtEffect.ChangeVignetteAlpha(m_currentHealth, m_maxHealth);
+                UpdateVignetteEffect();
 
                 m_regen = StartCoroutine(RegenHealth());
                 if (m_currentHealth <= 0)
@@ -69,9 +70,8 @@ namespace Millivolt
 
                 // LOGIC HERE
                 m_currentHealth = m_maxHealth;
-                m_lvlData.GetActiveCheckpoint().RespawnPlayer(gameObject);                
-                m_playerHealthbar.ResetUI();
-                m_playerHurtEffect.ResetUI();
+                UpdateVignetteEffect();
+                Instantiate(m_deathCanvas);
             }
 
             /// <summary>
@@ -84,12 +84,23 @@ namespace Millivolt
                 while(m_currentHealth < m_maxHealth)
                 {
                     m_currentHealth += m_healthRegenAmount;
-                    m_playerHealthbar.UpdateHealthBar(m_currentHealth, m_maxHealth);
-                    m_playerHurtEffect.ChangeVignetteAlpha(m_currentHealth, m_maxHealth);
+                    UpdateVignetteEffect();
                     yield return new WaitForSeconds(m_healthRegenRate);
                 }
                 if (m_currentHealth > m_maxHealth)
                     m_currentHealth = m_maxHealth;
+            }
+
+            private void UpdateVignetteEffect()
+            {
+                float effectAmount = 1 - (m_currentHealth / m_maxHealth);
+
+                if (effectAmount > 0.1)
+                {
+                    m_staticVignette.SetFloat("_VignetteIntensity", effectAmount);
+                }
+                else
+                    m_staticVignette.SetFloat("_VignetteIntensity", 0);
             }
         }
     }

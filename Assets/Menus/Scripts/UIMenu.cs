@@ -85,7 +85,7 @@ namespace Millivolt
                     if (m_uiGroup != null)
                     {
                         m_uiGroup.transform.position = m_enableStartPos;
-                        Tween.Position(m_uiGroup.transform, m_enableEndPos, m_enableTweenDuration, m_enableTweenDelay);
+                        Tween.Position(m_uiGroup.transform, m_enableEndPos, m_enableTweenDuration, m_enableTweenDelay, Tween.EaseInOut);
                     }
                 }
             }
@@ -101,7 +101,7 @@ namespace Millivolt
                 {
                     if (m_uiGroup != null)
                     {
-                        Tween.Position(m_uiGroup.transform, m_disableEndPos, m_disableTweenDuration, m_disableTweenDelay);
+                        Tween.Position(m_uiGroup.transform, m_disableEndPos, m_disableTweenDuration, m_disableTweenDelay, Tween.EaseInOut);
                     }
                 }
             }
