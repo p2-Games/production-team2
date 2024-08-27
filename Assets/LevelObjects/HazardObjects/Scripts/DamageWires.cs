@@ -42,7 +42,7 @@ namespace Millivolt
                 {
                     if (m_isActive)
                     {
-                        PlayerStatus player = other.GetComponent<PlayerStatus>();
+                        PlayerStatus player = other.GetComponentInChildren<PlayerStatus>();
                         if (player)
                             player.TakeDamage(m_damage * Time.deltaTime);
                     }
