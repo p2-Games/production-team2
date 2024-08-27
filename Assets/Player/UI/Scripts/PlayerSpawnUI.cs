@@ -38,10 +38,10 @@ namespace Millivolt
 
                     m_delay += 0.2f;
 
-                    Tween.Color(m_bgScreen, new Color(1, 1, 1, 0), 0.01f, m_startDelay + m_delay, Tween.EaseInOutStrong);
-                    Tween.Color(m_growScreen, new Color(1, 1, 1, 0), 0.1f, m_startDelay + m_delay, Tween.EaseInOutStrong);
+                    Tween.Color(m_bgScreen, new Color(1, 1, 1, 0), 0.01f, m_startDelay + m_delay);
+                    Tween.Color(m_growScreen, new Color(1, 1, 1, 0), 0.4f, m_startDelay + m_delay);
 
-                    Destroy(gameObject, m_startDelay + 0.641f);
+                    Destroy(gameObject, m_startDelay + 0.7f);
                 }
             }
 		}
