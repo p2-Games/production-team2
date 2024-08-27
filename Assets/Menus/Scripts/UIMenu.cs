@@ -30,9 +30,9 @@ namespace Millivolt
             [SerializeField] private bool m_enableTweening;
             [Header("Activate tween info")]
             [Tooltip("The position that the menu will start at when it activates")]
-            [SerializeField] private Vector3 m_enableStartPos;
+            [SerializeField] private Vector2 m_enableStartPos;
             [Tooltip("The position that the menu will end at when it activates")]
-            [SerializeField] private Vector3 m_enableEndPos;
+            [SerializeField] private Vector2 m_enableEndPos;
             [Tooltip("How long the activation tween will last for")]
             [SerializeField] private float m_enableTweenDuration;
             [Tooltip("Delay before the tween activates")]
