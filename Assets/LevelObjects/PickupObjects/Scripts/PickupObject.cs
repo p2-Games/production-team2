@@ -24,10 +24,7 @@ namespace Millivolt
             [RequireComponent(typeof(Rigidbody), typeof(Collider))]
             public class PickupObject : LevelObject
             {
-                [Header("Pickup Object Details"), Tooltip("The keyword for the type of pickup.")]
-                [SerializeField] private string m_keyword;
-                public string keyword => m_keyword;
-
+                [Header("Pickup Object Details")]
                 [Tooltip("The maximum speed the object can travel at when following the player's cursor while picked up.")]
                 [SerializeField] private float m_followMaxSpeed;
                 public float followMaxSpeed => m_followMaxSpeed;

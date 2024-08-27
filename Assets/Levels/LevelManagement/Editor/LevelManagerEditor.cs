@@ -79,8 +79,6 @@ namespace Millivolt
                 EGL.LabelField(m_nextLevelName.stringValue);
 				EGL.EndHorizontal();
 
-                EGL.Space(10, false);
-
                 //Drag in Level checkpoints
                 EGL.BeginVertical();
                 //EditorGUILayout.LabelField(new GUIContent("Level Checkpoints"), EditorStyles.boldLabel);
@@ -105,7 +103,7 @@ namespace Millivolt
 				m_prevLevelName = serializedObject.FindProperty("m_prevLevelName");
 				m_nextLevelName = serializedObject.FindProperty("m_nextLevelName");
 				m_autoAddCheckpoints = serializedObject.FindProperty("m_autoAddCheckpoints");
-				m_lvlData = serializedObject.FindProperty("m_lvlData");
+				m_lvlData = serializedObject.FindProperty("m_levelData");
 			}
         }
 	}

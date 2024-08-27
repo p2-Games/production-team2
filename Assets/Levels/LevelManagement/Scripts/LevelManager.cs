@@ -5,10 +5,7 @@
 ///
 ///</summary>
 
-using UnityEditor;
 using UnityEngine;
-using Millivolt.UI;
-using Millivolt.Player;
 
 namespace Millivolt
 {
@@ -16,22 +13,22 @@ namespace Millivolt
 	{
 		public class LevelManager : MonoBehaviour
 		{
-			[Header("Scene Properties")]
-            [HideInInspector, SerializeField] private string m_prevLevelName;
-            [HideInInspector, SerializeField] private string m_nextLevelName;
-
+            // level loading
+			[SerializeField] private string m_prevLevelName;
+            [SerializeField] private string m_nextLevelName;
 			public string prevLevelName => m_prevLevelName;
 			public string nextLevelName => m_nextLevelName;
 
-            //[Header("Checkpoint Properties")]
+			// checkpoints
 			[SerializeField] public int currentCheckpoint;
 			[SerializeField] private Checkpoint[] m_levelCheckpoints;
-			[Tooltip("This will find all the checkpoints in the scene and add them to the list automatically on play.\nWILL NOT SORT PROPERLY")]
 			[SerializeField] private bool m_autoAddCheckpoints;
 
-			[Header("Level Data")]
-			[SerializeField] private LevelData m_lvlData;
+			// level data
+			[SerializeField] private LevelData m_levelData;
+			public LevelData currentLevelData => m_levelData;
 
+			// singleton pattern
 			public static LevelManager Instance;
 
             private void Awake()

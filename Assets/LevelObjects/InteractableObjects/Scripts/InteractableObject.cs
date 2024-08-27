@@ -62,10 +62,16 @@ namespace Millivolt
                 }
 			}
 
-            protected virtual void Update()
-            {
-				if (m_timer > 0)
-					m_timer -= Time.deltaTime;
+                private void Start()
+                {
+                    m_interactTimer = m_interactTime;
+                }
+
+                protected virtual void Update()
+                {
+                    if (m_interactTimer < m_interactTime)
+                        m_interactTimer += Time.deltaTime;
+                }
             }
         }
 	}

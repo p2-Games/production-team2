@@ -36,7 +36,7 @@ namespace Millivolt
                     if (obj)
                     {
                         // if its the correct pickup, do the things
-                        if (obj.keyword == m_pickupKeyword)
+                        if (obj.name == m_pickupKeyword)
                         {
                             // if the object has a spawn parent, then toggle whether it can still spawn the object
                             if (obj.spawnParent)
