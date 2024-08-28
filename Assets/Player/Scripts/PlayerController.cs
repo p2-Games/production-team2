@@ -5,15 +5,13 @@
 /// 
 ///</summary>
 
+using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Cinemachine;
 
 namespace Millivolt
 {
-    using LevelObjects.PickupObjects;
-
     namespace Player
     {
         [RequireComponent(typeof(CapsuleCollider), typeof(Rigidbody), typeof(PlayerInput))]
@@ -41,45 +39,38 @@ namespace Millivolt
             private Rigidbody m_rb;
             private CapsuleCollider m_collider;
 
-            public Transform parent => transform.parent;
-            public float height => m_collider.height;
+            private PlayerRotationParent m_parent;
+            public Transform parent
+            {
+                get
+                {
+                    if (!m_parent)
+                        m_parent = GetComponentInParent<PlayerRotationParent>();
+                    return m_parent.transform;
+                }
+            }
+
             public Vector3 gravity
             {
                 get
                 {
-                    if (parent)
-                        return Mathf.Abs(m_gravity) * (Quaternion.Euler(parent.eulerAngles) * Vector3.down);
-                    else
-                        return Mathf.Abs(m_gravity) * -transform.up;
+                    return Mathf.Abs(m_gravity) * -transform.up;
                 }
             }
 
-            public void SetGravity(float magnitude, Vector3 eulerDirection)
+            public void SetGravity(float magnitude, Vector3 direction)
             {
-                // if the player is holding a heavy object, dont flip them
-                PickupObject pickupObject = GetComponentInChildren<PlayerInteraction>().heldPickupObject;
-                if (pickupObject && pickupObject.pickupType == PickupType.Heavy)
+                if (!canMove)
                     return;
-
-                // save rotation before changing for camera details
-                Quaternion priorRotation = parent.rotation; 
-
-                // change orientation and gravity
-                Vector3 targetDirection = Quaternion.Euler(eulerDirection) * Vector3.back;
-                parent.rotation = Quaternion.FromToRotation(Vector3.up, targetDirection);
+                
+                // set parent rotation
+                parent.rotation = Quaternion.Euler(direction);
 
                 // set the physics gravity
-                Physics.gravity = targetDirection * magnitude;
-
-                // could also try:
-                // Quaternion.LookRotation(Vector3.down, targetDirection);
+                Physics.gravity = -parent.up * magnitude;
 
                 // set magnitude/value of gravity
                 m_gravity = -Mathf.Abs(magnitude);
-
-                // set rotation of camera
-                if (m_cameraController)
-                    m_cameraController.SetLookRotation(priorRotation);
             }
 
             [ContextMenu("Initialise Rigidbody")]
@@ -115,6 +106,8 @@ namespace Millivolt
             [SerializeField] private float m_acceleration;
             [SerializeField] private float m_decceleration;
             [SerializeField, Range(0, 90)] private float m_slopeLimit;
+
+            public bool canMove = true;
 
             private Vector2 m_moveInput;
             private Vector3 m_walkVelocity;
@@ -154,7 +147,7 @@ namespace Millivolt
                 Vector3 targetVelocity = (horizontalRelativeInput + verticalRelativeInput).normalized * m_topSpeed;
 
                 // calculate velocity change vector
-                if (m_externalVelocity == Vector3.zero)
+                if (canMove)
                     m_walkVelocity = Vector3.MoveTowards(m_walkVelocity, targetVelocity, (m_moveInput == Vector2.zero ? m_decceleration : m_acceleration) * Time.fixedDeltaTime);
                 else
                     m_walkVelocity = Vector3.zero;
@@ -205,9 +198,11 @@ namespace Millivolt
 
             private void Update()
             {
+                Debug.Log("Current World (R): " + transform.eulerAngles);
+                Debug.Log("Current Local (G): " + transform.localEulerAngles);
+                Debug.Log("Target (B): " + m_targetBodyRotation.eulerAngles);
+
                 // move player to face correct direction when move direction is not zero
-                //m_currentBodyRotation = Mathf.MoveTowardsAngle(m_currentBodyRotation, m_targetBodyRotation, m_rotationAcceleration);
-                //transform.localEulerAngles = new Vector3(0, m_currentBodyRotation, 0);
                 transform.localEulerAngles = new Vector3(0,
                     Quaternion.RotateTowards(transform.localRotation, m_targetBodyRotation, m_rotationAcceleration * Time.deltaTime).eulerAngles.y,
                     0);
@@ -264,7 +259,11 @@ namespace Millivolt
                         {
                             m_verticalVelocity = 0;
                             m_platformVelocity = Vector3.zero;
-                            m_externalVelocity = Vector3.zero;
+                            if (m_externalVelocity != Vector3.zero)
+                            {
+                                m_externalVelocity = Vector3.zero;
+                                canMove = true;
+                            }
                         }
 
                         // get closest hit walkable object
@@ -297,7 +296,8 @@ namespace Millivolt
                 get
                 {
                     return Physics.BoxCast(transform.position + m_collider.center, new Vector3(m_groundCheckRadius, m_groundCheckDistance, m_groundCheckRadius),
-                        transform.up, /*out RaycastHit hit,*/ transform.rotation, m_collider.height / 2, ~(1 << LayerMask.NameToLayer("Player")), QueryTriggerInteraction.Ignore);
+                        transform.up, /*out RaycastHit hit,*/ transform.rotation, m_collider.height / 2, ~(1 << LayerMask.NameToLayer("Player")), QueryTriggerInteraction.Ignore)
+                        && m_verticalVelocity > 0;
                 }
             }
 
@@ -334,6 +334,17 @@ namespace Millivolt
                 Handles.color = Color.magenta;
                 Handles.ArrowHandleCap(0, m_collider.center - Vector3.up * m_collider.height / 2,
                                         Quaternion.LookRotation(Vector3.down, gravity.normalized), 1, EventType.Repaint);
+
+                if (Application.isPlaying)
+                {
+                    Handles.matrix = Matrix4x4.identity;
+                    Handles.color = Color.red;
+                    Handles.ArrowHandleCap(0, transform.position, transform.localRotation, 1, EventType.Repaint);
+                    Handles.color = Color.green;
+                    Handles.ArrowHandleCap(0, transform.position, transform.rotation, 1, EventType.Repaint);
+                    Handles.color = Color.blue;
+                    Handles.ArrowHandleCap(0, transform.position, m_targetBodyRotation, 1, EventType.Repaint);
+                }
             }
 #endif
         }

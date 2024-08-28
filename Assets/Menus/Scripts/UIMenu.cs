@@ -26,6 +26,9 @@ namespace Millivolt
 			[SerializeField] private bool m_hideOnInactive;
 			public bool hideOnInactive => m_hideOnInactive;
 
+            [Header("")]
+            [SerializeField] private GameObject m_firstSelected;
+
             [Header("Tweening Properties")]
             [SerializeField] private bool m_enableTweening;
             [Header("Activate tween info")]
@@ -40,7 +43,7 @@ namespace Millivolt
             [Header("Deactivate tween info")]
             //[SerializeField] private Vector3 m_disableStartPos; 
             [Tooltip("The position that the menu will end at when it deactivates")]
-            [SerializeField] private Vector3 m_disableEndPos;
+            [SerializeField] private Vector2 m_disableEndPos;
             [Tooltip("How long the deactivation tween will last for")]
             [SerializeField] private float m_disableTweenDuration;
             [Tooltip("Delay before the tween activates")]
@@ -59,6 +62,8 @@ namespace Millivolt
                 UIMenuManager.Instance.activeMenus.Insert(0, this);
                 UIMenuManager.Instance.SetActiveMenu();
                 ActivateAnimation();
+                EventSystemManager esm = FindObjectOfType<EventSystemManager>();
+                esm.SetCurrentSelectedGameObject(m_firstSelected);
                 m_isActive = true;
 			}
 
@@ -76,7 +81,7 @@ namespace Millivolt
             /// <summary>
             /// Play a tween for the menu activation
             /// </summary>
-            public void ActivateAnimation()
+            private void ActivateAnimation()
             {
                 if (!m_enableTweening)
                     gameObject.SetActive(true);
@@ -84,8 +89,9 @@ namespace Millivolt
                 {
                     if (m_uiGroup != null)
                     {
+                        gameObject.SetActive(true);
                         m_uiGroup.transform.position = m_enableStartPos;
-                        Tween.Position(m_uiGroup.transform, m_enableEndPos, m_enableTweenDuration, m_enableTweenDelay, Tween.EaseInOut);
+                        Tween.Position(m_uiGroup.transform, m_enableEndPos, m_enableTweenDuration, m_enableTweenDelay, Tween.EaseInOut, Tween.LoopType.None, null, null, false);
                     }
                 }
             }
@@ -93,7 +99,7 @@ namespace Millivolt
             /// <summary>
             /// Play a tween for the menu deactivation
             /// </summary>
-            public void DeactivateAnimation()
+            private void DeactivateAnimation()
             {
                 if (!m_enableTweening)
                     gameObject.SetActive(false);
@@ -101,9 +107,15 @@ namespace Millivolt
                 {
                     if (m_uiGroup != null)
                     {
-                        Tween.Position(m_uiGroup.transform, m_disableEndPos, m_disableTweenDuration, m_disableTweenDelay, Tween.EaseInOut);
+                        Tween.Position(m_uiGroup.transform, m_disableEndPos, m_disableTweenDuration, m_disableTweenDelay, Tween.EaseInOut, Tween.LoopType.None, null, null, false);
+                        Invoke("HideMenuAfterTween", m_disableTweenDelay + m_disableTweenDuration);
                     }
                 }
+            }
+
+            private void HideMenuAfterTween()
+            {
+                gameObject.SetActive(false);
             }
 
 #if UNITY_EDITOR
