@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1496734438340933259}
   - component: {fileID: 1496734438340933258}
   m_Layer: 0
-  m_Name: Example Screw
+  m_Name: Screw
   m_TagString: Pickup
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -49,10 +49,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_isActive: 0
-  m_description: 
-  m_keyword: Screw
-  m_followMaxSpeed: 12
-  m_followAcceleration: 3.5
+  m_name: Screw
+  m_description: A small object that can be picked up.
+  spawnParent: {fileID: 0}
   m_type: 0
 --- !u!54 &1496734438340933259
 Rigidbody:

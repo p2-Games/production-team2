@@ -103,6 +103,7 @@ MonoBehaviour:
   m_acceleration: 20
   m_decceleration: 15
   m_slopeLimit: 80
+  canMove: 1
   m_rotationAcceleration: 200
   m_jumpSpeed: 5
   m_groundCheckDistance: 0.01
@@ -135,7 +136,7 @@ Rigidbody:
   m_AngularDrag: 0
   m_UseGravity: 0
   m_IsKinematic: 0
-  m_Interpolate: 2
+  m_Interpolate: 1
   m_Constraints: 112
   m_CollisionDetection: 1
 --- !u!114 &7656940878263155383
@@ -245,6 +246,22 @@ MonoBehaviour:
     m_ActionId: 02787874-adf2-446f-9c4f-89cb518772a3
     m_ActionName: UI/Click[/Mouse/leftButton,/Pen/tip]
   - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6015991794495447009}
+        m_TargetAssemblyTypeName: Millivolt.Player.PlayerInteraction, Assembly-CSharp
+        m_MethodName: Interact
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: a4aaba8e-000e-4546-b410-766488036193
+    m_ActionName: Player/Interact[/Keyboard/e]
+  - m_PersistentCalls:
       m_Calls: []
     m_ActionId: 262e04a0-e051-41cd-86b7-1aac1298037c
     m_ActionName: UI/ScrollWheel[/Mouse/scroll]
@@ -265,22 +282,10 @@ MonoBehaviour:
     m_ActionId: cf4c145a-e4a2-4955-99e4-23baf2ba5523
     m_ActionName: UI/TrackedDeviceOrientation
   - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 6015991794495447009}
-        m_TargetAssemblyTypeName: Millivolt.Player.PlayerInteraction, Assembly-CSharp
-        m_MethodName: Interact
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: a4aaba8e-000e-4546-b410-766488036193
-    m_ActionName: Player/Interact[/Keyboard/e]
-  m_NeverAutoSwitchControlSchemes: 1
+      m_Calls: []
+    m_ActionId: 5a782561-2ba1-46f2-8354-6ec12da2eb37
+    m_ActionName: Player/Debug[/Keyboard/j]
+  m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard&Mouse
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
@@ -427,8 +432,29 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4274433419345854684, guid: eece1ceeb51baf045a27f125b6963f2f,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.098
+      objectReference: {fileID: 0}
+    - target: {fileID: 4274433419345854684, guid: eece1ceeb51baf045a27f125b6963f2f,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.751
+      objectReference: {fileID: 0}
+    - target: {fileID: 8149319609767766237, guid: eece1ceeb51baf045a27f125b6963f2f,
+        type: 3}
+      propertyPath: m_heldObjectOffset
+      value: 
+      objectReference: {fileID: 1816354897573902304}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eece1ceeb51baf045a27f125b6963f2f, type: 3}
+--- !u!4 &1816354897573902304 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4274433419345854684, guid: eece1ceeb51baf045a27f125b6963f2f,
+    type: 3}
+  m_PrefabInstance: {fileID: 2478435186325714748}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4362615360194532453 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2228776203337802585, guid: eece1ceeb51baf045a27f125b6963f2f,

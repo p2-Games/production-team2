@@ -48,7 +48,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_isActive: 1
+  m_name: 
   m_description: A moving object that bounces back and forth along its path.
+  spawnParent: {fileID: 0}
   m_movementSpeed: 2
   m_path: []
   m_startsMovingBackward: 0
@@ -172,6 +174,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6915762701579122486, guid: d0513ef0ec24a1144bd706f9a06dc280,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d0513ef0ec24a1144bd706f9a06dc280, type: 3}

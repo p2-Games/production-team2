@@ -22,13 +22,23 @@ namespace Millivolt
                 [Tooltip("The position an object will appear when it is removed from the receptacle.")]
                 [SerializeField] private Transform m_respawnTransform;
 
-                private LevelObject m_heldObject;
+                [Tooltip("Set an object here to have it start with the object inside.")]
+                [SerializeField] private LevelObject m_heldObject;
+
+                private void Start()
+                {
+                    if (m_heldObject)
+                    {
+                        m_heldObject.gameObject.SetActive(false);
+                        m_canInteract = true;
+                    }
+                }
 
                 // for items getting put in
                 private void OnTriggerEnter(Collider other)
                 {
                     // if the receptacle is inactive OR it already has an object in it, don't check for anything
-                    if (m_interactTimer < m_interactDelay || m_playerCanInteract)
+                    if (m_interactTimer < m_interactDelay || m_canInteract)
                         return;
 
                     LevelObject obj = other.GetComponent<LevelObject>();
@@ -48,7 +58,7 @@ namespace Millivolt
                             m_heldObject.gameObject.SetActive(false);
 
                             // toggle this receptacle's active state
-                            m_playerCanInteract = true;
+                            m_canInteract = true;
                             isActive = !m_isActive;
                         }
                     }
@@ -58,7 +68,7 @@ namespace Millivolt
                 public override void Interact()
                 {
                     // if the receptacle only toggles once and has an object, return
-                    if (m_togglesOnce && m_playerCanInteract)
+                    if (m_togglesOnce && m_canInteract)
                         return;
 
                     // reactivate the held object
@@ -78,7 +88,7 @@ namespace Millivolt
                     m_interactTimer = m_interactDelay;
 
                     // set the state of the object
-                    m_playerCanInteract = false;
+                    m_canInteract = false;
                     isActive = !m_isActive;
                 }
             }

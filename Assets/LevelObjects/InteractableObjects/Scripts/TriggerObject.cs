@@ -18,7 +18,7 @@ namespace Millivolt
 			{			
                 public override void Interact()
                 {
-					if (!m_playerCanInteract)
+					if (!m_canInteract)
 						return;
 
 					if (m_interactTimer >= m_interactDelay)
@@ -26,7 +26,7 @@ namespace Millivolt
 						m_activateEvents.Invoke();
 
 						if (m_togglesOnce)
-							m_playerCanInteract = false;
+							m_canInteract = false;
 						else
 							m_interactTimer = 0;
 					}
