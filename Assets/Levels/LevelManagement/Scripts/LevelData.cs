@@ -12,7 +12,10 @@ namespace Millivolt
     [CreateAssetMenu(menuName = "ScriptableObject/LevelData", fileName = "LevelData", order = 0)]
     public class LevelData : ScriptableObject
     {
-        public float defaultGravityMagnitude;
-        public Vector3 defaultGravityDirection;
+        [SerializeField] private float m_gravityMagnitude;
+        [SerializeField] private Vector3 m_gravityDirection;
+
+        public float gravityMagnitude => m_gravityMagnitude;
+        public Vector3 gravityDirection => m_gravityDirection;
     }
 }

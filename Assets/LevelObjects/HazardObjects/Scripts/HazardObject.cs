@@ -11,14 +11,17 @@ namespace Millivolt
 {
     namespace LevelObjects
     {
-        public abstract class HazardObject : LevelObject
+        namespace HazardObjects
         {
-            [Header("Hazard Details"), Tooltip("The base damage that the hazard deals to the player.")]
-            [SerializeField] protected float m_damage;
+            public abstract class HazardObject : LevelObject
+            {               
+                [Header("Hazard Details"), Tooltip("The base damage that the hazard deals to the player.")]
+                [SerializeField] protected float m_damage;
 
-            protected void DealDamage(Player.PlayerStatus player, float value)
-            {
-                player.TakeDamage(value);
+                protected void DealDamage(Player.PlayerStatus player, float value)
+                {
+                    player.TakeDamage(value);
+                }
             }
         }
     }

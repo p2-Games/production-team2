@@ -16,6 +16,17 @@ namespace Millivolt
 	{
 		public class LevelManager : MonoBehaviour
 		{
+			public static LevelManager Instance { get; private set; }
+            private void Awake()
+            {
+				if (!Instance)
+					Instance = this;
+				else if (Instance != this)
+					Destroy(gameObject);
+
+				DontDestroyOnLoad(gameObject);
+            }
+			
 			[Header("Scene Properties")]
             [HideInInspector, SerializeField] private string m_prevLevelName;
             [HideInInspector, SerializeField] private string m_nextLevelName;
@@ -30,19 +41,8 @@ namespace Millivolt
 			[SerializeField] private bool m_autoAddCheckpoints;
 
 			[Header("Level Data")]
-			[SerializeField] private LevelData m_lvlData;
-
-			public static LevelManager Instance;
-
-            private void Awake()
-            {
-				if (!Instance)
-					Instance = this;
-				else if (Instance != this)
-					Destroy(gameObject);
-
-				DontDestroyOnLoad(gameObject);
-            }
+			[SerializeField] private LevelData m_levelData;
+			public LevelData levelData => m_levelData;
 
             private void Start()
             {
