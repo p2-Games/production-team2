@@ -31,7 +31,7 @@ namespace Millivolt
             [SerializeField, TextArea] protected string m_description = "";
 
 			// spawn parent, if it exists
-			public ObjectSpawner spawnParent;
+			[HideInInspector] public ObjectSpawner spawnParent;
         }
 	}
 }

@@ -23,7 +23,6 @@ namespace Millivolt
 
                 private float m_timer;
                 private bool m_flipping;
-                private bool m_isActive;
 
                 public void ChangeGravityAfterTime(bool flip)
                 {
