@@ -46,4 +46,127 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_soundClipObjectPrefab: {fileID: 8570937424897467016, guid: ce2808c03000e37489bc62ab9889e8b3,
     type: 3}
-  m_clipCollections: []
+  m_clipCollections:
+  - m_collectionName: Button
+    m_soundClips:
+    - m_clipName: ButtonPress
+      m_audioClip: {fileID: 8300000, guid: 82e079d271f0cbd4196c377252009a86, type: 3}
+      m_volume: 0.5
+      m_range: 10
+      m_loop: 0
+  - m_collectionName: Footsteps
+    m_soundClips:
+    - m_clipName: Footstep1
+      m_audioClip: {fileID: 8300000, guid: 70af0e9112430fb4b89867b184c36e00, type: 3}
+      m_volume: 0.25
+      m_range: 10
+      m_loop: 0
+    - m_clipName: Footstep2
+      m_audioClip: {fileID: 8300000, guid: dc873af6a3cd0604abacfceef71118b7, type: 3}
+      m_volume: 0.25
+      m_range: 10
+      m_loop: 0
+    - m_clipName: Footstep3
+      m_audioClip: {fileID: 8300000, guid: 5b576f1061a193e44a1b9fcce2dc2f14, type: 3}
+      m_volume: 0.25
+      m_range: 10
+      m_loop: 0
+    - m_clipName: Footstep4
+      m_audioClip: {fileID: 8300000, guid: 78563a9bc3637214391cf25b07fa8935, type: 3}
+      m_volume: 0.25
+      m_range: 10
+      m_loop: 0
+  - m_collectionName: GravitySwitch
+    m_soundClips:
+    - m_clipName: GravitySwitchUp
+      m_audioClip: {fileID: 8300000, guid: 0cce90a483b2fdd4da8867c37615fb99, type: 3}
+      m_volume: 0.75
+      m_range: 10
+      m_loop: 0
+    - m_clipName: GravitySwitchDown
+      m_audioClip: {fileID: 8300000, guid: 4eaabba8603247646b661d103695b1b6, type: 3}
+      m_volume: 0.75
+      m_range: 10
+      m_loop: 0
+  - m_collectionName: JumpPad
+    m_soundClips:
+    - m_clipName: JumpPad1
+      m_audioClip: {fileID: 8300000, guid: f809cc26c8c946645b4a790c189a198a, type: 3}
+      m_volume: 0.5
+      m_range: 10
+      m_loop: 0
+    - m_clipName: JumpPad2
+      m_audioClip: {fileID: 8300000, guid: 5fc2a92135e768643b0eec9784ef047f, type: 3}
+      m_volume: 0.5
+      m_range: 10
+      m_loop: 0
+  - m_collectionName: PlayerDamage
+    m_soundClips:
+    - m_clipName: PlayerHurt1
+      m_audioClip: {fileID: 8300000, guid: 1bcf26ee708b80744a405c28a303e0d8, type: 3}
+      m_volume: 0.75
+      m_range: 10
+      m_loop: 0
+    - m_clipName: PlayerHurt2
+      m_audioClip: {fileID: 8300000, guid: b30bc3905e16f7e46add38f7c22c6f19, type: 3}
+      m_volume: 0.75
+      m_range: 10
+      m_loop: 0
+    - m_clipName: PlayerHurt3
+      m_audioClip: {fileID: 8300000, guid: d61bd739a5b540740814b7b08062bec9, type: 3}
+      m_volume: 0.75
+      m_range: 10
+      m_loop: 0
+  - m_collectionName: PressurePlates
+    m_soundClips:
+    - m_clipName: PlateOn
+      m_audioClip: {fileID: 8300000, guid: 572acc019f970e740aefd819e59d4403, type: 3}
+      m_volume: 0.5
+      m_range: 10
+      m_loop: 0
+    - m_clipName: PlateOff
+      m_audioClip: {fileID: 8300000, guid: c0b56d44a3117f24caf65436d58f8218, type: 3}
+      m_volume: 0.5
+      m_range: 10
+      m_loop: 0
+  - m_collectionName: ScrewDrop
+    m_soundClips:
+    - m_clipName: ScrewDrop1
+      m_audioClip: {fileID: 8300000, guid: 494cc1b48a72b9644af5195dc59d73b1, type: 3}
+      m_volume: 0.5
+      m_range: 10
+      m_loop: 0
+    - m_clipName: ScrewDrop2
+      m_audioClip: {fileID: 8300000, guid: 62f71005814b1d648b48fc818bd0b608, type: 3}
+      m_volume: 0.5
+      m_range: 10
+      m_loop: 0
+    - m_clipName: ScrewDrop3
+      m_audioClip: {fileID: 8300000, guid: 7b34aad486912d74987ec1857ad2e0bd, type: 3}
+      m_volume: 0.5
+      m_range: 10
+      m_loop: 0
+  - m_collectionName: ScrewPickUp
+    m_soundClips:
+    - m_clipName: ScrewPickUp1
+      m_audioClip: {fileID: 8300000, guid: 8eb64e142557b35439ce5987d2d19e3a, type: 3}
+      m_volume: 0.75
+      m_range: 10
+      m_loop: 0
+    - m_clipName: ScrewPickUp2
+      m_audioClip: {fileID: 8300000, guid: 087bda95a7fad284aa68bd5fd24f7dd3, type: 3}
+      m_volume: 0.75
+      m_range: 10
+      m_loop: 0
+    - m_clipName: ScrewPickUp3
+      m_audioClip: {fileID: 8300000, guid: 9e04fb185f7112543a4c32acd4e25df8, type: 3}
+      m_volume: 0.75
+      m_range: 10
+      m_loop: 0
+  - m_collectionName: ScrewSocket
+    m_soundClips:
+    - m_clipName: ScrewInsert
+      m_audioClip: {fileID: 8300000, guid: 23335f723dd64e540a2c073226574e85, type: 3}
+      m_volume: 0.75
+      m_range: 10
+      m_loop: 0
