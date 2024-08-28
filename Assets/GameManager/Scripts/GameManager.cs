@@ -106,9 +106,15 @@ namespace Millivolt
 				}
 			}
 
+			public void RestartLevel()
+			{
+				SceneManager.LoadScene(m_levels[m_currentLevel].name);
+            }
+
 			public void ExitToMenu()
 			{
 				gameState = GameState.MENU;
+				SceneManager.LoadScene("MenuScene");
 			}
 
 			public void ExitGame()
