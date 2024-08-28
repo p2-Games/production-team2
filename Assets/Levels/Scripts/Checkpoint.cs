@@ -17,9 +17,15 @@ namespace Millivolt
 		public class Checkpoint : MonoBehaviour
 		{
 			[SerializeField] private Transform m_respawnPoint;
+			public Transform respawnPoint => m_respawnPoint;
 			[SerializeField] public bool activeCheckpoint;
 
-            public int checkpointID;
+            [SerializeField] private int m_checkpointID;
+            public int checkpointID
+			{
+				get => m_checkpointID;
+				set { m_checkpointID = value; }
+			}
 
 			private LevelManager m_levelManager;
 
@@ -33,21 +39,6 @@ namespace Millivolt
 				{
 					m_respawnPoint = transform;
 				}
-            }
-
-            /// <summary>
-            /// This will be called to load the player to checkpoint position
-            /// </summary>
-            /// <param name="player"></param>
-            public void RespawnPlayer()
-			{
-				//player.transform.position = m_respawnPoint.position;
-				//SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-
-				//MAKE PLAYER GO TO THE POSITION OF THE CHECKPOINT
-				//ROTATE PLAYER TO THE DESIRED POSITION
-				//CALL THE LEVELMANAGER ONSPAWN FUNCTION
-
             }
 
             private void OnTriggerEnter(Collider other)
