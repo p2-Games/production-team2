@@ -6,6 +6,7 @@
 ///</summary>
 
 using Cinemachine;
+using Millivolt.Player;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -20,16 +21,14 @@ namespace Millivolt
 
             public int checkpointID;
 
-			private LevelData m_lvlData;
+			private LevelManager m_levelManager;
 
-			[SerializeField] private Vector2 m_respawnCamDir;
-
-            [SerializeField] private CinemachineVirtualCamera m_fpsCam;
+			private PlayerController m_player;
 
             private void OnEnable()
             {
-				m_lvlData = FindObjectOfType<LevelData>();
-				m_fpsCam = FindObjectOfType<CinemachineVirtualCamera>();
+				m_levelManager = FindObjectOfType<LevelManager>();
+				m_player = FindObjectOfType<PlayerController>();
 				if (m_respawnPoint == null)
 				{
 					m_respawnPoint = transform;
@@ -40,21 +39,23 @@ namespace Millivolt
             /// This will be called to load the player to checkpoint position
             /// </summary>
             /// <param name="player"></param>
-            public void RespawnPlayer(GameObject player)
+            public void RespawnPlayer()
 			{
-				player.transform.position = m_respawnPoint.position;
-				SceneManager.LoadScene("[MicrowavePrototyping01]");
-                //CinemachinePOV pov = m_fpsCam.GetCinemachineComponent<CinemachinePOV>();
-                //pov.m_VerticalAxis.Value = m_respawnCamDir.x;
-                //pov.m_HorizontalAxis.Value = m_respawnCamDir.y;
+				//player.transform.position = m_respawnPoint.position;
+				//SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+
+				//MAKE PLAYER GO TO THE POSITION OF THE CHECKPOINT
+				//ROTATE PLAYER TO THE DESIRED POSITION
+				//CALL THE LEVELMANAGER ONSPAWN FUNCTION
+
             }
 
             private void OnTriggerEnter(Collider other)
             {
-				if (other.tag == "Player" && this != m_lvlData.GetActiveCheckpoint())
+				if (other.tag == "Player" && this != m_levelManager.GetActiveCheckpoint())
 				{
 					Debug.Log("Checkpoint set to Checkpoint " + checkpointID);
-					m_lvlData.SetActiveCheckpoint(checkpointID);
+					m_levelManager.SetActiveCheckpoint(checkpointID);
 				}
             }
         }
