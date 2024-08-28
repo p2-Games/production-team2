@@ -14,7 +14,7 @@ namespace Millivolt
     {
         namespace Events
         {
-            public class ChangeGravityDelayedEvent : ChangeGravityEvent
+            public class DelayedGravityChanger : GravityChanger
             {
                 [Header("Delayed Gravity Details"), SerializeField] private GravityIndicatorUI m_gravityUI;
 
@@ -22,32 +22,34 @@ namespace Millivolt
                 [SerializeField] private float m_delay;
 
                 private float m_timer;
-                private bool m_willSwitch = false;
-
                 private bool m_flipping;
-
-                public override void DoEvent(bool value)
-                {
-                    ChangeGravityAfterTime(value);
-                }
 
                 public void ChangeGravityAfterTime(bool flip)
                 {
-                    float indicatorFlashInterval = (m_delay / 8);
-                    m_gravityUI.StartCoroutine(m_gravityUI.GravityUIFlashing(indicatorFlashInterval));
-                    m_willSwitch = true;
+                    m_gravityUI.gameObject.SetActive(true);
+                    m_gravityUI.StartFlash(m_delay);
+
                     m_flipping = flip;
-                    m_timer = m_delay;
+                    m_isActive = true;
+                    m_timer = 0;
+                }
+
+                private void Start()
+                {
+                    m_gravityUI.gameObject.SetActive(false);
                 }
 
                 private void Update()
                 {
-                    if (m_timer > 0)
-                        m_timer -= Time.deltaTime;
-                    else if (m_willSwitch)
+                    if (!m_isActive)
+                        return;
+
+                    if (m_timer < m_delay)
+                        m_timer += Time.deltaTime;
+                    else
                     {
                         ChangeGravity(m_flipping);
-                        m_willSwitch = false;
+                        m_isActive = false;
                     }
                 }
             }

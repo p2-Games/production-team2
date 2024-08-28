@@ -11,8 +11,6 @@ GameObject:
   - component: {fileID: 2246691634873744094}
   - component: {fileID: 1770694002343521081}
   - component: {fileID: 3932941183342504557}
-  - component: {fileID: 3937080039101257147}
-  - component: {fileID: 389548172275290895}
   m_Layer: 0
   m_Name: LaunchPad
   m_TagString: Untagged
@@ -68,37 +66,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &3937080039101257147
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1025914126604841043}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be974033ec0bbb74e986086224301f33, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_isActive: 0
-  m_description: Play animation or particle effect
-  m_events: []
---- !u!114 &389548172275290895
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1025914126604841043}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 69064462018352d4e95cb3cfad3d5c6a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_object: {fileID: 0}
-  m_spawnPoint: {fileID: 5564884405844035334}
-  m_objectCanSpawn: 1
-  m_spawnAtStart: 0
 --- !u!1 &1854951313342003463
 GameObject:
   m_ObjectHideFlags: 0
