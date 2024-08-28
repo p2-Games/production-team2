@@ -63,8 +63,9 @@ namespace Millivolt
             {
                 if (!canMove)
                     return;
-                
+
                 // set parent rotation
+                m_parent.ResetPosition();
                 parent.rotation = Quaternion.Euler(direction)/* * Quaternion.FromToRotation(Vector3.forward, Vector3.down)*/;
 
                 // set the physics gravity
