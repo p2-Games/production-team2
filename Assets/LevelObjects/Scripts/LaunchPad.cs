@@ -5,11 +5,8 @@
 ///
 ///</summary>
 
-using System.Collections.Generic;
-using System.Xml;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.ProBuilder.MeshOperations;
 
 namespace Millivolt
 {
@@ -17,91 +14,105 @@ namespace Millivolt
 
     namespace LevelObjects
     {
-        public class LaunchPad : LevelObject
+        namespace InteractableObjects
         {
-            public override bool isActive
+            public class LaunchPad : ToggleObject
             {
-                get => base.isActive;
-                set
+                [Header("LaunchPad Details"), SerializeField] private Vector3 m_initialVelocity;
+                [SerializeField] private float m_snapSpeed;
+                [SerializeField] private float m_minDistanceToLaunch;
+
+                [Header("Debug"), SerializeField] private bool m_drawLines;
+                [SerializeField] private int m_debugPointsToDraw;
+                [SerializeField] private float m_debugTimeBetweenPoints;
+
+                private Rigidbody m_objectToLaunch;
+                private Vector3 m_newObjectPosition;
+
+                private PlayerController m_player;
+
+                private void Start()
                 {
-                    m_trigger.enabled = value;
-                    m_isActive = value;
+                    m_player = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
                 }
-            }
 
-            [SerializeField] private Vector3 m_initialVelocity;
-
-            [Header("Debug"), SerializeField] private bool m_drawLines;
-            [SerializeField] private int m_debugPointsToDraw;
-            [SerializeField] private float m_debugTimeBetweenPoints;
-
-            private Collider m_trigger;
-
-            private void Start()
-            {
-                m_trigger = GetComponent<Collider>();
-            }
-
-            private Quaternion PlayerVerticalRotation(PlayerController player)
-            {
-                Vector3 euler = player.parent.rotation.eulerAngles;
-                euler.y = 0;
-                return Quaternion.Inverse(Quaternion.Euler(euler));
-            }
-
-            private void OnTriggerEnter(Collider other)
-            {;
-                if (CanTrigger(other.gameObject))
+                protected override void Update()
                 {
-                    Vector3 newObjectPosition = transform.position;
-                    newObjectPosition.y += other.gameObject.GetComponent<Collider>().bounds.extents.y;
-                    Rigidbody rb = other.gameObject.GetComponent<Rigidbody>();
-                    rb.MovePosition(newObjectPosition);
+                    base.Update();
+                    
+                    if (m_objectToLaunch && Vector3.Distance(m_objectToLaunch.position, transform.position) < m_minDistanceToLaunch)
+                    {
+                        if (m_player.gameObject == m_objectToLaunch.gameObject)
+                        {
+                            m_player.SetExternalVelocity(m_initialVelocity);
+                            m_player.canMove = false;
+                        }
+                        else
+                            m_objectToLaunch.velocity = m_initialVelocity;
 
-                    PlayerController player = other.GetComponent<PlayerController>();
-                    if (player)
-                        player.SetExternalVelocity(m_initialVelocity);
-                    else
-                        rb.velocity = m_initialVelocity;
+                        m_objectToLaunch = null;
+                    }
                 }
-            }
+
+                private void FixedUpdate()
+                {
+                    if (m_objectToLaunch)
+                    {
+                        m_objectToLaunch.MovePosition(Vector3.MoveTowards(m_objectToLaunch.position, transform.position, m_snapSpeed * Time.fixedDeltaTime));
+                    }
+                }
+
+                private void OnTriggerEnter(Collider other)
+                {
+                    if (!m_isActive)
+                        return;
+                    
+                    // if launchpad isn't currently trying to launch something AND the object in the trigger is allowed
+                    if (!m_objectToLaunch && CanTrigger(other.gameObject))
+                    {
+                        m_newObjectPosition = transform.position;
+                        m_newObjectPosition.y += other.gameObject.GetComponent<Collider>().bounds.extents.y;
+                        m_objectToLaunch = other.gameObject.GetComponent<Rigidbody>();
+                    }
+                }
 
 #if UNITY_EDITOR
-            private void OnDrawGizmos()
-            {
-                PlayerController player = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
-
-                Vector3 lastPoint = transform.position;
-                Vector3 velocity = m_initialVelocity;
-
-                Handles.color = Color.blue;
-
-                for (int p = 1; p < m_debugPointsToDraw; p++)
+                private void OnDrawGizmos()
                 {
-                    float t = p * m_debugTimeBetweenPoints;
+                    if (!m_player)
+                        m_player = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
 
-                    Vector3 nextPoint = transform.position + m_initialVelocity * t + 0.5f * player.gravity * t * t;
+                    Vector3 lastPoint = transform.position;
 
-                    if (Physics.Raycast(lastPoint, (nextPoint - lastPoint).normalized, out RaycastHit hit, Vector3.Distance(lastPoint, nextPoint), ~(1 << LayerMask.NameToLayer("Player")), QueryTriggerInteraction.Ignore))
+                    Handles.color = Color.blue;
+
+                    for (int p = 1; p < m_debugPointsToDraw; p++)
                     {
-                        if (m_drawLines)
-                            Handles.DrawLine(lastPoint, hit.point);
-                        Handles.color = Color.red;
-                        Handles.DrawWireCube(hit.point, new Vector3(0.5f, 0.5f, 0.5f));
-                        break;
-                    }
-                    else
-                    {
-                        if (m_drawLines)
-                            Handles.DrawLine(lastPoint, nextPoint);
+                        float t = p * m_debugTimeBetweenPoints;
+
+                        Vector3 nextPoint = transform.position + m_initialVelocity * t + 0.5f * m_player.gravity * t * t;
+
+                        if (Physics.Raycast(lastPoint, (nextPoint - lastPoint).normalized, out RaycastHit hit, Vector3.Distance(lastPoint, nextPoint), ~(1 << LayerMask.NameToLayer("Player")), QueryTriggerInteraction.Ignore))
+                        {
+                            if (m_drawLines)
+                                Handles.DrawLine(lastPoint, hit.point);
+                            Handles.color = Color.red;
+                            Handles.DrawWireCube(hit.point, new Vector3(0.5f, 0.5f, 0.5f));
+                            break;
+                        }
                         else
-                            Handles.DrawWireCube(nextPoint, new Vector3(0.5f, 0.5f, 0.5f));
+                        {
+                            if (m_drawLines)
+                                Handles.DrawLine(lastPoint, nextPoint);
+                            else
+                                Handles.DrawWireCube(nextPoint, new Vector3(0.5f, 0.5f, 0.5f));
+                        }
+    ;
+                        lastPoint = nextPoint;
                     }
-;
-                    lastPoint = nextPoint;
                 }
-            }
 #endif
+            }
         }
     }
 }
