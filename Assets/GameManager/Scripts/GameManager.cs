@@ -5,13 +5,17 @@
 ///
 ///</summary>
 
+using Cinemachine;
+using Millivolt.UI;
+using System.Collections;
+using System.Runtime.InteropServices;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 namespace Millivolt
 {
-	namespace Utilities
-	{
+	
 		public enum GameState
 		{
 			MENU,
@@ -22,14 +26,20 @@ namespace Millivolt
 
 		public class GameManager : MonoBehaviour
 		{			
-			private GameState m_gameState;
+			[SerializeField] private GameState m_gameState;
 
 			[Header("Level Properties")]
 			[SerializeField] private int m_currentLevel;
 
-			[SerializeField] LevelManager[] m_levels;
+			[SerializeField] private LevelManager[] m_levels;
 
-			[SerializeField] GameObject m_freeLookCam;
+			[SerializeField] private LevelManager m_levelManager;
+
+			[SerializeField] private GameObject m_freeLookCam;
+
+			[SerializeField] private UIMenu m_pauseMenu;
+
+			private string m_currentSceneName;
 
 			//Static reference
 			public static GameManager Instance { get; private set; }
@@ -57,29 +67,28 @@ namespace Millivolt
                 }
 			}
 
+            private void Start()
+            {
+				m_freeLookCam = GameObject.FindWithTag("FreeLook");
+				m_pauseMenu = (UIMenu)FindObjectOfType(typeof(UIMenu), true);
+				m_levelManager = FindObjectOfType<LevelManager>();
+				m_currentSceneName = SceneManager.GetActiveScene().name;
+            }
+
             private void Awake()
             {
-                if (Instance != null && Instance != this)
-                {
-                    Destroy(this);
-                }
-                else
-                {
+                if (!Instance)
                     Instance = this;
-                }
+                else if (Instance != this)
+                    Destroy(gameObject);
 
                 DontDestroyOnLoad(gameObject);
             }
 
-            private void Start()
-            {
-                
-            }
-
-			/// <summary>
-			/// Load the next level as set up in the current levels leveldata
-			/// </summary>
-			public void LoadNextLevel()
+            /// <summary>
+            /// Load the next level as set up in the current levels leveldata
+            /// </summary>
+            public void LoadNextLevel()
 			{
 				SceneManager.LoadScene(m_levels[m_currentLevel].nextLevelName);
 			}
@@ -92,23 +101,34 @@ namespace Millivolt
                SceneManager.LoadScene(m_levels[m_currentLevel].prevLevelName);
             }
 
-			public void PauseGame(bool value)
+			public void PauseGame()
 			{
-				if (value)
+				if (gameState != GameState.PAUSE)
 				{
-					gameState = GameState.PAUSE;
+					m_pauseMenu.ActivateMenu();
 					m_freeLookCam.SetActive(false);
+					gameState = GameState.PAUSE;
 				}
 				else
 				{
-					gameState = GameState.PLAYING;
 					m_freeLookCam.SetActive(true);
+					gameState = GameState.PLAYING;
+					m_pauseMenu.DeactivateMenu();
 				}
 			}
 
-			public void RestartLevel()
+            private void Update()
+            {
+                if (!m_freeLookCam)
+                    m_freeLookCam = GameObject.FindWithTag("FreeLook");
+
+				if (!m_pauseMenu)
+                    m_pauseMenu = (UIMenu)FindObjectOfType(typeof(UIMenu), true);
+
+            }
+            public void RestartLevel()
 			{
-				SceneManager.LoadScene(m_levels[m_currentLevel].name);
+				SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             }
 
 			public void ExitToMenu()
@@ -121,6 +141,13 @@ namespace Millivolt
 			{
 				Application.Quit();
 			}
+
+			public void Reload()
+			{
+				m_freeLookCam = null;
+				m_pauseMenu = null;
+				Start();
+			}
 		}
-	}
+	
 }

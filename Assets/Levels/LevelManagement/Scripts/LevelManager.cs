@@ -7,13 +7,13 @@
 
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using Millivolt.UI;
 using Millivolt.Player;
 
 namespace Millivolt
 {
-	namespace Utilities
-	{
+	using Utilities;
 		public class LevelManager : MonoBehaviour
 		{
 			public static LevelManager Instance { get; private set; }
@@ -59,10 +59,12 @@ namespace Millivolt
 				SpawnPlayer();
             }
 
-			/// <summary>
-			/// Will search through the level for any checkpoints and add them to the array
-			/// </summary>
-			[ContextMenu("Find Checkpoints")]
+            
+
+            /// <summary>
+            /// Will search through the level for any checkpoints and add them to the array
+            /// </summary>
+            [ContextMenu("Find Checkpoints")]
 			private void FindAllCheckpoints()
 			{
 				m_levelCheckpoints = FindObjectsByType<Checkpoint>(FindObjectsSortMode.None);
@@ -112,14 +114,36 @@ namespace Millivolt
 				FindObjectOfType<SmoothObjectTracking>().SetToPlayerPosition();
 			}
 
-			/// <summary>
-			/// Returns the currently active checkpoint
-			/// </summary>
-			/// <returns></returns>
-			public Checkpoint GetActiveCheckpoint()
+		private void Update()
+		{
+			if (m_levelCheckpoints.Length == 0 || m_levelCheckpoints == null)
+			{
+				FindAllCheckpoints();
+				InitialiseCheckpoints();
+			}
+
+			if (!m_player)
+			{
+                m_player = FindObjectOfType<PlayerController>(); 
+				SpawnPlayer();
+			}
+
+        }
+
+
+        /// <summary>
+        /// Returns the currently active checkpoint
+        /// </summary>
+        /// <returns></returns>
+        public Checkpoint GetActiveCheckpoint()
 			{
 				return m_levelCheckpoints[currentCheckpoint];
 			}
-		}
-	}
+
+            public void Reload()
+            {
+				Start();
+            }
+        }
+	
 }

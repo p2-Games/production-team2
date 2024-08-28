@@ -27,25 +27,22 @@ namespace Millivolt
                 m_levelManager = FindObjectOfType<LevelManager>();
             }
 
-            private void OnEnable()
-            {
-                m_gameManager.PauseGame(true);
-            }
-
             public void ResumeGame()
             {
-                m_gameManager.PauseGame(false);
+                m_gameManager.PauseGame();
                 m_menu.DeactivateMenu();
             }
 
             public void RestartLevel()
             {
+                m_gameManager.PauseGame();
                 Instantiate(m_closeScreen);
                 Invoke("CallRestart", 1f);
             }
 
             public void ExitToMenu()
             {
+                m_gameManager.PauseGame();
                 Instantiate(m_closeScreen);
                 Invoke("CallExitToMenu", 1f);
             }
