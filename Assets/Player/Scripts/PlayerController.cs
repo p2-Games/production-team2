@@ -23,6 +23,7 @@ namespace Millivolt
                 InitialiseCollider();
                 if (parent)
                     m_cameraController = parent.GetComponent<FirstPersonCameraController>();
+                m_targetBodyRotation = transform.localRotation;
             }
 
             private void FixedUpdate()
@@ -64,7 +65,7 @@ namespace Millivolt
                     return;
                 
                 // set parent rotation
-                parent.rotation = Quaternion.Euler(direction);
+                parent.rotation = Quaternion.Euler(direction)/* * Quaternion.FromToRotation(Vector3.forward, Vector3.down)*/;
 
                 // set the physics gravity
                 Physics.gravity = -parent.up * magnitude;
@@ -120,7 +121,7 @@ namespace Millivolt
 
             public void Move(InputAction.CallbackContext context)
             {
-                m_moveInput = context.ReadValue<Vector2>();
+                m_moveInput = context.ReadValue<Vector2>().normalized;
             }
 
             /// <summary>
@@ -144,7 +145,7 @@ namespace Millivolt
                 Vector3 verticalRelativeInput = m_moveInput.y * camForward;
 
                 // combine and apply movement speed
-                Vector3 targetVelocity = (horizontalRelativeInput + verticalRelativeInput).normalized * m_topSpeed;
+                Vector3 targetVelocity = (horizontalRelativeInput + verticalRelativeInput) * m_topSpeed;
 
                 // calculate velocity change vector
                 if (canMove)

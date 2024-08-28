@@ -40,7 +40,7 @@ namespace Millivolt
                 {
                     base.Update();
                     
-                    if (m_objectToLaunch && Vector3.Distance(m_objectToLaunch.position, transform.position) < m_minDistanceToLaunch)
+                    if (m_objectToLaunch && Vector3.Distance(m_objectToLaunch.position, m_newObjectPosition) < m_minDistanceToLaunch)
                     {
                         if (m_player.gameObject == m_objectToLaunch.gameObject)
                         {
@@ -58,7 +58,7 @@ namespace Millivolt
                 {
                     if (m_objectToLaunch)
                     {
-                        m_objectToLaunch.MovePosition(Vector3.MoveTowards(m_objectToLaunch.position, transform.position, m_snapSpeed * Time.fixedDeltaTime));
+                        m_objectToLaunch.MovePosition(Vector3.MoveTowards(m_objectToLaunch.position, m_newObjectPosition, m_snapSpeed * Time.fixedDeltaTime));
                     }
                 }
 
