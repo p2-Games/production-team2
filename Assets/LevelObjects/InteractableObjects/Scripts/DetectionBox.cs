@@ -23,7 +23,7 @@ namespace Millivolt
                 }
 
                 private void OnTriggerEnter(Collider other)
-                {
+                {                   
                     if (CanTrigger(other.gameObject))
                     {
                         if (m_collidingObjects == 0)

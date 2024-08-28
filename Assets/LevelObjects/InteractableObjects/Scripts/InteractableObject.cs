@@ -17,8 +17,8 @@ namespace Millivolt
 		{
 			public abstract class InteractableObject : LevelObject
 			{
-				[Header("Interactable Details"), Tooltip("If true, the player is able to interact with this object directly.")]
-				[SerializeField] protected bool m_playerCanInteract = true;
+				[Header("Interactable Details"), Tooltip("If true, the state of the object can change.")]
+				[SerializeField] protected bool m_canInteract = true;
 
 				[Tooltip("If true, the object can only be interacted with once.")]
 				[SerializeField] protected bool m_togglesOnce;
@@ -28,12 +28,12 @@ namespace Millivolt
 
                 [Tooltip("Filter for what can interact with this object.\n" +
 					"Accepts System Types (class names) and Tags.")]
-                [SerializeField] private string[] m_interactionFilter = { "Player", typeof(LevelObject).Name };
+                [SerializeField] protected string[] m_interactionFilter = { "Player", typeof(LevelObject).Name };
 
 				[Tooltip("The events that will occur when the object's active state is changed.")]
 				[SerializeField] protected UnityEvent m_activateEvents;
 
-				public bool playerCanInteract => m_playerCanInteract;
+				public virtual bool canInteract => m_canInteract;
 
 				protected float m_interactTimer;
 

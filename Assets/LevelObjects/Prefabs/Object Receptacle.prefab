@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4816821099029731532}
   - component: {fileID: 4816821099029731533}
   m_Layer: 6
-  m_Name: Example Receptacle
+  m_Name: Object Receptacle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -48,14 +48,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_isActive: 0
-  m_description: 
-  m_playerCanInteract: 1
-  m_staysActive: 0
-  m_interactTime: 1
-  m_events:
-  - {fileID: 0}
-  m_pickupKeyword: Screw
-  m_respawnObjectTransform: {fileID: 8359848034858737425}
+  m_name: Receptacle
+  m_description: Accepts a type of Level Object.
+  spawnParent: {fileID: 0}
+  m_canInteract: 1
+  m_togglesOnce: 0
+  m_interactDelay: 1
+  m_interactionFilter:
+  - Player
+  - LevelObject
+  m_activateEvents:
+    m_PersistentCalls:
+      m_Calls: []
+  m_deactivateEvents:
+    m_PersistentCalls:
+      m_Calls: []
+  m_pickupName: 
+  m_respawnTransform: {fileID: 0}
 --- !u!65 &4816821099029731533
 BoxCollider:
   m_ObjectHideFlags: 0

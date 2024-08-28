@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8486982956466643153}
   - component: {fileID: 3257926173079996401}
   m_Layer: 0
-  m_Name: PressurePlateLOB
+  m_Name: PressurePlate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -47,21 +47,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_isActive: 0
-  m_name: 
-  m_description: 
+  m_name: Pressure Plate
+  m_description: Activates when an object is in the trigger and deactivates when
+    there are no objects in the trigger.
   spawnParent: {fileID: 0}
-  m_activateEvents:
-    m_PersistentCalls:
-      m_Calls: []
   m_playerCanInteract: 1
   m_togglesOnce: 0
   m_interactDelay: 0
+  m_interactionFilter:
+  - Player
+  - LevelObject
   m_activateEvents:
     m_PersistentCalls:
       m_Calls: []
-  m_typeFilter:
-  - Player
-  - LevelObject
   m_deactivateEvents:
     m_PersistentCalls:
       m_Calls: []
