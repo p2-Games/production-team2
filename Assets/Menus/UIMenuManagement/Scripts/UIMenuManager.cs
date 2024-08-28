@@ -15,7 +15,7 @@ namespace Millivolt
 	{
 		public class UIMenuManager : MonoBehaviour
 		{
-			public static UIMenuManager Instance;
+			public static UIMenuManager Instance { get; private set; }
 			private void Awake()
             {
 				if (!Instance)
@@ -50,7 +50,7 @@ namespace Millivolt
             private void Start()
             {
 				//Check if the scene starts with a menu open and add it to the active scenes list
-				FindObjectOfType<UIMenu>().ActivateMenu();
+				//FindObjectOfType<UIMenu>().ActivateMenu();
             }
         }
 	}

@@ -32,7 +32,7 @@ namespace Millivolt
                             m_deactivateEvents.Invoke();
 
                         if (m_togglesOnce)
-                            m_playerCanInteract = false;
+                            m_canInteract = false;
                         
                         m_isActive = value;
                     }
@@ -49,7 +49,7 @@ namespace Millivolt
                         isActive = !m_isActive;
 
                         if (m_togglesOnce)
-                            m_playerCanInteract = false;
+                            m_canInteract = false;
                         else
                             m_interactTimer = 0;
                     }

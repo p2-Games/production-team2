@@ -91,7 +91,7 @@ namespace Millivolt
             private void InteractWithClosestObject()
             {
                 InteractableObject interactableObject = m_closestObject.GetComponent<InteractableObject>();
-                if (interactableObject && interactableObject.playerCanInteract)
+                if (interactableObject && interactableObject.canInteract)
                     interactableObject.Interact();
                 else
                 {
@@ -103,7 +103,7 @@ namespace Millivolt
                 m_interactTimer = 0;
             }
 
-            private void OnTriggerEnter(Collider other)
+            private void OnTriggerStay(Collider other)
             {
                 bool NewObjectIsCloserThanCurrent(Transform newObject)
                 {
@@ -114,12 +114,28 @@ namespace Millivolt
                     return Vector3.Distance(newObject.position, centre) < Vector3.Distance(m_closestObject.transform.position, centre);
                 }
 
-                // if the object is interactable (pickup or interactable) AND its closer than the other saved object, save it AND its not the currently held object
-                if (other.gameObject.GetComponent<InteractableObject>().playerCanInteract &&
-                    NewObjectIsCloserThanCurrent(other.gameObject.transform) &&
-                    (!m_heldPickup || other.gameObject != m_heldPickup.gameObject))
+                // if the player is not holding something
+                if (m_state != InteractionState.Open)
+                    return;
+
+                // if the object in the trigger is not already the closest object
+                if (m_closestObject && m_closestObject.gameObject == other.gameObject)
+                    return;
+
+                // if the object is a level object
+                LevelObject obj = other.gameObject.GetComponent<LevelObject>();
+                if (!obj)
+                    return;
+
+                // if the object is not an immovable pickup object
+                PickupObject pickup = obj.GetComponent<PickupObject>();
+                if (pickup && !pickup.playerCanGrab)
+                    return;
+
+                // if the object can is closer than the saved current closest object
+                if (NewObjectIsCloserThanCurrent(other.gameObject.transform))
                 {
-                    m_closestObject = other.gameObject.GetComponent<LevelObject>();
+                    m_closestObject = obj;
                     m_interactionUI.UpdateDisplay(true, m_closestObject);
                 }
             }
@@ -129,7 +145,7 @@ namespace Millivolt
                 if (m_closestObject && other.gameObject == m_closestObject.gameObject)
                 {
                     m_closestObject = null;
-                    m_interactionUI.UpdateDisplay(false, null);
+                    m_interactionUI.UpdateDisplay(false, m_closestObject);
                 }
             }
 
@@ -139,13 +155,15 @@ namespace Millivolt
                 if (m_closestObject == obj.gameObject)
                 {
                     m_closestObject = null;
-                    m_interactionUI.UpdateDisplay(false, null);
+                    m_interactionUI.UpdateDisplay(false, m_closestObject);
                 }
 
                 m_heldPickup = obj;
                 m_heldPickup.useGravity = false;
                 m_heldPickup.transform.SetParent(m_heldObjectOffset);
                 m_heldPickup.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+
+                m_interactionUI.UpdateDisplay(false, null);
 
                 m_state = InteractionState.Holding;
             }

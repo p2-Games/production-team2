@@ -34,6 +34,7 @@ namespace Millivolt
                     Vector2 finalShrinksize = new Vector2(0, screenEndSize.y);
 
                     Tween.Size(m_shrinkScreen.rectTransform, m_shrinkScreen.rectTransform.sizeDelta, finalShrinksize, 0.2f, m_delay, Tween.EaseInOutStrong);
+                    Destroy(gameObject, 1f);
                 }
             }
         }
