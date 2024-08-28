@@ -51,7 +51,7 @@ MonoBehaviour:
   m_name: Receptacle
   m_description: Accepts a type of Level Object.
   spawnParent: {fileID: 0}
-  m_canInteract: 1
+  m_canInteract: 0
   m_togglesOnce: 0
   m_interactDelay: 1
   m_interactionFilter:
@@ -65,6 +65,7 @@ MonoBehaviour:
       m_Calls: []
   m_pickupName: 
   m_respawnTransform: {fileID: 0}
+  m_heldObject: {fileID: 0}
 --- !u!65 &4816821099029731533
 BoxCollider:
   m_ObjectHideFlags: 0

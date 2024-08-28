@@ -44,7 +44,7 @@ namespace Millivolt
                     SpawnObject();
             }
 
-            private void SpawnObject()
+            public void SpawnObject()
             {
                 // destroy existing game object
                 if (m_spawnedObject)
