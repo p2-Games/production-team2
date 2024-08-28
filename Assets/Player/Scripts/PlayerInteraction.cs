@@ -58,7 +58,7 @@ namespace Millivolt
                     m_heldPickup.rb.MovePosition(m_heldObjectOffset.position);
 
                 // for when pickup object gets disabled
-                if (!m_closestObject.gameObject.activeSelf)
+                if (m_closestObject && !m_closestObject.gameObject.activeSelf)
                 {
                     m_closestObject = null;
                     m_interactionUI.UpdateDisplay(false, m_closestObject);
