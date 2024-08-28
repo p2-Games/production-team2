@@ -29,29 +29,52 @@ namespace Millivolt
 
 			[SerializeField] LevelManager[] m_levels;
 
-			public GameState gameState => m_gameState;
+			[SerializeField] GameObject m_freeLookCam;
+
+			//Static reference
+			public static GameManager Instance { get; private set; }
+
+			public GameState gameState
+			{
+				get => m_gameState;
+				set
+				{
+                    switch (value)
+                    {
+                        case GameState.MENU:
+							Time.timeScale = 1;
+                            break;
+                        case GameState.PAUSE:
+                            Time.timeScale = 0;
+                            break;
+                        case GameState.PLAYING:
+                            Time.timeScale = 1;
+                            break;
+                        case GameState.FINISH:
+                            break;
+                    }
+					m_gameState = value;
+                }
+			}
+
+            private void Awake()
+            {
+                if (Instance != null && Instance != this)
+                {
+                    Destroy(this);
+                }
+                else
+                {
+                    Instance = this;
+                }
+
+                DontDestroyOnLoad(gameObject);
+            }
 
             private void Start()
             {
                 
             }
-
-            private void Update()
-			{
-				switch (m_gameState)
-				{
-					case GameState.MENU:
-						break;
-					case GameState.PAUSE:
-						Time.timeScale = 0;
-						break;
-					case GameState.PLAYING:
-						Time.timeScale = 1;
-						break;
-					case GameState.FINISH:
-						break;
-				}
-			}
 
 			/// <summary>
 			/// Load the next level as set up in the current levels leveldata
@@ -69,14 +92,28 @@ namespace Millivolt
                SceneManager.LoadScene(m_levels[m_currentLevel].prevLevelName);
             }
 
-			public void PauseGame()
+			public void PauseGame(bool value)
 			{
-				m_gameState = GameState.PAUSE;
+				if (value)
+				{
+					gameState = GameState.PAUSE;
+					m_freeLookCam.SetActive(false);
+				}
+				else
+				{
+					gameState = GameState.PLAYING;
+					m_freeLookCam.SetActive(true);
+				}
 			}
 
-			public void UnpauseGame()
+			public void ExitToMenu()
 			{
-				m_gameState = GameState.PLAYING;
+				gameState = GameState.MENU;
+			}
+
+			public void ExitGame()
+			{
+				Application.Quit();
 			}
 		}
 	}
