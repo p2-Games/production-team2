@@ -40,19 +40,24 @@ namespace Millivolt
 
             public void RestartLevel()
             {
-                //CALL RESTART LEVEL METHOD FROM THE LEVELMANAGER
+                Instantiate(m_closeScreen);
+                Invoke("CallRestart", 1f);
             }
 
             public void ExitToMenu()
             {
-                m_gameManager.ExitToMenu();
                 Instantiate(m_closeScreen);
-                Invoke("MenuSceneChange", 1f);
+                Invoke("CallExitToMenu", 1f);
             }
 
-            private void MenuSceneChange()
+            private void CallRestart()
             {
-                //MOVE SCENE TO MENU SCREEN
+                m_gameManager.RestartLevel();
+            }
+
+            private void CallExitToMenu()
+            {
+                m_gameManager.ExitToMenu();
             }
         }
 	}
