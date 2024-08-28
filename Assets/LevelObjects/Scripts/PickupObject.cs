@@ -27,19 +27,8 @@ namespace Millivolt
             public PickupType pickupType => m_type;
             public bool playerCanGrab => m_type != PickupType.Immovable;
 
-            public Vector3 velocity
-            {
-                get => m_rb.velocity;
-                set => m_rb.velocity = value;
-            }
-
-            public bool useGravity
-            {
-                get => m_rb.useGravity;
-                set => m_rb.useGravity = value;
-            }
-
             private Rigidbody m_rb;
+            public Rigidbody rb => m_rb;
 
             private void Start()
             {

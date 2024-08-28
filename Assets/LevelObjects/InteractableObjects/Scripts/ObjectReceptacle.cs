@@ -29,6 +29,7 @@ namespace Millivolt
                 {
                     if (m_heldObject)
                     {
+                        m_heldObject = Instantiate(m_heldObject);
                         m_heldObject.gameObject.SetActive(false);
                         m_canInteract = true;
                     }
@@ -38,7 +39,7 @@ namespace Millivolt
                 private void OnTriggerEnter(Collider other)
                 {
                     // if the receptacle is inactive OR it already has an object in it, don't check for anything
-                    if (m_interactTimer < m_interactDelay || m_canInteract)
+                    if (m_interactTimer < m_interactDelay || m_heldObject)
                         return;
 
                     LevelObject obj = other.GetComponent<LevelObject>();
@@ -58,7 +59,8 @@ namespace Millivolt
                             m_heldObject.gameObject.SetActive(false);
 
                             // toggle this receptacle's active state
-                            m_canInteract = true;
+                            if (!m_togglesOnce)
+                                m_canInteract = true;
                             isActive = !m_isActive;
                         }
                     }
@@ -67,10 +69,6 @@ namespace Millivolt
                 // taking objects out
                 public override void Interact()
                 {
-                    // if the receptacle only toggles once and has an object, return
-                    if (m_togglesOnce && m_canInteract)
-                        return;
-
                     // reactivate the held object
                     m_heldObject.gameObject.SetActive(true);
 
@@ -81,11 +79,11 @@ namespace Millivolt
                     if (m_heldObject.spawnParent)
                         m_heldObject.spawnParent.SetCanSpawnObject(true);
 
+                    // set the inactive timer so it won't be picked up again instantly
+                    m_interactTimer = 0;
+
                     // remove reference to the object
                     m_heldObject = null;
-
-                    // set the inactive timer so it won't be picked up again instantly
-                    m_interactTimer = m_interactDelay;
 
                     // set the state of the object
                     m_canInteract = false;

@@ -41,11 +41,7 @@ namespace Millivolt
 
             private LevelObject m_closestObject;
 
-            public InteractionState interactionState => m_state;
-
             public bool canInteract => m_state != InteractionState.Closed && m_interactTimer >= m_interactTime && m_closestObject;
-
-            public string heldItemName => m_heldPickup.name;
 
             private void Start()
             {
@@ -56,6 +52,17 @@ namespace Millivolt
             {
                 if (m_interactTimer < m_interactTime)
                     m_interactTimer += Time.deltaTime;
+
+                // keep held object in front of player
+                if (m_heldPickup)
+                    m_heldPickup.rb.MovePosition(m_heldObjectOffset.position);
+
+                // for when pickup object gets disabled
+                if (!m_closestObject.gameObject.activeSelf)
+                {
+                    m_closestObject = null;
+                    m_interactionUI.UpdateDisplay(false, m_closestObject);
+                }
             }
 
             private void InitialiseTrigger()
@@ -122,20 +129,23 @@ namespace Millivolt
                 if (m_closestObject && m_closestObject.gameObject == other.gameObject)
                     return;
 
-                // if the object is a level object
-                LevelObject obj = other.gameObject.GetComponent<LevelObject>();
-                if (!obj)
+                // if the object is interactable or a pickup
+                InteractableObject interactable = other.gameObject.GetComponent<InteractableObject>();
+                PickupObject pickup = other.gameObject.GetComponent<PickupObject>();
+                if (!interactable && !pickup)
+                    return;
+
+                if (interactable && !interactable.canInteract)
                     return;
 
                 // if the object is not an immovable pickup object
-                PickupObject pickup = obj.GetComponent<PickupObject>();
                 if (pickup && !pickup.playerCanGrab)
                     return;
 
                 // if the object can is closer than the saved current closest object
                 if (NewObjectIsCloserThanCurrent(other.gameObject.transform))
                 {
-                    m_closestObject = obj;
+                    m_closestObject = other.gameObject.GetComponent<LevelObject>();
                     m_interactionUI.UpdateDisplay(true, m_closestObject);
                 }
             }
@@ -152,27 +162,20 @@ namespace Millivolt
             // picking up and dropping objects
             public void GrabObject(PickupObject obj)
             {
-                if (m_closestObject == obj.gameObject)
-                {
-                    m_closestObject = null;
-                    m_interactionUI.UpdateDisplay(false, m_closestObject);
-                }
-
                 m_heldPickup = obj;
-                m_heldPickup.useGravity = false;
-                m_heldPickup.transform.SetParent(m_heldObjectOffset);
-                m_heldPickup.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
-
-                m_interactionUI.UpdateDisplay(false, null);
+                m_heldPickup.rb.useGravity = false;
+                m_closestObject = null;
+                m_interactionUI.UpdateDisplay(false, m_closestObject);
+                Physics.IgnoreLayerCollision(3, 9, true);
 
                 m_state = InteractionState.Holding;
             }
 
             public void DropObject()
             {
-                m_heldPickup.useGravity = true;
-                m_heldPickup.transform.SetParent(null, true);
+                m_heldPickup.rb.useGravity = true;
                 m_heldPickup = null;
+                Physics.IgnoreLayerCollision(3, 9, false);
 
                 m_state = InteractionState.Open;
             }
