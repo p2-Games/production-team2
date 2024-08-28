@@ -40,6 +40,9 @@ namespace Millivolt
 
             [SerializeField] private GameObject m_deathCanvas;
 
+            [Header("Respawn Properties")]
+            [SerializeField] private float m_respawnTime;
+
             private void Start()
             {
                 m_currentHealth = m_maxHealth;
@@ -72,7 +75,12 @@ namespace Millivolt
                 m_currentHealth = m_maxHealth;
                 UpdateVignetteEffect();
                 Instantiate(m_deathCanvas);
-                m_levelManager.GetActiveCheckpoint().RespawnPlayer();
+                Invoke("Respawn", m_respawnTime);
+            }
+
+            private void Respawn()
+            {
+                m_levelManager.SpawnPlayer();
             }
 
             /// <summary>

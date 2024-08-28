@@ -42,13 +42,21 @@ namespace Millivolt
 
 			[Header("Level Data")]
 			[SerializeField] private LevelData m_levelData;
+
+			[Header("Spawn references")]
+			[SerializeField] private GameObject m_spawnScreen;
+
 			public LevelData levelData => m_levelData;
+
+			public PlayerController m_player;
 
             private void Start()
             {
+				m_player = FindObjectOfType<PlayerController>();
 				if (m_autoAddCheckpoints)
 					FindAllCheckpoints();
 				InitialiseCheckpoints();
+				SpawnPlayer();
             }
 
 			/// <summary>
@@ -93,6 +101,15 @@ namespace Millivolt
 						point.activeCheckpoint = false;
 					}
 				}
+			}
+
+			public void SpawnPlayer()
+			{
+				Instantiate(m_spawnScreen);
+				m_player.transform.position = GetActiveCheckpoint().respawnPoint.position;
+				m_player.transform.localEulerAngles = new Vector3(0, GetActiveCheckpoint().respawnPoint.localEulerAngles.y, 0);
+				FindObjectOfType<PlayerLookTarget>().SetToPlayerPosition();
+				FindObjectOfType<SmoothObjectTracking>().SetToPlayerPosition();
 			}
 
 			/// <summary>
