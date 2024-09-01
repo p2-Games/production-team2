@@ -52,6 +52,11 @@ namespace Millivolt
 				//Check if the scene starts with a menu open and add it to the active scenes list
 				//FindObjectOfType<UIMenu>().ActivateMenu();
             }
+
+            public void Reload()
+            {
+
+            }
         }
 	}
 }

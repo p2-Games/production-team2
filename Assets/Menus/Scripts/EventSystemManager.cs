@@ -23,15 +23,12 @@ namespace Millivolt
             // Singleton instantiation
             private void Awake()
             {
-                if (Instance != null && Instance != this)
-                {
-                    Destroy(this);
-                }
-                else
-                {
+                if (!Instance)
                     Instance = this;
-                }
+                else if (Instance != this)
+                    Destroy(gameObject);
 
+                DontDestroyOnLoad(gameObject);
             }
 
             [Header("Component References")]
@@ -47,6 +44,16 @@ namespace Millivolt
                 Button newSelectable = newSelectedObject.GetComponent<Button>();
                 newSelectable.Select();
                 newSelectable.OnSelect(null);
+            }
+
+            private void Update()
+            {
+                if (!eventSystem)
+                    eventSystem = FindObjectOfType<EventSystem>();
+            }
+            public void Reload()
+            {
+
             }
         }
     }

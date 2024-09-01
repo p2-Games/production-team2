@@ -49,6 +49,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Pause",
+                    "type": "Button",
+                    "id": "791adf62-c3a2-4b9e-af5e-28e3044a7080",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -134,7 +143,7 @@
                     "id": "54fe009b-d6f1-4c96-a9bc-0c6a22470cdb",
                     "path": "<Gamepad>/rightStick",
                     "interactions": "",
-                    "processors": "ScaleVector2(x=0.1,y=0.008333334)",
+                    "processors": "ScaleVector2(y=0.008333334)",
                     "groups": "Gamepad",
                     "action": "Look",
                     "isComposite": false,
@@ -192,6 +201,28 @@
                     "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "Debug",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c5d26a4f-fb0c-420f-9cfb-992062edc252",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e4547596-1ce0-4bb3-b539-2bf4ac34602b",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Pause",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
