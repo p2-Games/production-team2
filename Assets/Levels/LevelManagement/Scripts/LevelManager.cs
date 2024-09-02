@@ -1,7 +1,7 @@
 ///<summary>
 /// Author: Emily McDonald
 ///
-/// This script will handle the level management
+/// Handles the management of the level
 ///
 ///</summary>
 
@@ -60,6 +60,9 @@ namespace Millivolt
 				FindAllCheckpoints();
 			InitialiseCheckpoints();
 			SpawnPlayer();
+
+			//Grab reference to LevelData in the LevelDataReference in the scene
+			m_levelData = FindObjectOfType<LevelDataReference>().levelData;
         }
 
             
