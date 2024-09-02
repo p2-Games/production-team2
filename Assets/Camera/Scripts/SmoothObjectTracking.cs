@@ -15,6 +15,8 @@ namespace Millivolt
     {
         [SerializeField] private Transform m_target;
 
+        [SerializeField] private float m_minDistance;
+
         [Header("Movement"), Tooltip("How fast the object moves twoards its target in units per second.")]
         [SerializeField] private float m_moveSpeed;
         [Tooltip("Affects how smoothly the object moves.")]
@@ -36,6 +38,9 @@ namespace Millivolt
 
         private void Update()
         {
+            if (Vector3.Distance(transform.position, m_targetPosition) <= m_minDistance)
+                return;
+
             float tMove = Damper.Damp(1, m_moveSmoothing, Time.deltaTime);
             if (m_slerpMovement)
                 transform.position = Vector3.Slerp(transform.position, m_targetPosition, tMove);

@@ -22,15 +22,6 @@ namespace Millivolt
                     m_player = transform.GetChild(0);
             }
 
-            private void Update()
-            {
-                //if (transform.hasChanged)
-                //{
-                //    ResetPosition();
-                //    transform.hasChanged = false;
-                //}
-            }
-
             public void ResetPosition()
             {
                 transform.position = m_player.position;
