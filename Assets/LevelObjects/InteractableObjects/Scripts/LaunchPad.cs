@@ -29,7 +29,7 @@ namespace Millivolt
                 private Rigidbody m_objectToLaunch;
                 private Vector3 m_newObjectPosition;
 
-                private PlayerController m_player;
+                new private PlayerController m_player;
 
                 private void Start()
                 {
@@ -40,8 +40,10 @@ namespace Millivolt
                 {
                     base.Update();
                     
+                    // if the launchpad has something to launch AND it is in launching range
                     if (m_objectToLaunch && Vector3.Distance(m_objectToLaunch.position, m_newObjectPosition) < m_minDistanceToLaunch)
                     {
+                        // different behaviour if the object to launch is the player
                         if (m_player.gameObject == m_objectToLaunch.gameObject)
                         {
                             m_player.SetExternalVelocity(m_initialVelocity);
