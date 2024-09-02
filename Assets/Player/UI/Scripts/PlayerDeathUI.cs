@@ -41,7 +41,7 @@ namespace Millivolt
                     m_disableDelay += 1f;
                     //Destroy(gameObject, 1f);
 
-                    Invoke("DisableThis", m_disableDelay);
+                    Invoke(nameof(DisableThis), m_disableDelay);
                 }
 
                 private void DisableThis()

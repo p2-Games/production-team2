@@ -43,9 +43,9 @@ namespace Millivolt
 
 			[Header("Level Data")]
 			[SerializeField] private LevelData m_levelData;
-
-			[Header("Spawn references")]
-			[SerializeField] private GameObject m_spawnScreen;
+			
+			//Spawn screen ref
+			private GameObject m_spawnScreen;
 
 			public LevelData levelData => m_levelData;
 
@@ -54,6 +54,7 @@ namespace Millivolt
             private void Start()
             {
 				m_player = FindObjectOfType<PlayerController>();
+				m_spawnScreen = FindObjectOfType<PlayerSpawnUI>().gameObject;
 				if (m_autoAddCheckpoints)
 					FindAllCheckpoints();
 				InitialiseCheckpoints();
