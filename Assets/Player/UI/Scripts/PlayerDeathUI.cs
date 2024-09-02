@@ -21,7 +21,9 @@ namespace Millivolt
 
 		        private float m_delay;
 
-                private void Awake()
+                private float m_disableDelay;
+
+                private void OnEnable()
                 {
 
                     Vector2 screenStartSize = m_shrinkScreen.rectTransform.sizeDelta;
@@ -30,11 +32,24 @@ namespace Millivolt
                     Tween.Size(m_shrinkScreen.rectTransform, screenStartSize, screenEndSize, 0.15f, 0, Tween.EaseInOutStrong);
 
                     m_delay += 0.17f;
+                    m_disableDelay += 0.17f;
 
                     Vector2 finalShrinksize = new Vector2(0, screenEndSize.y);
 
                     Tween.Size(m_shrinkScreen.rectTransform, m_shrinkScreen.rectTransform.sizeDelta, finalShrinksize, 0.2f, m_delay, Tween.EaseInOutStrong);
-                    Destroy(gameObject, 1f);
+
+                    m_disableDelay += 1f;
+                    //Destroy(gameObject, 1f);
+
+                    Invoke(nameof(DisableThis), m_disableDelay);
+                }
+
+                private void DisableThis()
+                {
+                    gameObject.SetActive(false);
+                    m_delay = 0;
+                    m_disableDelay = 0;
+                    Tween.Size(m_shrinkScreen.rectTransform, m_shrinkScreen.rectTransform.sizeDelta, new Vector2(800, 450), 0, 0, Tween.EaseInOutStrong);
                 }
             }
         }

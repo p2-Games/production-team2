@@ -19,7 +19,7 @@ namespace Millivolt
 		{
 			private SceneAsset m_prev, m_next;
 			
-			protected SerializedProperty m_currentCheckpoint, m_levelCheckpoints, m_prevLevelName, m_nextLevelName, m_autoAddCheckpoints, m_lvlData, m_spawnScreen;
+			protected SerializedProperty m_currentCheckpoint, m_levelCheckpoints, m_prevLevelName, m_nextLevelName, m_autoAddCheckpoints, m_lvlData;
 
 			protected bool hasBeenChanged;
 
@@ -91,10 +91,6 @@ namespace Millivolt
 				EGL.BeginHorizontal();
 				EGL.PropertyField(m_lvlData);
 				EGL.EndHorizontal();
-
-                EGL.BeginHorizontal();
-                EGL.PropertyField(m_spawnScreen);
-                EGL.EndHorizontal();
             }
 
             protected void GetSerializedProperties()
@@ -108,7 +104,6 @@ namespace Millivolt
 				m_nextLevelName = serializedObject.FindProperty("m_nextLevelName");
 				m_autoAddCheckpoints = serializedObject.FindProperty("m_autoAddCheckpoints");
 				m_lvlData = serializedObject.FindProperty("m_levelData");
-				m_spawnScreen = serializedObject.FindProperty("m_spawnScreen");
 			}
         }
 	}
