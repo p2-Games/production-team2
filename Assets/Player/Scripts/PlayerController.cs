@@ -21,8 +21,8 @@ namespace Millivolt
             {
                 InitialiseRigidbody();
                 InitialiseCollider();
-                if (parent)
-                    m_cameraController = parent.GetComponent<FirstPersonCameraController>();
+
+                // something about this line is probably wrong
                 m_targetBodyRotation = transform.localRotation;
             }
 
@@ -66,7 +66,7 @@ namespace Millivolt
 
                 // set parent rotation
                 m_parent.ResetPosition();
-                parent.rotation = Quaternion.Euler(direction)/* * Quaternion.FromToRotation(Vector3.forward, Vector3.down)*/;
+                parent.rotation = Quaternion.Euler(direction);
 
                 // set the physics gravity
                 Physics.gravity = -parent.up * magnitude;
@@ -161,8 +161,7 @@ namespace Millivolt
                 // calc target rotation for player body
                 if (targetVelocity != Vector3.zero)
                 {
-                    m_targetBodyRotation = Quaternion.LookRotation(targetVelocity.normalized, transform.up);
-                    //m_targetBodyRotation += Vector3.SignedAngle(transform.forward, targetVelocity.normalized, transform.up);
+                    m_targetBodyRotation = Quaternion.LookRotation(targetVelocity.normalized, -Physics.gravity)/* * Quaternion.Inverse(parent.rotation)*/;
                 }
 
                 // only apply gravity if not grounded
@@ -177,7 +176,7 @@ namespace Millivolt
                 }
 
                 // move player
-                m_rb.velocity = m_walkVelocity + m_verticalVelocity * transform.up + m_platformVelocity + m_externalVelocity;
+                m_rb.velocity = m_walkVelocity + -Physics.gravity.normalized * m_verticalVelocity + m_platformVelocity + m_externalVelocity;
             }
 
             /// <summary>
@@ -205,9 +204,12 @@ namespace Millivolt
                 Debug.Log("Target (B): " + m_targetBodyRotation.eulerAngles);
 
                 // move player to face correct direction when move direction is not zero
-                transform.localEulerAngles = new Vector3(0,
-                    Quaternion.RotateTowards(transform.localRotation, m_targetBodyRotation, m_rotationAcceleration * Time.deltaTime).eulerAngles.y,
-                    0);
+                //transform.rotation = Quaternion.RotateTowards(transform.localRotation, m_targetBodyRotation, m_rotationAcceleration * Time.deltaTime);
+                if (m_walkVelocity.sqrMagnitude != 0)
+                {
+                    transform.rotation = Quaternion.LookRotation(m_walkVelocity, -Physics.gravity);
+                }
+                //transform.rotation = m_targetBodyRotation;
             }
 
             [Header("Jumping")]
@@ -298,20 +300,16 @@ namespace Millivolt
                 get
                 {
                     return Physics.BoxCast(transform.position + m_collider.center, new Vector3(m_groundCheckRadius, m_groundCheckDistance, m_groundCheckRadius),
-                        transform.up, /*out RaycastHit hit,*/ transform.rotation, m_collider.height / 2, ~(1 << LayerMask.NameToLayer("Player")), QueryTriggerInteraction.Ignore)
-                        && m_verticalVelocity > 0;
+                        transform.up, /*out RaycastHit hit,*/ transform.rotation, m_collider.height / 2, ~(1 << LayerMask.NameToLayer("Player")), QueryTriggerInteraction.Ignore);
                 }
             }
 
             private void OnCollisionEnter(Collision collision)
             {
                 // check if the player is hitting their head on the ceiling
-                if (hittingHead)
+                if (hittingHead && m_verticalVelocity > 0)
                     m_verticalVelocity = 0;
             }
-
-            [Header("Camera")]
-            private FirstPersonCameraController m_cameraController;
 
 #if UNITY_EDITOR
             [Header("Debug"), SerializeField] private bool m_drawGizmos;
@@ -323,6 +321,7 @@ namespace Millivolt
                 if (!m_collider)
                     InitialiseCollider();
 
+                /*
                 Handles.matrix = transform.localToWorldMatrix;
 
                 Handles.color = Color.green;
@@ -336,6 +335,7 @@ namespace Millivolt
                 Handles.color = Color.magenta;
                 Handles.ArrowHandleCap(0, m_collider.center - Vector3.up * m_collider.height / 2,
                                         Quaternion.LookRotation(Vector3.down, gravity.normalized), 1, EventType.Repaint);
+                */
 
                 if (Application.isPlaying)
                 {
