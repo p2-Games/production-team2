@@ -74,7 +74,8 @@ namespace Millivolt
                 // LOGIC HERE
                 m_currentHealth = m_maxHealth;
                 UpdateVignetteEffect();
-                Instantiate(m_deathCanvas);
+                //Instantiate(m_deathCanvas);
+                m_deathCanvas.SetActive(true);
                 Invoke("Respawn", m_respawnTime);
             }
 

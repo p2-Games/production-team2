@@ -13,7 +13,8 @@ using Millivolt.Player;
 
 namespace Millivolt
 {
-	using Utilities;
+    using Millivolt.Player.UI;
+    using Utilities;
 		public class LevelManager : MonoBehaviour
 		{
 			public static LevelManager Instance { get; private set; }
@@ -107,7 +108,8 @@ namespace Millivolt
 
 			public void SpawnPlayer()
 			{
-				Instantiate(m_spawnScreen);
+				//Instantiate(m_spawnScreen);
+				m_spawnScreen.SetActive(true);
 				m_player.transform.position = GetActiveCheckpoint().respawnPoint.position;
 				m_player.transform.localEulerAngles = new Vector3(0, GetActiveCheckpoint().respawnPoint.localEulerAngles.y, 0);
 				FindObjectOfType<PlayerLookTarget>().SetToPlayerPosition();
@@ -125,8 +127,11 @@ namespace Millivolt
 			if (!m_player)
 			{
                 m_player = FindObjectOfType<PlayerController>(); 
-				SpawnPlayer();
+				//SpawnPlayer();
 			}
+
+			if (!m_spawnScreen)
+				m_spawnScreen = FindObjectOfType<PlayerSpawnUI>().gameObject;
 
         }
 
