@@ -1,5 +1,49 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1551510371685561964
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8467025738090091688}
+  - component: {fileID: 4304773438459225135}
+  m_Layer: 3
+  m_Name: UIController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8467025738090091688
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1551510371685561964}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7656940878263155370}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4304773438459225135
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1551510371685561964}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2e32932993b0a446974f0a2195d6250, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6851408432982796070
 GameObject:
   m_ObjectHideFlags: 0
@@ -45,6 +89,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61e7e4c4c7616114e9d11cd93495d73c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_player: {fileID: 0}
 --- !u!1 &7656940878263155382
 GameObject:
   m_ObjectHideFlags: 0
@@ -80,6 +125,7 @@ Transform:
   - {fileID: 7656940879443071546}
   - {fileID: 4362615360194532453}
   - {fileID: 5720830182503447858}
+  - {fileID: 8467025738090091688}
   m_Father: {fileID: 6851408432982796065}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -103,6 +149,7 @@ MonoBehaviour:
   m_acceleration: 20
   m_decceleration: 15
   m_slopeLimit: 80
+  canMove: 1
   m_rotationAcceleration: 200
   m_jumpSpeed: 5
   m_groundCheckDistance: 0.01
@@ -135,7 +182,7 @@ Rigidbody:
   m_AngularDrag: 0
   m_UseGravity: 0
   m_IsKinematic: 0
-  m_Interpolate: 2
+  m_Interpolate: 1
   m_Constraints: 112
   m_CollisionDetection: 1
 --- !u!114 &7656940878263155383
@@ -245,6 +292,22 @@ MonoBehaviour:
     m_ActionId: 02787874-adf2-446f-9c4f-89cb518772a3
     m_ActionName: UI/Click[/Mouse/leftButton,/Pen/tip]
   - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6015991794495447009}
+        m_TargetAssemblyTypeName: Millivolt.Player.PlayerInteraction, Assembly-CSharp
+        m_MethodName: Interact
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: a4aaba8e-000e-4546-b410-766488036193
+    m_ActionName: Player/Interact[/Keyboard/e]
+  - m_PersistentCalls:
       m_Calls: []
     m_ActionId: 262e04a0-e051-41cd-86b7-1aac1298037c
     m_ActionName: UI/ScrollWheel[/Mouse/scroll]
@@ -265,10 +328,14 @@ MonoBehaviour:
     m_ActionId: cf4c145a-e4a2-4955-99e4-23baf2ba5523
     m_ActionName: UI/TrackedDeviceOrientation
   - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 5a782561-2ba1-46f2-8354-6ec12da2eb37
+    m_ActionName: Player/Debug[/Keyboard/j]
+  - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 6015991794495447009}
-        m_TargetAssemblyTypeName: Millivolt.Player.PlayerInteraction, Assembly-CSharp
-        m_MethodName: Interact
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: Millivolt.Player.UIController, Assembly-CSharp
+        m_MethodName: Pause
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -278,9 +345,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_ActionId: a4aaba8e-000e-4546-b410-766488036193
-    m_ActionName: Player/Interact[/Keyboard/e]
-  m_NeverAutoSwitchControlSchemes: 1
+    m_ActionId: 791adf62-c3a2-4b9e-af5e-28e3044a7080
+    m_ActionName: Player/Pause[/Keyboard/escape]
+  m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard&Mouse
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
@@ -292,6 +359,48 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7656940878263155370}
     m_Modifications:
+    - target: {fileID: 2191505695045277256, guid: a692d36eca9d5a441b86092069b69f0b,
+        type: 3}
+      propertyPath: m_maxHealth
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 2191505695045277256, guid: a692d36eca9d5a441b86092069b69f0b,
+        type: 3}
+      propertyPath: m_deathCanvas
+      value: 
+      objectReference: {fileID: 5383357393564954143, guid: 25eda6dcc2b7cdd478d6b5db244fc28e,
+        type: 3}
+    - target: {fileID: 2191505695045277256, guid: a692d36eca9d5a441b86092069b69f0b,
+        type: 3}
+      propertyPath: m_respawnTime
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2191505695045277256, guid: a692d36eca9d5a441b86092069b69f0b,
+        type: 3}
+      propertyPath: m_levelManager
+      value: 
+      objectReference: {fileID: -7243825555886614746, guid: fce4194d438dd3c4fa8899b2a96d0e99,
+        type: 3}
+    - target: {fileID: 2191505695045277256, guid: a692d36eca9d5a441b86092069b69f0b,
+        type: 3}
+      propertyPath: m_staticVignette
+      value: 
+      objectReference: {fileID: 2100000, guid: 331419b5c2198db408a61e0faa63d484, type: 2}
+    - target: {fileID: 2191505695045277256, guid: a692d36eca9d5a441b86092069b69f0b,
+        type: 3}
+      propertyPath: m_healthRegenRate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2191505695045277256, guid: a692d36eca9d5a441b86092069b69f0b,
+        type: 3}
+      propertyPath: m_healthRegenTime
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2191505695045277256, guid: a692d36eca9d5a441b86092069b69f0b,
+        type: 3}
+      propertyPath: m_healthRegenAmount
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 6487815084251829567, guid: a692d36eca9d5a441b86092069b69f0b,
         type: 3}
       propertyPath: m_RootOrder
@@ -427,8 +536,29 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4274433419345854684, guid: eece1ceeb51baf045a27f125b6963f2f,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.098
+      objectReference: {fileID: 0}
+    - target: {fileID: 4274433419345854684, guid: eece1ceeb51baf045a27f125b6963f2f,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.751
+      objectReference: {fileID: 0}
+    - target: {fileID: 8149319609767766237, guid: eece1ceeb51baf045a27f125b6963f2f,
+        type: 3}
+      propertyPath: m_heldObjectOffset
+      value: 
+      objectReference: {fileID: 1816354897573902304}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eece1ceeb51baf045a27f125b6963f2f, type: 3}
+--- !u!4 &1816354897573902304 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4274433419345854684, guid: eece1ceeb51baf045a27f125b6963f2f,
+    type: 3}
+  m_PrefabInstance: {fileID: 2478435186325714748}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4362615360194532453 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2228776203337802585, guid: eece1ceeb51baf045a27f125b6963f2f,

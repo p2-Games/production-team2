@@ -11,13 +11,12 @@ using UnityEngine.InputSystem;
 
 namespace Millivolt
 {
-    using LevelObjects.PickupObjects;
-
     namespace Player
     {
         [RequireComponent(typeof(CapsuleCollider), typeof(Rigidbody), typeof(PlayerInput))]
         public class FirstPersonPlayerController : MonoBehaviour
         {
+            /*
             void Start()
             {
                 InitialiseRigidbody();
@@ -294,6 +293,7 @@ namespace Millivolt
                 }
             }
 #endif
+            */
         }
     }
 }
