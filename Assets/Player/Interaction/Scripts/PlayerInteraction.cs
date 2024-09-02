@@ -25,6 +25,17 @@ namespace Millivolt
             Closed // unable to interact with or pick up objects
         }
 
+        [System.Serializable]
+        public enum InputType
+        {
+            Move,
+            Look,
+            Jump,
+            Interact,
+            Pause,
+            INPUT_COUNT
+        }
+
         [RequireComponent(typeof(Collider))]
         public class PlayerInteraction : MonoBehaviour
         {
@@ -42,7 +53,7 @@ namespace Millivolt
 
             private LevelObject m_closestObject;
 
-            public GameObject m_heldObject;
+            public GameObject heldObject;
             public bool canInteract => m_state != InteractionState.Closed && m_interactTimer >= m_interactTime && m_closestObject;
 
             private void Start()
@@ -63,7 +74,7 @@ namespace Millivolt
                 if (m_closestObject && !m_closestObject.gameObject.activeSelf)
                 {
                     m_closestObject = null;
-                    m_interactionUI.UpdateDisplay(false, m_closestObject);
+                    m_interactionUI.UpdateDisplay(m_closestObject);
                 }
             }
 
@@ -148,7 +159,7 @@ namespace Millivolt
                 if (NewObjectIsCloserThanCurrent(other.gameObject.transform))
                 {
                     m_closestObject = other.gameObject.GetComponent<LevelObject>();
-                    m_interactionUI.UpdateDisplay(true, m_closestObject);
+                    m_interactionUI.UpdateDisplay(m_closestObject);
                 }
             }
 
@@ -157,7 +168,7 @@ namespace Millivolt
                 if (m_closestObject && other.gameObject == m_closestObject.gameObject)
                 {
                     m_closestObject = null;
-                    m_interactionUI.UpdateDisplay(false, m_closestObject);
+                    m_interactionUI.UpdateDisplay(m_closestObject);
                 }
             }
 
@@ -167,7 +178,7 @@ namespace Millivolt
                 m_heldPickup = obj;
                 m_heldPickup.rb.useGravity = false;
                 m_closestObject = null;
-                m_interactionUI.UpdateDisplay(false, m_closestObject);
+                m_interactionUI.UpdateDisplay(m_closestObject);
                 Physics.IgnoreLayerCollision(3, 9, true);
 
                 m_state = InteractionState.Holding;

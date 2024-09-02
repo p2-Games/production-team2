@@ -25,9 +25,6 @@ namespace Millivolt
                 [Tooltip("The direction of gravity when this event triggers.")]
                 [SerializeField] private Vector3 m_direction;
 
-                [Tooltip("If this object changes the value of Physics.gravity as well as the player's personal gravity.")]
-                [SerializeField] private bool m_changePhysicsGravity;
-
                 private PlayerController m_player;
 
                 /// <summary>

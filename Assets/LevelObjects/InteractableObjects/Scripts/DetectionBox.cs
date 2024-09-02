@@ -23,7 +23,10 @@ namespace Millivolt
                 }
 
                 private void OnTriggerEnter(Collider other)
-                {                   
+                {
+                    if (!m_canInteract)
+                        return;
+                    
                     if (CanTrigger(other.gameObject))
                     {
                         if (m_collidingObjects == 0)
@@ -34,6 +37,9 @@ namespace Millivolt
 
                 private void OnTriggerExit(Collider other)
                 {
+                    if (!m_canInteract)
+                        return;
+                    
                     if (CanTrigger(other.gameObject))
                     {
                         m_collidingObjects--;

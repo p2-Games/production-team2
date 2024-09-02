@@ -30,6 +30,8 @@ namespace Millivolt
 			new public string name => m_name;
             [SerializeField, TextArea] protected string m_description = "";
 
+            [SerializeField] protected bool m_drawGizmos = true;
+
 			// spawn parent, if it exists
 			[HideInInspector] public ObjectSpawner spawnParent;
         }

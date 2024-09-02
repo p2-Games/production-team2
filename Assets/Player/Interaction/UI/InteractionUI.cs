@@ -14,6 +14,7 @@ namespace Millivolt
 	namespace Player
 	{
 		using LevelObjects;
+        using UnityEngine.InputSystem;
 
         namespace UI
 		{
@@ -21,6 +22,7 @@ namespace Millivolt
 			{
 				[SerializeField] private RectTransform m_container;
 				[SerializeField] private TextMeshProUGUI m_itemNameDisplay;
+				[SerializeField] private Image m_buttonDisplay;
 
 				[Header("Container Size Details"), Tooltip("Width of the container per character in an object's name.")]
 				[SerializeField] private float m_widthPerChar = 17;
@@ -31,7 +33,8 @@ namespace Millivolt
 
                 private void Start()
                 {
-                    SetDisplay(false);
+					m_buttonDisplay.rectTransform.sizeDelta = new Vector2(m_height, m_height);
+					SetDisplayActive(false);
                 }
 
                 private void Update()
@@ -42,22 +45,24 @@ namespace Millivolt
 					}
                 }
 
-                public void UpdateDisplay(bool value, LevelObject target)
+                public void UpdateDisplay(LevelObject target)
 				{
 					m_target = target;
-					if (value)
+					if (m_target)
 					{
 						m_itemNameDisplay.text = target.name;
 						m_container.sizeDelta = new Vector2(m_widthPerChar * m_itemNameDisplay.text.Length, m_height);
+						m_buttonDisplay.sprite = PlayerInputIcons.Instance.GetInputIcon(InputType.Interact);
 					}
 
-					SetDisplay(value);
+					SetDisplayActive(m_target);
 				}
 
-				private void SetDisplay(bool value)
+				private void SetDisplayActive(bool value)
 				{
                     m_container.gameObject.SetActive(value);
                     m_itemNameDisplay.gameObject.SetActive(value);
+					m_buttonDisplay.gameObject.SetActive(value);
                 }
 			}
 		}

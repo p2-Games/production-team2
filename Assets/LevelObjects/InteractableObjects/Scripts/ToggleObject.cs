@@ -33,7 +33,7 @@ namespace Millivolt
 
                         if (m_togglesOnce)
                             m_canInteract = false;
-                        
+
                         m_isActive = value;
                     }
                 }
@@ -48,9 +48,7 @@ namespace Millivolt
                         // toggle the active state
                         isActive = !m_isActive;
 
-                        if (m_togglesOnce)
-                            m_canInteract = false;
-                        else
+                        if (m_canInteract)
                             m_interactTimer = 0;
                     }
                 }

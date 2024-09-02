@@ -34,7 +34,7 @@ namespace Millivolt
 				[Tooltip("The events that will occur when the object's active state is changed.")]
 				[SerializeField] protected UnityEvent m_activateEvents;
 
-				protected PlayerInteraction m_player;
+				protected PlayerInteraction m_playerInteraction;
 
 				public virtual bool canInteract => m_canInteract;
 
@@ -44,7 +44,7 @@ namespace Millivolt
 
                 protected bool CanTrigger(GameObject obj)
                 {
-					if (obj == m_player.m_heldObject)
+					if (m_playerInteraction.heldObject && obj == m_playerInteraction.heldObject)
 						return false;
 					
 					foreach (string type in m_interactionFilter)
@@ -57,7 +57,7 @@ namespace Millivolt
 
                 private void Start()
                 {
-					m_player = GameObject.FindWithTag("Player").GetComponent<PlayerInteraction>();
+					m_playerInteraction = GameObject.FindWithTag("Player").GetComponentInChildren<PlayerInteraction>();
                 }
 
                 protected virtual void Update()

@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace Millivolt
 {
-    using PlayerController = Player.PlayerController;
+    using Player;
 
     namespace LevelObjects
     {
@@ -29,7 +29,7 @@ namespace Millivolt
                 private Rigidbody m_objectToLaunch;
                 private Vector3 m_newObjectPosition;
 
-                new private PlayerController m_player;
+                private PlayerController m_player;
 
                 private void Start()
                 {
@@ -66,7 +66,7 @@ namespace Millivolt
 
                 private void OnTriggerEnter(Collider other)
                 {
-                    if (!m_isActive)
+                    if (!m_isActive || m_canInteract)
                         return;
                     
                     // if launchpad isn't currently trying to launch something AND the object in the trigger is allowed
@@ -81,6 +81,9 @@ namespace Millivolt
 #if UNITY_EDITOR
                 private void OnDrawGizmos()
                 {
+                    if (!m_drawGizmos)
+                        return;
+                    
                     if (!m_player)
                         m_player = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
 
