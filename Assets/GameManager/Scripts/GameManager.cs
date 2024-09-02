@@ -34,6 +34,7 @@ namespace Millivolt
 		[SerializeField] private LevelManager[] m_levels;
 
 		[SerializeField] private LevelManager m_levelManager;
+		[SerializeField] private EventSystemManager m_eventSystemManager;
 
 		[SerializeField] private GameObject m_freeLookCam;
 
@@ -72,6 +73,7 @@ namespace Millivolt
 			m_freeLookCam = GameObject.FindWithTag("FreeLook");
 			m_pauseMenu = (UIMenu)FindObjectOfType(typeof(UIMenu), true);
 			m_levelManager = FindObjectOfType<LevelManager>();
+			m_eventSystemManager = FindObjectOfType<EventSystemManager>();
 			m_currentSceneName = SceneManager.GetActiveScene().name;
         }
 
@@ -149,6 +151,7 @@ namespace Millivolt
 			m_pauseMenu = null;
 			Start();
 			m_levelManager.Reload();
+			m_eventSystemManager.Reload();
 		}
 
 		IEnumerator LoadAsyncScene(string sceneName)
