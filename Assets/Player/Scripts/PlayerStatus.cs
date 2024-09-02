@@ -23,7 +23,7 @@ namespace Millivolt
             private float m_currentHealth;
 
             [Header("LevelData Reference")]
-            [SerializeField] LevelManager m_levelManager;
+            LevelManager m_levelManager;
 
             [Header("Health Regen Properties")]
             [Tooltip("This will be the number of seconds after taking damage that the player will begine to regen health")]
@@ -38,7 +38,7 @@ namespace Millivolt
             [Tooltip("This needs the screen effect material for the hurt effect")]
             [SerializeField] private Material m_staticVignette;
 
-            [SerializeField] private GameObject m_deathCanvas;
+            private GameObject m_deathCanvas;
 
             [Header("Respawn Properties")]
             [SerializeField] private float m_respawnTime;
@@ -48,6 +48,9 @@ namespace Millivolt
                 m_currentHealth = m_maxHealth;
                 UpdateVignetteEffect();
                 m_levelManager = FindObjectOfType<LevelManager>();
+                //Theres no conversion to GameObject for some reason so I did a hold variable for now </3
+                PlayerDeathUI hold = (PlayerDeathUI)FindObjectOfType(typeof(PlayerDeathUI), true);
+                m_deathCanvas = hold.gameObject;
             }
 
             public void TakeDamage(float value)
@@ -74,8 +77,8 @@ namespace Millivolt
                 // LOGIC HERE
                 m_currentHealth = m_maxHealth;
                 UpdateVignetteEffect();
-                Instantiate(m_deathCanvas);
-                Invoke("Respawn", m_respawnTime);
+                m_deathCanvas.SetActive(true);
+                Invoke(nameof(Respawn), m_respawnTime);
             }
 
             private void Respawn()
