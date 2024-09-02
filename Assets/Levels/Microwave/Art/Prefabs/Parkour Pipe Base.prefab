@@ -29,6 +29,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2616821634581503220}
+  - {fileID: 2453279139615894817}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -99,6 +100,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: ParkourPipeBase_v001_MDL
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: f12a45c72ad91f146b249dad39e1c7f9,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f12a45c72ad91f146b249dad39e1c7f9, type: 3}
 --- !u!4 &2616821634581503220 stripped
@@ -106,4 +112,79 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: f12a45c72ad91f146b249dad39e1c7f9,
     type: 3}
   m_PrefabInstance: {fileID: 2583491775644891935}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &2702570016080071370
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 8577306861568215022}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: c1fd42a586594034081acf0993dd85a0,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c1fd42a586594034081acf0993dd85a0,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -4
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c1fd42a586594034081acf0993dd85a0,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c1fd42a586594034081acf0993dd85a0,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c1fd42a586594034081acf0993dd85a0,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c1fd42a586594034081acf0993dd85a0,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c1fd42a586594034081acf0993dd85a0,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c1fd42a586594034081acf0993dd85a0,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c1fd42a586594034081acf0993dd85a0,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c1fd42a586594034081acf0993dd85a0,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c1fd42a586594034081acf0993dd85a0,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: c1fd42a586594034081acf0993dd85a0,
+        type: 3}
+      propertyPath: m_Name
+      value: ParkourPipeBase_MDL
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c1fd42a586594034081acf0993dd85a0, type: 3}
+--- !u!4 &2453279139615894817 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c1fd42a586594034081acf0993dd85a0,
+    type: 3}
+  m_PrefabInstance: {fileID: 2702570016080071370}
   m_PrefabAsset: {fileID: 0}

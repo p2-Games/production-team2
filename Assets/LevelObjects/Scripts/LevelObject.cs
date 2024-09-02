@@ -11,30 +11,27 @@ namespace Millivolt
 {
 	namespace LevelObjects
 	{
-		using Events;
-
 		public abstract class LevelObject : MonoBehaviour
 		{
-			[SerializeField] protected bool m_isActive;
+            [SerializeField] protected bool m_isActive;
 
-			/// <summary>
-			/// Used for changing the active state of the Level Object.
-			/// </summary>
-			/// <param name="value">The state to set the Level Object to.</param>
-			/// <returns>If the active state of the Level Object was changed.</returns>
-			public virtual bool isActive
-			{
-				get { return m_isActive; }
-				set { m_isActive = value; }
-			}
+            /// <summary>
+            /// Used for changing the active state of the Event Object.
+            /// </summary>
+            /// <param name="value">The state to set the Event Object to.</param>
+            /// <returns>If the active state of the Event Object was changed.</returns>
+            public virtual bool isActive
+            {
+                get => m_isActive;
+                set => m_isActive = value;
+            }
 
+            [SerializeField] protected string m_name;
+			new public string name => m_name;
             [SerializeField, TextArea] protected string m_description = "";
 
 			// spawn parent, if it exists
-			private SpawnObjectEvent m_parent;
-			public SpawnObjectEvent spawnParent { get => m_parent; set => m_parent = value; }
-
-            protected bool CanTrigger(GameObject obj) => obj.GetComponent<Player.PlayerController>() || obj.GetComponent<LevelObject>();
+			[HideInInspector] public ObjectSpawner spawnParent;
         }
 	}
 }

@@ -89,14 +89,14 @@ namespace Millivolt
 
                     case LookType.Movement:
                         m_variableTarget += (m_inputDirection.x * Vector3.ProjectOnPlane(m_camera.right, m_target.up) +
-                                             m_inputDirection.y * Vector3.ProjectOnPlane(m_camera.forward, m_target.up)).normalized * m_followSpeed;
+                                             m_inputDirection.y * Vector3.ProjectOnPlane(m_camera.forward, m_target.up)).normalized * m_followSpeed * Time.fixedDeltaTime;
                         m_variableTarget = Vector3.ClampMagnitude(m_variableTarget, m_followDistance);
                         m_targetPosition = targetPosition + m_variableTarget;
                         break;
 
                     case LookType.Look:
                         m_variableTarget += (m_mouseDelta.x * Vector3.ProjectOnPlane(m_camera.right, m_target.up) +
-                                             m_mouseDelta.y * Vector3.ProjectOnPlane(m_camera.forward, m_target.up)).normalized * m_followSpeed;
+                                             m_mouseDelta.y * Vector3.ProjectOnPlane(m_camera.forward, m_target.up)).normalized * m_followSpeed * Time.fixedDeltaTime;
                         m_variableTarget = Vector3.ClampMagnitude(m_variableTarget, m_followDistance);
                         m_targetPosition = targetPosition + m_variableTarget;
                         break;

@@ -13,7 +13,8 @@ using UnityEngine.InputSystem;
 namespace Millivolt
 {
     using LevelObjects;
-    using LevelObjects.PickupObjects;
+    using LevelObjects.InteractableObjects;
+    using Player.UI;
 
     namespace Player
     {
@@ -27,147 +28,154 @@ namespace Millivolt
         [RequireComponent(typeof(Collider))]
         public class PlayerInteraction : MonoBehaviour
         {
-            // interaction state
-            private InteractionState m_state;
-            public InteractionState interactionState => m_state;
-
-            public void SetInteractionState(InteractionState state)
-            {
-                if (m_state == InteractionState.Holding && state != InteractionState.Holding)
-                m_state = state;
-            }
-
-            // player details
-            [Tooltip("How many fixed update frames the interact trigger stays active for.\nThere are 50 fixed update frames each second by default.")]
-            [SerializeField] private float m_interactFrames;
-            [SerializeField] private Transform m_pickupOffset;
-
-            public bool canInteract => m_frameCounter == 0 && m_state != InteractionState.Closed;
-            public PickupObject heldPickupObject => m_heldPickup;
-
-            private float m_frameCounter;
             private Collider m_trigger;
-            private PickupObject m_heldPickup;
 
-            // methods
+            [SerializeField] private InteractionUI m_interactionUI;
+            [SerializeField] private Transform m_heldObjectOffset;
+            [Tooltip("How long the player has to wait between interacting with objects.")]
+            [SerializeField] private float m_interactTime;
+
+            private InteractionState m_state;
+            private PickupObject m_heldPickup;
+            private float m_interactTimer;
+
+            private LevelObject m_closestObject;
+
+            public bool canInteract => m_state != InteractionState.Closed && m_interactTimer >= m_interactTime && m_closestObject;
+
             private void Start()
             {
-                m_trigger = GetComponent<SphereCollider>();
-                m_trigger.isTrigger = true;
-                m_trigger.enabled = false;
+                InitialiseTrigger();
             }
 
             private void Update()
             {
-                transform.rotation = Camera.main.transform.rotation;
-            }
+                if (m_interactTimer < m_interactTime)
+                    m_interactTimer += Time.deltaTime;
 
-            private void FixedUpdate()
-            {
-                // interaction timer
-                if (m_frameCounter == 0)
-                    m_trigger.enabled = false;
-                else
-                    m_frameCounter--;
+                // keep held object in front of player
+                if (m_heldPickup)
+                    m_heldPickup.rb.MovePosition(m_heldObjectOffset.position);
 
-                // update picked up object position
-                if (m_state == InteractionState.Holding)
+                // for when pickup object gets disabled
+                if (m_closestObject && !m_closestObject.gameObject.activeSelf)
                 {
-                    // ensure object still exists
-                    if (m_heldPickup)
-                    {
-                        switch (m_heldPickup.pickupType)
-                        {
-                            case PickupType.Standard:
-                                // move the pickup object towards the offset position
-                                Vector3 offsetDiff = m_pickupOffset.position - m_heldPickup.transform.position;
-                                float magnitudeSqr = offsetDiff.magnitude * offsetDiff.magnitude;
-                                m_heldPickup.velocity = Vector3.MoveTowards(m_heldPickup.velocity,
-                                                                            offsetDiff * m_heldPickup.followMaxSpeed,
-                                                                            m_heldPickup.followAcceleration * magnitudeSqr);
-                                break;
-                            case PickupType.Heavy:
-                                // cannot move heavy pickups, keep player bound to it
-                                Vector3 playerDiff = m_heldPickup.transform.position - transform.position;
-                                float offsetDistance = Vector3.Distance(transform.position, m_pickupOffset.position);
-                                float furtherThanDistance = playerDiff.magnitude / offsetDistance;
-
-                                // if player is too far from pickup, move towards it
-                                if (playerDiff.magnitude > offsetDistance)
-                                    GetComponentInParent<PlayerController>().SetExternalVelocity(playerDiff.normalized * m_heldPickup.followMaxSpeed);
-                                else
-                                    GetComponentInParent<PlayerController>().SetExternalVelocity(Vector3.zero);
-
-                                break;
-                        }
-                    }
-                    else
-                        m_state = InteractionState.Open;
+                    m_closestObject = null;
+                    m_interactionUI.UpdateDisplay(false, m_closestObject);
                 }
             }
 
-            // interacting with objects
+            private void InitialiseTrigger()
+            {
+                m_trigger = GetComponent<SphereCollider>();
+                m_trigger.isTrigger = true;
+            }
+
+            /// <summary>
+            /// Interacts with the closest Object to the player, as shown in the Interaction UI display.
+            /// </summary>
+            /// <param name="context"></param>
             public void Interact(InputAction.CallbackContext context)
             {
                 // if button pressed
                 if (context.started)
                 {
-                    // if the player can interact
-                    if (canInteract)
+                    switch (m_state)
                     {
-                        switch (m_state)
-                        {
-                            case InteractionState.Open:
-                                m_trigger.enabled = true;
-                                break;
-                            case InteractionState.Holding:
-                                DropObject();
-                                break;
-                        }
-
-                        m_frameCounter = m_interactFrames;
+                        case InteractionState.Open:
+                            if (canInteract)
+                            {
+                                InteractWithClosestObject();
+                            }
+                            break;
+                        case InteractionState.Holding:
+                            DropObject();
+                            break;
                     }
                 }
             }
 
-            private void OnTriggerEnter(Collider other)
+            private void InteractWithClosestObject()
             {
-                // check if the object is a pickup object and if it can be picked up
-                PickupObject pickupObj = other.GetComponent<PickupObject>();
-                if (pickupObj && pickupObj.pickupType != PickupType.Immovable)
-                {
-                    PickUpObject(pickupObj);
-                    m_trigger.enabled = false;
-                }
-                // otherwise check if object is interactable object
+                InteractableObject interactableObject = m_closestObject.GetComponent<InteractableObject>();
+                if (interactableObject && interactableObject.canInteract)
+                    interactableObject.Interact();
                 else
                 {
-                    InteractableObject interactObj = other.GetComponent<InteractableObject>();
-                    if (interactObj)
-                    {
-                        if (interactObj.playerCanInteract)
-                        {
-                            interactObj.Interact();
-                            // disable the trigger after object has been found
-                            m_trigger.enabled = false;
-                        }
-                    }
+                    PickupObject pickupObject = m_closestObject.GetComponent<PickupObject>();
+                    if (pickupObject && pickupObject.playerCanGrab)
+                        GrabObject(m_closestObject.GetComponent<PickupObject>());
+                }
+
+                m_interactTimer = 0;
+            }
+
+            private void OnTriggerStay(Collider other)
+            {
+                bool NewObjectIsCloserThanCurrent(Transform newObject)
+                {
+                    if (!m_closestObject)
+                        return true;
+
+                    Vector3 centre = transform.position + m_trigger.bounds.center;
+                    return Vector3.Distance(newObject.position, centre) < Vector3.Distance(m_closestObject.transform.position, centre);
+                }
+
+                // if the player is not holding something
+                if (m_state != InteractionState.Open)
+                    return;
+
+                // if the object in the trigger is not already the closest object
+                if (m_closestObject && m_closestObject.gameObject == other.gameObject)
+                    return;
+
+                // if the object is interactable or a pickup
+                InteractableObject interactable = other.gameObject.GetComponent<InteractableObject>();
+                PickupObject pickup = other.gameObject.GetComponent<PickupObject>();
+                if (!interactable && !pickup)
+                    return;
+
+                if (interactable && !interactable.canInteract)
+                    return;
+
+                // if the object is not an immovable pickup object
+                if (pickup && !pickup.playerCanGrab)
+                    return;
+
+                // if the object can is closer than the saved current closest object
+                if (NewObjectIsCloserThanCurrent(other.gameObject.transform))
+                {
+                    m_closestObject = other.gameObject.GetComponent<LevelObject>();
+                    m_interactionUI.UpdateDisplay(true, m_closestObject);
+                }
+            }
+
+            private void OnTriggerExit(Collider other)
+            {
+                if (m_closestObject && other.gameObject == m_closestObject.gameObject)
+                {
+                    m_closestObject = null;
+                    m_interactionUI.UpdateDisplay(false, m_closestObject);
                 }
             }
 
             // picking up and dropping objects
-            public void PickUpObject(PickupObject obj)
+            public void GrabObject(PickupObject obj)
             {
                 m_heldPickup = obj;
-                m_heldPickup.useGravity = false;
+                m_heldPickup.rb.useGravity = false;
+                m_closestObject = null;
+                m_interactionUI.UpdateDisplay(false, m_closestObject);
+                Physics.IgnoreLayerCollision(3, 9, true);
 
                 m_state = InteractionState.Holding;
             }
 
             public void DropObject()
             {
-                m_heldPickup.useGravity = true;
+                m_heldPickup.rb.useGravity = true;
                 m_heldPickup = null;
+                Physics.IgnoreLayerCollision(3, 9, false);
 
                 m_state = InteractionState.Open;
             }
@@ -188,7 +196,11 @@ namespace Millivolt
                         break;
                 }
 
-                Handles.DrawWireCube(m_pickupOffset.position, new Vector3(0.25f, 0.25f, 0.25f));
+                if (m_heldObjectOffset)
+                    Handles.DrawWireCube(m_heldObjectOffset.position, Vector3.one / 4f);
+
+                if (m_closestObject)
+                    Handles.DrawLine(transform.position, m_closestObject.transform.position);
             }
 #endif
         }
