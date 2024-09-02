@@ -5,12 +5,13 @@
 ///
 ///</summary>
 
-using System.Reflection;
 using UnityEngine;
 using UnityEngine.Events;
 
 namespace Millivolt
 {
+	using Player;
+
 	namespace LevelObjects
 	{
 		namespace InteractableObjects
@@ -33,6 +34,8 @@ namespace Millivolt
 				[Tooltip("The events that will occur when the object's active state is changed.")]
 				[SerializeField] protected UnityEvent m_activateEvents;
 
+				protected PlayerInteraction m_player;
+
 				public virtual bool canInteract => m_canInteract;
 
 				protected float m_interactTimer;
@@ -41,12 +44,20 @@ namespace Millivolt
 
                 protected bool CanTrigger(GameObject obj)
                 {
-                    foreach (string type in m_interactionFilter)
+					if (obj == m_player.m_heldObject)
+						return false;
+					
+					foreach (string type in m_interactionFilter)
                     {
                         if (obj.GetComponent(type) || obj.tag == type)
                             return true;
                     }
                     return false;
+                }
+
+                private void Start()
+                {
+					m_player = GameObject.FindWithTag("Player").GetComponent<PlayerInteraction>();
                 }
 
                 protected virtual void Update()

@@ -34,6 +34,7 @@ namespace Millivolt
             [SerializeField] private Transform m_heldObjectOffset;
             [Tooltip("How long the player has to wait between interacting with objects.")]
             [SerializeField] private float m_interactTime;
+            [SerializeField] private bool m_drawGizmos = false;
 
             private InteractionState m_state;
             private PickupObject m_heldPickup;
@@ -41,6 +42,7 @@ namespace Millivolt
 
             private LevelObject m_closestObject;
 
+            public GameObject m_heldObject;
             public bool canInteract => m_state != InteractionState.Closed && m_interactTimer >= m_interactTime && m_closestObject;
 
             private void Start()
@@ -183,6 +185,9 @@ namespace Millivolt
 #if UNITY_EDITOR
             private void OnDrawGizmos()
             {
+                if (!m_drawGizmos)
+                    return;
+                
                 switch (m_state)
                 {
                     case InteractionState.Open:

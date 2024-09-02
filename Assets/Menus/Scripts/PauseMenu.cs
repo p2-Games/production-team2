@@ -36,15 +36,15 @@ namespace Millivolt
             public void RestartLevel()
             {
                 m_gameManager.PauseGame();
-                Instantiate(m_closeScreen);
-                Invoke("CallRestart", 1f);
+                m_closeScreen.SetActive(true);
+                Invoke(nameof(CallRestart), 1f);
             }
 
             public void ExitToMenu()
             {
                 m_gameManager.PauseGame();
-                Instantiate(m_closeScreen);
-                Invoke("CallExitToMenu", 1f);
+                m_closeScreen.SetActive(true);
+                Invoke(nameof(CallExitToMenu), 1f);
             }
 
             private void CallRestart()

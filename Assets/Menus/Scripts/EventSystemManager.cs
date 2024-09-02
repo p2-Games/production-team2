@@ -31,6 +31,11 @@ namespace Millivolt
                 DontDestroyOnLoad(gameObject);
             }
 
+            private void Start()
+            {
+                eventSystem = GetComponentInChildren<EventSystem>();
+            }
+
             [Header("Component References")]
             public EventSystem eventSystem;
 
@@ -46,14 +51,9 @@ namespace Millivolt
                 newSelectable.OnSelect(null);
             }
 
-            private void Update()
-            {
-                if (!eventSystem)
-                    eventSystem = FindObjectOfType<EventSystem>();
-            }
             public void Reload()
             {
-
+                Start();
             }
         }
     }
