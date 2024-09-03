@@ -85,7 +85,7 @@ namespace Millivolt
                     {
                         float t = p * m_debugTimeBetweenPoints;
 
-                        Vector3 nextPoint = transform.position + m_initialVelocity * t + 0.5f * GameManager.PlayerController.gravity * t * t;
+                        Vector3 nextPoint = transform.position + m_initialVelocity * t + 0.5f * Physics.gravity * t * t;
 
                         if (Physics.Raycast(lastPoint, (nextPoint - lastPoint).normalized, out RaycastHit hit, Vector3.Distance(lastPoint, nextPoint), ~(1 << LayerMask.NameToLayer("Player")), QueryTriggerInteraction.Ignore))
                         {

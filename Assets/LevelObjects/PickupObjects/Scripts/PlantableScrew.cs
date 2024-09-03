@@ -16,17 +16,8 @@ namespace Millivolt
 		namespace PickupObjects
 		{
 			public class PlantableScrew : PickupObject
-			{
-				private static PlayerController m_player;
-
-                protected override void Start()
-                {
-                    base.Start();
-					if (!m_player)
-						m_player = GameManager.PlayerController;
-                }
-
-                public override void Use()
+			{ 
+				public override void Use()
                 {
 					base.Use();
 
@@ -35,7 +26,7 @@ namespace Millivolt
 
 				private void Plant()
 				{
-
+					GameManager.PlayerController.canMove = m_inUse;
 				}
             }
 		}

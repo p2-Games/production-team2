@@ -34,7 +34,7 @@ namespace Millivolt
                 [Tooltip("The events that will occur when the object is set inactive.")]
                 [SerializeField] protected UnityEvent m_deactivateEvents;
 
-                public bool canInteract => m_canInteract;
+                public virtual bool canInteract => m_canInteract;
 
                 private static PlayerInteraction m_playerInteraction;
 

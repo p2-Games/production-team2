@@ -55,7 +55,7 @@ namespace Millivolt
             private Interactable m_closestObject;
 
             public GameObject heldObject;
-            public bool canInteract => m_state != InteractionState.Closed && m_interactTimer >= m_interactTime && m_closestObject;
+            public bool canInteract => m_state != InteractionState.Closed && m_interactTimer >= m_interactTime;
 
             private void Start()
             {
@@ -105,19 +105,21 @@ namespace Millivolt
             /// <param name="context"></param>
             public void Interact(InputAction.CallbackContext context)
             {
+                if (!canInteract)
+                
                 // if button pressed
                 if (context.started)
                 {
                     switch (m_state)
                     {
                         case InteractionState.Open:
-                            if (canInteract)
-                            {
-                                m_closestObject.Interact(this);
-                            }
+                            m_closestObject.Interact(this);
+                            m_interactionUI.UpdateDisplay(null);
                             break;
                         case InteractionState.Holding:
-                            DropObject();
+                            // don't let the player drop the object while it is in use
+                            if (!m_heldPickup.inUse)
+                                DropObject();
                             break;
                     }
                 }
