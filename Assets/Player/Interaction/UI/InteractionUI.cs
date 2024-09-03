@@ -31,6 +31,8 @@ namespace Millivolt
 
 				private LevelObject m_target;
 
+				public bool isActive { get => m_container.gameObject.activeSelf; }
+
                 private void Start()
                 {
 					m_buttonDisplay.rectTransform.sizeDelta = new Vector2(m_height, m_height);
@@ -45,17 +47,17 @@ namespace Millivolt
 					}
                 }
 
-                public void UpdateDisplay(LevelObject target)
+                public void UpdateDisplay(Interactable target)
 				{
-					m_target = target;
-					if (m_target)
+					if (target)
 					{
+						m_target = target.GetComponent<LevelObject>();
 						m_itemNameDisplay.text = target.name;
 						m_container.sizeDelta = new Vector2(m_widthPerChar * m_itemNameDisplay.text.Length, m_height);
 						m_buttonDisplay.sprite = PlayerInputIcons.Instance.GetInputIcon(InputType.Interact);
 					}
 
-					SetDisplayActive(m_target);
+					SetDisplayActive(target);
 				}
 
 				private void SetDisplayActive(bool value)

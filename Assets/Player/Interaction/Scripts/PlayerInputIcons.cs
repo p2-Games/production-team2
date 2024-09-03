@@ -65,7 +65,6 @@ namespace Millivolt
                 public void SetCurrentControlScheme(PlayerInput input)
                 {
                     m_currentControlScheme = input.currentControlScheme;
-                    Debug.Log(input.currentControlScheme);
                 }
             }
         }

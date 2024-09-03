@@ -51,7 +51,12 @@ namespace Millivolt
                 protected virtual void OnGUI()
                 {
                     using (new EditorGUI.DisabledScope(true))
+                    {
                         EGL.ObjectField("Script", MonoScript.FromMonoBehaviour((MonoBehaviour)target), GetType(), false);
+                        EGL.ObjectField("Editor", MonoScript.FromScriptableObject(this), typeof(PlayerInputIconsEditor), false);
+                    }
+
+                    EGL.Space();
 
                     // draw control scheme string array property
                     EGL.PropertyField(m_controlSchemes);
@@ -65,7 +70,6 @@ namespace Millivolt
                     int numOfSchemes = m_inputIconGroups.arraySize;
                     int numOfInputs = (int)InputType.INPUT_COUNT;
 
-                    EditorGUI.indentLevel++;
                     for (int s = 0; s < numOfSchemes; s++)
                     {
                         // ensure control scheme name is correct
@@ -105,7 +109,6 @@ namespace Millivolt
                         }
                         EditorGUI.indentLevel--;
                     }
-                    EditorGUI.indentLevel--;
                 }
 
                 protected void GetSerializedProperties()

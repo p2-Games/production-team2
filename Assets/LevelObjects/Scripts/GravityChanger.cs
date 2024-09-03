@@ -10,7 +10,6 @@ using UnityEngine;
 
 namespace Millivolt
 {
-    using Millivolt.Utilities;
     using Player;
 
     namespace LevelObjects

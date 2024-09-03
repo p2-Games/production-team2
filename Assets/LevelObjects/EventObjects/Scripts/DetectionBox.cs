@@ -11,9 +11,9 @@ namespace Millivolt
 {
     namespace LevelObjects
     {
-        namespace InteractableObjects
+        namespace EventObjects
         {
-            public class DetectionBox : ToggleObject
+            public class DetectionBox : EventObject
             {
                 private int m_collidingObjects;
 
@@ -26,7 +26,7 @@ namespace Millivolt
                 {
                     if (!m_canInteract)
                         return;
-                    
+
                     if (CanTrigger(other.gameObject))
                     {
                         if (m_collidingObjects == 0)
@@ -39,7 +39,7 @@ namespace Millivolt
                 {
                     if (!m_canInteract)
                         return;
-                    
+
                     if (CanTrigger(other.gameObject))
                     {
                         m_collidingObjects--;

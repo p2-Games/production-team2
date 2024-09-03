@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3257926173079996402}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5, y: 0, z: 3}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -50,10 +50,10 @@ MonoBehaviour:
   m_name: Pressure Plate
   m_description: Activates when an object is in the trigger and deactivates when
     there are no objects in the trigger.
+  m_drawGizmos: 1
   spawnParent: {fileID: 0}
-  m_canInteract: 0
+  m_canInteract: 1
   m_togglesOnce: 0
-  m_interactDelay: 0
   m_interactionFilter:
   - Player
   - LevelObject
@@ -74,8 +74,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.35, y: 0.35, z: 1.43}
-  m_Center: {x: 0, y: 0.1, z: 0}
+  m_Size: {x: 1.35, y: 0.3, z: 1.35}
+  m_Center: {x: 0, y: 0.2, z: 0}
 --- !u!1001 &1290401434080309366
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -83,6 +83,86 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3257926173079996400}
     m_Modifications:
+    - target: {fileID: 3169424858702606630, guid: 4a356a2fd114d45469a6173756227e40,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3838149234937542106, guid: 4a356a2fd114d45469a6173756227e40,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3954114695902660611, guid: 4a356a2fd114d45469a6173756227e40,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4335388878564960400, guid: 4a356a2fd114d45469a6173756227e40,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4335388878564960400, guid: 4a356a2fd114d45469a6173756227e40,
+        type: 3}
+      propertyPath: m_Tangents.Array.data[40].x
+      value: 0.0000029343823
+      objectReference: {fileID: 0}
+    - target: {fileID: 4335388878564960400, guid: 4a356a2fd114d45469a6173756227e40,
+        type: 3}
+      propertyPath: m_Tangents.Array.data[41].x
+      value: 0.0000029343823
+      objectReference: {fileID: 0}
+    - target: {fileID: 4335388878564960400, guid: 4a356a2fd114d45469a6173756227e40,
+        type: 3}
+      propertyPath: m_Tangents.Array.data[42].x
+      value: 0.0000029343823
+      objectReference: {fileID: 0}
+    - target: {fileID: 4335388878564960400, guid: 4a356a2fd114d45469a6173756227e40,
+        type: 3}
+      propertyPath: m_Tangents.Array.data[44].x
+      value: -0.0000033470296
+      objectReference: {fileID: 0}
+    - target: {fileID: 4335388878564960400, guid: 4a356a2fd114d45469a6173756227e40,
+        type: 3}
+      propertyPath: m_Tangents.Array.data[45].x
+      value: -0.0000033470296
+      objectReference: {fileID: 0}
+    - target: {fileID: 4335388878564960400, guid: 4a356a2fd114d45469a6173756227e40,
+        type: 3}
+      propertyPath: m_Tangents.Array.data[46].x
+      value: -0.0000033470296
+      objectReference: {fileID: 0}
+    - target: {fileID: 4335388878564960400, guid: 4a356a2fd114d45469a6173756227e40,
+        type: 3}
+      propertyPath: m_Tangents.Array.data[47].x
+      value: -0.0000033470294
+      objectReference: {fileID: 0}
+    - target: {fileID: 4375045133844555053, guid: 4a356a2fd114d45469a6173756227e40,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4433956701917583413, guid: 4a356a2fd114d45469a6173756227e40,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5350229707464397202, guid: 4a356a2fd114d45469a6173756227e40,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6388195592214126193, guid: 4a356a2fd114d45469a6173756227e40,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7548254816028013073, guid: 4a356a2fd114d45469a6173756227e40,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 9059883725355468386, guid: 4a356a2fd114d45469a6173756227e40,
         type: 3}
       propertyPath: m_Mesh

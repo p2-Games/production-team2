@@ -14,9 +14,9 @@ namespace Millivolt
 
     namespace LevelObjects
     {
-        namespace InteractableObjects
+        namespace EventObjects
         {
-            public class LaunchPad : ToggleObject
+            public class LaunchPad : EventObject
             {
                 [Header("LaunchPad Details"), SerializeField] private Vector3 m_initialVelocity;
                 [SerializeField] private float m_snapSpeed;
@@ -31,15 +31,15 @@ namespace Millivolt
 
                 private PlayerController m_player;
 
+                public override void Interact() { }
+
                 private void Start()
                 {
                     m_player = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
                 }
 
-                protected override void Update()
+                public void Update()
                 {
-                    base.Update();
-                    
                     // if the launchpad has something to launch AND it is in launching range
                     if (m_objectToLaunch && Vector3.Distance(m_objectToLaunch.position, m_newObjectPosition) < m_minDistanceToLaunch)
                     {
@@ -66,9 +66,9 @@ namespace Millivolt
 
                 private void OnTriggerEnter(Collider other)
                 {
-                    if (!m_isActive || m_canInteract)
+                    if (!m_canInteract)
                         return;
-                    
+
                     // if launchpad isn't currently trying to launch something AND the object in the trigger is allowed
                     if (!m_objectToLaunch && CanTrigger(other.gameObject))
                     {
@@ -83,7 +83,7 @@ namespace Millivolt
                 {
                     if (!m_drawGizmos)
                         return;
-                    
+
                     if (!m_player)
                         m_player = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
 

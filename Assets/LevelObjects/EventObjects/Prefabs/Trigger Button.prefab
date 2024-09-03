@@ -9,12 +9,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7768230551067871392}
-  - component: {fileID: 4745980401184209262}
+  - component: {fileID: 5354650344121819075}
+  - component: {fileID: 2235906703414752439}
   - component: {fileID: 5164365305421513023}
   - component: {fileID: 212409736027426635}
   - component: {fileID: 1427533278458593079}
   m_Layer: 6
-  m_Name: Toggle Button
+  m_Name: Trigger Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -36,7 +37,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4745980401184209262
+--- !u!114 &5354650344121819075
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -45,16 +46,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 7049356846749252190}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 23251fafa2788fa459f924bcd431c66e, type: 3}
+  m_Script: {fileID: 11500000, guid: 798063f51eb5f3948877b95cfef4d23e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_isActive: 0
-  m_name: Toggle Button
-  m_description: Pressable button with active and inactive state.
+  m_name: Trigger Button
+  m_description: Pressable button.
+  m_drawGizmos: 1
   spawnParent: {fileID: 0}
   m_canInteract: 1
   m_togglesOnce: 0
-  m_interactDelay: 1
   m_interactionFilter:
   - Player
   m_activateEvents:
@@ -63,6 +64,19 @@ MonoBehaviour:
   m_deactivateEvents:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &2235906703414752439
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7049356846749252190}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcdae7ca312f29b43b48c30194189c55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_interactDelay: 0
 --- !u!135 &5164365305421513023
 SphereCollider:
   m_ObjectHideFlags: 0

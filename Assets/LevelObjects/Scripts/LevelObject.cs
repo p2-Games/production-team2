@@ -16,10 +16,9 @@ namespace Millivolt
             [SerializeField] protected bool m_isActive;
 
             /// <summary>
-            /// Used for changing the active state of the Event Object.
+            /// Used for changing the active state of the Level Object.
             /// </summary>
-            /// <param name="value">The state to set the Event Object to.</param>
-            /// <returns>If the active state of the Event Object was changed.</returns>
+            /// <returns>The active state of the Level Object.</returns>
             public virtual bool isActive
             {
                 get => m_isActive;

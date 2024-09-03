@@ -9,16 +9,13 @@ using UnityEngine;
 
 namespace Millivolt
 {
-	namespace LevelObjects
+	public class DestroySelfAfterDelay : MonoBehaviour
 	{
-		public class DestroySelfAfterDelay : MonoBehaviour
-		{
-			[SerializeField] private float m_destroyDelay;
+		[SerializeField] private float m_destroyDelay;
 
-            private void Start()
-            {
-				Destroy(gameObject, m_destroyDelay);
-            }
+        private void Start()
+        {
+			Destroy(gameObject, m_destroyDelay);
         }
-	}
+    }
 }

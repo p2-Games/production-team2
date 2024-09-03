@@ -12,9 +12,8 @@ using UnityEngine.InputSystem;
 
 namespace Millivolt
 {
-    using LevelObjects;
-    using LevelObjects.InteractableObjects;
     using Player.UI;
+    using LevelObjects;
 
     namespace Player
     {
@@ -51,7 +50,7 @@ namespace Millivolt
             private PickupObject m_heldPickup;
             private float m_interactTimer;
 
-            private LevelObject m_closestObject;
+            private Interactable m_closestObject;
 
             public GameObject heldObject;
             public bool canInteract => m_state != InteractionState.Closed && m_interactTimer >= m_interactTime && m_closestObject;
@@ -61,27 +60,41 @@ namespace Millivolt
                 InitialiseTrigger();
             }
 
+            private void InitialiseTrigger()
+            {
+                m_trigger = GetComponent<SphereCollider>();
+                m_trigger.isTrigger = true;
+            }
+
+            private void SetClosestObject(Interactable interactable)
+            {
+                m_closestObject = interactable;
+                m_interactionUI.UpdateDisplay(interactable);
+            }
+
             private void Update()
             {
                 if (m_interactTimer < m_interactTime)
                     m_interactTimer += Time.deltaTime;
 
-                // keep held object in front of player
+                // if the player has a held pickup
                 if (m_heldPickup)
-                    m_heldPickup.rb.MovePosition(m_heldObjectOffset.position);
+                {
+                    // if the pickup exists but is disabled, it has been accepted by a receptacle
+                    // so remove the reference and reset the interaction state
+                    if (!m_heldPickup.gameObject.activeSelf)
+                        DropObject();
+                    // keep held object in front of player
+                    else
+                        m_heldPickup.rb.MovePosition(m_heldObjectOffset.position);
+                }
 
-                // for when pickup object gets disabled
-                if (m_closestObject && !m_closestObject.gameObject.activeSelf)
+                // if the current closest object gets accepted by a receptacle or destroyed, update this 
+                if (m_interactionUI.isActive && (!m_closestObject || !m_closestObject.gameObject.activeSelf))
                 {
                     m_closestObject = null;
                     m_interactionUI.UpdateDisplay(m_closestObject);
                 }
-            }
-
-            private void InitialiseTrigger()
-            {
-                m_trigger = GetComponent<SphereCollider>();
-                m_trigger.isTrigger = true;
             }
 
             /// <summary>
@@ -98,7 +111,7 @@ namespace Millivolt
                         case InteractionState.Open:
                             if (canInteract)
                             {
-                                InteractWithClosestObject();
+                                m_closestObject.Interact(this);
                             }
                             break;
                         case InteractionState.Holding:
@@ -106,21 +119,6 @@ namespace Millivolt
                             break;
                     }
                 }
-            }
-
-            private void InteractWithClosestObject()
-            {
-                InteractableObject interactableObject = m_closestObject.GetComponent<InteractableObject>();
-                if (interactableObject && interactableObject.canInteract)
-                    interactableObject.Interact();
-                else
-                {
-                    PickupObject pickupObject = m_closestObject.GetComponent<PickupObject>();
-                    if (pickupObject && pickupObject.playerCanGrab)
-                        GrabObject(m_closestObject.GetComponent<PickupObject>());
-                }
-
-                m_interactTimer = 0;
             }
 
             private void OnTriggerStay(Collider other)
@@ -134,51 +132,46 @@ namespace Millivolt
                     return Vector3.Distance(newObject.position, centre) < Vector3.Distance(m_closestObject.transform.position, centre);
                 }
 
-                // if the player is not holding something
+                // if the player is holding something, stop
                 if (m_state != InteractionState.Open)
                     return;
 
-                // if the object in the trigger is not already the closest object
+                // if the object in the trigger is already the closest object, stop
                 if (m_closestObject && m_closestObject.gameObject == other.gameObject)
                     return;
 
-                // if the object is interactable or a pickup
-                InteractableObject interactable = other.gameObject.GetComponent<InteractableObject>();
-                PickupObject pickup = other.gameObject.GetComponent<PickupObject>();
-                if (!interactable && !pickup)
-                    return;
-
-                if (interactable && !interactable.canInteract)
-                    return;
-
-                // if the object is not an immovable pickup object
-                if (pickup && !pickup.playerCanGrab)
+                // if the object is not interactable, stop
+                Interactable interactable = other.gameObject.GetComponent<Interactable>();
+                if (!interactable)
                     return;
 
                 // if the object can is closer than the saved current closest object
-                if (NewObjectIsCloserThanCurrent(other.gameObject.transform))
+                if (NewObjectIsCloserThanCurrent(other.transform))
                 {
-                    m_closestObject = other.gameObject.GetComponent<LevelObject>();
-                    m_interactionUI.UpdateDisplay(m_closestObject);
+                    SetClosestObject(interactable);
                 }
             }
 
             private void OnTriggerExit(Collider other)
             {
                 if (m_closestObject && other.gameObject == m_closestObject.gameObject)
-                {
-                    m_closestObject = null;
-                    m_interactionUI.UpdateDisplay(m_closestObject);
-                }
+                    SetClosestObject(null);
             }
 
             // picking up and dropping objects
             public void GrabObject(PickupObject obj)
             {
+                // set the held object to the pickup
                 m_heldPickup = obj;
+
+                // stop the pickup's rigidbody from pulling it around
                 m_heldPickup.rb.useGravity = false;
-                m_closestObject = null;
-                m_interactionUI.UpdateDisplay(m_closestObject);
+
+                // reset the state of the closest object and interaction display
+                SetClosestObject(null);
+
+                // ignore collision between the pickup layer and the player layer so that the
+                // player and pickup don't collide.
                 Physics.IgnoreLayerCollision(3, 9, true);
 
                 m_state = InteractionState.Holding;
@@ -186,8 +179,13 @@ namespace Millivolt
 
             public void DropObject()
             {
+                // let the pickup's rigidbody work again
                 m_heldPickup.rb.useGravity = true;
+
+                // stop controlling the pickup
                 m_heldPickup = null;
+
+                // let the player collide with pickups again
                 Physics.IgnoreLayerCollision(3, 9, false);
 
                 m_state = InteractionState.Open;
