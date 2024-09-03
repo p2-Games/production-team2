@@ -14,6 +14,7 @@ namespace Millivolt
 {
     using Player.UI;
     using LevelObjects;
+    using LevelObjects.PickupObjects;
 
     namespace Player
     {
@@ -32,6 +33,7 @@ namespace Millivolt
             Jump,
             Interact,
             Pause,
+            UseItem,
             INPUT_COUNT
         }
 
@@ -142,7 +144,7 @@ namespace Millivolt
 
                 // if the object is not interactable, stop
                 Interactable interactable = other.gameObject.GetComponent<Interactable>();
-                if (!interactable)
+                if (!interactable || !interactable.canInteract)
                     return;
 
                 // if the object can is closer than the saved current closest object

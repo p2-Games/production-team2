@@ -24,18 +24,13 @@ namespace Millivolt
                 [Tooltip("The direction of gravity when this event triggers.")]
                 [SerializeField] private Vector3 m_direction;
 
-                private PlayerController m_player;
-
                 /// <summary>
                 /// Changes the gravity for the Player and all rigidbodies in the scene.
                 /// </summary>
                 /// <param name="flip">If the gravity should change to the set value or to the level default.</param>
                 public void ChangeGravity(bool flip)
                 {
-                    if (!m_player)
-                        m_player = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
-
-                    m_player.SetGravity(flip ? m_magnitude : LevelManager.Instance.levelData.gravityMagnitude, flip ? m_direction : LevelManager.Instance.levelData.gravityDirection);
+                    GameManager.PlayerController.SetGravity(flip ? m_magnitude : LevelManager.Instance.levelData.gravityMagnitude, flip ? m_direction : LevelManager.Instance.levelData.gravityDirection);
                 }
 
 #if UNITY_EDITOR
