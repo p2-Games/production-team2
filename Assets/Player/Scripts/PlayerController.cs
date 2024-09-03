@@ -171,6 +171,15 @@ namespace Millivolt
             }
 
             /// <summary>
+            /// Adds an amount to the player's vertical velocity.
+            /// </summary>
+            /// <param name="value">The amount to add.</param>
+            public void AddVerticalVelocity(float value)
+            {
+                m_verticalVelocity += value;
+            }
+
+            /// <summary>
             /// Set the velocity of the player to the velocity of the platform they are standing on.
             /// </summary>
             /// <param name="value"></param>
