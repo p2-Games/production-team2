@@ -29,6 +29,9 @@ namespace Millivolt
                 [SerializeField] protected float m_useTime;
                 protected float m_timer;
 
+                protected bool m_inUse = false;
+                public bool inUse => m_inUse;
+
                 public PickupType pickupType => m_type;
                 public bool playerCanGrab => m_type != PickupType.Immovable;
 
@@ -48,6 +51,8 @@ namespace Millivolt
 
                 public virtual void Use()
                 {
+                    m_inUse = !m_inUse;
+                    
                     if (m_timer < m_useTime)
                         return;
                 }

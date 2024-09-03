@@ -29,6 +29,8 @@ namespace Millivolt
                 [SerializeField] private float m_retrieveObjectTime;
                 private float m_timer;
 
+                public override bool canInteract => m_canInteract && m_isActive;
+
                 private void Start()
                 {
                     if (m_heldObject)
@@ -36,8 +38,8 @@ namespace Millivolt
                         m_objectName = m_heldObject.name;
                         m_heldObject = Instantiate(m_heldObject);
                         m_heldObject.gameObject.SetActive(false);
-                        m_canInteract = true;
                     }
+                    isActive = m_heldObject != null;
                 }
 
                 private void Update()
@@ -75,10 +77,7 @@ namespace Millivolt
                         // deactivate the object
                         m_heldObject.gameObject.SetActive(false);
 
-                        // toggle this receptacle's active state
-                        if (m_togglesOnce)
-                            m_canInteract = false;
-                        isActive = !m_isActive;
+                        ToggleState();
                     }
                 }
 
@@ -86,6 +85,9 @@ namespace Millivolt
                 public override void Interact()
                 {
                     base.Interact();
+
+                    if (m_timer < m_retrieveObjectTime)
+                        return;
                     
                     // reactivate the held object
                     m_heldObject.gameObject.SetActive(true);
@@ -100,6 +102,11 @@ namespace Millivolt
                     // remove reference to the object
                     m_heldObject = null;
 
+                    ToggleState();
+                }
+
+                private void ToggleState()
+                {
                     // set the state of the object
                     if (m_togglesOnce)
                         m_canInteract = false;

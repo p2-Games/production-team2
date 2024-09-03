@@ -14,7 +14,6 @@ namespace Millivolt
 	namespace Player
 	{
 		using LevelObjects;
-        using UnityEngine.InputSystem;
 
         namespace UI
 		{
@@ -52,7 +51,7 @@ namespace Millivolt
 					if (target)
 					{
 						m_target = target.GetComponent<LevelObject>();
-						m_itemNameDisplay.text = target.name;
+						m_itemNameDisplay.text = m_target.name;
 						m_container.sizeDelta = new Vector2(m_widthPerChar * m_itemNameDisplay.text.Length, m_height);
 						m_buttonDisplay.sprite = PlayerInputIcons.Instance.GetInputIcon(InputType.Interact);
 					}

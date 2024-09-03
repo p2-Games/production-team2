@@ -33,6 +33,13 @@ namespace Millivolt
                     GameManager.PlayerController.SetGravity(flip ? m_magnitude : LevelManager.Instance.levelData.gravityMagnitude, flip ? m_direction : LevelManager.Instance.levelData.gravityDirection);
                 }
 
+                [ContextMenu("Set Physics.Gravity")]
+                private void SetGravity()
+                {
+                    GameObject.FindWithTag("Player").GetComponent<PlayerController>().SetGravity(m_magnitude, m_direction);
+                }
+
+
 #if UNITY_EDITOR
                 private void OnDrawGizmos()
                 {
