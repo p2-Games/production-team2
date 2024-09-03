@@ -18,6 +18,23 @@ namespace Millivolt
         {
             public abstract class EventObject : LevelObject
             {
+                public override bool isActive
+                {
+                    get { return m_isActive; }
+                    set
+                    {
+                        if (value)
+                            m_activateEvents.Invoke();
+                        else
+                            m_deactivateEvents.Invoke();
+
+                        if (m_togglesOnce)
+                            m_canInteract = false;
+
+                        m_isActive = value;
+                    }
+                }
+
                 [Header("Event Object Details"), Tooltip("If true, the state of the object can change.")]
                 [SerializeField] protected bool m_canInteract = true;
 
@@ -34,14 +51,14 @@ namespace Millivolt
                 [Tooltip("The events that will occur when the object is set inactive.")]
                 [SerializeField] protected UnityEvent m_deactivateEvents;
 
-                public bool canInteract => m_canInteract;
+                public virtual bool canInteract => m_canInteract;
 
                 private static PlayerInteraction m_playerInteraction;
 
                 private void Start()
                 {
                     if (!m_playerInteraction)
-                        m_playerInteraction = GameObject.FindWithTag("Player").GetComponentInChildren<PlayerInteraction>();
+                        m_playerInteraction = GameManager.PlayerInteraction;
                 }
 
                 protected bool CanTrigger(GameObject obj)
