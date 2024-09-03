@@ -5,17 +5,15 @@
 ///
 ///</summary>
 
-using Cinemachine;
-using Millivolt.UI;
 using System.Collections;
-using System.Runtime.InteropServices;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 namespace Millivolt
 {
-	
+    using Player;
+    using UI;
+
 	public enum GameState
 	{
 		MENU,
@@ -42,8 +40,12 @@ namespace Millivolt
 
 		private string m_currentSceneName;
 
-		//Static reference
-		public static GameManager Instance { get; private set; }
+		public static PlayerController PlayerController { get; private set; }
+		public static PlayerInteraction PlayerInteraction { get; private set; }
+        public static PlayerStatus PlayerStatus { get; private set; }
+
+        //Static reference
+        public static GameManager Instance { get; private set; }
 
 		public GameState gameState
 		{
@@ -75,6 +77,12 @@ namespace Millivolt
 			m_levelManager = FindObjectOfType<LevelManager>();
 			m_eventSystemManager = FindObjectOfType<EventSystemManager>();
 			m_currentSceneName = SceneManager.GetActiveScene().name;
+
+			// get player references
+			GameObject player = GameObject.FindWithTag("Player");
+			PlayerController = player.GetComponent<PlayerController>();
+			PlayerInteraction = player.GetComponentInChildren<PlayerInteraction>();
+			PlayerStatus = player.GetComponentInChildren<PlayerStatus>();
         }
 
         private void Awake()

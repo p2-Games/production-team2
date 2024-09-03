@@ -41,7 +41,7 @@ namespace Millivolt
                 private void Start()
                 {
                     if (!m_playerInteraction)
-                        m_playerInteraction = GameObject.FindWithTag("Player").GetComponentInChildren<PlayerInteraction>();
+                        m_playerInteraction = GameManager.PlayerInteraction;
                 }
 
                 protected bool CanTrigger(GameObject obj)
