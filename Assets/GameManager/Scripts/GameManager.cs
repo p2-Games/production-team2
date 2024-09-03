@@ -1,7 +1,7 @@
 ///<summary>
 /// Author: Emily McDonald
 ///
-/// This manages settings about the game
+/// This manages settings about the game and calls scenes to load
 ///
 ///</summary>
 
