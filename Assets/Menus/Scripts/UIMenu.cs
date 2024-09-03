@@ -61,6 +61,7 @@ namespace Millivolt
 			{
                 UIMenuManager.Instance.activeMenus.Insert(0, this);
                 UIMenuManager.Instance.SetActiveMenu();
+                UIMenuManager.Instance.CursorLockupdate();
                 ActivateAnimation();
                 EventSystemManager esm = FindObjectOfType<EventSystemManager>();
                 esm.SetCurrentSelectedGameObject(m_firstSelected);
@@ -74,6 +75,7 @@ namespace Millivolt
             {
                 UIMenuManager.Instance.activeMenus.Remove(this);
                 UIMenuManager.Instance.SetActiveMenu();
+                UIMenuManager.Instance.CursorLockupdate();
                 DeactivateAnimation();
                 m_isActive = false;
             }
