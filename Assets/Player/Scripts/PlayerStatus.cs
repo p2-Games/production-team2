@@ -6,16 +6,17 @@
 ///
 ///</summary>
 
-using Cinemachine;
 using Millivolt.Player.UI;
-using Millivolt.Utilities;
 using System.Collections;
 using UnityEngine;
 
 namespace Millivolt
 {
+    using LevelObjects.HazardObjects;
+
     namespace Player
     {
+
         public class PlayerStatus : MonoBehaviour
         {
             [SerializeField] private float m_maxHealth;
@@ -38,10 +39,17 @@ namespace Millivolt
             [Tooltip("This needs the screen effect material for the hurt effect")]
             [SerializeField] private Material m_staticVignette;
 
+            [Header("Knockback Properties")]
+            [SerializeField] private float m_horizontalForce;
+            [SerializeField] private float m_verticalForce;
+            public float knockbackForce => m_horizontalForce;
+
             private GameObject m_deathCanvas;
 
             [Header("Respawn Properties")]
             [SerializeField] private float m_respawnTime;
+            //Player
+            private PlayerController m_player;
 
             private void Start()
             {
@@ -51,8 +59,20 @@ namespace Millivolt
                 //Theres no conversion to GameObject for some reason so I did a hold variable for now </3
                 PlayerDeathUI hold = (PlayerDeathUI)FindObjectOfType(typeof(PlayerDeathUI), true);
                 m_deathCanvas = hold.gameObject;
+                m_player = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
+                Debug.Log("GRAVITY RGAHGGHHGGHGHGHGH" + m_player.gravity);
             }
 
+            private void OnDestroy()
+            {
+                m_currentHealth = m_maxHealth;
+                UpdateVignetteEffect();
+            }
+
+            /// <summary>
+            /// Handles the player taking damage
+            /// </summary>
+            /// <param name="value"></param>
             public void TakeDamage(float value)
             {
                 if (m_regen != null)
@@ -81,9 +101,30 @@ namespace Millivolt
                 Invoke(nameof(Respawn), m_respawnTime);
             }
 
+            /// <summary>
+            /// Calls the levelmanager to respawn the player at the currently active checkpoint
+            /// </summary>
             private void Respawn()
             {
                 m_levelManager.SpawnPlayer();
+            }
+
+            /// <summary>
+            /// Places an impulse force on the player to knock them backwards after taking damage
+            /// </summary>
+            public void PlayerKnockback(HazardObject hazard)
+            {
+                //Find the closest point on the hazard collider to the player
+                Vector3 closestPoint = hazard.gameObject.GetComponent<Collider>().ClosestPoint(m_player.transform.position);
+                
+                //Get the direction that the player needs to be knocked towards
+                Vector3 dir = (m_player.transform.position - closestPoint).normalized;
+                dir = Vector3.ProjectOnPlane(dir, m_player.transform.up).normalized;
+
+                m_player.AddVerticalVelocity(m_verticalForce);
+
+                //Launch the player backwards
+                m_player.SetExternalVelocity(dir * m_horizontalForce);
             }
 
             /// <summary>
@@ -103,6 +144,9 @@ namespace Millivolt
                     m_currentHealth = m_maxHealth;
             }
 
+            /// <summary>
+            /// Updates the static effect for how much damage you have taken
+            /// </summary>
             private void UpdateVignetteEffect()
             {
                 float effectAmount = 1 - (m_currentHealth / m_maxHealth);

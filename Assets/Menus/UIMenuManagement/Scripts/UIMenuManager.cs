@@ -43,15 +43,28 @@ namespace Millivolt
 							activeMenus[i].gameObject.SetActive(false);
 					}
 					else
-						activeMenus[0].GetComponent<GraphicRaycaster>().enabled = true; activeMenus[0].gameObject.SetActive(true); 
+                        activeMenus[0].GetComponent<GraphicRaycaster>().enabled = true; activeMenus[0].gameObject.SetActive(true);
                 }
 			}
 
             private void Start()
             {
-				//Check if the scene starts with a menu open and add it to the active scenes list
-				//FindObjectOfType<UIMenu>().ActivateMenu();
+				CursorLockupdate();
             }
+
+			public void CursorLockupdate()
+			{
+				if (activeMenus.Count > 0)
+				{
+                    Cursor.lockState = CursorLockMode.None;
+                    Cursor.visible = true;
+                }
+				else
+				{
+                    Cursor.lockState = CursorLockMode.Locked;
+                    Cursor.visible = false;
+                }
+			}
 
             public void Reload()
             {

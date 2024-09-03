@@ -14,6 +14,8 @@ namespace Millivolt
 {
     using Player.UI;
     using LevelObjects;
+    using LevelObjects.PickupObjects;
+    using UnityEngine.Rendering;
 
     namespace Player
     {
@@ -32,6 +34,7 @@ namespace Millivolt
             Jump,
             Interact,
             Pause,
+            UseItem,
             INPUT_COUNT
         }
 
@@ -53,7 +56,7 @@ namespace Millivolt
             private Interactable m_closestObject;
 
             public GameObject heldObject;
-            public bool canInteract => m_state != InteractionState.Closed && m_interactTimer >= m_interactTime && m_closestObject;
+            public bool canInteract => m_state != InteractionState.Closed && m_interactTimer >= m_interactTime;
 
             private void Start()
             {
@@ -103,21 +106,36 @@ namespace Millivolt
             /// <param name="context"></param>
             public void Interact(InputAction.CallbackContext context)
             {
+                if (!canInteract)
+                    return;
+                
                 // if button pressed
                 if (context.started)
                 {
                     switch (m_state)
                     {
                         case InteractionState.Open:
-                            if (canInteract)
-                            {
-                                m_closestObject.Interact(this);
-                            }
+                            m_closestObject.Interact(this);
+                            m_interactionUI.UpdateDisplay(null);
                             break;
                         case InteractionState.Holding:
-                            DropObject();
+                            // don't let the player drop the object while it is in use
+                            if (!m_heldPickup.inUse)
+                                DropObject();
                             break;
                     }
+                }
+            }
+
+            public void UsePickup(InputAction.CallbackContext context)
+            {
+                if (!canInteract)
+                    return;
+
+                if (m_heldPickup)
+                {
+                    m_heldPickup.Use();
+                    m_interactTimer = 0;
                 }
             }
 
@@ -142,7 +160,7 @@ namespace Millivolt
 
                 // if the object is not interactable, stop
                 Interactable interactable = other.gameObject.GetComponent<Interactable>();
-                if (!interactable)
+                if (!interactable || !interactable.canInteract)
                     return;
 
                 // if the object can is closer than the saved current closest object

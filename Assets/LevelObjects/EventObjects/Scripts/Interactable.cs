@@ -12,6 +12,7 @@ namespace Millivolt
 	namespace LevelObjects
 	{
 		using EventObjects;
+		using PickupObjects;
 
 		[RequireComponent(typeof(LevelObject))]
         public class Interactable : MonoBehaviour
