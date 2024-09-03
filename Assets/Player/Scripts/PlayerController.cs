@@ -5,7 +5,6 @@
 /// 
 ///</summary>
 
-using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -21,9 +20,7 @@ namespace Millivolt
             {
                 InitialiseRigidbody();
                 InitialiseCollider();
-
-                // something about this line is probably wrong
-                m_targetBodyRotation = transform.localRotation;
+                m_parent = GetComponentInParent<PlayerRotationParent>();
             }
 
             private void FixedUpdate()
@@ -158,12 +155,6 @@ namespace Millivolt
                 if (m_surfaceNormal != Vector3.zero)
                     m_walkVelocity = Vector3.ProjectOnPlane(m_walkVelocity, m_surfaceNormal)/*.normalized * m_walkVelocity.magnitude*/;
 
-                // calc target rotation for player body
-                if (targetVelocity != Vector3.zero)
-                {
-                    m_targetBodyRotation = Quaternion.LookRotation(targetVelocity.normalized, -Physics.gravity)/* * Quaternion.Inverse(parent.rotation)*/;
-                }
-
                 // only apply gravity if not grounded
                 if (!m_isGrounded)
                     m_verticalVelocity += m_gravity * Time.fixedDeltaTime;
@@ -194,20 +185,14 @@ namespace Millivolt
 
             [Header("Heading")]
             [SerializeField] private float m_rotationAcceleration;
-            private Quaternion m_targetBodyRotation;
-            //private float m_currentBodyRotation;
 
             private void Update()
             {
-                Debug.Log("Current World (R): " + transform.eulerAngles);
-                Debug.Log("Current Local (G): " + transform.localEulerAngles);
-                Debug.Log("Target (B): " + m_targetBodyRotation.eulerAngles);
-
                 // move player to face correct direction when move direction is not zero
                 //transform.rotation = Quaternion.RotateTowards(transform.localRotation, m_targetBodyRotation, m_rotationAcceleration * Time.deltaTime);
                 if (m_walkVelocity.sqrMagnitude != 0)
                 {
-                    transform.rotation = Quaternion.LookRotation(m_walkVelocity, -Physics.gravity);
+                    transform.rotation = Quaternion.LookRotation(Vector3.ProjectOnPlane(m_walkVelocity, -Physics.gravity), -Physics.gravity);
                 }
                 //transform.rotation = m_targetBodyRotation;
             }
@@ -321,7 +306,6 @@ namespace Millivolt
                 if (!m_collider)
                     InitialiseCollider();
 
-                /*
                 Handles.matrix = transform.localToWorldMatrix;
 
                 Handles.color = Color.green;
@@ -335,18 +319,6 @@ namespace Millivolt
                 Handles.color = Color.magenta;
                 Handles.ArrowHandleCap(0, m_collider.center - Vector3.up * m_collider.height / 2,
                                         Quaternion.LookRotation(Vector3.down, gravity.normalized), 1, EventType.Repaint);
-                */
-
-                if (Application.isPlaying)
-                {
-                    Handles.matrix = Matrix4x4.identity;
-                    Handles.color = Color.red;
-                    Handles.ArrowHandleCap(0, transform.position, transform.localRotation, 1, EventType.Repaint);
-                    Handles.color = Color.green;
-                    Handles.ArrowHandleCap(0, transform.position, transform.rotation, 1, EventType.Repaint);
-                    Handles.color = Color.blue;
-                    Handles.ArrowHandleCap(0, transform.position, m_targetBodyRotation, 1, EventType.Repaint);
-                }
             }
 #endif
         }

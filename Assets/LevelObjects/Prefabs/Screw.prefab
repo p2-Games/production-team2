@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1496734438340933257}
   - component: {fileID: 1496734438340933262}
+  - component: {fileID: -5470007528706801491}
   - component: {fileID: 1496734438340933259}
   - component: {fileID: 1496734438340933258}
   m_Layer: 9
@@ -52,8 +53,22 @@ MonoBehaviour:
   m_isActive: 0
   m_name: Screw
   m_description: A small object that can be picked up.
+  m_drawGizmos: 1
   spawnParent: {fileID: 0}
   m_type: 0
+--- !u!114 &-5470007528706801491
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1496734438340933269}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcdae7ca312f29b43b48c30194189c55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_interactDelay: 0
 --- !u!54 &1496734438340933259
 Rigidbody:
   m_ObjectHideFlags: 0

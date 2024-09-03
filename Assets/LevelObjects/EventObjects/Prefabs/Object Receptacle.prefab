@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4816821099029731535}
   - component: {fileID: 4816821099029731532}
+  - component: {fileID: 2944268580214458}
   - component: {fileID: 4816821099029731533}
   m_Layer: 6
   m_Name: Object Receptacle
@@ -25,8 +26,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4816821099029731378}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.3795373, y: 0, z: -6.6192017}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -50,10 +51,10 @@ MonoBehaviour:
   m_isActive: 0
   m_name: Receptacle
   m_description: Accepts a type of Level Object.
+  m_drawGizmos: 1
   spawnParent: {fileID: 0}
-  m_canInteract: 0
+  m_canInteract: 1
   m_togglesOnce: 0
-  m_interactDelay: 1
   m_interactionFilter:
   - Player
   - LevelObject
@@ -63,9 +64,23 @@ MonoBehaviour:
   m_deactivateEvents:
     m_PersistentCalls:
       m_Calls: []
-  m_pickupName: 
+  m_objectName: 
   m_respawnTransform: {fileID: 0}
   m_heldObject: {fileID: 0}
+  m_retrieveObjectTime: 0
+--- !u!114 &2944268580214458
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4816821099029731378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcdae7ca312f29b43b48c30194189c55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_interactDelay: 0
 --- !u!65 &4816821099029731533
 BoxCollider:
   m_ObjectHideFlags: 0
