@@ -15,7 +15,6 @@ namespace Millivolt
     using Player.UI;
     using LevelObjects;
     using LevelObjects.PickupObjects;
-    using UnityEngine.Rendering;
 
     namespace Player
     {
@@ -34,7 +33,7 @@ namespace Millivolt
             Jump,
             Interact,
             Pause,
-            UseItem,
+            UsePickup,
             INPUT_COUNT
         }
 

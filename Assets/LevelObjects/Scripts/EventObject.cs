@@ -76,7 +76,7 @@ namespace Millivolt
 
                 public virtual void Interact()
                 {
-                    if (!m_canInteract)
+                    if (!canInteract)
                         return;
                 }
             }

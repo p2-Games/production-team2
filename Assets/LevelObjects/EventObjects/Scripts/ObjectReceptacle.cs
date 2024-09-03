@@ -54,7 +54,7 @@ namespace Millivolt
                 private void OnTriggerStay(Collider other)
                 {
                     // if the receptacle cannot be interacted with, don't check for anything
-                    if (!m_canInteract)
+                    if (!canInteract)
                         return;
                     
                     // if the receptacle already has an object in it, don't check for anything
