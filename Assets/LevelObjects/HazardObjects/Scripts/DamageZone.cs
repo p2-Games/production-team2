@@ -1,7 +1,7 @@
 ///<summary>
-/// Author: Halen
+/// Author:
 ///
-/// Deals damage to the player while they are within a trigger.
+///
 ///
 ///</summary>
 
@@ -16,7 +16,7 @@ namespace Millivolt
     {
         namespace HazardObjects
         {
-            public class DamageWires : HazardObject
+            public class DamageZone : HazardObject
             {
                 [SerializeField] private GameObject m_particleObject;
                 private Collider[] m_triggers;
@@ -40,7 +40,7 @@ namespace Millivolt
                     m_triggers = GetComponents<Collider>();
                 }
 
-                private void OnTriggerEnter(Collider other)
+                private void OnTriggerStay(Collider other)
                 {
                     if (m_isActive)
                     {
@@ -48,20 +48,6 @@ namespace Millivolt
                         if (player)
                         {
                             player.TakeDamage(m_damage * Time.deltaTime);
-                            player.PlayerKnockback(this);
-                        }
-                    }
-                }
-
-                private void OnCollisionEnter(Collision other)
-                {
-                    if (m_isActive)
-                    {
-                        PlayerStatus player = other.gameObject.GetComponentInChildren<PlayerStatus>();
-                        if (player)
-                        {
-                            player.TakeDamage(m_damage * Time.deltaTime);
-                            player.PlayerKnockback(this);
                         }
                     }
                 }
