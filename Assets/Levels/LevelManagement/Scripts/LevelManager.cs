@@ -18,15 +18,12 @@ namespace Millivolt
     using Utilities;
 	public class LevelManager : MonoBehaviour
 	{
-		public static LevelManager Instance { get; private set; }
+		public static LevelManager Instance;
         private void Awake()
         {
-			if (!Instance)
-				Instance = this;
-			else if (Instance != this)
-				Destroy(gameObject);
-
-			DontDestroyOnLoad(gameObject);
+			if (Instance)
+				Destroy(Instance.gameObject);
+			Instance = this;
         }
 			
 		[Header("Scene Properties")]
@@ -44,11 +41,11 @@ namespace Millivolt
 
 		[Header("Level Data")]
 		[SerializeField] private LevelData m_levelData;
+		public LevelData levelData => m_levelData;
 			
 		//Spawn screen ref
 		private GameObject m_spawnScreen;
 
-		public LevelData levelData => m_levelData;
 
 		public PlayerController m_player;
 
@@ -60,9 +57,6 @@ namespace Millivolt
 				FindAllCheckpoints();
 			InitialiseCheckpoints();
 			SpawnPlayer();
-
-			//Grab reference to LevelData in the LevelDataReference in the scene
-			m_levelData = FindObjectOfType<LevelDataReference>().levelData;
         }
 
             
