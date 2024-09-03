@@ -15,6 +15,7 @@ namespace Millivolt
     using Player.UI;
     using LevelObjects;
     using LevelObjects.PickupObjects;
+    using UnityEngine.Rendering;
 
     namespace Player
     {
@@ -106,6 +107,7 @@ namespace Millivolt
             public void Interact(InputAction.CallbackContext context)
             {
                 if (!canInteract)
+                    return;
                 
                 // if button pressed
                 if (context.started)
@@ -122,6 +124,18 @@ namespace Millivolt
                                 DropObject();
                             break;
                     }
+                }
+            }
+
+            public void UsePickup(InputAction.CallbackContext context)
+            {
+                if (!canInteract)
+                    return;
+
+                if (m_heldPickup)
+                {
+                    m_heldPickup.Use();
+                    m_interactTimer = 0;
                 }
             }
 

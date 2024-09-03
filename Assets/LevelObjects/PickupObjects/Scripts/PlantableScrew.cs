@@ -27,6 +27,7 @@ namespace Millivolt
 				private void Plant()
 				{
 					GameManager.PlayerController.canMove = m_inUse;
+					//GameManager.PlayerController.
 				}
             }
 		}

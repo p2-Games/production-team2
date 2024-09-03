@@ -18,6 +18,23 @@ namespace Millivolt
         {
             public abstract class EventObject : LevelObject
             {
+                public override bool isActive
+                {
+                    get { return m_isActive; }
+                    set
+                    {
+                        if (value)
+                            m_activateEvents.Invoke();
+                        else
+                            m_deactivateEvents.Invoke();
+
+                        if (m_togglesOnce)
+                            m_canInteract = false;
+
+                        m_isActive = value;
+                    }
+                }
+
                 [Header("Event Object Details"), Tooltip("If true, the state of the object can change.")]
                 [SerializeField] protected bool m_canInteract = true;
 
