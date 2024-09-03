@@ -40,6 +40,8 @@ namespace Millivolt
                         m_heldObject.gameObject.SetActive(false);
                     }
                     isActive = m_heldObject != null;
+                    if (m_togglesOnce)
+                        m_canInteract = true;
                 }
 
                 private void Update()
