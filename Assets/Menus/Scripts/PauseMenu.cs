@@ -1,7 +1,7 @@
 ///<summary>
 /// Author: Emily
 ///
-///
+/// Handles the callable functions for the pause menu
 ///
 ///</summary>
 

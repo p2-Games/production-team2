@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace Millivolt
 {
-    using PlayerStatus = Player.PlayerStatus;
+    using Player;
 
     namespace LevelObjects
     {
