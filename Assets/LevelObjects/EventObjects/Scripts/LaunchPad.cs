@@ -29,14 +29,7 @@ namespace Millivolt
                 private Rigidbody m_objectToLaunch;
                 private Vector3 m_newObjectPosition;
 
-                private PlayerController m_player;
-
                 public override void Interact() { }
-
-                private void Start()
-                {
-                    m_player = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
-                }
 
                 public void Update()
                 {
@@ -44,10 +37,10 @@ namespace Millivolt
                     if (m_objectToLaunch && Vector3.Distance(m_objectToLaunch.position, m_newObjectPosition) < m_minDistanceToLaunch)
                     {
                         // different behaviour if the object to launch is the player
-                        if (m_player.gameObject == m_objectToLaunch.gameObject)
+                        if (GameManager.PlayerController.gameObject == m_objectToLaunch.gameObject)
                         {
-                            m_player.SetExternalVelocity(m_initialVelocity);
-                            m_player.canMove = false;
+                            GameManager.PlayerController.SetExternalVelocity(m_initialVelocity);
+                            GameManager.PlayerController.canMove = false;
                         }
                         else
                             m_objectToLaunch.velocity = m_initialVelocity;
@@ -84,9 +77,6 @@ namespace Millivolt
                     if (!m_drawGizmos)
                         return;
 
-                    if (!m_player)
-                        m_player = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
-
                     Vector3 lastPoint = transform.position;
 
                     Handles.color = Color.blue;
@@ -95,7 +85,7 @@ namespace Millivolt
                     {
                         float t = p * m_debugTimeBetweenPoints;
 
-                        Vector3 nextPoint = transform.position + m_initialVelocity * t + 0.5f * m_player.gravity * t * t;
+                        Vector3 nextPoint = transform.position + m_initialVelocity * t + 0.5f * GameManager.PlayerController.gravity * t * t;
 
                         if (Physics.Raycast(lastPoint, (nextPoint - lastPoint).normalized, out RaycastHit hit, Vector3.Distance(lastPoint, nextPoint), ~(1 << LayerMask.NameToLayer("Player")), QueryTriggerInteraction.Ignore))
                         {
