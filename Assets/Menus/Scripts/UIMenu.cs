@@ -108,7 +108,7 @@ namespace Millivolt
                     if (m_uiGroup != null)
                     {
                         Tween.Position(m_uiGroup.transform, m_disableEndPos, m_disableTweenDuration, m_disableTweenDelay, Tween.EaseInOut, Tween.LoopType.None, null, null, false);
-                        Invoke("HideMenuAfterTween", m_disableTweenDelay + m_disableTweenDuration);
+                        Invoke(nameof(HideMenuAfterTween), m_disableTweenDelay + m_disableTweenDuration);
                     }
                 }
             }
