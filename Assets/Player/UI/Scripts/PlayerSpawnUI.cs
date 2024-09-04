@@ -43,7 +43,7 @@ namespace Millivolt
                     m_disableDelay += 0.2f;
 
                     Tween.Color(m_bgScreen, new Color(0, 0, 0, 0), 0.01f, m_startDelay + m_delay);
-                    Tween.Color(m_growScreen, new Color(1, 1, 1, 0), 0.4f, m_startDelay + m_delay);
+                    Tween.Color(m_growScreen, new Color(m_growScreen.color.r, m_growScreen.color.g, m_growScreen.color.b, 0), 0.4f, m_startDelay + m_delay);
 
                     m_disableDelay += 0.5f;
 

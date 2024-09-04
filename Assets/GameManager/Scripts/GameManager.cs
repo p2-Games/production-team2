@@ -26,12 +26,7 @@ namespace Millivolt
 	{			
 		[SerializeField] private GameState m_gameState;
 
-		[Header("Level Properties")]
-		[SerializeField] private int m_currentLevel;
-
-		[SerializeField] private LevelManager[] m_levels;
-
-		[SerializeField] private LevelManager m_levelManager;
+		//[SerializeField] private LevelManager m_levelManager;
 		[SerializeField] private EventSystemManager m_eventSystemManager;
 
 		[SerializeField] private GameObject m_freeLookCam;
@@ -43,6 +38,8 @@ namespace Millivolt
 		public static PlayerController PlayerController { get; private set; }
 		public static PlayerInteraction PlayerInteraction { get; private set; }
         public static PlayerStatus PlayerStatus { get; private set; }
+
+		public static LevelManager LevelManager { get; private set; }
 
         //Static reference
         public static GameManager Instance { get; private set; }
@@ -74,7 +71,7 @@ namespace Millivolt
         {
 			m_freeLookCam = GameObject.FindWithTag("FreeLook");
 			m_pauseMenu = (UIMenu)FindObjectOfType(typeof(UIMenu), true);
-			m_levelManager = FindObjectOfType<LevelManager>();
+			LevelManager = FindObjectOfType<LevelManager>();
 			m_eventSystemManager = FindObjectOfType<EventSystemManager>();
 			m_currentSceneName = SceneManager.GetActiveScene().name;
 
@@ -83,6 +80,7 @@ namespace Millivolt
 			PlayerController = player.GetComponent<PlayerController>();
 			PlayerInteraction = player.GetComponentInChildren<PlayerInteraction>();
 			PlayerStatus = player.GetComponentInChildren<PlayerStatus>();
+
         }
 
         private void Awake()
@@ -100,7 +98,7 @@ namespace Millivolt
         /// </summary>
         public void LoadNextLevel()
 		{
-			SceneManager.LoadScene(m_levels[m_currentLevel].nextLevelName);
+			SceneManager.LoadScene(LevelManager.nextLevelName);
 		}
 
         /// <summary>
@@ -108,7 +106,7 @@ namespace Millivolt
         /// </summary>
         public void LoadLastLevel()
 		{
-            SceneManager.LoadScene(m_levels[m_currentLevel].prevLevelName);
+            SceneManager.LoadScene(LevelManager.prevLevelName);
         }
 
 		public void PauseGame()
@@ -138,7 +136,6 @@ namespace Millivolt
         }
         public void RestartLevel()
 		{
-			//SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 			StartCoroutine(LoadAsyncScene(SceneManager.GetActiveScene().name));
         }
 
@@ -158,7 +155,7 @@ namespace Millivolt
 			m_freeLookCam = null;
 			m_pauseMenu = null;
 			Start();
-			m_levelManager.Reload();
+			LevelManager.Reload();
 			m_eventSystemManager.Reload();
 		}
 

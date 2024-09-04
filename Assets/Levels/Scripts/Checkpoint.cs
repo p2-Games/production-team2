@@ -27,14 +27,8 @@ namespace Millivolt
 				set { m_checkpointID = value; }
 			}
 
-			private LevelManager m_levelManager;
-
-			private PlayerController m_player;
-
             private void OnEnable()
             {
-				m_levelManager = FindObjectOfType<LevelManager>();
-				m_player = FindObjectOfType<PlayerController>();
 				if (m_respawnPoint == null)
 				{
 					m_respawnPoint = transform;
@@ -43,10 +37,10 @@ namespace Millivolt
 
             private void OnTriggerEnter(Collider other)
             {
-				if (other.tag == "Player" && this != m_levelManager.GetActiveCheckpoint())
+				if (other.tag == "Player" && this != GameManager.LevelManager.GetActiveCheckpoint())
 				{
 					Debug.Log("Checkpoint set to Checkpoint " + checkpointID);
-					m_levelManager.SetActiveCheckpoint(checkpointID);
+                    GameManager.LevelManager.SetActiveCheckpoint(checkpointID);
 				}
             }
         }

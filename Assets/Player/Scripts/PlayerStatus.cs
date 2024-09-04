@@ -23,8 +23,8 @@ namespace Millivolt
             public float maxHealth => m_maxHealth;
             private float m_currentHealth;
 
-            [Header("LevelData Reference")]
-            LevelManager m_levelManager;
+            //[Header("LevelData Reference")]
+            //LevelManager m_levelManager;
 
             [Header("Health Regen Properties")]
             [Tooltip("This will be the number of seconds after taking damage that the player will begine to regen health")]
@@ -49,18 +49,15 @@ namespace Millivolt
             [Header("Respawn Properties")]
             [SerializeField] private float m_respawnTime;
             //Player
-            private PlayerController m_player;
+            //private PlayerController m_player;
 
             private void Start()
             {
                 m_currentHealth = m_maxHealth;
                 UpdateVignetteEffect();
-                m_levelManager = FindObjectOfType<LevelManager>();
                 //Theres no conversion to GameObject for some reason so I did a hold variable for now </3
                 PlayerDeathUI hold = (PlayerDeathUI)FindObjectOfType(typeof(PlayerDeathUI), true);
                 m_deathCanvas = hold.gameObject;
-                m_player = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
-                Debug.Log("GRAVITY RGAHGGHHGGHGHGHGH" + m_player.gravity);
             }
 
             private void OnDestroy()
@@ -106,7 +103,7 @@ namespace Millivolt
             /// </summary>
             private void Respawn()
             {
-                m_levelManager.SpawnPlayer();
+                GameManager.LevelManager.SpawnPlayer();
             }
 
             /// <summary>
@@ -115,16 +112,16 @@ namespace Millivolt
             public void PlayerKnockback(HazardObject hazard)
             {
                 //Find the closest point on the hazard collider to the player
-                Vector3 closestPoint = hazard.gameObject.GetComponent<Collider>().ClosestPoint(m_player.transform.position);
+                Vector3 closestPoint = hazard.gameObject.GetComponent<Collider>().ClosestPoint(GameManager.PlayerController.transform.position);
                 
                 //Get the direction that the player needs to be knocked towards
-                Vector3 dir = (m_player.transform.position - closestPoint).normalized;
-                dir = Vector3.ProjectOnPlane(dir, m_player.transform.up).normalized;
+                Vector3 dir = (GameManager.PlayerController.transform.position - closestPoint).normalized;
+                dir = Vector3.ProjectOnPlane(dir, GameManager.PlayerController.transform.up).normalized;
 
-                m_player.AddVerticalVelocity(m_verticalForce);
+                GameManager.PlayerController.AddVerticalVelocity(m_verticalForce);
 
                 //Launch the player backwards
-                m_player.SetExternalVelocity(dir * m_horizontalForce);
+                GameManager.PlayerController.SetExternalVelocity(dir * m_horizontalForce);
             }
 
             /// <summary>
