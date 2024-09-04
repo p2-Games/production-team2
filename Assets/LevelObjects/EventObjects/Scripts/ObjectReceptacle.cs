@@ -29,7 +29,7 @@ namespace Millivolt
                 [SerializeField] private float m_retrieveObjectTime;
                 private float m_timer;
 
-                public override bool canInteract => m_canInteract && m_isActive;
+                public override bool canInteract => m_canInteract && m_isActive && m_timer >= m_retrieveObjectTime;
 
                 private void Start()
                 {
@@ -54,7 +54,7 @@ namespace Millivolt
                 private void OnTriggerStay(Collider other)
                 {
                     // if the receptacle cannot be interacted with, don't check for anything
-                    if (!canInteract)
+                    if (!m_canInteract)
                         return;
                     
                     // if the receptacle already has an object in it, don't check for anything

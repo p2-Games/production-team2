@@ -1,7 +1,7 @@
 ///<summary>
-/// Author:
+/// Author: Halen
 ///
-///
+/// Spins when it is active.
 ///
 ///</summary>
 
@@ -17,8 +17,11 @@ namespace Millivolt
             {
                 protected override void FixedUpdate()
                 {
-                    Quaternion newRotation = transform.rotation * Quaternion.AngleAxis(m_movementSpeed, transform.up);
-                    m_rb.MoveRotation(newRotation);
+                    if (m_isActive)
+                    {
+                        Quaternion newRotation = transform.rotation * Quaternion.AngleAxis(m_movementSpeed, transform.up);
+                        m_rb.MoveRotation(newRotation);
+                    }
                 }
             }
         }

@@ -10,8 +10,6 @@ using UnityEngine.Events;
 
 namespace Millivolt
 {
-    using Player;
-
     namespace LevelObjects
     {
         namespace EventObjects
@@ -42,7 +40,8 @@ namespace Millivolt
                 [SerializeField] protected bool m_togglesOnce = false;
 
                 [Tooltip("Filter for what can interact with this object.\n" +
-                        "Accepts System Types (class names) and Tags.")]
+                        "Accepts System Types (class names) and Tags.\n" +
+                        "If a filter begins with '!', then it will be ignored instead of accepted.")]
                 [SerializeField] protected string[] m_interactionFilter = { "Player", typeof(LevelObject).Name };
 
                 [Tooltip("The events that will occur when the object is set active.")]
@@ -53,22 +52,20 @@ namespace Millivolt
 
                 public virtual bool canInteract => m_canInteract;
 
-                private static PlayerInteraction m_playerInteraction;
-
-                private void Start()
-                {
-                    if (!m_playerInteraction)
-                        m_playerInteraction = GameManager.PlayerInteraction;
-                }
-
                 protected bool CanTrigger(GameObject obj)
                 {
-                    if (obj == m_playerInteraction.heldObject)
+                    if (obj == GameManager.PlayerInteraction.heldObject)
                         return false;
 
                     foreach (string type in m_interactionFilter)
                     {
-                        if (obj.tag == type || obj.GetComponent(type))
+                        if (type[0] == '!')
+                        {
+                            string actualType = type.Substring(1);
+                            if (obj.tag == actualType || obj.GetComponent(actualType))
+                                return false;
+                        }
+                        else if (obj.tag == type || obj.GetComponent(type))
                             return true;
                     }
                     return false;

@@ -100,6 +100,19 @@ namespace Millivolt
             }
 
             /// <summary>
+            /// Uses the currently held Pickup if the player has one and it has a Use effect.
+            /// </summary>
+            /// <param name="context"></param>
+            public void UsePickup(InputAction.CallbackContext context)
+            {
+                if (m_heldPickup)
+                {
+                    m_heldPickup.Use();
+                    m_interactTime = 0;
+                }
+            }
+
+            /// <summary>
             /// Interacts with the closest Object to the player, as shown in the Interaction UI display.
             /// </summary>
             /// <param name="context"></param>
@@ -114,8 +127,11 @@ namespace Millivolt
                     switch (m_state)
                     {
                         case InteractionState.Open:
-                            m_closestObject.Interact(this);
-                            m_interactionUI.UpdateDisplay(null);
+                            if (m_closestObject)
+                            {
+                                m_closestObject.Interact(this);
+                                m_interactionUI.UpdateDisplay(null);
+                            }
                             break;
                         case InteractionState.Holding:
                             // don't let the player drop the object while it is in use
@@ -123,18 +139,6 @@ namespace Millivolt
                                 DropObject();
                             break;
                     }
-                }
-            }
-
-            public void UsePickup(InputAction.CallbackContext context)
-            {
-                if (!canInteract)
-                    return;
-
-                if (m_heldPickup)
-                {
-                    m_heldPickup.Use();
-                    m_interactTimer = 0;
                 }
             }
 
