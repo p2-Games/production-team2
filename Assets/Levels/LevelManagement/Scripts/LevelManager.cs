@@ -47,11 +47,10 @@ namespace Millivolt
 		private GameObject m_spawnScreen;
 
 
-		public PlayerController m_player;
+		//public PlayerController m_player;
 
         private void Start()
         {
-			m_player = FindObjectOfType<PlayerController>();
 			m_spawnScreen = FindObjectOfType<PlayerSpawnUI>().gameObject;
 			if (m_autoAddCheckpoints)
 				FindAllCheckpoints();
@@ -116,8 +115,8 @@ namespace Millivolt
 		{
 			//Instantiate(m_spawnScreen);
 			m_spawnScreen.SetActive(true);
-			m_player.transform.position = GetActiveCheckpoint().respawnPoint.position;
-			m_player.transform.localEulerAngles = new Vector3(0, GetActiveCheckpoint().respawnPoint.localEulerAngles.y, 0);
+			GameManager.PlayerController.transform.position = GetActiveCheckpoint().respawnPoint.position;
+            GameManager.PlayerController.transform.localEulerAngles = new Vector3(0, GetActiveCheckpoint().respawnPoint.localEulerAngles.y, 0);
 			FindObjectOfType<PlayerLookTarget>().SetToPlayerPosition();
 			FindObjectOfType<SmoothObjectTracking>().SetToPlayerPosition();
 			FindAllCheckpoints();
@@ -129,11 +128,11 @@ namespace Millivolt
 
 
 
-			if (!m_player)
-			{
-                m_player = FindObjectOfType<PlayerController>(); 
-				//SpawnPlayer();
-			}
+			//if (!GameManager.PlayerController)
+			//{
+            //    GameManager.PlayerController = FindObjectOfType<PlayerController>(); 
+			//	//SpawnPlayer();
+			//}
 
 			if (!m_spawnScreen)
 				m_spawnScreen = FindObjectOfType<PlayerSpawnUI>().gameObject;
