@@ -89,6 +89,7 @@ namespace Millivolt
 				point.checkpointID = id;
 				id++;
 			}
+			m_levelCheckpoints[0].activeCheckpoint = true;
 		}
 
 		/// <summary>
