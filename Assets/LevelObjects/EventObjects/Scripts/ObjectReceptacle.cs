@@ -29,7 +29,7 @@ namespace Millivolt
                 [SerializeField] private float m_retrieveObjectTime;
                 private float m_timer;
 
-                public override bool canInteract => m_canInteract && m_isActive;
+                public override bool canInteract => m_canInteract && m_isActive && m_timer >= m_retrieveObjectTime;
 
                 private void Start()
                 {

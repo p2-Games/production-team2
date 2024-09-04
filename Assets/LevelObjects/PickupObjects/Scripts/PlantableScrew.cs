@@ -9,8 +9,6 @@ using UnityEngine;
 
 namespace Millivolt
 {
-	using Player;
-
 	namespace LevelObjects
 	{
 		namespace PickupObjects
@@ -26,8 +24,7 @@ namespace Millivolt
 
 				private void Plant()
 				{
-					GameManager.PlayerController.canMove = m_inUse;
-					//GameManager.PlayerController.
+					GameManager.PlayerController.canMove = !m_inUse;
 				}
             }
 		}
