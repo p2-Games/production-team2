@@ -21,12 +21,15 @@ namespace Millivolt
                 InitialiseRigidbody();
                 InitialiseCollider();
                 m_parent = GetComponentInParent<PlayerRotationParent>();
+                m_animation = GetComponent<AnimationController>();
             }
 
             private void FixedUpdate()
             {
                 MovePlayer();
             }
+
+            private AnimationController m_animation;
 
             [Header("Physics")]
             [Tooltip("The acceleration of gravity of the player, on the player's transform.up axis.")]
@@ -45,14 +48,6 @@ namespace Millivolt
                     if (!m_parent)
                         m_parent = GetComponentInParent<PlayerRotationParent>();
                     return m_parent.transform;
-                }
-            }
-
-            public Vector3 gravity
-            {
-                get
-                {
-                    return Mathf.Abs(m_gravity) * -transform.up;
                 }
             }
 
@@ -119,7 +114,7 @@ namespace Millivolt
 
             public void Move(InputAction.CallbackContext context)
             {
-                m_moveInput = context.ReadValue<Vector2>().normalized;
+                m_moveInput = context.ReadValue<Vector2>();
             }
 
             /// <summary>
@@ -165,6 +160,9 @@ namespace Millivolt
                     m_verticalVelocity += m_jumpSpeed;
                     m_willJump = false;
                 }
+
+                // tell animator what to do
+                m_animation.PassFloatParameter("Speed", m_walkVelocity.magnitude / m_topSpeed);
 
                 // move player
                 m_rb.velocity = m_walkVelocity + -Physics.gravity.normalized * m_verticalVelocity + m_platformVelocity + m_externalVelocity;
@@ -327,7 +325,7 @@ namespace Millivolt
 
                 Handles.color = Color.magenta;
                 Handles.ArrowHandleCap(0, m_collider.center - Vector3.up * m_collider.height / 2,
-                                        Quaternion.LookRotation(Vector3.down, gravity.normalized), 1, EventType.Repaint);
+                                        Quaternion.LookRotation(Vector3.down, (Mathf.Abs(m_gravity) * -transform.up).normalized), 1, EventType.Repaint);
             }
 #endif
         }
