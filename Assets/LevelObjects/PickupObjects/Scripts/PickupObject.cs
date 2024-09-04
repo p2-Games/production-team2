@@ -5,7 +5,6 @@
 ///
 ///</summary>
 
-using System;
 using UnityEngine;
 
 namespace Millivolt
@@ -41,6 +40,7 @@ namespace Millivolt
                 protected virtual void Start()
                 {
                     m_rb = GetComponent<Rigidbody>();
+                    m_timer = 0;
                 }
 
                 protected virtual void Update()
@@ -51,10 +51,12 @@ namespace Millivolt
 
                 public virtual void Use()
                 {
-                    m_inUse = !m_inUse;
-                    
                     if (m_timer < m_useTime)
                         return;
+
+                    m_inUse = !m_inUse;
+
+                    m_timer = 0;
                 }
             }
         }
