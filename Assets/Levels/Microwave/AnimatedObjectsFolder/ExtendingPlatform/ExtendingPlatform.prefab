@@ -43,6 +43,7 @@ GameObject:
   - component: {fileID: 728121707561651656}
   - component: {fileID: 2406186235330837034}
   - component: {fileID: 7979400873479119447}
+  - component: {fileID: 2388567739225721540}
   m_Layer: 6
   m_Name: ExtendingPlatform
   m_TagString: Untagged
@@ -81,7 +82,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_isActive: 0
+  m_name: 
   m_description: 
+  m_drawGizmos: 1
+  spawnParent: {fileID: 0}
   m_movementSpeed: 1
   m_path:
   - {fileID: 6605819137820410999}
@@ -116,6 +120,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!65 &2388567739225721540
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1971609843043786117}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 10.546326, y: 1.8462124, z: 2.8213081}
+  m_Center: {x: -0.067092896, y: -0.07388401, z: -0.004468918}
 --- !u!1 &3626998506125064662
 GameObject:
   m_ObjectHideFlags: 0
