@@ -18,6 +18,8 @@ namespace Millivolt
         {
             public class LaunchPad : EventObject
             {
+                public override bool isActive { get => m_isActive; set => m_isActive = value; }
+
                 [Header("LaunchPad Details"), SerializeField] private Vector3 m_initialVelocity;
                 [SerializeField] private float m_snapSpeed;
                 [SerializeField] private float m_minDistanceToLaunch;
@@ -44,6 +46,8 @@ namespace Millivolt
                         }
                         else
                             m_objectToLaunch.velocity = m_initialVelocity;
+
+                        m_activateEvents.Invoke();
 
                         m_objectToLaunch = null;
                     }
