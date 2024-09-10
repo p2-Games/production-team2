@@ -5,7 +5,6 @@
 ///
 ///</summary>
 
-using Millivolt.Utilities;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -13,9 +12,9 @@ using UnityEngine.Video;
 
 namespace Millivolt
 {
-	namespace Cutscene
-	{
-		public class IntroCutscene : MonoBehaviour
+    namespace Cutscene
+    {
+        public class IntroCutscene : MonoBehaviour
 		{
             [SerializeField] private VideoPlayer m_vp;
 

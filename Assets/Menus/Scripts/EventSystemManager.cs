@@ -8,14 +8,12 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.UI;
 
 namespace Millivolt
 {
     namespace UI
     {
-	    public class EventSystemManager : MonoBehaviour
+        public class EventSystemManager : MonoBehaviour
 	    {
             // Static reference
             public static EventSystemManager Instance { get; private set; }

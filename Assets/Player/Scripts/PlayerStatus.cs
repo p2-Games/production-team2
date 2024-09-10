@@ -103,6 +103,7 @@ namespace Millivolt
             /// </summary>
             private void Respawn()
             {
+                GameManager.PlayerController.canMove = false;
                 GameManager.LevelManager.SpawnPlayer();
             }
 
@@ -118,10 +119,17 @@ namespace Millivolt
                 Vector3 dir = (GameManager.PlayerController.transform.position - closestPoint).normalized;
                 dir = Vector3.ProjectOnPlane(dir, GameManager.PlayerController.transform.up).normalized;
 
-                GameManager.PlayerController.AddVerticalVelocity(m_verticalForce);
-
                 //Launch the player backwards
                 GameManager.PlayerController.SetExternalVelocity(dir * m_horizontalForce);
+
+                //Launch player upwards based on vertical force
+                GameManager.PlayerController.AddVerticalVelocity(m_verticalForce * -Physics.gravity.normalized);
+
+            }
+
+            public void ResetStatus()
+            {
+                m_currentHealth = m_maxHealth;
             }
 
             /// <summary>

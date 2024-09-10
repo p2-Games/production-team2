@@ -6,18 +6,15 @@
 ///</summary>
 
 using UnityEngine;
-    using UnityEditor;
-    using PlayerStatus = Millivolt.Player.PlayerStatus;
-    using Millivolt.Player;
-    using global::Millivolt.LevelObjects.HazardObjects;
+using PlayerStatus = Millivolt.Player.PlayerStatus;
 
-    namespace Millivolt
+namespace Millivolt
+{
+    namespace LevelObjects
     {
-        namespace LevelObjects
+        namespace HazardObjects
         {
-            namespace HazardObjects
-            {
-                public class DamageCollider : HazardObject
+            public class DamageCollider : HazardObject
                 {
                     [SerializeField] private GameObject m_particleObject;
                     private Collider[] m_triggers;
