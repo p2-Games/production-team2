@@ -6,16 +6,13 @@
 ///</summary>
 
 using System.Collections;
-using TMPro;
 using UnityEngine;
-using Millivolt.Utilities;
-using Millivolt.Player;
 
 namespace Millivolt
 {
-	namespace UI
-	{
-		public class GravityIndicatorUI : MonoBehaviour
+    namespace UI
+    {
+        public class GravityIndicatorUI : MonoBehaviour
 		{
             [SerializeField] private int m_flashCount;			
             
