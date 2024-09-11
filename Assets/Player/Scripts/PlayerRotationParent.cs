@@ -14,21 +14,18 @@ namespace Millivolt
         [ExecuteInEditMode]
         public class PlayerRotationParent : MonoBehaviour
         {
-            private Transform m_player;
-            
+            [SerializeField] private Transform m_player;
+
             private void Start()
             {
-                m_player = transform.GetChild(0);
+                if (!m_player)
+                    m_player = transform.GetChild(0);
             }
 
-            private void Update()
+            public void ResetPosition()
             {
-                if (transform.hasChanged)
-                {
-                    transform.position = m_player.position;
-                    m_player.localPosition = Vector3.zero;
-                    transform.hasChanged = false;
-                }
+                transform.position = m_player.position;
+                m_player.localPosition = Vector3.zero;
             }
         }
     }

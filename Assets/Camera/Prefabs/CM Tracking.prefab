@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1136622787539218168}
   m_Layer: 0
   m_Name: Look Target
-  m_TagString: Untagged
+  m_TagString: LookTarget
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -25,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1136622787539218171}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.5, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -44,12 +44,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4800caf3a534bc346adbbe5934027d2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_lookType: 0
+  m_lookType: 2
   m_target: {fileID: 1136622788654341128}
-  m_followDistance: 1
-  m_followSpeed: 1
+  m_followDistance: 0.8
+  m_followSpeed: 5
   m_followOffset: {x: 0, y: 0, z: 0}
-  m_dampingStrength: 2
+  m_dampingStrength: 1
   m_drawGizmos: 1
 --- !u!1 &1136622787675782627
 GameObject:
@@ -76,7 +76,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1136622787675782627}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.5, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -116,8 +116,8 @@ GameObject:
   - component: {fileID: 1136622788654341128}
   - component: {fileID: 1136622788654341131}
   m_Layer: 0
-  m_Name: PlayerFollower
-  m_TagString: Untagged
+  m_Name: Player Follower
+  m_TagString: PlayerFollower
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -130,7 +130,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1136622788654341130}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.5, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -150,13 +150,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_target: {fileID: 0}
-  m_moveSpeed: 4
+  m_moveSpeed: 15
   m_moveSmoothing: 0.3
   m_slerpMovement: 0
+  m_minDistance: 0.1
+  m_maxDistance: 10
+  m_speedExponent: 2
   m_rotateSpeed: 1440
   m_rotateSmoothing: 0.3
   m_slerpRotation: 0
-  m_drawGizmos: 1
+  m_drawGizmos: 0
 --- !u!1 &1136622788759022770
 GameObject:
   m_ObjectHideFlags: 0

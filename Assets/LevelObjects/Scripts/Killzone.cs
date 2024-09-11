@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace Millivolt
 {
-    using PlayerStatus = Player.PlayerStatus;
+    using Player;
 
     namespace LevelObjects
     {
@@ -30,10 +30,9 @@ namespace Millivolt
 
             private void OnTriggerEnter(Collider other)
             {
-                PlayerStatus player = other.GetComponent<PlayerStatus>();
+                PlayerStatus player = other.GetComponentInChildren<PlayerStatus>();
                 if (player)
-                    // TODO: use player max health instead
-                    player.TakeDamage(100);
+                    player.TakeDamage(player.maxHealth);
             }
         }
     }

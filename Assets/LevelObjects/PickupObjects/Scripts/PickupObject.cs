@@ -5,7 +5,6 @@
 ///
 ///</summary>
 
-using System;
 using UnityEngine;
 
 namespace Millivolt
@@ -17,45 +16,47 @@ namespace Millivolt
             public enum PickupType
             {
                 Standard,
-                Heavy,
                 Immovable
             }
 
             [RequireComponent(typeof(Rigidbody), typeof(Collider))]
             public class PickupObject : LevelObject
             {
-                [Header("Pickup Object Details"), Tooltip("The keyword for the type of pickup.")]
-                [SerializeField] private string m_keyword;
-                public string keyword => m_keyword;
+                [Header("Pickup Object Details")]
+                [SerializeField] protected PickupType m_type;
 
-                [Tooltip("The maximum speed the object can travel at when following the player's cursor while picked up.")]
-                [SerializeField] private float m_followMaxSpeed;
-                public float followMaxSpeed => m_followMaxSpeed;
+                [SerializeField] protected float m_useTime;
+                protected float m_timer;
 
-                [Tooltip("The acceleration of the object when following the player's cursor while picked up.")]
-                [SerializeField] private float m_followAcceleration;
-                public float followAcceleration => m_followAcceleration;
+                protected bool m_inUse = false;
+                public bool inUse => m_inUse;
 
-                [SerializeField] private PickupType m_type;
                 public PickupType pickupType => m_type;
+                public bool playerCanGrab => m_type != PickupType.Immovable;
 
-                public Vector3 velocity
-                {
-                    get => m_rb.velocity;
-                    set => m_rb.velocity = value;
-                }
+                protected Rigidbody m_rb;
+                public Rigidbody rb => m_rb;
 
-                public bool useGravity
-                {
-                    get => m_rb.useGravity;
-                    set => m_rb.useGravity = value;
-                }
-
-                private Rigidbody m_rb;
-
-                private void Start()
+                protected virtual void Start()
                 {
                     m_rb = GetComponent<Rigidbody>();
+                    m_timer = 0;
+                }
+
+                protected virtual void Update()
+                {
+                    if (m_timer < m_useTime)
+                        m_timer += Time.deltaTime;
+                }
+
+                public virtual void Use()
+                {
+                    if (m_timer < m_useTime)
+                        return;
+
+                    m_inUse = !m_inUse;
+
+                    m_timer = 0;
                 }
             }
         }
