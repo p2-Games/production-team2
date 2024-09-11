@@ -99,7 +99,19 @@ MonoBehaviour:
         m_CallState: 2
   m_deactivateEvents:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3498040711742319240}
+        m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+        m_MethodName: Play
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: OnDeactivate
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!65 &3257926173079996401
 BoxCollider:
   m_ObjectHideFlags: 0
