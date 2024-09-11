@@ -15,24 +15,21 @@ namespace Millivolt
     {
         public class Killzone : LevelObject
         {
-            private Collider m_collider;
-
             private void Start()
             {
-                InitialiseCollider();
-            }
-
-            private void InitialiseCollider()
-            {
-                m_collider = GetComponent<Collider>();
-                m_collider.isTrigger = true;
+                Collider collider = GetComponent<Collider>();
+                collider.isTrigger = true;
             }
 
             private void OnTriggerEnter(Collider other)
             {
-                PlayerStatus player = other.GetComponentInChildren<PlayerStatus>();
-                if (player)
-                    player.TakeDamage(player.maxHealth);
+                // if inactive, don't kill
+                if (!m_isActive)
+                    return;
+
+                // if the other object is the player, kill them
+                if (other.CompareTag("Player"))
+                    GameManager.PlayerStatus.TakeDamage(GameManager.PlayerStatus.maxHealth);
             }
         }
     }
