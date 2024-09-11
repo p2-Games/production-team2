@@ -5,14 +5,13 @@
 ///
 ///</summary>
 
-using Millivolt.Utilities;
 using UnityEngine;
 
 namespace Millivolt
 {
-	namespace UI
-	{
-		public class PauseMenu : MonoBehaviour
+    namespace UI
+    {
+        public class PauseMenu : MonoBehaviour
 		{
             private UIMenu m_menu;
 

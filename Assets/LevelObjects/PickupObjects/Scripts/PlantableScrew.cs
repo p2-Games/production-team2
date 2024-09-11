@@ -5,15 +5,13 @@
 ///
 ///</summary>
 
-using UnityEngine;
-
 namespace Millivolt
 {
-	namespace LevelObjects
-	{
-		namespace PickupObjects
-		{
-			public class PlantableScrew : PickupObject
+    namespace LevelObjects
+    {
+        namespace PickupObjects
+        {
+            public class PlantableScrew : PickupObject
 			{ 
 				public override void Use()
                 {
