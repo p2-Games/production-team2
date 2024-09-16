@@ -1,6 +1,4 @@
 using Millivolt.Sound;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Millivolt

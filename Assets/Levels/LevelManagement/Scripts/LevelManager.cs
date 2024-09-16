@@ -114,11 +114,14 @@ namespace Millivolt
 
 		public void SpawnPlayer()
 		{
-			//Instantiate(m_spawnScreen);
 			m_spawnScreen.SetActive(true);
-			GameManager.PlayerController.SetGravity(m_levelData.gravityMagnitude, m_levelData.gravityDirection);
 			GameManager.PlayerController.transform.position = GetActiveCheckpoint().respawnPoint.position;
             GameManager.PlayerController.transform.localEulerAngles = new Vector3(0, GetActiveCheckpoint().respawnPoint.localEulerAngles.y, 0);
+
+			GameManager.PlayerController.ResetPlayer();
+			GameManager.PlayerInteraction.ResetInteraction();
+			GameManager.PlayerStatus.ResetStatus();
+
 			FindObjectOfType<PlayerLookTarget>().SetToPlayerPosition();
 			FindObjectOfType<SmoothObjectTracking>().SetToPlayerPosition();
 			FindAllCheckpoints();

@@ -53,9 +53,6 @@ namespace Millivolt
 
             public void SetGravity(float magnitude, Vector3 direction)
             {
-                if (!canMove)
-                    return;
-
                 // set parent rotation
                 m_parent.ResetPosition();
                 parent.rotation = Quaternion.Euler(direction);
@@ -108,7 +105,7 @@ namespace Millivolt
             private Vector3 m_externalVelocity;
             private Vector3 m_platformVelocity;
 
-            private float m_verticalVelocity;
+            private Vector3 m_verticalVelocity;
 
             private Vector3 m_surfaceNormal;
 
@@ -133,6 +130,9 @@ namespace Millivolt
                 camRight = camRight.normalized;
                 camForward = camForward.normalized;
 
+                // clamp move input
+                m_moveInput = Vector3.ClampMagnitude(m_moveInput, 1f);
+
                 // apply input value
                 Vector3 horizontalRelativeInput = m_moveInput.x * camRight;
                 Vector3 verticalRelativeInput = m_moveInput.y * camForward;
@@ -152,12 +152,15 @@ namespace Millivolt
 
                 // only apply gravity if not grounded
                 if (!m_isGrounded)
-                    m_verticalVelocity += m_gravity * Time.fixedDeltaTime;
+                    m_verticalVelocity += Physics.gravity * Time.fixedDeltaTime;
+
+                if (!canMove && m_willJump)
+                    m_willJump = false;
 
                 // if the player should jump, add the jump velocity
                 if (m_willJump)
                 {
-                    m_verticalVelocity += m_jumpSpeed;
+                    m_verticalVelocity += m_jumpSpeed * transform.up;
                     m_willJump = false;
                 }
 
@@ -165,17 +168,14 @@ namespace Millivolt
                 m_animation.PassFloatParameter("Speed", m_walkVelocity.magnitude / m_topSpeed);
 
                 // move player
-                m_rb.velocity = m_walkVelocity + -Physics.gravity.normalized * m_verticalVelocity + m_platformVelocity + m_externalVelocity;
+                m_rb.velocity = m_walkVelocity + m_verticalVelocity + m_platformVelocity + m_externalVelocity;
             }
 
             /// <summary>
             /// Adds an amount to the player's vertical velocity.
             /// </summary>
             /// <param name="value">The amount to add.</param>
-            public void AddVerticalVelocity(float value)
-            {
-                m_verticalVelocity += value;
-            }
+            public void AddVerticalVelocity(Vector3 value) => m_verticalVelocity += value;
 
             /// <summary>
             /// Set the velocity of the player to the velocity of the platform they are standing on.
@@ -188,8 +188,12 @@ namespace Millivolt
             /// Takes control away from the player until they land back on the ground.
             /// </summary>
             /// <param name="value"></param>
-            public void SetExternalVelocity(Vector3 value) => m_externalVelocity = value;
-
+            public void SetExternalVelocity(Vector3 value)
+            {
+                m_rb.velocity = Vector3.zero;
+                m_verticalVelocity = Vector3.zero;
+                m_externalVelocity = value;
+            }
             [Header("Heading")]
             [SerializeField] private float m_rotationAcceleration;
 
@@ -253,7 +257,7 @@ namespace Millivolt
                         // reset their various velocities to 0
                         if (!m_isGrounded)
                         {
-                            m_verticalVelocity = 0;
+                            m_verticalVelocity = Vector3.zero;
                             m_platformVelocity = Vector3.zero;
                             if (m_externalVelocity != Vector3.zero)
                             {
@@ -287,6 +291,18 @@ namespace Millivolt
                 }
             }
 
+            /// <summary>
+            /// Reset all the functions of the player and gravity
+            /// </summary>
+            public void ResetPlayer()
+            {
+                m_externalVelocity = Vector3.zero;
+                m_verticalVelocity = Vector3.zero;
+                m_platformVelocity = Vector3.zero;
+
+                SetGravity(LevelManager.Instance.levelData.gravityMagnitude, LevelManager.Instance.levelData.gravityDirection);
+            }
+
             public bool hittingHead
             {
                 get
@@ -299,8 +315,8 @@ namespace Millivolt
             private void OnCollisionEnter(Collision collision)
             {
                 // check if the player is hitting their head on the ceiling
-                if (hittingHead && m_verticalVelocity > 0)
-                    m_verticalVelocity = 0;
+                if (hittingHead && m_verticalVelocity.sqrMagnitude > 0)
+                    m_verticalVelocity = Vector3.zero;
             }
 
 #if UNITY_EDITOR

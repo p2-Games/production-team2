@@ -60,6 +60,7 @@ namespace Millivolt
                     Tween.Size(m_growScreen.rectTransform, m_growScreen.rectTransform.sizeDelta, new Vector2(0, 0), 0, 0 + m_delay, Tween.EaseInOutStrong);
                     Tween.Color(m_bgScreen, new Color(0, 0, 0, 1), 0, 0);
                     Tween.Color(m_growScreen, new Color(1, 1, 1, 1), 0, 0);
+                    GameManager.PlayerController.canMove = true;
                 }
             }
 		}

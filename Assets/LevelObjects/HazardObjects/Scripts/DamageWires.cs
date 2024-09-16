@@ -6,9 +6,7 @@
 ///</summary>
 
 using UnityEngine;
-using UnityEditor;
 using PlayerStatus = Millivolt.Player.PlayerStatus;
-using Millivolt.Player;
 
 namespace Millivolt
 {

@@ -37,7 +37,8 @@ namespace Millivolt
 
             [Header("Hurt and Death effect references")]
             [Tooltip("This needs the screen effect material for the hurt effect")]
-            [SerializeField] private Material m_staticVignette;
+            //[SerializeField] private Material m_staticVignette;
+            [SerializeField] private ScreenShaderController m_screenShaderController;
 
             [Header("Knockback Properties")]
             [SerializeField] private float m_horizontalForce;
@@ -54,10 +55,11 @@ namespace Millivolt
             private void Start()
             {
                 m_currentHealth = m_maxHealth;
-                UpdateVignetteEffect();
                 //Theres no conversion to GameObject for some reason so I did a hold variable for now </3
                 PlayerDeathUI hold = (PlayerDeathUI)FindObjectOfType(typeof(PlayerDeathUI), true);
                 m_deathCanvas = hold.gameObject;
+                m_screenShaderController = GetComponent<ScreenShaderController>();
+                UpdateVignetteEffect();
             }
 
             private void OnDestroy()
@@ -103,6 +105,7 @@ namespace Millivolt
             /// </summary>
             private void Respawn()
             {
+                GameManager.PlayerController.canMove = false;
                 GameManager.LevelManager.SpawnPlayer();
             }
 
@@ -118,10 +121,17 @@ namespace Millivolt
                 Vector3 dir = (GameManager.PlayerController.transform.position - closestPoint).normalized;
                 dir = Vector3.ProjectOnPlane(dir, GameManager.PlayerController.transform.up).normalized;
 
-                GameManager.PlayerController.AddVerticalVelocity(m_verticalForce);
-
                 //Launch the player backwards
                 GameManager.PlayerController.SetExternalVelocity(dir * m_horizontalForce);
+
+                //Launch player upwards based on vertical force
+                GameManager.PlayerController.AddVerticalVelocity(m_verticalForce * -Physics.gravity.normalized);
+
+            }
+
+            public void ResetStatus()
+            {
+                m_currentHealth = m_maxHealth;
             }
 
             /// <summary>
@@ -150,10 +160,11 @@ namespace Millivolt
 
                 if (effectAmount > 0.1)
                 {
-                    m_staticVignette.SetFloat("_VignetteIntensity", effectAmount);
+                    //m_staticVignette.SetFloat("_VignetteIntensity", effectAmount);
+                    m_screenShaderController.UpdateShader("_VignetteIntensity", effectAmount);
                 }
                 else
-                    m_staticVignette.SetFloat("_VignetteIntensity", 0);
+                    m_screenShaderController.UpdateShader("_VignetteIntensity", 0);
             }
         }
     }

@@ -16,9 +16,9 @@ namespace Millivolt
     {
         namespace Events
         {
-            public class GravityChanger : LevelObject
+            public class GravityChanger : MonoBehaviour
             {
-                [Header("Gravity"), Tooltip("The acceleration of gravity in units per second squared.")]
+                [Tooltip("The acceleration of gravity in units per second squared.")]
                 [SerializeField] private float m_magnitude;
 
                 [Tooltip("The direction of gravity when this event triggers.")]

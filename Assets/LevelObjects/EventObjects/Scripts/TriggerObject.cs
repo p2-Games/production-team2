@@ -5,16 +5,13 @@
 ///
 ///</summary>
 
-using UnityEngine;
-using UnityEngine.Events;
-
 namespace Millivolt
 {
-	namespace LevelObjects
-	{
-		namespace EventObjects
-		{
-			public class TriggerObject : EventObject
+    namespace LevelObjects
+    {
+        namespace EventObjects
+        {
+            public class TriggerObject : EventObject
 			{
                 public override bool isActive
 				{
