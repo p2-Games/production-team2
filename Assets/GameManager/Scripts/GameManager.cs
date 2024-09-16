@@ -29,8 +29,6 @@ namespace Millivolt
 		//[SerializeField] private LevelManager m_levelManager;
 		[SerializeField] private EventSystemManager m_eventSystemManager;
 
-		[SerializeField] private GameObject m_freeLookCam;
-
 		[SerializeField] private UIMenu m_pauseMenu;
 
 		private string m_currentSceneName;
@@ -69,7 +67,6 @@ namespace Millivolt
 
         private void Start()
         {
-			m_freeLookCam = GameObject.FindWithTag("FreeLook");
 			m_pauseMenu = (UIMenu)FindObjectOfType(typeof(UIMenu), true);
 			LevelManager = FindObjectOfType<LevelManager>();
 			m_eventSystemManager = FindObjectOfType<EventSystemManager>();
@@ -114,22 +111,27 @@ namespace Millivolt
 			if (gameState != GameState.PAUSE)
 			{
 				m_pauseMenu.ActivateMenu();
-				m_freeLookCam.SetActive(false);
 				gameState = GameState.PAUSE;
 			}
 			else
 			{
-				m_freeLookCam.SetActive(true);
 				gameState = GameState.PLAYING;
 				m_pauseMenu.DeactivateMenu();
 			}
 		}
 
+
+		public void ChangeGravity(Vector3 value)
+		{
+			Physics.gravity = value;
+		}
+		public void ChangeGravity(Vector3 eulerDirection, float magnitude)
+		{
+			Physics.gravity = Quaternion.Euler(eulerDirection) * Vector3.up * magnitude;
+		}
+
         private void Update()
         {
-            if (!m_freeLookCam)
-                m_freeLookCam = GameObject.FindWithTag("FreeLook");
-
 			if (!m_pauseMenu)
                 m_pauseMenu = (UIMenu)FindObjectOfType(typeof(UIMenu), true);
 
@@ -152,7 +154,6 @@ namespace Millivolt
 
 		public void Reload()
 		{
-			m_freeLookCam = null;
 			m_pauseMenu = null;
 			Start();
 			LevelManager.Reload();
