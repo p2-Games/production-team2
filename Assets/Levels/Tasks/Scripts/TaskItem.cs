@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using Pixelplacement;
 
 namespace Millivolt
 {
@@ -18,16 +19,19 @@ namespace Millivolt
 	{
 		//public List<TaskItem> subtasks = new List<TaskItem>();
 
-		private int m_taskNum;
+		private int m_completedSubtasks;
+		private int m_numberOfSubtasks;
 
 		[SerializeField] private string m_name;
 		public string Name => m_name;
 
-		private Toggle m_toggle;
+		[SerializeField] private Toggle m_toggle;
 
-		private TaskItem m_taskParent;
+		[SerializeField] private TaskItem m_taskParent;
 
 		public bool completed => m_toggle.isOn;
+
+		[SerializeField] Transform m_subtasks;
 
 		[SerializeField] private UnityEvent m_events;
 
@@ -35,17 +39,24 @@ namespace Millivolt
 		{
 			m_toggle.isOn = true;
 			m_events.Invoke();
-			if (m_taskParent) { }
-				//Call parent to check subtasks
-
+			if (m_taskParent)
+				m_taskParent.CompleteSubtask();
 		}
 
-        //Check if subtask completed
-		//Child calls this when task completed
+		public void CompleteSubtask()
+		{
+			m_completedSubtasks++;
+			if (m_completedSubtasks >= m_numberOfSubtasks)
+				CompleteTask();
+		}
 
         private void Start()
         {
-            
+			//m_toggle = GetComponentInChildren<Toggle>();
+			m_taskParent = transform.parent.parent.parent.GetComponent<TaskItem>();
+			m_completedSubtasks = 0;
+			if (m_subtasks)
+				m_numberOfSubtasks = m_subtasks.childCount;
         }
     }
 }
