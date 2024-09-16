@@ -5,7 +5,6 @@
 ///
 ///</summary>
 
-using Cinemachine;
 using Cinemachine.Utility;
 using UnityEditor;
 using UnityEngine;
@@ -14,7 +13,7 @@ using UnityEngine.InputSystem;
 namespace Millivolt
 {
     namespace Player
-    { 
+    {
         public class FirstPersonCameraController : MonoBehaviour
         {
             [Header("Camera"), SerializeField] private Camera m_camera;

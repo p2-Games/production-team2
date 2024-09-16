@@ -9,7 +9,6 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Cinemachine.Utility;
 using UnityEditor;
-using UnityEngine.Rendering;
 
 namespace Millivolt
 {

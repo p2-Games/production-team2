@@ -5,9 +5,6 @@
 ///
 ///</summary>
 
-using UnityEngine;
-using UnityEngine.Events;
-
 namespace Millivolt
 {
     namespace LevelObjects

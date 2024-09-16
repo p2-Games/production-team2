@@ -5,16 +5,13 @@
 ///
 ///</summary>
 
-using Cinemachine;
-using Millivolt.Player;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace Millivolt
 {
-	namespace Utilities
-	{
-		public class Checkpoint : MonoBehaviour
+    namespace Utilities
+    {
+        public class Checkpoint : MonoBehaviour
 		{
 			[SerializeField] private Transform m_respawnPoint;
 			public Transform respawnPoint => m_respawnPoint;

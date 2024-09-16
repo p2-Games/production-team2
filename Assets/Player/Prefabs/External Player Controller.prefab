@@ -343,22 +343,6 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 791adf62-c3a2-4b9e-af5e-28e3044a7080
     m_ActionName: Player/Pause[/Keyboard/escape]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 6015991794495447009}
-        m_TargetAssemblyTypeName: Millivolt.Player.PlayerInteraction, Assembly-CSharp
-        m_MethodName: UsePickup
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: eb046b55-4191-440b-859e-480fa4884b5a
-    m_ActionName: Player/UsePickup[/Keyboard/q]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard&Mouse
   m_DefaultActionMap: Player
@@ -415,7 +399,7 @@ PrefabInstance:
     - target: {fileID: 2191505695045277256, guid: a692d36eca9d5a441b86092069b69f0b,
         type: 3}
       propertyPath: m_respawnTime
-      value: 1
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 2191505695045277256, guid: a692d36eca9d5a441b86092069b69f0b,
         type: 3}
@@ -425,13 +409,18 @@ PrefabInstance:
         type: 3}
     - target: {fileID: 2191505695045277256, guid: a692d36eca9d5a441b86092069b69f0b,
         type: 3}
+      propertyPath: m_verticalForce
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2191505695045277256, guid: a692d36eca9d5a441b86092069b69f0b,
+        type: 3}
       propertyPath: m_staticVignette
       value: 
       objectReference: {fileID: 2100000, guid: 331419b5c2198db408a61e0faa63d484, type: 2}
     - target: {fileID: 2191505695045277256, guid: a692d36eca9d5a441b86092069b69f0b,
         type: 3}
       propertyPath: m_healthRegenRate
-      value: 1
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 2191505695045277256, guid: a692d36eca9d5a441b86092069b69f0b,
         type: 3}
@@ -440,8 +429,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2191505695045277256, guid: a692d36eca9d5a441b86092069b69f0b,
         type: 3}
+      propertyPath: m_horizontalForce
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2191505695045277256, guid: a692d36eca9d5a441b86092069b69f0b,
+        type: 3}
       propertyPath: m_healthRegenAmount
-      value: 0.1
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6487815084251829567, guid: a692d36eca9d5a441b86092069b69f0b,
         type: 3}
@@ -511,6 +505,28 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1543927408811517965}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &8244726423344346814 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7423628954554359475, guid: a692d36eca9d5a441b86092069b69f0b,
+    type: 3}
+  m_PrefabInstance: {fileID: 1543927408811517965}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1682076445
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8244726423344346814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 229428b5b9d69d24f9dc54b54b92108d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_renderData: {fileID: 11400000, guid: c40be3174f62c4acf8c1216858c64956, type: 2}
+  m_shaderName: HurtStatic
+  m_shaderFloat: 
+  m_shaderMat: {fileID: 2100000, guid: 331419b5c2198db408a61e0faa63d484, type: 2}
 --- !u!1001 &2478435186325714748
 PrefabInstance:
   m_ObjectHideFlags: 0

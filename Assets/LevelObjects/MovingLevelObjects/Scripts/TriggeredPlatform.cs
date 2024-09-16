@@ -5,7 +5,6 @@
 ///
 ///</summary>
 
-using UnityEditor;
 using UnityEngine;
 
 namespace Millivolt

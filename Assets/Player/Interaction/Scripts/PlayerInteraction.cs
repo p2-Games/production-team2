@@ -200,16 +200,28 @@ namespace Millivolt
 
             public void DropObject()
             {
-                // let the pickup's rigidbody work again
-                m_heldPickup.rb.useGravity = true;
+                if (m_heldPickup)
+                {
+                    // let the pickup's rigidbody work again
+                    m_heldPickup.rb.useGravity = true;
 
-                // stop controlling the pickup
-                m_heldPickup = null;
+                    // stop controlling the pickup
+                    m_heldPickup = null;
+                }
 
                 // let the player collide with pickups again
+                // SHIT
                 Physics.IgnoreLayerCollision(3, 9, false);
 
                 m_state = InteractionState.Open;
+            }
+
+            public void ResetInteraction()
+            {
+                DropObject();
+                m_interactTimer = 0f;
+                m_closestObject = null;
+                m_interactionUI.UpdateDisplay(null);
             }
 
 #if UNITY_EDITOR

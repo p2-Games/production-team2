@@ -48,6 +48,10 @@ namespace Millivolt
                 {
                     if (m_timer < m_retrieveObjectTime)
                         m_timer += Time.deltaTime;
+
+                    // if the held object has been destroyed externally, reset this object
+                    if (m_isActive && !m_heldObject)
+                        isActive = false;
                 }
 
                 // for items getting put in
