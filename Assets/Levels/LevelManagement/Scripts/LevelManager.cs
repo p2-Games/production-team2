@@ -51,7 +51,6 @@ namespace Millivolt
 
         private void Start()
         {
-			m_spawnScreen = FindObjectOfType<PlayerSpawnUI>().gameObject;
 			if (m_autoAddCheckpoints)
 				FindAllCheckpoints();
 			InitialiseCheckpoints();

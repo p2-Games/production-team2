@@ -19,12 +19,12 @@ namespace Millivolt
 			
 		}
 
-		public void AddSubTask()
+		public void RemoveTask() 
 		{
 
 		}
 
-		public void RemoveTask() 
+		public void AddSubTask()
 		{
 
 		}
