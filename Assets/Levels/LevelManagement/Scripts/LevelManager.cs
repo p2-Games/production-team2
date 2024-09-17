@@ -114,12 +114,12 @@ namespace Millivolt
 		public void SpawnPlayer()
 		{
 			m_spawnScreen.SetActive(true);
-			GameManager.PlayerController.transform.position = GetActiveCheckpoint().respawnPoint.position;
-            GameManager.PlayerController.transform.localEulerAngles = new Vector3(0, GetActiveCheckpoint().respawnPoint.localEulerAngles.y, 0);
-
-			GameManager.PlayerController.ResetPlayer();
-			GameManager.PlayerInteraction.ResetInteraction();
-			GameManager.PlayerStatus.ResetStatus();
+			//GameManager.PlayerController.transform.position = GetActiveCheckpoint().respawnPoint.position;
+            //GameManager.PlayerController.transform.localEulerAngles = new Vector3(0, GetActiveCheckpoint().respawnPoint.localEulerAngles.y, 0);
+			//
+			//GameManager.PlayerController.ResetPlayer();
+			//GameManager.PlayerInteraction.ResetInteraction();
+			//GameManager.PlayerStatus.ResetStatus();
 
 			FindObjectOfType<PlayerLookTarget>().SetToPlayerPosition();
 			FindObjectOfType<SmoothObjectTracking>().SetToPlayerPosition();
