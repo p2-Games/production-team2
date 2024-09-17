@@ -69,8 +69,22 @@ namespace Millivolt
             }
 		}
 
-        private void Start()
+        private void Awake()
         {
+			if (!Instance)
+				Instance = this;
+			else if (Instance != this)
+			{
+				Destroy(gameObject);
+				return;
+			}
+            DontDestroyOnLoad(gameObject);
+
+			Setup();
+        }
+
+		private void Setup()
+		{
 			m_currentSceneName = SceneManager.GetActiveScene().name;
 
 			// get player references
@@ -78,18 +92,7 @@ namespace Millivolt
 			PlayerController = player.GetComponent<PlayerController>();
 			PlayerInteraction = player.GetComponentInChildren<PlayerInteraction>();
 			PlayerStatus = player.GetComponentInChildren<PlayerStatus>();
-
-        }
-
-        private void Awake()
-        {
-            if (!Instance)
-                Instance = this;
-            else if (Instance != this)
-                Destroy(gameObject);
-
-            DontDestroyOnLoad(gameObject);
-        }
+		}
 
         /// <summary>
         /// Load the next level as set up in the current levels leveldata
@@ -154,7 +157,7 @@ namespace Millivolt
 
 		public void Reload()
 		{
-			Start();
+			Setup();
 			LevelManager.Instance.Reload();
 			EventSystemManager.Instance.Reload();
 		}

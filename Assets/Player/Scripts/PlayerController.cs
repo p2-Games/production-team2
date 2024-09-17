@@ -22,6 +22,7 @@ namespace Millivolt
                 InitialiseCollider();
                 InitialiseTargetDirection();
                 m_animation = GetComponent<AnimationController>();
+                m_sound = GetComponentInChildren<PlayerSoundController>();
             }
 
             private void FixedUpdate()
@@ -30,6 +31,7 @@ namespace Millivolt
             }
 
             private AnimationController m_animation;
+            private PlayerSoundController m_sound;
 
             [Header("Physics")]
             [Tooltip("The layers of objects that the CharacterController can interact with.")]
@@ -136,6 +138,7 @@ namespace Millivolt
                 {
                     m_verticalVelocity += m_jumpSpeed * transform.up;
                     m_willJump = false;
+                    m_sound.Jump();
                 }
 
                 // tell animator what to do
@@ -245,6 +248,7 @@ namespace Millivolt
                     // if no hits, the player is not standing on anything
                     if (hits.Length == 0)
                     {
+                        // reset value of surface normal
                         m_surfaceNormal = Vector3.zero;
                         return false;
                     }
@@ -255,6 +259,7 @@ namespace Millivolt
                         // reset their various velocities to 0
                         if (!m_isGrounded)
                         {
+                            m_sound.Land();
                             m_verticalVelocity = Vector3.zero;
                             m_platformVelocity = Vector3.zero;
                             if (m_externalVelocity != Vector3.zero)
@@ -314,7 +319,7 @@ namespace Millivolt
             {
                 // check if the player is hitting their head on the ceiling
                 if (hittingHead && m_verticalVelocity.sqrMagnitude > 0)
-                    m_verticalVelocity = Vector3.zero;
+                    m_verticalVelocity -= m_verticalVelocity;
             }
 
 #if UNITY_EDITOR
