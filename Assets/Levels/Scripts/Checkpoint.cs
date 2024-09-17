@@ -15,13 +15,13 @@ namespace Millivolt
 		{
 			[SerializeField] private Transform m_respawnPoint;
 			public Transform respawnPoint => m_respawnPoint;
-			[SerializeField] public bool activeCheckpoint;
 
             [SerializeField] private int m_checkpointID;
-            public int checkpointID
+            public int checkpointID { get => m_checkpointID; }
+
+			public void Initialise(int id)
 			{
-				get => m_checkpointID;
-				set { m_checkpointID = value; }
+				m_checkpointID = id;
 			}
 
             private void OnEnable()
@@ -34,11 +34,15 @@ namespace Millivolt
 
             private void OnTriggerEnter(Collider other)
             {
-				if (other.tag == "Player" && this != GameManager.LevelManager.GetActiveCheckpoint())
+				if (other.CompareTag("Player") && m_checkpointID != LevelManager.Instance.activeCheckpoint)
 				{
-					Debug.Log("Checkpoint set to Checkpoint " + checkpointID);
-                    GameManager.LevelManager.SetActiveCheckpoint(checkpointID);
+					SetActiveCheckpoint();
 				}
+            }
+
+			public void SetActiveCheckpoint()
+			{
+                LevelManager.Instance.activeCheckpoint = m_checkpointID;
             }
         }
 	}

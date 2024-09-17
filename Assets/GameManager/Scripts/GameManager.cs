@@ -26,18 +26,22 @@ namespace Millivolt
 	{			
 		[SerializeField] private GameState m_gameState;
 
-		//[SerializeField] private LevelManager m_levelManager;
-		[SerializeField] private EventSystemManager m_eventSystemManager;
-
 		[SerializeField] private UIMenu m_pauseMenu;
+		private UIMenu pauseMenu
+		{
+			get
+			{
+				if (!m_pauseMenu)
+                    m_pauseMenu = (UIMenu)FindObjectOfType(typeof(UIMenu), true);
+				return m_pauseMenu;
+            }
+        }
 
 		private string m_currentSceneName;
 
 		public static PlayerController PlayerController { get; private set; }
 		public static PlayerInteraction PlayerInteraction { get; private set; }
         public static PlayerStatus PlayerStatus { get; private set; }
-
-		public static LevelManager LevelManager { get; private set; }
 
         //Static reference
         public static GameManager Instance { get; private set; }
@@ -67,9 +71,6 @@ namespace Millivolt
 
         private void Start()
         {
-			m_pauseMenu = (UIMenu)FindObjectOfType(typeof(UIMenu), true);
-			LevelManager = FindObjectOfType<LevelManager>();
-			m_eventSystemManager = FindObjectOfType<EventSystemManager>();
 			m_currentSceneName = SceneManager.GetActiveScene().name;
 
 			// get player references
@@ -95,7 +96,7 @@ namespace Millivolt
         /// </summary>
         public void LoadNextLevel()
 		{
-			SceneManager.LoadScene(LevelManager.nextLevelName);
+			SceneManager.LoadScene(LevelManager.Instance.nextLevelName);
 		}
 
         /// <summary>
@@ -103,20 +104,20 @@ namespace Millivolt
         /// </summary>
         public void LoadLastLevel()
 		{
-            SceneManager.LoadScene(LevelManager.prevLevelName);
+            SceneManager.LoadScene(LevelManager.Instance.prevLevelName);
         }
 
 		public void PauseGame()
 		{
 			if (gameState != GameState.PAUSE)
 			{
-				m_pauseMenu.ActivateMenu();
+				pauseMenu.ActivateMenu();
 				gameState = GameState.PAUSE;
 			}
 			else
 			{
 				gameState = GameState.PLAYING;
-				m_pauseMenu.DeactivateMenu();
+				pauseMenu.DeactivateMenu();
 			}
 		}
 
@@ -134,13 +135,7 @@ namespace Millivolt
 		{
 			Physics.gravity = Quaternion.Euler(eulerDirection) * Vector3.up * magnitude;
 		}
-
-        private void Update()
-        {
-			if (!m_pauseMenu)
-                m_pauseMenu = (UIMenu)FindObjectOfType(typeof(UIMenu), true);
-
-        }
+		
         public void RestartLevel()
 		{
 			StartCoroutine(LoadAsyncScene(SceneManager.GetActiveScene().name));
@@ -159,10 +154,9 @@ namespace Millivolt
 
 		public void Reload()
 		{
-			m_pauseMenu = null;
 			Start();
-			LevelManager.Reload();
-			m_eventSystemManager.Reload();
+			LevelManager.Instance.Reload();
+			EventSystemManager.Instance.Reload();
 		}
 
 		IEnumerator LoadAsyncScene(string sceneName)
