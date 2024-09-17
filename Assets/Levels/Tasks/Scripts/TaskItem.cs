@@ -6,7 +6,7 @@
 ///</summary>
 
 using System;
-using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -22,23 +22,28 @@ namespace Millivolt
 		private int m_completedSubtasks;
 		private int m_numberOfSubtasks;
 
-		[SerializeField] private string m_name;
 		public string Name => m_name;
-
-		[SerializeField] private Toggle m_toggle;
-
-		[SerializeField] private TaskItem m_taskParent;
-
 		public bool completed => m_toggle.isOn;
 
-		[SerializeField] Transform m_subtasks;
+		[Header("UI Object References")]
+		[Tooltip("Drag the child toggle for this task into this field")]
+		[SerializeField] private Toggle m_toggle;
+		[Tooltip("If this task has subtasks then drag the parent 'Subtask' object in here")]
+        [SerializeField] Transform m_subtasks;
 
+		[Header("Task Details")]
+		[Tooltip("This is the text that will appear on the task list")]
+		[SerializeField] private string m_name;
+		[Tooltip("If this is a subtask assign its parent task here")]
+		[SerializeField] private TaskItem m_taskParent;
+		[Tooltip("Events are called when the task is completed")]
 		[SerializeField] private UnityEvent m_events;
+
 
 		public void CompleteTask()
 		{
 			m_toggle.isOn = true;
-			m_events.Invoke();
+            m_events.Invoke();
 			if (m_taskParent)
 				m_taskParent.CompleteSubtask();
 		}
@@ -52,11 +57,49 @@ namespace Millivolt
 
         private void Start()
         {
-			//m_toggle = GetComponentInChildren<Toggle>();
 			m_taskParent = transform.parent.parent.parent.GetComponent<TaskItem>();
-			m_completedSubtasks = 0;
+            m_toggle.GetComponentInChildren<Text>().text = m_name;
+            m_completedSubtasks = 0;
 			if (m_subtasks)
 				m_numberOfSubtasks = m_subtasks.childCount;
         }
-    }
+
+        private void OnValidate()
+        {
+            m_toggle.GetComponentInChildren<Text>().text = m_name;
+        }
+
+        public void ActivateTask()
+		{
+            //Start at 30 increment by 30 for every subtask
+            Vector2 screenStartSize = GetComponent<RectTransform>().sizeDelta;
+            Vector2 screenEndSize = new Vector2(screenStartSize.x, 30 + (m_numberOfSubtasks * 30));
+
+            Tween.Size(GetComponent<RectTransform>(), screenStartSize, screenEndSize, 0.5f, 0f);
+			StartCoroutine(UpdateListGroup(screenEndSize));
+			//LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)transform.parent);
+        }
+
+		public void DeactivateTask()
+		{
+            Vector2 screenStartSize = GetComponent<RectTransform>().sizeDelta;
+            Vector2 screenEndSize = new Vector2(screenStartSize.x, 30);
+
+            Tween.Size(GetComponent<RectTransform>(), screenStartSize, screenEndSize, 0.5f, 0f);
+            StartCoroutine(UpdateListGroup(screenEndSize));
+        }
+
+		IEnumerator UpdateListGroup(Vector2 finalSize)
+		{
+			while (GetComponent<RectTransform>().sizeDelta.y < finalSize.y)
+			{
+                LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)transform.parent);
+                yield return null;
+            }			
+		}
+
+#if UNITY_EDITOR
+		
+#endif
+	}
 }
