@@ -120,6 +120,11 @@ namespace Millivolt
 			}
 		}
 
+		[ContextMenu("Reset Gravity")]
+		public void ResetGravity()
+		{
+			Physics.gravity = LevelManager.Instance.levelData.gravityMagnitude * LevelManager.Instance.levelData.gravityDirection;
+		}
 
 		public void ChangeGravity(Vector3 value)
 		{

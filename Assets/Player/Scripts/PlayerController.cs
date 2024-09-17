@@ -169,8 +169,8 @@ namespace Millivolt
                 m_externalVelocity = value;
             }
             [Header("Heading")]
-            [SerializeField] private float m_forwardChangeSpeed = 0.3f;
-            [SerializeField] private float m_upChangeSpeed = 0.5f;
+            [SerializeField] private float m_forwardRotationSpeed = 0.3f;
+            [SerializeField] private float m_upRotationSpeed = 0.5f;
 
             private Vector3 m_targetForward;
             private Vector3 m_targetUp;
@@ -185,10 +185,23 @@ namespace Millivolt
 
             private void Update()
             {
-                // move player to face correct direction when move direction is not zero
-                m_targetUp = Vector3.MoveTowards(m_targetUp, -Physics.gravity.normalized, m_forwardChangeSpeed);
+                // rotate player to face correct direction
+                //m_targetUp = Vector3.MoveTowards(m_targetUp, -Physics.gravity.normalized, m_forwardRotationSpeed * Time.deltaTime);
+                
+                Vector3 gravityDir = -Physics.gravity.normalized;
+                float upAngle = Vector3.Angle(m_targetUp, gravityDir);
+                if (upAngle != 0)
+                    m_targetUp = Vector3.Slerp(m_targetUp, gravityDir, m_upRotationSpeed / upAngle * Time.deltaTime);
+
                 if (m_walkVelocity != Vector3.zero)
-                    m_targetForward = Vector3.MoveTowards(m_targetForward, Vector3.ProjectOnPlane(m_walkVelocity, m_targetUp).normalized, m_upChangeSpeed);
+                {
+                    //m_targetForward = Vector3.MoveTowards(m_targetForward, Vector3.ProjectOnPlane(m_walkVelocity, m_targetUp).normalized, m_upChangeSpeed);
+
+                    Vector3 velocityDir = Vector3.ProjectOnPlane(m_walkVelocity, m_targetUp).normalized;
+                    float forwardAngle = Vector3.Angle(transform.forward, velocityDir);
+                    if (forwardAngle != 0)
+                        m_targetForward = Vector3.Slerp(transform.forward, velocityDir, m_forwardRotationSpeed / forwardAngle * Time.deltaTime);
+                }
 
                 transform.rotation = Quaternion.LookRotation(m_targetForward, m_targetUp);
             }

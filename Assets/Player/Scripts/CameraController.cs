@@ -22,10 +22,10 @@ namespace Millivolt
             private CinemachineFramingTransposer m_altBody;
 
             [Header("Dynamic Movement"), SerializeField] private float m_screenXRange = 0.3f;
-            [SerializeField] private float m_dynamicAimSpeed = 3f;
+            [SerializeField] private float m_shoulderMoveSpeed = 3f;
+            private float m_screenXVelocity;
 
             private float m_horizontalInput;
-            private float m_screenXVelocity;
 
             private void Start()
             {
@@ -48,12 +48,13 @@ namespace Millivolt
 
             public void Update()
             {
-                // dynamic shoulder movement
+                // calc target position of focus point
                 float targetScreenX = 0.5f - m_horizontalInput * m_screenXRange;
+
                 //float currentScreenX = Mathf.MoveTowards(m_normalBody.m_ScreenX, targetScreenX, m_dynamicAimSpeed);
-                float currentScreenX = Mathf.SmoothDamp(m_normalBody.m_ScreenX, targetScreenX, ref m_screenXVelocity, m_dynamicAimSpeed);
+                float currentScreenX = Mathf.SmoothDamp(m_normalBody.m_ScreenX, targetScreenX, ref m_screenXVelocity, m_shoulderMoveSpeed * Time.deltaTime);
                 m_normalBody.m_ScreenX = currentScreenX;
-                m_altBody.m_ScreenX = currentScreenX;
+                //m_altBody.m_ScreenX = currentScreenX;
             }
         }
     }
