@@ -20,7 +20,7 @@ namespace Millivolt
             {
                 InitialiseRigidbody();
                 InitialiseCollider();
-                m_parent = GetComponentInParent<PlayerRotationParent>();
+                InitialiseTargetDirection();
                 m_animation = GetComponent<AnimationController>();
             }
 
@@ -32,37 +32,11 @@ namespace Millivolt
             private AnimationController m_animation;
 
             [Header("Physics")]
-            [Tooltip("The acceleration of gravity of the player, on the player's transform.up axis.")]
-            [SerializeField] private float m_gravity;
             [Tooltip("The layers of objects that the CharacterController can interact with.")]
             [SerializeField] private LayerMask m_walkableLayers;
 
             private Rigidbody m_rb;
             private CapsuleCollider m_collider;
-
-            private PlayerRotationParent m_parent;
-            public Transform parent
-            {
-                get
-                {
-                    if (!m_parent)
-                        m_parent = GetComponentInParent<PlayerRotationParent>();
-                    return m_parent.transform;
-                }
-            }
-
-            public void SetGravity(float magnitude, Vector3 direction)
-            {
-                // set parent rotation
-                m_parent.ResetPosition();
-                parent.rotation = Quaternion.Euler(direction);
-
-                // set the physics gravity
-                Physics.gravity = -parent.up * magnitude;
-
-                // set magnitude/value of gravity
-                m_gravity = -Mathf.Abs(magnitude);
-            }
 
             [ContextMenu("Initialise Rigidbody")]
             private void InitialiseRigidbody()
@@ -195,17 +169,41 @@ namespace Millivolt
                 m_externalVelocity = value;
             }
             [Header("Heading")]
-            [SerializeField] private float m_rotationAcceleration;
+            [SerializeField] private float m_forwardRotationSpeed = 0.3f;
+            [SerializeField] private float m_upRotationSpeed = 0.5f;
+
+            private Vector3 m_targetForward;
+            private Vector3 m_targetUp;
+
+            private void InitialiseTargetDirection()
+            {
+                m_targetForward = transform.forward;
+                m_targetUp = transform.up;
+            }
+
+            public void SetTargetForward(Vector3 value) => m_targetForward = value;
 
             private void Update()
             {
-                // move player to face correct direction when move direction is not zero
-                //transform.rotation = Quaternion.RotateTowards(transform.localRotation, m_targetBodyRotation, m_rotationAcceleration * Time.deltaTime);
-                if (m_walkVelocity.sqrMagnitude != 0)
+                // rotate player to face correct direction
+                //m_targetUp = Vector3.MoveTowards(m_targetUp, -Physics.gravity.normalized, m_forwardRotationSpeed * Time.deltaTime);
+                
+                Vector3 gravityDir = -Physics.gravity.normalized;
+                float upAngle = Vector3.Angle(m_targetUp, gravityDir);
+                if (upAngle != 0)
+                    m_targetUp = Vector3.Slerp(m_targetUp, gravityDir, m_upRotationSpeed / upAngle * Time.deltaTime);
+
+                if (m_walkVelocity != Vector3.zero)
                 {
-                    transform.rotation = Quaternion.LookRotation(Vector3.ProjectOnPlane(m_walkVelocity, -Physics.gravity), -Physics.gravity);
+                    //m_targetForward = Vector3.MoveTowards(m_targetForward, Vector3.ProjectOnPlane(m_walkVelocity, m_targetUp).normalized, m_upChangeSpeed);
+
+                    Vector3 velocityDir = Vector3.ProjectOnPlane(m_walkVelocity, m_targetUp).normalized;
+                    float forwardAngle = Vector3.Angle(transform.forward, velocityDir);
+                    if (forwardAngle != 0)
+                        m_targetForward = Vector3.Slerp(transform.forward, velocityDir, m_forwardRotationSpeed / forwardAngle * Time.deltaTime);
                 }
-                //transform.rotation = m_targetBodyRotation;
+
+                transform.rotation = Quaternion.LookRotation(m_targetForward, m_targetUp);
             }
 
             [Header("Jumping")]
@@ -300,7 +298,7 @@ namespace Millivolt
                 m_verticalVelocity = Vector3.zero;
                 m_platformVelocity = Vector3.zero;
 
-                SetGravity(LevelManager.Instance.levelData.gravityMagnitude, LevelManager.Instance.levelData.gravityDirection);
+                GameManager.Instance.ChangeGravity(LevelManager.Instance.levelData.gravityDirection, LevelManager.Instance.levelData.gravityMagnitude);
             }
 
             public bool hittingHead
@@ -341,7 +339,7 @@ namespace Millivolt
 
                 Handles.color = Color.magenta;
                 Handles.ArrowHandleCap(0, m_collider.center - Vector3.up * m_collider.height / 2,
-                                        Quaternion.LookRotation(Vector3.down, (Mathf.Abs(m_gravity) * -transform.up).normalized), 1, EventType.Repaint);
+                                        Quaternion.LookRotation(Vector3.down, (Physics.gravity.magnitude * -transform.up).normalized), 1, EventType.Repaint);
             }
 #endif
         }
