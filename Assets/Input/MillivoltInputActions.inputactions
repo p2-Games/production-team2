@@ -25,7 +25,7 @@
                 },
                 {
                     "name": "Jump",
-                    "type": "Value",
+                    "type": "Button",
                     "id": "df5d64b2-bd72-4d02-9e08-d34490cdded3",
                     "expectedControlType": "Button",
                     "processors": "",
@@ -63,6 +63,15 @@
                     "name": "UsePickup",
                     "type": "Button",
                     "id": "eb046b55-4191-440b-859e-480fa4884b5a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "AltLook",
+                    "type": "Button",
+                    "id": "6587a56e-d78e-479c-abfc-a9232b6da34e",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -141,7 +150,7 @@
                     "id": "8c8e490b-c610-4785-884f-f04217b23ca4",
                     "path": "<Pointer>/delta",
                     "interactions": "",
-                    "processors": "ScaleVector2(x=0.1,y=0.001)",
+                    "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "Look",
                     "isComposite": false,
@@ -152,7 +161,7 @@
                     "id": "54fe009b-d6f1-4c96-a9bc-0c6a22470cdb",
                     "path": "<Gamepad>/rightStick",
                     "interactions": "",
-                    "processors": "ScaleVector2(y=0.008333334)",
+                    "processors": "",
                     "groups": "Gamepad",
                     "action": "Look",
                     "isComposite": false,
@@ -265,6 +274,28 @@
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "UsePickup",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b263138f-4c7e-4ca6-aa5a-570092f4b502",
+                    "path": "<Keyboard>/alt",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "AltLook",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "57cd4cfa-86b4-4e9d-86a8-dc67447b8527",
+                    "path": "<Gamepad>/rightTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "AltLook",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
