@@ -130,6 +130,7 @@ namespace Millivolt
                             if (m_closestObject)
                             {
                                 m_closestObject.Interact(this);
+                                m_closestObject = null;
                                 m_interactionUI.UpdateDisplay(null);
                             }
                             break;
