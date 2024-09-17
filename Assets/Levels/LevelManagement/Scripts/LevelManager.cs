@@ -44,14 +44,13 @@ namespace Millivolt
 		public LevelData levelData => m_levelData;
 			
 		//Spawn screen ref
-		private GameObject m_spawnScreen;
+		[SerializeField] private GameObject m_spawnScreen;
 
 
 		//public PlayerController m_player;
 
         private void Start()
         {
-			m_spawnScreen = FindObjectOfType<PlayerSpawnUI>().gameObject;
 			if (m_autoAddCheckpoints)
 				FindAllCheckpoints();
 			InitialiseCheckpoints();
@@ -130,17 +129,6 @@ namespace Millivolt
 
 		private void Update()
 		{
-
-
-
-			//if (!GameManager.PlayerController)
-			//{
-            //    GameManager.PlayerController = FindObjectOfType<PlayerController>(); 
-			//	//SpawnPlayer();
-			//}
-
-			if (!m_spawnScreen)
-				m_spawnScreen = FindObjectOfType<PlayerSpawnUI>().gameObject;
 
         }
 

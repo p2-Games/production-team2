@@ -25,6 +25,11 @@ namespace Millivolt
 
                 private float m_disableDelay;
 
+                private void Start()
+                {
+                    
+                }
+
                 private void OnEnable()
                 {
 
