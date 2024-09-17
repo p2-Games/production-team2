@@ -578,6 +578,18 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 619003503}
   m_PrefabAsset: {fileID: 0}
+--- !u!134 &704712975
+PhysicMaterial:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: DynamicMaterial
+  dynamicFriction: 0
+  staticFriction: 0
+  bounciness: 0
+  frictionCombine: 1
+  bounceCombine: 1
 --- !u!43 &726824019
 Mesh:
   m_ObjectHideFlags: 0
@@ -1206,18 +1218,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 65385bdfa896e0b4eba224a9def3d66e, type: 3}
---- !u!134 &1446344402
-PhysicMaterial:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: DynamicMaterial
-  dynamicFriction: 0
-  staticFriction: 0
-  bounciness: 0
-  frictionCombine: 1
-  bounceCombine: 1
 --- !u!1001 &1467982144
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1352,7 +1352,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Material
       value: 
-      objectReference: {fileID: 1446344402}
+      objectReference: {fileID: 704712975}
     - target: {fileID: 6821388206902358153, guid: ff2eab9ba8148954697e7c7ccf1e9783,
         type: 3}
       propertyPath: m_RootOrder
@@ -1427,7 +1427,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_altCam
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1848708140}
     - target: {fileID: 8059815153313717433, guid: ff2eab9ba8148954697e7c7ccf1e9783,
         type: 3}
       propertyPath: m_normalCam
@@ -1630,6 +1630,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2aac13b1912922049b5b1a2f1a25d51f, type: 3}
+--- !u!114 &1848708140 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 447493189218253625, guid: 2aac13b1912922049b5b1a2f1a25d51f,
+    type: 3}
+  m_PrefabInstance: {fileID: 1848708139}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45e653bab7fb20e499bda25e1b646fea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1911705321
 PrefabInstance:
   m_ObjectHideFlags: 0
