@@ -10,6 +10,7 @@ using UnityEngine;
 namespace Millivolt
 {
     using Player;
+    using LevelObjects.PickupObjects;
 
     namespace LevelObjects
     {
@@ -30,6 +31,13 @@ namespace Millivolt
                 // if the other object is the player, kill them
                 if (other.CompareTag("Player"))
                     GameManager.PlayerStatus.TakeDamage(GameManager.PlayerStatus.maxHealth);
+                // if the other object is a pickup, destroy it
+                else
+                {
+                    PickupObject pickup = other.GetComponent<PickupObject>();
+                    if (pickup)
+                        Destroy(other.gameObject);
+                }
             }
         }
     }

@@ -16,12 +16,6 @@ namespace Millivolt
         {
             public class TriggerObject : EventObject
 			{
-                public override bool isActive
-				{
-					get => m_isActive;
-					set => m_isActive = value;
-				}
-
                 public override void Interact()
 				{
 					base.Interact();
