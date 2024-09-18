@@ -1,3 +1,6 @@
+
+using UnityEngine;
+
 ///<summary>
 /// Author: Halen
 ///
@@ -23,10 +26,18 @@ namespace Millivolt
 				{
 					base.Interact();
 
+					isActive = true;
+
+					/*
 					m_activateEvents.Invoke();
+
+					// play sound effect if it exists
+					if (m_soundClipCollectionName != string.Empty && m_activateSoundClipName != string.Empty)
+						SFXController.Instance.PlaySoundClip(m_soundClipCollectionName, m_activateSoundClipName, transform);
 
 					if (m_togglesOnce)
 						m_canInteract = false;
+					*/
 				}
 			}
 		}

@@ -10,20 +10,18 @@ using UnityEngine;
 
 namespace Millivolt
 {
-    using Sound;
-
 	namespace Player
 	{
 		public class PlayerSoundController : MonoBehaviour
 		{
             public void Jump()
             {
-                SFXController.Instance.PlayRandomSoundClipObject("Footsteps", transform.parent);
+                SFXController.Instance.PlayRandomSoundClip("Footsteps", transform.parent);
             }
 
             public void Land()
             {
-                SFXController.Instance.PlayRandomSoundClipObject("Footsteps", transform.parent);
+                SFXController.Instance.PlayRandomSoundClip("Footsteps", transform.parent);
             }
         }
 	}

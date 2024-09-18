@@ -31,6 +31,7 @@ namespace Millivolt
                 public void ChangeGravity()
                 {
                     GameManager.Instance.ChangeGravity(m_direction, m_magnitude);
+                    SFXController.Instance.PlayRandomSoundClip("GravitySwitch", GameManager.PlayerController.transform.position);
                 }
 
 #if UNITY_EDITOR
