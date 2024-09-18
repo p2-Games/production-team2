@@ -1,4 +1,3 @@
-using Millivolt.Sound;
 using UnityEngine;
 
 namespace Millivolt
@@ -23,11 +22,11 @@ namespace Millivolt
             {
                 if (Input.GetKeyDown("r"))
                 {
-                    controller.PlayRandomSoundClipObject(collectionToPlay, place);
+                    controller.PlayRandomSoundClip(collectionToPlay, place);
                 }
                 if (Input.GetKeyDown("s"))
                 {
-                    controller.PlaySoundClipObject(collectionToPlay, clipToPlay, place);
+                    controller.PlaySoundClip(collectionToPlay, clipToPlay, place);
                 }
             }
         }

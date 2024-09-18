@@ -196,6 +196,9 @@ namespace Millivolt
                 // player and pickup don't collide.
                 Physics.IgnoreLayerCollision(3, 9, true);
 
+                // play pickup sound effect
+                SFXController.Instance.PlayRandomSoundClip("ScrewPickUp", m_heldObjectOffset);
+
                 m_state = InteractionState.Holding;
             }
 

@@ -45,7 +45,11 @@ namespace Millivolt
                         else
                             m_objectToLaunch.velocity = m_initialVelocity;
 
+                        // invoke the activate events
                         m_activateEvents.Invoke();
+
+                        // play sound effect
+                        SFXController.Instance.PlayRandomSoundClip("LaunchPad", transform);
 
                         m_objectToLaunch = null;
                     }
