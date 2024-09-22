@@ -350,8 +350,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 448855564777165554, guid: d057e15742fb1214f9fb697ac7c19847,
         type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.99999994
+      objectReference: {fileID: 0}
+    - target: {fileID: 448855564777165554, guid: d057e15742fb1214f9fb697ac7c19847,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.99999994
+      objectReference: {fileID: 0}
+    - target: {fileID: 448855564777165554, guid: d057e15742fb1214f9fb697ac7c19847,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.99999994
+      objectReference: {fileID: 0}
+    - target: {fileID: 448855564777165554, guid: d057e15742fb1214f9fb697ac7c19847,
+        type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 0.000061035156
       objectReference: {fileID: 0}
     - target: {fileID: 448855564777165554, guid: d057e15742fb1214f9fb697ac7c19847,
         type: 3}
@@ -405,6 +420,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d057e15742fb1214f9fb697ac7c19847, type: 3}
+--- !u!114 &287245234 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 448855564777165553, guid: d057e15742fb1214f9fb697ac7c19847,
+    type: 3}
+  m_PrefabInstance: {fileID: 287245233}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f40918be0103b44a9ed3451edece48b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &368916367
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -702,18 +729,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 619003503}
   m_PrefabAsset: {fileID: 0}
---- !u!134 &704712975
-PhysicMaterial:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: DynamicMaterial
-  dynamicFriction: 0
-  staticFriction: 0
-  bounciness: 0
-  frictionCombine: 1
-  bounceCombine: 1
 --- !u!43 &726824019
 Mesh:
   m_ObjectHideFlags: 0
@@ -1071,6 +1086,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 114f0aac45558d34a974b052bc00f8f1, type: 3}
+--- !u!134 &846536864
+PhysicMaterial:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: DynamicMaterial
+  dynamicFriction: 0
+  staticFriction: 0
+  bounciness: 0
+  frictionCombine: 1
+  bounceCombine: 1
 --- !u!1 &911477346
 GameObject:
   m_ObjectHideFlags: 0
@@ -1476,7 +1503,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Material
       value: 
-      objectReference: {fileID: 704712975}
+      objectReference: {fileID: 846536864}
     - target: {fileID: 6821388206902358153, guid: ff2eab9ba8148954697e7c7ccf1e9783,
         type: 3}
       propertyPath: m_RootOrder
@@ -1537,6 +1564,16 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 1372767834}
+    - target: {fileID: 6821388206902358164, guid: ff2eab9ba8148954697e7c7ccf1e9783,
+        type: 3}
+      propertyPath: m_ControlsChangedEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 287245234}
+    - target: {fileID: 6821388206902358164, guid: ff2eab9ba8148954697e7c7ccf1e9783,
+        type: 3}
+      propertyPath: m_ControlsChangedEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SetCurrentControlScheme
+      objectReference: {fileID: 0}
     - target: {fileID: 6821388206902358165, guid: ff2eab9ba8148954697e7c7ccf1e9783,
         type: 3}
       propertyPath: m_Name
