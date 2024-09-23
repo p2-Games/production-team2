@@ -38,7 +38,7 @@ namespace Millivolt
                 private void OnDrawGizmos()
                 {
                     Handles.color = Color.yellow;
-                    Handles.ArrowHandleCap(0, transform.position, Quaternion.Euler(m_direction) * Quaternion.FromToRotation(Vector3.forward, Vector3.down), 1.4f, EventType.Repaint);
+                    Handles.ArrowHandleCap(0, transform.position, Quaternion.Euler(m_direction) * Quaternion.FromToRotation(Vector3.forward, Vector3.up), 1.4f, EventType.Repaint);
                 }
 #endif
             }

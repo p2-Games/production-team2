@@ -85,7 +85,7 @@ namespace Millivolt
 
             public void Move(InputAction.CallbackContext context)
             {
-                m_moveInput = context.ReadValue<Vector2>();
+                m_moveInput = Vector2.ClampMagnitude(context.ReadValue<Vector2>(), 1f);
             }
 
             /// <summary>
@@ -169,6 +169,7 @@ namespace Millivolt
                 m_verticalVelocity = Vector3.zero;
                 m_externalVelocity = value;
             }
+
             [Header("Heading")]
             [SerializeField] private float m_forwardRotationSpeed = 0.3f;
             [SerializeField] private float m_upRotationSpeed = 0.5f;
