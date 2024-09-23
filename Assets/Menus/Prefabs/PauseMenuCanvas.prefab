@@ -253,11 +253,14 @@ MonoBehaviour:
   m_hideOnInactive: 0
   m_firstSelected: {fileID: 372460935070773236}
   m_enableTweening: 1
-  m_enableStartPos: {x: -265, y: 280}
-  m_enableEndPos: {x: 165, y: 280}
+  m_tweenEnableStartX: -0.6
+  m_tweenEnableStartY: 0.5
+  m_tweenEnableEndX: 0.17
+  m_tweenEnableEndY: 0.5
   m_enableTweenDuration: 0.5
   m_enableTweenDelay: 0
-  m_disableEndPos: {x: -270, y: 280}
+  m_tweenDisableEndX: -0.6
+  m_tweenDisableEndY: 0.5
   m_disableTweenDuration: 0.5
   m_disableTweenDelay: 0
   m_drawTweenGizmos: 1
@@ -274,8 +277,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6afd261280e42b4ea9da96fd410dc24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_closeScreen: {fileID: 5383357393564954143, guid: 25eda6dcc2b7cdd478d6b5db244fc28e,
-    type: 3}
+  m_closeScreen: {fileID: 0}
 --- !u!1 &372460934199231459
 GameObject:
   m_ObjectHideFlags: 0
