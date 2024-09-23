@@ -11,11 +11,12 @@ using UnityEngine;
 
 namespace Millivolt
 {
-    using Player.UI;
     using LevelObjects.HazardObjects;
+    using Level;
 
     namespace Player
     {
+        using UI;
 
         public class PlayerStatus : MonoBehaviour
         {

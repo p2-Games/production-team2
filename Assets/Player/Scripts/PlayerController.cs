@@ -300,8 +300,6 @@ namespace Millivolt
                 m_externalVelocity = Vector3.zero;
                 m_verticalVelocity = Vector3.zero;
                 m_platformVelocity = Vector3.zero;
-
-                GameManager.Instance.ChangeGravity(LevelManager.Instance.levelData.gravityDirection, LevelManager.Instance.levelData.gravityMagnitude);
             }
 
             public bool hittingHead

@@ -168,8 +168,8 @@ namespace Millivolt
             {
                 if (m_drawTweenGizmos)
                 {
-                    print("Start pos" + m_enableStartPos);
-                    print("Screen size " + new Vector2(Screen.width, Screen.height));
+                    //print("Start pos" + m_enableStartPos);
+                    //print("Screen size " + new Vector2(Screen.width, Screen.height));
                     Handles.color = Color.blue;
                     Handles.DrawWireDisc(m_enableStartPos, gameObject.transform.forward, 20);
                     Handles.DrawWireDisc(m_enableEndPos, gameObject.transform.forward, 20);

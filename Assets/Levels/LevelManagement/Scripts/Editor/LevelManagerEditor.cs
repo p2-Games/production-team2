@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace Millivolt
 {
-	namespace Utilities
+	namespace Level
 	{
 		using EGL = EditorGUILayout;
 

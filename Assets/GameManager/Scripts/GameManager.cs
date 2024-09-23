@@ -13,6 +13,7 @@ namespace Millivolt
 {
     using Player;
     using UI;
+	using Level;
 
 	public enum GameState
 	{
