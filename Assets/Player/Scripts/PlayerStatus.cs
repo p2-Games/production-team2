@@ -95,11 +95,7 @@ namespace Millivolt
             /// </summary>
             public void Die()
             {
-                m_currentHealth = m_maxHealth;
-                UpdateVignetteEffect();
-                m_deathCanvas.SetActive(true);
-                GameManager.PlayerController.canMove = false;
-                LevelManager.Instance.Invoke(nameof(LevelManager.Instance.SpawnPlayer), m_respawnTime);
+                ResetPlayer();
 
                 // play a death sound effect
                 SFXController.Instance.PlayRandomSoundClip("PlayerDamage", transform.parent);
