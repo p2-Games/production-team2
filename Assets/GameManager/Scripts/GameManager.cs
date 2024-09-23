@@ -26,20 +26,22 @@ namespace Millivolt
 	{			
 		[SerializeField] private GameState m_gameState;
 
-		//[SerializeField] private LevelManager m_levelManager;
-		[SerializeField] private EventSystemManager m_eventSystemManager;
-
-		[SerializeField] private GameObject m_freeLookCam;
-
 		[SerializeField] private UIMenu m_pauseMenu;
+		private UIMenu pauseMenu
+		{
+			get
+			{
+				if (!m_pauseMenu)
+                    m_pauseMenu = (UIMenu)FindObjectOfType(typeof(UIMenu), true);
+				return m_pauseMenu;
+            }
+        }
 
 		private string m_currentSceneName;
 
 		public static PlayerController PlayerController { get; private set; }
 		public static PlayerInteraction PlayerInteraction { get; private set; }
         public static PlayerStatus PlayerStatus { get; private set; }
-
-		public static LevelManager LevelManager { get; private set; }
 
         //Static reference
         public static GameManager Instance { get; private set; }
@@ -67,12 +69,22 @@ namespace Millivolt
             }
 		}
 
-        private void Start()
+        private void Awake()
         {
-			m_freeLookCam = GameObject.FindWithTag("FreeLook");
-			m_pauseMenu = (UIMenu)FindObjectOfType(typeof(UIMenu), true);
-			LevelManager = FindObjectOfType<LevelManager>();
-			m_eventSystemManager = FindObjectOfType<EventSystemManager>();
+			if (!Instance)
+				Instance = this;
+			else if (Instance != this)
+			{
+				Destroy(gameObject);
+				return;
+			}
+            DontDestroyOnLoad(gameObject);
+
+			Setup();
+        }
+
+		private void Setup()
+		{
 			m_currentSceneName = SceneManager.GetActiveScene().name;
 
 			// get player references
@@ -80,25 +92,14 @@ namespace Millivolt
 			PlayerController = player.GetComponent<PlayerController>();
 			PlayerInteraction = player.GetComponentInChildren<PlayerInteraction>();
 			PlayerStatus = player.GetComponentInChildren<PlayerStatus>();
-
-        }
-
-        private void Awake()
-        {
-            if (!Instance)
-                Instance = this;
-            else if (Instance != this)
-                Destroy(gameObject);
-
-            DontDestroyOnLoad(gameObject);
-        }
+		}
 
         /// <summary>
         /// Load the next level as set up in the current levels leveldata
         /// </summary>
         public void LoadNextLevel()
 		{
-			SceneManager.LoadScene(LevelManager.nextLevelName);
+			SceneManager.LoadScene(LevelManager.Instance.nextLevelName);
 		}
 
         /// <summary>
@@ -106,34 +107,38 @@ namespace Millivolt
         /// </summary>
         public void LoadLastLevel()
 		{
-            SceneManager.LoadScene(LevelManager.prevLevelName);
+            SceneManager.LoadScene(LevelManager.Instance.prevLevelName);
         }
 
 		public void PauseGame()
 		{
 			if (gameState != GameState.PAUSE)
 			{
-				m_pauseMenu.ActivateMenu();
-				m_freeLookCam.SetActive(false);
+				pauseMenu.ActivateMenu();
 				gameState = GameState.PAUSE;
 			}
 			else
 			{
-				m_freeLookCam.SetActive(true);
 				gameState = GameState.PLAYING;
-				m_pauseMenu.DeactivateMenu();
+				pauseMenu.DeactivateMenu();
 			}
 		}
 
-        private void Update()
-        {
-            if (!m_freeLookCam)
-                m_freeLookCam = GameObject.FindWithTag("FreeLook");
+		[ContextMenu("Reset Gravity")]
+		public void ResetGravity()
+		{
+			Physics.gravity = LevelManager.Instance.levelData.gravityMagnitude * LevelManager.Instance.levelData.gravityDirection;
+		}
 
-			if (!m_pauseMenu)
-                m_pauseMenu = (UIMenu)FindObjectOfType(typeof(UIMenu), true);
-
-        }
+		public void ChangeGravity(Vector3 value)
+		{
+			Physics.gravity = value;
+		}
+		public void ChangeGravity(Vector3 eulerDirection, float magnitude)
+		{
+			Physics.gravity = Quaternion.Euler(eulerDirection) * Vector3.up * magnitude;
+		}
+		
         public void RestartLevel()
 		{
 			StartCoroutine(LoadAsyncScene(SceneManager.GetActiveScene().name));
@@ -152,11 +157,9 @@ namespace Millivolt
 
 		public void Reload()
 		{
-			m_freeLookCam = null;
-			m_pauseMenu = null;
-			Start();
-			LevelManager.Reload();
-			m_eventSystemManager.Reload();
+			Setup();
+			LevelManager.Instance.Reload();
+			EventSystemManager.Instance.Reload();
 		}
 
 		IEnumerator LoadAsyncScene(string sceneName)

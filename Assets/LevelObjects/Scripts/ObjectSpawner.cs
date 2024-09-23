@@ -34,15 +34,13 @@ namespace Millivolt
                 SpawnObject();
         }
 
-        public void SetCanSpawnObject(bool value)
+        private void Update()
         {
-            m_objectCanSpawn = value;
-
-            // if spawn at start and the object can now spawn and there is not already an object spawned,
-            // then spawn the object
-            if (m_spawnAtStart && value && !m_spawnedObject)
+            if (m_spawnAtStart && !m_spawnedObject && m_objectCanSpawn)
                 SpawnObject();
         }
+
+        public void SetCanSpawnObject(bool value) => m_objectCanSpawn = value;
 
         public void SpawnObject()
         {

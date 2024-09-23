@@ -29,21 +29,54 @@ namespace Millivolt
             [Header("")]
             [SerializeField] private GameObject m_firstSelected;
 
+            Vector2 m_screenScale
+            {
+                get { return GetComponent<RectTransform>().localScale; }
+            }
+            Rect m_screenSize 
+            {
+                get { return GetComponent<RectTransform>().rect; }
+            }
+
             [Header("Tweening Properties")]
+            [Space(20)]
             [SerializeField] private bool m_enableTweening;
             [Header("Activate tween info")]
-            [Tooltip("The position that the menu will start at when it activates")]
-            [SerializeField] private Vector2 m_enableStartPos;
+            [Space(5)]
+            [Header("Start Position")]
+            [SerializeField, Range(-2, 2)] private float m_tweenEnableStartX;
+            [SerializeField, Range(-2, 2)] private float m_tweenEnableStartY;
+            //[Tooltip("The position that the menu will start at when it activates")]
+            private Vector2 m_enableStartPos
+            {
+                get { return new Vector2((m_screenSize.width * m_tweenEnableStartX) * m_screenScale.x, (m_screenSize.height * m_tweenEnableStartY) * m_screenScale.y); }
+            }
             [Tooltip("The position that the menu will end at when it activates")]
-            [SerializeField] private Vector2 m_enableEndPos;
+            [Header("End of activation Position")]
+            [SerializeField, Range(-2, 2)] private float m_tweenEnableEndX;
+            [SerializeField, Range(-2, 2)] private float m_tweenEnableEndY;
+            private Vector2 m_enableEndPos
+            {
+                get { return new Vector2((m_screenSize.width * m_tweenEnableEndX) * m_screenScale.x, (m_screenSize.height * m_tweenEnableEndY) * m_screenScale.y); }
+            }
+
             [Tooltip("How long the activation tween will last for")]
             [SerializeField] private float m_enableTweenDuration;
             [Tooltip("Delay before the tween activates")]
             [SerializeField] private float m_enableTweenDelay;
+            [Space(20)]
+
             [Header("Deactivate tween info")]
+            [Space(5)]
+            [Header("Exit Position")]
+            [SerializeField, Range(-2, 2)] private float m_tweenDisableEndX;
+            [SerializeField, Range(-2, 2)] private float m_tweenDisableEndY;
             //[SerializeField] private Vector3 m_disableStartPos; 
             [Tooltip("The position that the menu will end at when it deactivates")]
-            [SerializeField] private Vector2 m_disableEndPos;
+            private Vector2 m_disableEndPos
+            {
+                get { return new Vector2((m_screenSize.width * m_tweenDisableEndX) * m_screenScale.x, (m_screenSize.height * m_tweenDisableEndY) * m_screenScale.y); }
+            }
             [Tooltip("How long the deactivation tween will last for")]
             [SerializeField] private float m_disableTweenDuration;
             [Tooltip("Delay before the tween activates")]
@@ -125,6 +158,8 @@ namespace Millivolt
             {
                 if (m_drawTweenGizmos)
                 {
+                    print("Start pos" + m_enableStartPos);
+                    print("Screen size " + new Vector2(Screen.width, Screen.height));
                     Handles.color = Color.blue;
                     Handles.DrawWireDisc(m_enableStartPos, gameObject.transform.forward, 20);
                     Handles.DrawWireDisc(m_enableEndPos, gameObject.transform.forward, 20);

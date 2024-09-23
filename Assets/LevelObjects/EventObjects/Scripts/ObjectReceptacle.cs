@@ -83,6 +83,9 @@ namespace Millivolt
                         // deactivate the object
                         m_heldObject.gameObject.SetActive(false);
 
+                        // play a sound effect
+                        SFXController.Instance.PlayRandomSoundClip("ScrewInsert", m_respawnTransform.position);
+
                         ToggleState();
                     }
                 }

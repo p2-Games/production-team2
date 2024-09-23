@@ -34,6 +34,7 @@ namespace Millivolt
             Interact,
             Pause,
             UsePickup,
+            AltLook,
             INPUT_COUNT
         }
 
@@ -94,8 +95,7 @@ namespace Millivolt
                 // if the current closest object gets accepted by a receptacle or destroyed, update this 
                 if (m_interactionUI.isActive && (!m_closestObject || !m_closestObject.gameObject.activeSelf))
                 {
-                    m_closestObject = null;
-                    m_interactionUI.UpdateDisplay(m_closestObject);
+                    SetClosestObject(null);
                 }
             }
 
@@ -130,13 +130,15 @@ namespace Millivolt
                             if (m_closestObject)
                             {
                                 m_closestObject.Interact(this);
-                                m_interactionUI.UpdateDisplay(null);
+                                SetClosestObject(null);
                             }
                             break;
                         case InteractionState.Holding:
                             // don't let the player drop the object while it is in use
                             if (!m_heldPickup.inUse)
+                            {
                                 DropObject();
+                            }
                             break;
                     }
                 }
@@ -195,6 +197,9 @@ namespace Millivolt
                 // player and pickup don't collide.
                 Physics.IgnoreLayerCollision(3, 9, true);
 
+                // play pickup sound effect
+                SFXController.Instance.PlayRandomSoundClip("ScrewPickUp", m_heldObjectOffset);
+
                 m_state = InteractionState.Holding;
             }
 
@@ -220,8 +225,7 @@ namespace Millivolt
             {
                 DropObject();
                 m_interactTimer = 0f;
-                m_closestObject = null;
-                m_interactionUI.UpdateDisplay(null);
+                SetClosestObject(null);
             }
 
 #if UNITY_EDITOR

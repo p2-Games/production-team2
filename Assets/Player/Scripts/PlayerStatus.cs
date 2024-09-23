@@ -6,12 +6,12 @@
 ///
 ///</summary>
 
-using Millivolt.Player.UI;
 using System.Collections;
 using UnityEngine;
 
 namespace Millivolt
 {
+    using Player.UI;
     using LevelObjects.HazardObjects;
 
     namespace Player
@@ -79,34 +79,30 @@ namespace Millivolt
 
                 m_currentHealth -= value;
 
+
                 UpdateVignetteEffect();
 
                 m_regen = StartCoroutine(RegenHealth());
                 if (m_currentHealth <= 0)
                     Die();
+                else
+                    // play a damage sound effect
+                    SFXController.Instance.PlayRandomSoundClip("PlayerDamage", transform.parent);
             }
 
             /// <summary>
-            /// This will be called once the players health has hit 0, thiswill load the player to their last checkpoint and give them full health
+            /// This will be called once the player's health has hit 0, this will load the player to their last checkpoint and give them full health
             /// </summary>
             public void Die()
             {
-                Debug.Log("You are dead.");
-
-                // LOGIC HERE
                 m_currentHealth = m_maxHealth;
                 UpdateVignetteEffect();
                 m_deathCanvas.SetActive(true);
-                Invoke(nameof(Respawn), m_respawnTime);
-            }
-
-            /// <summary>
-            /// Calls the levelmanager to respawn the player at the currently active checkpoint
-            /// </summary>
-            private void Respawn()
-            {
                 GameManager.PlayerController.canMove = false;
-                GameManager.LevelManager.SpawnPlayer();
+                LevelManager.Instance.Invoke(nameof(LevelManager.Instance.SpawnPlayer), m_respawnTime);
+
+                // play a death sound effect
+                SFXController.Instance.PlayRandomSoundClip("PlayerDamage", transform.parent);
             }
 
             /// <summary>
@@ -126,7 +122,6 @@ namespace Millivolt
 
                 //Launch player upwards based on vertical force
                 GameManager.PlayerController.AddVerticalVelocity(m_verticalForce * -Physics.gravity.normalized);
-
             }
 
             public void ResetStatus()

@@ -30,7 +30,6 @@ namespace Millivolt
                 private void OnDrawGizmos()
                 {
                     GameObject player = GameObject.FindGameObjectWithTag("Player");
-                    PlayerRotationParent prp = player.GetComponentInParent<PlayerRotationParent>();
 
                     Vector3 closestPoint = gameObject.GetComponent<Collider>().ClosestPoint(player.transform.position);
 

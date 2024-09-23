@@ -22,9 +22,21 @@ namespace Millivolt
                     set
                     {
                         if (value)
+                        {
                             m_activateEvents.Invoke();
+
+                            // play sound effect
+                            if (m_soundClipCollectionName != string.Empty && m_activateSoundClipName != string.Empty)
+                                SFXController.Instance.PlaySoundClip(m_soundClipCollectionName, m_activateSoundClipName, transform);
+                        }
                         else
+                        {
                             m_deactivateEvents.Invoke();
+
+                            // play sound effect
+                            if (m_soundClipCollectionName != string.Empty && m_deactivateSoundClipName != string.Empty)
+                                SFXController.Instance.PlaySoundClip(m_soundClipCollectionName, m_deactivateSoundClipName, transform);
+                        }
 
                         if (m_togglesOnce)
                             m_canInteract = false;
@@ -49,6 +61,11 @@ namespace Millivolt
 
                 [Tooltip("The events that will occur when the object is set inactive.")]
                 [SerializeField] protected UnityEvent m_deactivateEvents;
+
+                [Header("Sound Effects")]
+                [SerializeField] protected string m_soundClipCollectionName;
+                [SerializeField] protected string m_activateSoundClipName;
+                [SerializeField] protected string m_deactivateSoundClipName;
 
                 public virtual bool canInteract => m_canInteract;
 
