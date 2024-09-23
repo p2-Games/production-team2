@@ -26,6 +26,8 @@ namespace Millivolt
 			[SerializeField] private bool m_hideOnInactive;
 			public bool hideOnInactive => m_hideOnInactive;
 
+            [SerializeField] private bool m_interactable = true;
+
             [Header("")]
             [SerializeField] private GameObject m_firstSelected;
 
@@ -96,8 +98,11 @@ namespace Millivolt
                 UIMenuManager.Instance.SetActiveMenu();
                 UIMenuManager.Instance.CursorLockupdate();
                 ActivateAnimation();
-                EventSystemManager esm = FindObjectOfType<EventSystemManager>();
-                esm.SetCurrentSelectedGameObject(m_firstSelected);
+                if (m_interactable)
+                {
+                    EventSystemManager esm = FindObjectOfType<EventSystemManager>();
+                    esm.SetCurrentSelectedGameObject(m_firstSelected);
+                }
                 m_isActive = true;
 			}
 
@@ -151,6 +156,11 @@ namespace Millivolt
             private void HideMenuAfterTween()
             {
                 gameObject.SetActive(false);
+            }
+
+            private void Start()
+            {
+                
             }
 
 #if UNITY_EDITOR
