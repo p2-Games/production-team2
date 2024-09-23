@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace Millivolt
 {
-    namespace Utilities
+    namespace Level
     {
         public class Checkpoint : MonoBehaviour
 		{
