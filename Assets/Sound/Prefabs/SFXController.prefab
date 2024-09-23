@@ -61,6 +61,13 @@ MonoBehaviour:
       m_volume: 0.5
       m_range: 10
       m_loop: 0
+  - m_collectionName: Death
+    m_soundClips:
+    - m_clipName: ScrewInsert
+      m_audioClip: {fileID: 8300000, guid: 7fab0c4f196795e46bb09cec1d48f5dd, type: 3}
+      m_volume: 0.75
+      m_range: 10
+      m_loop: 0
   - m_collectionName: Door
     m_soundClips:
     - m_clipName: DoorOpen
@@ -84,17 +91,17 @@ MonoBehaviour:
       m_audioClip: {fileID: 8300000, guid: 5b576f1061a193e44a1b9fcce2dc2f14, type: 3}
       m_volume: 0.1
       m_range: 10
-      m_loop: 0
+      m_loop: 1
     - m_clipName: Footstep4
       m_audioClip: {fileID: 8300000, guid: 3d2e616b546f3c3498cb8f41cf59e353, type: 3}
       m_volume: 0.1
       m_range: 10
-      m_loop: 0
+      m_loop: 1
     - m_clipName: Footstep5
       m_audioClip: {fileID: 8300000, guid: 83fdbfefecd78104eb06a293d6e4552e, type: 3}
       m_volume: 0.1
       m_range: 10
-      m_loop: 0
+      m_loop: 1
   - m_collectionName: GravitySwitch
     m_soundClips:
     - m_clipName: GravitySwitchUp
@@ -129,7 +136,17 @@ MonoBehaviour:
   - m_collectionName: PlayerDamage
     m_soundClips:
     - m_clipName: PlayerHurt
-      m_audioClip: {fileID: 0}
+      m_audioClip: {fileID: 8300000, guid: 1bcf26ee708b80744a405c28a303e0d8, type: 3}
+      m_volume: 0.75
+      m_range: 10
+      m_loop: 0
+    - m_clipName: PlayerHurt2
+      m_audioClip: {fileID: 8300000, guid: b30bc3905e16f7e46add38f7c22c6f19, type: 3}
+      m_volume: 0.75
+      m_range: 10
+      m_loop: 0
+    - m_clipName: PlayerHurt3
+      m_audioClip: {fileID: 8300000, guid: d61bd739a5b540740814b7b08062bec9, type: 3}
       m_volume: 0.75
       m_range: 10
       m_loop: 0
