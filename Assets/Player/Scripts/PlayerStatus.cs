@@ -105,6 +105,15 @@ namespace Millivolt
                 SFXController.Instance.PlayRandomSoundClip("PlayerDamage", transform.parent);
             }
 
+            public void ResetPlayer()
+            {
+                m_currentHealth = m_maxHealth;
+                UpdateVignetteEffect();
+                m_deathCanvas.SetActive(true);
+                GameManager.PlayerController.canMove = false;
+                LevelManager.Instance.Invoke(nameof(LevelManager.Instance.SpawnPlayer), m_respawnTime);
+            }
+
             /// <summary>
             /// Places an impulse force on the player to knock them backwards after taking damage
             /// </summary>

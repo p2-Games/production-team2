@@ -13,19 +13,25 @@ namespace Millivolt
     {
         public class PauseMenu : MonoBehaviour
 		{
-            private UIMenu m_menu;
+            [SerializeField] private UIMenu m_menu;
 
             [SerializeField] private GameObject m_closeScreen;
 
             private void Awake()
             {
-                m_menu = gameObject.GetComponent<UIMenu>();
+                //m_menu = GameObject.FindGameObjectWithTag("PauseMenu");
             }
 
             public void ResumeGame()
             {
                 GameManager.Instance.PauseGame();
                 m_menu.DeactivateMenu();
+            }
+
+            public void ResetToCheckpoint()
+            {
+                GameManager.Instance.PauseGame();
+                GameManager.PlayerStatus.ResetPlayer();
             }
 
             public void RestartLevel()
