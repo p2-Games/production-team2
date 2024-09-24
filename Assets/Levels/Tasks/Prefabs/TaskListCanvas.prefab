@@ -122,7 +122,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.101960786}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -310,8 +310,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -100, y: -150}
-  m_SizeDelta: {x: 200, y: 300}
+  m_AnchoredPosition: {x: -100, y: -110}
+  m_SizeDelta: {x: 200, y: 220}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &6689160016974090517
 GameObject:
@@ -444,13 +444,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_hideOnInactive: 0
+  m_interactable: 1
   m_firstSelected: {fileID: 0}
   m_enableTweening: 0
-  m_enableStartPos: {x: 0, y: 0}
-  m_enableEndPos: {x: 0, y: 0}
+  m_tweenEnableStartX: 0
+  m_tweenEnableStartY: 0
+  m_tweenEnableEndX: 0
+  m_tweenEnableEndY: 0
   m_enableTweenDuration: 0
   m_enableTweenDelay: 0
-  m_disableEndPos: {x: 0, y: 0}
+  m_tweenDisableEndX: 0
+  m_tweenDisableEndY: 0
   m_disableTweenDuration: 0
   m_disableTweenDelay: 0
   m_drawTweenGizmos: 0

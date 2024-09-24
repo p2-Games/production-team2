@@ -5,6 +5,7 @@
 ///
 ///</summary>
 
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Millivolt
@@ -17,9 +18,26 @@ namespace Millivolt
 
             [SerializeField] private GameObject m_closeScreen;
 
+            [SerializeField] private List<ButtonBehaviour> m_buttons;
+
+            private int m_selectedOption;
+
             private void Awake()
             {
                 //m_menu = GameObject.FindGameObjectWithTag("PauseMenu");
+                SetActiveButton(m_selectedOption);
+            }
+
+            public void SetActiveButton(int index)
+            {
+                m_selectedOption = index;
+                for (int i = 0; i < m_buttons.Count; i++)
+                {
+                    if (i == m_selectedOption)
+                        m_buttons[i].ActivateButton();
+                    else
+                        m_buttons[i].DeactivateButton();
+                }
             }
 
             public void ResumeGame()
