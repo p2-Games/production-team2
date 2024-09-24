@@ -13,6 +13,7 @@ namespace Millivolt
 {
     using Player;
     using UI;
+	using Level;
 
 	public enum GameState
 	{
@@ -31,8 +32,11 @@ namespace Millivolt
 		{
 			get
 			{
-				if (!m_pauseMenu)
-                    m_pauseMenu = (UIMenu)FindObjectOfType(typeof(UIMenu), true);
+                if (!m_pauseMenu)
+				{
+					PauseMenu pm = (PauseMenu)FindObjectOfType(typeof(PauseMenu), true);
+                    m_pauseMenu = pm.GetComponent<UIMenu>();
+				}
 				return m_pauseMenu;
             }
         }

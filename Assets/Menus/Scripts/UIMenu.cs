@@ -26,6 +26,8 @@ namespace Millivolt
 			[SerializeField] private bool m_hideOnInactive;
 			public bool hideOnInactive => m_hideOnInactive;
 
+            [SerializeField] private bool m_interactable = true;
+
             [Header("")]
             [SerializeField] private GameObject m_firstSelected;
 
@@ -96,8 +98,11 @@ namespace Millivolt
                 UIMenuManager.Instance.SetActiveMenu();
                 UIMenuManager.Instance.CursorLockupdate();
                 ActivateAnimation();
-                EventSystemManager esm = FindObjectOfType<EventSystemManager>();
-                esm.SetCurrentSelectedGameObject(m_firstSelected);
+                if (m_interactable)
+                {
+                    EventSystemManager esm = FindObjectOfType<EventSystemManager>();
+                    esm.SetCurrentSelectedGameObject(m_firstSelected);
+                }
                 m_isActive = true;
 			}
 
@@ -153,13 +158,18 @@ namespace Millivolt
                 gameObject.SetActive(false);
             }
 
+            private void Start()
+            {
+                
+            }
+
 #if UNITY_EDITOR
             private void OnDrawGizmos()
             {
                 if (m_drawTweenGizmos)
                 {
-                    print("Start pos" + m_enableStartPos);
-                    print("Screen size " + new Vector2(Screen.width, Screen.height));
+                    //print("Start pos" + m_enableStartPos);
+                    //print("Screen size " + new Vector2(Screen.width, Screen.height));
                     Handles.color = Color.blue;
                     Handles.DrawWireDisc(m_enableStartPos, gameObject.transform.forward, 20);
                     Handles.DrawWireDisc(m_enableEndPos, gameObject.transform.forward, 20);

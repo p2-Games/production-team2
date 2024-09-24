@@ -11,11 +11,12 @@ using UnityEngine;
 
 namespace Millivolt
 {
-    using Player.UI;
     using LevelObjects.HazardObjects;
+    using Level;
 
     namespace Player
     {
+        using UI;
 
         public class PlayerStatus : MonoBehaviour
         {
@@ -95,14 +96,19 @@ namespace Millivolt
             /// </summary>
             public void Die()
             {
+                ResetPlayer();
+
+                // play a death sound effect
+                SFXController.Instance.PlayRandomSoundClip("PlayerDamage", transform.parent);
+            }
+
+            public void ResetPlayer()
+            {
                 m_currentHealth = m_maxHealth;
                 UpdateVignetteEffect();
                 m_deathCanvas.SetActive(true);
                 GameManager.PlayerController.canMove = false;
                 LevelManager.Instance.Invoke(nameof(LevelManager.Instance.SpawnPlayer), m_respawnTime);
-
-                // play a death sound effect
-                SFXController.Instance.PlayRandomSoundClip("PlayerDamage", transform.parent);
             }
 
             /// <summary>
