@@ -131,6 +131,7 @@ namespace Millivolt
 		public void ChangeGravity(Vector3 value)
 		{
 			Physics.gravity = value;
+			PlayerController.OnGravityChange();
 		}
 		public void ChangeGravity(Vector3 eulerDirection, float magnitude)
 		{

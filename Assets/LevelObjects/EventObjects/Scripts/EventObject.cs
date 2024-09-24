@@ -5,6 +5,7 @@
 ///
 ///</summary>
 
+using Millivolt.Player;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -54,7 +55,7 @@ namespace Millivolt
                 [Tooltip("Filter for what can interact with this object.\n" +
                         "Accepts System Types (class names) and Tags.\n" +
                         "If a filter begins with '!', then it will be ignored instead of accepted.")]
-                [SerializeField] protected string[] m_interactionFilter = { "Player", typeof(LevelObject).Name };
+                [SerializeField] protected string[] m_interactionFilter = { typeof(PlayerModel).Name, typeof(LevelObject).Name };
 
                 [Tooltip("The events that will occur when the object is set active.")]
                 [SerializeField] protected UnityEvent m_activateEvents;
