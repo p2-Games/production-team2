@@ -10,8 +10,9 @@ using UnityEngine;
 namespace Millivolt
 {
     using System.Collections.Generic;
+    using UnityEditor;
 
-	namespace Level
+    namespace Level
 	{
 		public class LevelManager : MonoBehaviour
 		{
@@ -39,7 +40,6 @@ namespace Millivolt
 
 			//Spawn screen ref
 			[SerializeField] private GameObject m_spawnScreen;
-
 
 			private void Start()
 			{
@@ -99,7 +99,23 @@ namespace Millivolt
 			{
 				Start();
 			}
-		}
+
+#if UNITY_EDITOR
+			[SerializeField] private bool m_drawGizmos = true;
+
+            private void OnDrawGizmos()
+            {
+				if (!m_drawGizmos)
+					return;
+
+				if (levelData)
+				{
+					Handles.color = Color.yellow;
+                    Handles.ArrowHandleCap(0, transform.position, Quaternion.Euler(levelData.gravityDirection) * Quaternion.FromToRotation(Vector3.forward, Vector3.up), 1.4f, EventType.Repaint);
+                }
+            }
+#endif
+        }
 	}
 	
 }

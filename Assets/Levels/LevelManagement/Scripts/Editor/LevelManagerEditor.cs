@@ -19,7 +19,7 @@ namespace Millivolt
 		{
 			private SceneAsset m_prev, m_next;
 
-			protected SerializedProperty m_activeCheckpoint, m_levelCheckpoints, m_prevLevelName, m_nextLevelName, m_lvlData, m_spawnScreen;
+			protected SerializedProperty m_activeCheckpoint, m_levelCheckpoints, m_prevLevelName, m_nextLevelName, m_lvlData, m_spawnScreen, m_drawGizmos;
 
 			protected bool hasBeenChanged;
 
@@ -48,7 +48,11 @@ namespace Millivolt
 			protected virtual void OnGUI()
 			{
 				using (new EditorGUI.DisabledScope(true))
+				{
 					EGL.ObjectField("Script", MonoScript.FromMonoBehaviour((MonoBehaviour)target), GetType(), false);
+                    EGL.ObjectField("Editor", MonoScript.FromScriptableObject(this), typeof(LevelManagerEditor), false);
+                }
+
 
 				EGL.BeginHorizontal();
 				EGL.LabelField(new GUIContent("Previous Scene"), EditorStyles.boldLabel);
@@ -85,6 +89,9 @@ namespace Millivolt
 				EGL.PropertyField(m_levelCheckpoints);
 				EGL.PropertyField(m_lvlData);
 				EGL.PropertyField(m_spawnScreen);
+
+				EGL.Space(10);
+				EGL.PropertyField(m_drawGizmos);
 			}
 
 			protected void GetSerializedProperties()
@@ -98,6 +105,7 @@ namespace Millivolt
 				m_levelCheckpoints = serializedObject.FindProperty("m_levelCheckpoints");
 				m_lvlData = serializedObject.FindProperty("m_levelData");
 				m_spawnScreen = serializedObject.FindProperty("m_spawnScreen");
+				m_drawGizmos = serializedObject.FindProperty("m_drawGizmos");
 			}
 		}
 	}
