@@ -46,6 +46,7 @@ namespace Millivolt
 		public static PlayerController PlayerController { get; private set; }
 		public static PlayerInteraction PlayerInteraction { get; private set; }
         public static PlayerStatus PlayerStatus { get; private set; }
+		public static PlayerModel PlayerModel { get; private set; }
 
         //Static reference
         public static GameManager Instance { get; private set; }
@@ -92,10 +93,11 @@ namespace Millivolt
 			m_currentSceneName = SceneManager.GetActiveScene().name;
 
 			// get player references
-			GameObject player = GameObject.FindWithTag("Player");
+			Transform player = GameObject.FindWithTag("Player").transform.parent;
 			PlayerController = player.GetComponent<PlayerController>();
 			PlayerInteraction = player.GetComponentInChildren<PlayerInteraction>();
 			PlayerStatus = player.GetComponentInChildren<PlayerStatus>();
+			PlayerModel = player.GetComponentInChildren<PlayerModel>();
 		}
 
         /// <summary>
