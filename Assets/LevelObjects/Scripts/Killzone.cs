@@ -29,7 +29,7 @@ namespace Millivolt
                     return;
 
                 // if the other object is the player, kill them
-                if (other.CompareTag("Player"))
+                if (other.GetComponent<PlayerModel>())
                     GameManager.PlayerStatus.TakeDamage(GameManager.PlayerStatus.maxHealth);
                 // if the other object is a pickup, destroy it
                 else

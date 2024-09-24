@@ -47,6 +47,13 @@ MonoBehaviour:
   m_soundClipObjectPrefab: {fileID: 8570937424897467016, guid: ce2808c03000e37489bc62ab9889e8b3,
     type: 3}
   m_clipCollections:
+  - m_collectionName: Ambience
+    m_soundClips:
+    - m_clipName: MicrowaveAmbience
+      m_audioClip: {fileID: 8300000, guid: cc9f5de87998e3147b72e29f00ad1998, type: 3}
+      m_volume: 0.75
+      m_range: 10
+      m_loop: 1
   - m_collectionName: Button
     m_soundClips:
     - m_clipName: ButtonPress
@@ -54,28 +61,47 @@ MonoBehaviour:
       m_volume: 0.5
       m_range: 10
       m_loop: 0
+  - m_collectionName: Death
+    m_soundClips:
+    - m_clipName: ScrewInsert
+      m_audioClip: {fileID: 8300000, guid: 7fab0c4f196795e46bb09cec1d48f5dd, type: 3}
+      m_volume: 0.75
+      m_range: 10
+      m_loop: 0
+  - m_collectionName: Door
+    m_soundClips:
+    - m_clipName: DoorOpen
+      m_audioClip: {fileID: 8300000, guid: 630b37ddfd620be45ac336948689c81e, type: 3}
+      m_volume: 0.75
+      m_range: 10
+      m_loop: 0
   - m_collectionName: Footsteps
     m_soundClips:
     - m_clipName: Footstep1
-      m_audioClip: {fileID: 8300000, guid: 70af0e9112430fb4b89867b184c36e00, type: 3}
-      m_volume: 0.25
+      m_audioClip: {fileID: 8300000, guid: 51414a8396afeff469edef7945128e65, type: 3}
+      m_volume: 0.1
       m_range: 10
       m_loop: 0
     - m_clipName: Footstep2
-      m_audioClip: {fileID: 8300000, guid: dc873af6a3cd0604abacfceef71118b7, type: 3}
-      m_volume: 0.25
+      m_audioClip: {fileID: 8300000, guid: efca6ea2c45bf3e49b72931499f70a8a, type: 3}
+      m_volume: 0.1
       m_range: 10
       m_loop: 0
     - m_clipName: Footstep3
       m_audioClip: {fileID: 8300000, guid: 5b576f1061a193e44a1b9fcce2dc2f14, type: 3}
-      m_volume: 0.25
+      m_volume: 0.1
       m_range: 10
       m_loop: 0
     - m_clipName: Footstep4
-      m_audioClip: {fileID: 8300000, guid: 78563a9bc3637214391cf25b07fa8935, type: 3}
-      m_volume: 0.25
+      m_audioClip: {fileID: 8300000, guid: 3d2e616b546f3c3498cb8f41cf59e353, type: 3}
+      m_volume: 0.1
       m_range: 10
-      m_loop: 0
+      m_loop: 1
+    - m_clipName: Footstep5
+      m_audioClip: {fileID: 8300000, guid: 83fdbfefecd78104eb06a293d6e4552e, type: 3}
+      m_volume: 0.1
+      m_range: 10
+      m_loop: 1
   - m_collectionName: GravitySwitch
     m_soundClips:
     - m_clipName: GravitySwitchUp
@@ -86,6 +112,35 @@ MonoBehaviour:
     - m_clipName: GravitySwitchDown
       m_audioClip: {fileID: 8300000, guid: 4eaabba8603247646b661d103695b1b6, type: 3}
       m_volume: 0.75
+      m_range: 10
+      m_loop: 1
+  - m_collectionName: HeatDistortion
+    m_soundClips:
+    - m_clipName: HeatDistortionLoop
+      m_audioClip: {fileID: 8300000, guid: 3052d324ade703540ad58004de01baf8, type: 3}
+      m_volume: 0.75
+      m_range: 10
+      m_loop: 1
+  - m_collectionName: Jump
+    m_soundClips:
+    - m_clipName: Jump1
+      m_audioClip: {fileID: 8300000, guid: 718d263ae4761d84682974fb36859410, type: 3}
+      m_volume: 0.25
+      m_range: 10
+      m_loop: 0
+    - m_clipName: Jump2
+      m_audioClip: {fileID: 8300000, guid: f21aaa3469a0fdc4e88aadaa0e288868, type: 3}
+      m_volume: 0.25
+      m_range: 10
+      m_loop: 0
+    - m_clipName: Jump3
+      m_audioClip: {fileID: 8300000, guid: 1ad8b63ba109d9e4c97121420c5a0853, type: 3}
+      m_volume: 0.25
+      m_range: 10
+      m_loop: 0
+    - m_clipName: Jump4
+      m_audioClip: {fileID: 8300000, guid: 09ea221cfe3f1f64699297764b35a36c, type: 3}
+      m_volume: 0.25
       m_range: 10
       m_loop: 0
   - m_collectionName: LaunchPad
@@ -102,7 +157,7 @@ MonoBehaviour:
       m_loop: 0
   - m_collectionName: PlayerDamage
     m_soundClips:
-    - m_clipName: PlayerHurt1
+    - m_clipName: PlayerHurt
       m_audioClip: {fileID: 8300000, guid: 1bcf26ee708b80744a405c28a303e0d8, type: 3}
       m_volume: 0.75
       m_range: 10
