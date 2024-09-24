@@ -38,13 +38,29 @@ namespace Millivolt
                     m_triggers = GetComponents<Collider>();
                 }
 
-                private void OnTriggerStay(Collider other)
+                private void OnTriggerEnter(Collider other)
                 {
                     if (m_isActive)
                     {
-                        PlayerStatus player = other.GetComponent<PlayerStatus>();
+                        PlayerStatus player = other.GetComponentInChildren<PlayerStatus>();
                         if (player)
+                        {
                             player.TakeDamage(m_damage * Time.deltaTime);
+                            player.PlayerKnockback(this);
+                        }
+                    }
+                }
+
+                private void OnCollisionEnter(Collision other)
+                {
+                    if (m_isActive)
+                    {
+                        PlayerStatus player = other.gameObject.GetComponentInChildren<PlayerStatus>();
+                        if (player)
+                        {
+                            player.TakeDamage(m_damage * Time.deltaTime);
+                            player.PlayerKnockback(this);
+                        }
                     }
                 }
             }

@@ -21,6 +21,12 @@ namespace Millivolt
         [SerializeField] private float m_moveSmoothing;
         [Tooltip("If the object should use the Slerp method for movement instead of the Lerp method.")]
         [SerializeField] private bool m_slerpMovement;
+        [Tooltip("The follower will not move towards its target if it this close.")]
+        [SerializeField] private float m_minDistance;
+        [Tooltip("The movement speed of the follower will begin to increase exponentially when it is this far from its target.")]
+        [SerializeField] private float m_maxDistance;
+        [SerializeField] private float m_speedExponent;
+
 
         [Header("Rotation"), Tooltip("How fast the object rotates towards its target in degrees per second.")]
         [SerializeField] private float m_rotateSpeed;
@@ -36,11 +42,14 @@ namespace Millivolt
 
         private void Update()
         {
-            float tMove = Damper.Damp(1, m_moveSmoothing, Time.deltaTime);
-            if (m_slerpMovement)
-                transform.position = Vector3.Slerp(transform.position, m_targetPosition, tMove);
-            else
-                transform.position = Vector3.Lerp(transform.position, m_targetPosition, tMove);
+            if (Vector3.Distance(transform.position, m_targetPosition) > m_minDistance)
+            {
+                float tMove = Damper.Damp(1, m_moveSmoothing, Time.deltaTime);
+                if (m_slerpMovement)
+                    transform.position = Vector3.Slerp(transform.position, m_targetPosition, tMove);
+                else
+                    transform.position = Vector3.Lerp(transform.position, m_targetPosition, tMove);
+            }
 
             float tRotate = Damper.Damp(1, m_rotateSmoothing, Time.deltaTime);
             if (m_slerpRotation)
@@ -51,7 +60,14 @@ namespace Millivolt
 
         private void FixedUpdate()
         {
-            m_targetPosition = Vector3.MoveTowards(transform.position, m_target.position, m_moveSpeed * Time.fixedDeltaTime);
+            float moveSpeed = m_moveSpeed;
+
+            // if at max distance, add scaled amount to speed based on distance
+            float distance = Vector3.Distance(transform.position, m_target.position);
+            if (distance > m_maxDistance)
+                moveSpeed += Mathf.Pow(distance - m_maxDistance, m_speedExponent);
+            
+            m_targetPosition = Vector3.MoveTowards(transform.position, m_target.position, moveSpeed * Time.fixedDeltaTime);
             m_targetRotation = Quaternion.RotateTowards(transform.rotation, m_target.rotation, m_rotateSpeed * Time.fixedDeltaTime);
         }
 

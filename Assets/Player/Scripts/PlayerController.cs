@@ -8,12 +8,9 @@
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Cinemachine;
 
 namespace Millivolt
 {
-    using LevelObjects.PickupObjects;
-
     namespace Player
     {
         [RequireComponent(typeof(CapsuleCollider), typeof(Rigidbody), typeof(PlayerInput))]
@@ -23,8 +20,8 @@ namespace Millivolt
             {
                 InitialiseRigidbody();
                 InitialiseCollider();
-                if (parent)
-                    m_cameraController = parent.GetComponent<FirstPersonCameraController>();
+                InitialiseTargetDirection();
+                m_animation = GetComponent<AnimationController>();
             }
 
             private void FixedUpdate()
@@ -32,55 +29,14 @@ namespace Millivolt
                 MovePlayer();
             }
 
+            private AnimationController m_animation;
+
             [Header("Physics")]
-            [Tooltip("The acceleration of gravity of the player, on the player's transform.up axis.")]
-            [SerializeField] private float m_gravity;
             [Tooltip("The layers of objects that the CharacterController can interact with.")]
             [SerializeField] private LayerMask m_walkableLayers;
 
             private Rigidbody m_rb;
             private CapsuleCollider m_collider;
-
-            public Transform parent => transform.parent;
-            public float height => m_collider.height;
-            public Vector3 gravity
-            {
-                get
-                {
-                    if (parent)
-                        return Mathf.Abs(m_gravity) * (Quaternion.Euler(parent.eulerAngles) * Vector3.down);
-                    else
-                        return Mathf.Abs(m_gravity) * -transform.up;
-                }
-            }
-
-            public void SetGravity(float magnitude, Vector3 eulerDirection)
-            {
-                // if the player is holding a heavy object, dont flip them
-                PickupObject pickupObject = GetComponentInChildren<PlayerInteraction>().heldPickupObject;
-                if (pickupObject && pickupObject.pickupType == PickupType.Heavy)
-                    return;
-
-                // save rotation before changing for camera details
-                Quaternion priorRotation = parent.rotation; 
-
-                // change orientation and gravity
-                Vector3 targetDirection = Quaternion.Euler(eulerDirection) * Vector3.back;
-                parent.rotation = Quaternion.FromToRotation(Vector3.up, targetDirection);
-
-                // set the physics gravity
-                Physics.gravity = targetDirection * magnitude;
-
-                // could also try:
-                // Quaternion.LookRotation(Vector3.down, targetDirection);
-
-                // set magnitude/value of gravity
-                m_gravity = -Mathf.Abs(magnitude);
-
-                // set rotation of camera
-                if (m_cameraController)
-                    m_cameraController.SetLookRotation(priorRotation);
-            }
 
             [ContextMenu("Initialise Rigidbody")]
             private void InitialiseRigidbody()
@@ -116,12 +72,14 @@ namespace Millivolt
             [SerializeField] private float m_decceleration;
             [SerializeField, Range(0, 90)] private float m_slopeLimit;
 
+            public bool canMove = true;
+
             private Vector2 m_moveInput;
             private Vector3 m_walkVelocity;
             private Vector3 m_externalVelocity;
             private Vector3 m_platformVelocity;
 
-            private float m_verticalVelocity;
+            private Vector3 m_verticalVelocity;
 
             private Vector3 m_surfaceNormal;
 
@@ -146,15 +104,18 @@ namespace Millivolt
                 camRight = camRight.normalized;
                 camForward = camForward.normalized;
 
+                // clamp move input
+                m_moveInput = Vector3.ClampMagnitude(m_moveInput, 1f);
+
                 // apply input value
                 Vector3 horizontalRelativeInput = m_moveInput.x * camRight;
                 Vector3 verticalRelativeInput = m_moveInput.y * camForward;
 
                 // combine and apply movement speed
-                Vector3 targetVelocity = (horizontalRelativeInput + verticalRelativeInput).normalized * m_topSpeed;
+                Vector3 targetVelocity = (horizontalRelativeInput + verticalRelativeInput) * m_topSpeed;
 
                 // calculate velocity change vector
-                if (m_externalVelocity == Vector3.zero)
+                if (canMove)
                     m_walkVelocity = Vector3.MoveTowards(m_walkVelocity, targetVelocity, (m_moveInput == Vector2.zero ? m_decceleration : m_acceleration) * Time.fixedDeltaTime);
                 else
                     m_walkVelocity = Vector3.zero;
@@ -163,27 +124,33 @@ namespace Millivolt
                 if (m_surfaceNormal != Vector3.zero)
                     m_walkVelocity = Vector3.ProjectOnPlane(m_walkVelocity, m_surfaceNormal)/*.normalized * m_walkVelocity.magnitude*/;
 
-                // calc target rotation for player body
-                if (targetVelocity != Vector3.zero)
-                {
-                    m_targetBodyRotation = Quaternion.LookRotation(targetVelocity.normalized, transform.up);
-                    //m_targetBodyRotation += Vector3.SignedAngle(transform.forward, targetVelocity.normalized, transform.up);
-                }
-
                 // only apply gravity if not grounded
                 if (!m_isGrounded)
-                    m_verticalVelocity += m_gravity * Time.fixedDeltaTime;
+                    m_verticalVelocity += Physics.gravity * Time.fixedDeltaTime;
+
+                if (!canMove && m_willJump)
+                    m_willJump = false;
 
                 // if the player should jump, add the jump velocity
                 if (m_willJump)
                 {
-                    m_verticalVelocity += m_jumpSpeed;
+                    m_verticalVelocity += m_jumpSpeed * transform.up;
                     m_willJump = false;
+                    SFXController.Instance.PlayRandomSoundClip("Footsteps", transform);
                 }
 
+                // tell animator what to do
+                m_animation.PassFloatParameter("Speed", m_walkVelocity.magnitude / m_topSpeed);
+
                 // move player
-                m_rb.velocity = m_walkVelocity + m_verticalVelocity * transform.up + m_platformVelocity + m_externalVelocity;
+                m_rb.velocity = m_walkVelocity + m_verticalVelocity + m_platformVelocity + m_externalVelocity;
             }
+
+            /// <summary>
+            /// Adds an amount to the player's vertical velocity.
+            /// </summary>
+            /// <param name="value">The amount to add.</param>
+            public void AddVerticalVelocity(Vector3 value) => m_verticalVelocity += value;
 
             /// <summary>
             /// Set the velocity of the player to the velocity of the platform they are standing on.
@@ -196,21 +163,48 @@ namespace Millivolt
             /// Takes control away from the player until they land back on the ground.
             /// </summary>
             /// <param name="value"></param>
-            public void SetExternalVelocity(Vector3 value) => m_externalVelocity = value;
-
+            public void SetExternalVelocity(Vector3 value)
+            {
+                m_rb.velocity = Vector3.zero;
+                m_verticalVelocity = Vector3.zero;
+                m_externalVelocity = value;
+            }
             [Header("Heading")]
-            [SerializeField] private float m_rotationAcceleration;
-            private Quaternion m_targetBodyRotation;
-            //private float m_currentBodyRotation;
+            [SerializeField] private float m_forwardRotationSpeed = 0.3f;
+            [SerializeField] private float m_upRotationSpeed = 0.5f;
+
+            private Vector3 m_targetForward;
+            private Vector3 m_targetUp;
+
+            private void InitialiseTargetDirection()
+            {
+                m_targetForward = transform.forward;
+                m_targetUp = transform.up;
+            }
+
+            public void SetTargetForward(Vector3 value) => m_targetForward = value;
 
             private void Update()
             {
-                // move player to face correct direction when move direction is not zero
-                //m_currentBodyRotation = Mathf.MoveTowardsAngle(m_currentBodyRotation, m_targetBodyRotation, m_rotationAcceleration);
-                //transform.localEulerAngles = new Vector3(0, m_currentBodyRotation, 0);
-                transform.localEulerAngles = new Vector3(0,
-                    Quaternion.RotateTowards(transform.localRotation, m_targetBodyRotation, m_rotationAcceleration * Time.deltaTime).eulerAngles.y,
-                    0);
+                // rotate player to face correct direction
+                //m_targetUp = Vector3.MoveTowards(m_targetUp, -Physics.gravity.normalized, m_forwardRotationSpeed * Time.deltaTime);
+                
+                Vector3 gravityDir = -Physics.gravity.normalized;
+                float upAngle = Vector3.Angle(m_targetUp, gravityDir);
+                if (upAngle != 0)
+                    m_targetUp = Vector3.Slerp(m_targetUp, gravityDir, m_upRotationSpeed / upAngle * Time.deltaTime);
+
+                if (m_walkVelocity != Vector3.zero)
+                {
+                    //m_targetForward = Vector3.MoveTowards(m_targetForward, Vector3.ProjectOnPlane(m_walkVelocity, m_targetUp).normalized, m_upChangeSpeed);
+
+                    Vector3 velocityDir = Vector3.ProjectOnPlane(m_walkVelocity, m_targetUp).normalized;
+                    float forwardAngle = Vector3.Angle(transform.forward, velocityDir);
+                    if (forwardAngle != 0)
+                        m_targetForward = Vector3.Slerp(transform.forward, velocityDir, m_forwardRotationSpeed / forwardAngle * Time.deltaTime);
+                }
+
+                transform.rotation = Quaternion.LookRotation(m_targetForward, m_targetUp);
             }
 
             [Header("Jumping")]
@@ -252,6 +246,7 @@ namespace Millivolt
                     // if no hits, the player is not standing on anything
                     if (hits.Length == 0)
                     {
+                        // reset value of surface normal
                         m_surfaceNormal = Vector3.zero;
                         return false;
                     }
@@ -262,9 +257,14 @@ namespace Millivolt
                         // reset their various velocities to 0
                         if (!m_isGrounded)
                         {
-                            m_verticalVelocity = 0;
+                            SFXController.Instance.PlayRandomSoundClip("Footsteps", transform);
+                            m_verticalVelocity = Vector3.zero;
                             m_platformVelocity = Vector3.zero;
-                            m_externalVelocity = Vector3.zero;
+                            if (m_externalVelocity != Vector3.zero)
+                            {
+                                m_externalVelocity = Vector3.zero;
+                                canMove = true;
+                            }
                         }
 
                         // get closest hit walkable object
@@ -292,6 +292,16 @@ namespace Millivolt
                 }
             }
 
+            /// <summary>
+            /// Reset all the functions of the player and gravity
+            /// </summary>
+            public void ResetPlayer()
+            {
+                m_externalVelocity = Vector3.zero;
+                m_verticalVelocity = Vector3.zero;
+                m_platformVelocity = Vector3.zero;
+            }
+
             public bool hittingHead
             {
                 get
@@ -304,12 +314,9 @@ namespace Millivolt
             private void OnCollisionEnter(Collision collision)
             {
                 // check if the player is hitting their head on the ceiling
-                if (hittingHead)
-                    m_verticalVelocity = 0;
+                if (hittingHead && m_verticalVelocity.sqrMagnitude > 0)
+                    m_verticalVelocity -= m_verticalVelocity;
             }
-
-            [Header("Camera")]
-            private FirstPersonCameraController m_cameraController;
 
 #if UNITY_EDITOR
             [Header("Debug"), SerializeField] private bool m_drawGizmos;
@@ -333,7 +340,7 @@ namespace Millivolt
 
                 Handles.color = Color.magenta;
                 Handles.ArrowHandleCap(0, m_collider.center - Vector3.up * m_collider.height / 2,
-                                        Quaternion.LookRotation(Vector3.down, gravity.normalized), 1, EventType.Repaint);
+                                        Quaternion.LookRotation(Vector3.down, (Physics.gravity.magnitude * -transform.up).normalized), 1, EventType.Repaint);
             }
 #endif
         }

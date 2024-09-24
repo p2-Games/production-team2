@@ -77,8 +77,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da77af12dbdc98a4a9904c6dbbde251b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_interactFrames: 10
-  m_pickupOffset: {fileID: 4274433419345854684}
+  m_interactionUI: {fileID: 0}
+  m_heldObjectOffset: {fileID: 0}
+  m_interactTime: 0.6
+  m_drawGizmos: 0
+  heldObject: {fileID: 0}
 --- !u!135 &1384289508145061918
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -90,5 +93,5 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 1
-  m_Center: {x: 0, y: 0, z: 1.5}
+  m_Radius: 1.1
+  m_Center: {x: 0, y: 0, z: 0}
