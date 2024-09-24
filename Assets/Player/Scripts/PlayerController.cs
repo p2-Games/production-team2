@@ -5,7 +5,6 @@
 /// 
 ///</summary>
 
-using System.Collections;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -14,7 +13,7 @@ namespace Millivolt
 {
     namespace Player
     {
-        [RequireComponent(typeof(CapsuleCollider), typeof(Rigidbody), typeof(PlayerInput))]
+        [RequireComponent(typeof(Rigidbody), typeof(PlayerInput))]
         public class PlayerController : MonoBehaviour
         {
             void Start()
@@ -104,8 +103,9 @@ namespace Millivolt
             /// </summary>
             private void MovePlayer()
             {
-                // only do the boxcast once per physics frame
+                // only do the boxcasts once per physics frame
                 m_isGrounded = isGrounded;
+                m_isHeaded = isHeaded;
 
                 // project camera direction onto player direction for relative movement
                 Vector3 camRight = Vector3.ProjectOnPlane(Camera.main.transform.right, m_model.transform.up);
@@ -134,6 +134,10 @@ namespace Millivolt
                 // project onto surface the player is currently standing on
                 if (m_surfaceNormal != Vector3.zero)
                     m_walkVelocity = Vector3.ProjectOnPlane(m_walkVelocity, m_surfaceNormal)/*.normalized * m_walkVelocity.magnitude*/;
+
+                // if hitting head and moving and high enough speed, then bonk head
+                if (m_isHeaded && m_verticalVelocity.magnitude > m_headBonkSpeed)
+                    m_verticalVelocity = Vector3.zero;
 
                 // only apply gravity if not grounded
                 if (!m_isGrounded)
@@ -188,8 +192,11 @@ namespace Millivolt
             [SerializeField, Range(0,0.5f)] private float m_groundCheckDistance;
             [Tooltip("The radius of the grounded check.")]
             [SerializeField, Range(0,1)] private float m_groundCheckRadius;
+            [Tooltip("The speed at which the player must be moving for them to be able to 'bonk' their head on ceilings.")]
+            [SerializeField, Min(0)] private float m_headBonkSpeed;
 
             private bool m_isGrounded;
+            private bool m_isHeaded;
 
             private bool m_willJump = false;
 
@@ -279,9 +286,10 @@ namespace Millivolt
                 m_externalVelocity = Vector3.zero;
                 m_verticalVelocity = Vector3.zero;
                 m_platformVelocity = Vector3.zero;
+                m_model.ResetRotation();
             }
 
-            public bool hittingHead
+            public bool isHeaded
             {
                 get
                 {

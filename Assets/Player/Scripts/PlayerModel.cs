@@ -12,13 +12,9 @@ namespace Millivolt
 {
     namespace Player
     {
+        [RequireComponent(typeof(CapsuleCollider))]
         public class PlayerModel : MonoBehaviour
         {
-            private void Start()
-            {
-                m_targetForward = transform.forward;
-            }
-
             // collider
             private CapsuleCollider m_collider;
             new public CapsuleCollider collider => m_collider;
@@ -41,10 +37,10 @@ namespace Millivolt
             [Header("Rotation/Heading")]
             [Tooltip("Degrees per second the player rotates towards its movement direction at.")]
             [SerializeField] private float m_forwardRotationSpeed = 60f;
+            [Tooltip("The angle in degrees between the player's current heading and target heading where the current heading will snap instead of Slerp")]
+            [SerializeField] private float m_forwardSnapAngle = 5f;
             [Tooltip("Time it takes for the player to flip when the gravity changes.")]
             [SerializeField] private float m_gravityRotationTime = 0.5f;
-
-            private Vector3 m_targetForward;
 
             private void Update()
             {
@@ -52,17 +48,18 @@ namespace Millivolt
                 if (GameManager.PlayerController.canMove)
                 {
                     Vector3 movementDirection = GameManager.PlayerController.movementDirection;
+                    // ensure the movement vector isn't zero
                     if (movementDirection != Vector3.zero)
-                        transform.rotation = Quaternion.LookRotation(movementDirection, transform.up);
-                    /*
                     {
-                        float forwardAngle = Vector3.Angle(transform.forward, movementDirection);
-                        if (forwardAngle != 0)
-                            m_targetForward = Vector3.Slerp(transform.forward, movementDirection, m_forwardRotationSpeed / forwardAngle * Time.deltaTime);
-                    }
+                        Quaternion targetRotation = Quaternion.LookRotation(movementDirection, transform.up);
 
-                    transform.rotation *= Quaternion.FromToRotation();
-                    */
+                        // if angle is within set amount, then snap
+                        if (Quaternion.Angle(transform.rotation, targetRotation) < m_forwardSnapAngle)
+                            transform.rotation = targetRotation;
+                        // otherwise continue the slerp
+                        else
+                            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, m_forwardRotationSpeed * Time.deltaTime);
+                    }
                 }
             }
 
@@ -90,6 +87,12 @@ namespace Millivolt
                 }
 
                 GameManager.PlayerController.canMove = true;
+            }
+
+            public void ResetRotation()
+            {
+                StopAllCoroutines();
+                transform.rotation = Quaternion.identity;
             }
         }
     }

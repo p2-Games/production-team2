@@ -2976,6 +2976,11 @@ PrefabInstance:
         type: 2}
     - target: {fileID: -7243825555886614746, guid: fce4194d438dd3c4fa8899b2a96d0e99,
         type: 3}
+      propertyPath: m_drawGizmos
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7243825555886614746, guid: fce4194d438dd3c4fa8899b2a96d0e99,
+        type: 3}
       propertyPath: m_spawnScreen
       value: 
       objectReference: {fileID: 11496907}
@@ -3306,6 +3311,18 @@ PrefabInstance:
       objectReference: {fileID: 138862393}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 297b579e2b9899742a58b62cde755d2b, type: 3}
+--- !u!134 &528622533
+PhysicMaterial:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: DynamicMaterial
+  dynamicFriction: 0
+  staticFriction: 0
+  bounciness: 0
+  frictionCombine: 1
+  bounceCombine: 1
 --- !u!43 &546401400
 Mesh:
   m_ObjectHideFlags: 0
@@ -8326,7 +8343,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1035390043}
   m_LocalRotation: {x: 0.0656935, y: 0.9128155, z: -0.36880133, w: 0.16259715}
-  m_LocalPosition: {x: -0.9113428, y: 3.6086016, z: 2.4769585}
+  m_LocalPosition: {x: -0.71026105, y: 3.6086016, z: 2.5509422}
   m_LocalScale: {x: 1.0000004, y: 1.0000001, z: 1.0000001}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8343,7 +8360,7 @@ PrefabInstance:
     - target: {fileID: 2582690240613012620, guid: 0b3d3948491a8114e9a077358c03c889,
         type: 3}
       propertyPath: m_ScreenX
-      value: 0.5
+      value: 0.5347915
       objectReference: {fileID: 0}
     - target: {fileID: 2582690241731788609, guid: 0b3d3948491a8114e9a077358c03c889,
         type: 3}
@@ -8363,7 +8380,7 @@ PrefabInstance:
     - target: {fileID: 2582690241731788638, guid: 0b3d3948491a8114e9a077358c03c889,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.9113428
+      value: -0.71026105
       objectReference: {fileID: 0}
     - target: {fileID: 2582690241731788638, guid: 0b3d3948491a8114e9a077358c03c889,
         type: 3}
@@ -8373,7 +8390,7 @@ PrefabInstance:
     - target: {fileID: 2582690241731788638, guid: 0b3d3948491a8114e9a077358c03c889,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 2.4769585
+      value: 2.5509422
       objectReference: {fileID: 0}
     - target: {fileID: 2582690241731788638, guid: 0b3d3948491a8114e9a077358c03c889,
         type: 3}
@@ -12099,18 +12116,6 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!134 &1739840475
-PhysicMaterial:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: DynamicMaterial
-  dynamicFriction: 0
-  staticFriction: 0
-  bounciness: 0
-  frictionCombine: 1
-  bounceCombine: 1
 --- !u!43 &1744183447
 Mesh:
   m_ObjectHideFlags: 0
@@ -12788,12 +12793,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Material
       value: 
-      objectReference: {fileID: 1739840475}
-    - target: {fileID: 4836145952235469611, guid: ff2eab9ba8148954697e7c7ccf1e9783,
-        type: 3}
-      propertyPath: m_forwardRotationSpeed
-      value: 90
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 528622533}
     - target: {fileID: 6821388206902358153, guid: ff2eab9ba8148954697e7c7ccf1e9783,
         type: 3}
       propertyPath: m_RootOrder

@@ -104,7 +104,6 @@ GameObject:
   - component: {fileID: 6821388206902358154}
   - component: {fileID: 8512867115368863021}
   - component: {fileID: 6821388206902358164}
-  - component: {fileID: 180796469709936507}
   - component: {fileID: 6747130524319344717}
   m_Layer: 3
   m_Name: External Player Controller
@@ -156,6 +155,7 @@ MonoBehaviour:
   m_jumpSpeed: 5
   m_groundCheckDistance: 0.01
   m_groundCheckRadius: 0.2
+  m_headBonkSpeed: 3
   m_drawGizmos: 1
 --- !u!114 &8512867115368863021
 MonoBehaviour:
@@ -369,20 +369,6 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!136 &180796469709936507
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6821388206902358165}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  m_Radius: 0.5
-  m_Height: 1.5
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &6747130524319344717
 Rigidbody:
   m_ObjectHideFlags: 0

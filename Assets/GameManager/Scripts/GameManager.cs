@@ -140,7 +140,7 @@ namespace Millivolt
 		[ContextMenu("Reset Gravity")]
 		public void ResetGravity()
 		{
-			ChangeGravity(LevelManager.Instance.levelData.gravityMagnitude * LevelManager.Instance.levelData.gravityDirection);
+			ChangeGravity(LevelManager.Instance.levelData.gravityDirection, LevelManager.Instance.levelData.gravityMagnitude);
 		}
 		
         public void RestartLevel()
