@@ -11,6 +11,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 using Pixelplacement;
+using TMPro;
 
 namespace Millivolt
 {
@@ -61,15 +62,15 @@ namespace Millivolt
 			private void Start()
 			{
 				m_taskParent = transform.parent.parent.parent.GetComponent<TaskItem>();
-				m_toggle.GetComponentInChildren<Text>().text = m_name;
-				m_completedSubtasks = 0;
+                m_toggle.GetComponentInChildren<TextMeshProUGUI>().text = m_name;
+                m_completedSubtasks = 0;
 				if (m_subtasks)
 					m_numberOfSubtasks = m_subtasks.childCount;
 			}
 
 			private void OnValidate()
 			{
-				m_toggle.GetComponentInChildren<Text>().text = m_name;
+				m_toggle.GetComponentInChildren<TextMeshProUGUI>().text = m_name;
 			}
 
 			public void ActivateTask()
