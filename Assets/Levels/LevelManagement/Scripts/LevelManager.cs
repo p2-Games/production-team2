@@ -86,6 +86,7 @@ namespace Millivolt
 				GameManager.PlayerController.transform.localEulerAngles = new Vector3(0, m_levelCheckpoints[activeCheckpoint].respawnPoint.localEulerAngles.y, 0);
 
 				GameManager.PlayerController.ResetPlayer();
+				GameManager.PlayerModel.ResetRotation();
 				GameManager.PlayerInteraction.ResetInteraction();
 				GameManager.PlayerStatus.ResetStatus();
 

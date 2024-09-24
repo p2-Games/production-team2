@@ -34,22 +34,20 @@ namespace Millivolt
             [Tooltip("The layers of objects that the CharacterController can interact with.")]
             [SerializeField] private LayerMask m_walkableLayers;
 
-            private PlayerModel m_model;
             private Rigidbody m_rb;
 
-            new public CapsuleCollider collider => m_model.collider;
+            new public CapsuleCollider collider => GameManager.PlayerModel.collider;
 
             public void OnGravityChange()
             {
-                m_model.OnGravityChange();
-                m_model.OnGravityChange();
+                GameManager.PlayerModel.OnGravityChange();
+                GameManager.PlayerModel.OnGravityChange();
             }
 
-            [ContextMenu("Initialise Model/Collider")]
+            [ContextMenu("Initialise GameManager.PlayerModel/Collider")]
             private void InitialiseModel()
             {
-                m_model = GetComponentInChildren<PlayerModel>();
-                m_model.InitialiseCollider();
+                GameManager.PlayerModel.InitialiseCollider();
             }
 
             [ContextMenu("Initialise Rigidbody")]
@@ -108,8 +106,8 @@ namespace Millivolt
                 m_isHeaded = isHeaded;
 
                 // project camera direction onto player direction for relative movement
-                Vector3 camRight = Vector3.ProjectOnPlane(Camera.main.transform.right, m_model.transform.up);
-                Vector3 camForward = Vector3.ProjectOnPlane(Camera.main.transform.forward, m_model.transform.up);
+                Vector3 camRight = Vector3.ProjectOnPlane(Camera.main.transform.right, GameManager.PlayerModel.transform.up);
+                Vector3 camForward = Vector3.ProjectOnPlane(Camera.main.transform.forward, GameManager.PlayerModel.transform.up);
 
                 // normalise value
                 camRight = camRight.normalized;
@@ -286,7 +284,6 @@ namespace Millivolt
                 m_externalVelocity = Vector3.zero;
                 m_verticalVelocity = Vector3.zero;
                 m_platformVelocity = Vector3.zero;
-                m_model.ResetRotation();
             }
 
             public bool isHeaded
@@ -305,17 +302,24 @@ namespace Millivolt
                 if (!m_drawGizmos)
                     return;
 
-                if (!m_model)
-                    InitialiseModel();
+                PlayerModel model;
 
-                Handles.matrix = m_model.transform.localToWorldMatrix;
+                if (!GameManager.PlayerModel)
+                {
+                    model = GetComponentInChildren<PlayerModel>();
+                    model.InitialiseCollider();
+                }
+                else
+                    model = GameManager.PlayerModel;
+
+                Handles.matrix = model.transform.localToWorldMatrix;
 
                 Handles.color = Color.green;
-                Handles.DrawWireCube(collider.center - Vector3.up * collider.height / 2,
+                Handles.DrawWireCube(model.collider.center - Vector3.up * model.collider.height / 2,
                     new Vector3(m_groundCheckRadius * 2, m_groundCheckDistance * 2, m_groundCheckRadius * 2));
 
                 Handles.color = Color.cyan;
-                Handles.DrawWireCube(collider.center + Vector3.up * collider.height / 2,
+                Handles.DrawWireCube(model.collider.center + Vector3.up * model.collider.height / 2,
                     new Vector3(m_groundCheckRadius * 2, m_groundCheckDistance * 2, m_groundCheckRadius * 2));
             }
 #endif
