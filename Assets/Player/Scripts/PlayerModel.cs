@@ -14,6 +14,11 @@ namespace Millivolt
     {
         public class PlayerModel : MonoBehaviour
         {
+            private void Start()
+            {
+                m_targetForward = transform.forward;
+            }
+
             // collider
             private CapsuleCollider m_collider;
             new public CapsuleCollider collider => m_collider;
@@ -39,8 +44,7 @@ namespace Millivolt
             [Tooltip("Time it takes for the player to flip when the gravity changes.")]
             [SerializeField] private float m_gravityRotationTime = 0.5f;
 
-            private float m_targetFoward;
-            private float m_currentForward;
+            private Vector3 m_targetForward;
 
             private void Update()
             {
@@ -49,11 +53,16 @@ namespace Millivolt
                 {
                     Vector3 movementDirection = GameManager.PlayerController.movementDirection;
                     if (movementDirection != Vector3.zero)
+                        transform.rotation = Quaternion.LookRotation(movementDirection, transform.up);
+                    /*
                     {
-                        m_targetFoward = Vector3.SignedAngle(transform.forward, movementDirection, transform.up);
+                        float forwardAngle = Vector3.Angle(transform.forward, movementDirection);
+                        if (forwardAngle != 0)
+                            m_targetForward = Vector3.Slerp(transform.forward, movementDirection, m_forwardRotationSpeed / forwardAngle * Time.deltaTime);
                     }
-                    m_currentForward = Mathf.MoveTowardsAngle(m_currentForward, m_targetFoward, m_forwardRotationSpeed * Time.deltaTime);
-                    transform.rotation *= Quaternion.AngleAxis(m_currentForward, transform.up);
+
+                    transform.rotation *= Quaternion.FromToRotation();
+                    */
                 }
             }
 

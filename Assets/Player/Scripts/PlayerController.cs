@@ -35,14 +35,6 @@ namespace Millivolt
             [Tooltip("The layers of objects that the CharacterController can interact with.")]
             [SerializeField] private LayerMask m_walkableLayers;
 
-            public Vector3 upDirection
-            {
-                get
-                {
-                    return -Physics.gravity.normalized;
-                }
-            }
-
             private PlayerModel m_model;
             private Rigidbody m_rb;
 
@@ -50,7 +42,7 @@ namespace Millivolt
 
             public void OnGravityChange()
             {
-                AddJumpForce();
+                m_model.OnGravityChange();
                 m_model.OnGravityChange();
             }
 
@@ -84,13 +76,13 @@ namespace Millivolt
 
             private Vector2 m_moveInput;
             private Vector3 m_walkVelocity;
+            private Vector3 m_verticalVelocity;
             private Vector3 m_externalVelocity;
             private Vector3 m_platformVelocity;
 
-            private Vector3 m_verticalVelocity;
-
             private Vector3 m_surfaceNormal;
 
+            public Vector3 upDirection => -Physics.gravity.normalized;
             public Vector3 movementDirection
             {
                 get
