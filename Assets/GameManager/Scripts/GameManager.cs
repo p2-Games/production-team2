@@ -128,19 +128,19 @@ namespace Millivolt
 			}
 		}
 
-		[ContextMenu("Reset Gravity")]
-		public void ResetGravity()
-		{
-			Physics.gravity = LevelManager.Instance.levelData.gravityMagnitude * LevelManager.Instance.levelData.gravityDirection;
-		}
-
 		public void ChangeGravity(Vector3 value)
 		{
 			Physics.gravity = value;
+			PlayerController.OnGravityChange();
 		}
 		public void ChangeGravity(Vector3 eulerDirection, float magnitude)
 		{
-			Physics.gravity = Quaternion.Euler(eulerDirection) * Vector3.up * magnitude;
+			ChangeGravity(Quaternion.Euler(eulerDirection) * Vector3.up * magnitude);
+		}
+		[ContextMenu("Reset Gravity")]
+		public void ResetGravity()
+		{
+			ChangeGravity(LevelManager.Instance.levelData.gravityDirection, LevelManager.Instance.levelData.gravityMagnitude);
 		}
 		
         public void RestartLevel()
