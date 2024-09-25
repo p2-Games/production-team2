@@ -78,7 +78,7 @@ namespace Millivolt
 			{
 				//Start at 30 increment by 30 for every subtask
 				Vector2 screenStartSize = GetComponent<RectTransform>().sizeDelta;
-				Vector2 screenEndSize = new Vector2(screenStartSize.x, 30 + (m_numberOfSubtasks * 30));
+				Vector2 screenEndSize = new Vector2(screenStartSize.x, 30 + (m_numberOfSubtasks * 40));
 
 				Tween.Size(GetComponent<RectTransform>(), screenStartSize, screenEndSize, 0.5f, 0f);
 				StartCoroutine(UpdateListGroup(screenEndSize));

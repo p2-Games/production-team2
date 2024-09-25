@@ -108,7 +108,7 @@ namespace Millivolt
                 UpdateVignetteEffect();
                 m_deathCanvas.SetActive(true);
                 GameManager.PlayerController.canMove = false;
-                LevelManager.Instance.Invoke(nameof(LevelManager.Instance.Reload), m_respawnTime);
+                LevelManager.Instance.Invoke(nameof(LevelManager.Instance.SpawnPlayer), m_respawnTime);
             }
 
             /// <summary>
