@@ -31,7 +31,6 @@ namespace Millivolt
 			/// <summary>
 			/// This will update the status of UIMenu objects in the activeMenu's list
 			/// </summary>
-			/// <param name="menuIndex"></param>
 			public void SetActiveMenu()
 			{
 				for (int i = 0; i < activeMenus.Count; i++)
@@ -66,9 +65,9 @@ namespace Millivolt
                 }
 			}
 
-            public void Reload()
+            public void ClearActiveMenus()
             {
-
+				activeMenus.Clear();
             }
         }
 	}

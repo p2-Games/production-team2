@@ -7,35 +7,25 @@
 
 using Millivolt.UI;
 using Pixelplacement;
-using System.Collections.Generic;
-using System.ComponentModel;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace Millivolt
 {
 	public class MainMenu : MonoBehaviour
 	{
-        [SerializeField] private GameObject m_exitAnim;
-        [SerializeField] private string m_gameSceneName;
+        private int m_selectedButton;
+
+        [Header("Menu")]
+        [SerializeField] private ButtonBehaviour[] m_mainButtons;
 
         [SerializeField] private GameObject m_menu;
-        [SerializeField] private GameObject m_levelSelector;
-
         [SerializeField] private GameObject m_bg;
 
-        [SerializeField] private int m_selectedButton;
-
-        [SerializeField] private List<ButtonBehaviour> m_buttons;
-
-        [SerializeField] private UIMenuManager m_menuManager;
-
-        [Space(10)]
-
-        [SerializeField] private Button m_menuStart;
-        [SerializeField] private Button m_levelSelectStart;
+        [Header("Level Select")]
+        [SerializeField] private GameObject m_levelSelector;
+        [SerializeField] private Button[] m_levelButtons;
 
         private void Start()
         {
@@ -47,35 +37,29 @@ namespace Millivolt
         public void SetActiveButton(int index)
         {
             m_selectedButton = index;
-            for (int i = 0; i < m_buttons.Count; i++)
+            for (int i = 0; i < m_mainButtons.Length; i++)
             {
                 if (i == m_selectedButton)
-                    m_buttons[i].ActivateButton();
+                    m_mainButtons[i].ActivateButton();
                 else
-                    m_buttons[i].DeactivateButton();
+                    m_mainButtons[i].DeactivateButton();
             }
         }
 
-        public void StartGame()
-        {
-            m_exitAnim.SetActive(true);
-            Invoke(nameof(SwitchScene), 1f);
-        }
-
-        public void BackToMenu()
+        public void EnableMainMenu()
         {
             Tween.LocalPosition(m_menu.transform, Vector3.zero, 0.5f, 0, Tween.EaseInOut);
             Tween.LocalPosition(m_levelSelector.transform, new Vector3(1000, 0, 0), 0.5f, 0, Tween.EaseInOut);
             Tween.LocalPosition(m_bg.transform, new Vector3(30, 0, 0), 0.5f, 0, Tween.EaseInOut);
-            m_menuStart.Select();
+            m_mainButtons[0].button.Select();
         }
 
-        public void SelectLevel()
+        public void EnableLevelSelect()
         {
             Tween.LocalPosition(m_menu.transform, new Vector3(-1000, 0, 0), 0.5f, 0, Tween.EaseInOut);
             Tween.LocalPosition(m_levelSelector.transform, Vector3.zero, 0.5f, 0, Tween.EaseInOut);
             Tween.LocalPosition(m_bg.transform, new Vector3(-30, 0 , 0), 0.5f, 0, Tween.EaseInOut);
-            m_levelSelectStart.Select();
+            m_levelButtons[0].Select();
         }
 
         public void OptionsMenu()
@@ -88,17 +72,9 @@ namespace Millivolt
 
         }
 
-        public void SwitchScene()
-        {
-            SceneManager.LoadScene(m_gameSceneName);
-        }
-
         public void QuitGame()
         {
-            Application.Quit();
-#if UNITY_EDITOR
-            EditorApplication.isPlaying = false;
-#endif
+            GameManager.Instance.ExitGame();
         }
     }
 }

@@ -24,8 +24,12 @@ namespace Millivolt
 
             private void Awake()
             {
-                //m_menu = GameObject.FindGameObjectWithTag("PauseMenu");
                 SetActiveButton(m_selectedOption);
+            }
+
+            private void Start()
+            {
+                gameObject.SetActive(false);
             }
 
             public void SetActiveButton(int index)
