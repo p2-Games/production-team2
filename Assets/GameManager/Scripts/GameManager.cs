@@ -84,11 +84,14 @@ namespace Millivolt
 				return;
 			}
             DontDestroyOnLoad(gameObject);
-
-			Setup();
         }
 
-		private void Setup()
+        private void Start()
+        {
+            Reload();
+        }
+
+        private void Setup()
 		{
 			m_currentSceneName = SceneManager.GetActiveScene().name;
 
@@ -133,8 +136,8 @@ namespace Millivolt
 		public void ChangeGravity(Vector3 value)
 		{
 			Physics.gravity = value;
-			PlayerController.OnGravityChange();
-		}
+            PlayerModel.OnGravityChange();
+        }
 		public void ChangeGravity(Vector3 eulerDirection, float magnitude)
 		{
 			ChangeGravity(Quaternion.Euler(eulerDirection) * Vector3.up * magnitude);

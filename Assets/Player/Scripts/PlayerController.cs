@@ -16,38 +16,55 @@ namespace Millivolt
         [RequireComponent(typeof(Rigidbody), typeof(PlayerInput))]
         public class PlayerController : MonoBehaviour
         {
-            void Start()
-            {
-                InitialiseRigidbody();
-                InitialiseModel();
-                m_animation = GetComponent<AnimationController>();
-            }
-
             private void FixedUpdate()
             {
                 MovePlayer();
             }
 
             private AnimationController m_animation;
+            new public AnimationController animation
+            {
+                get
+                {
+                    if (!m_animation)
+                        m_animation = GetComponent<AnimationController>();
+                    return m_animation;
+                }
+            }
+
+            private PlayerModel m_model;
+            private PlayerModel model
+            {
+                get
+                {
+                    if (!m_model)
+                        InitialiseModel();
+                    return m_model;
+                }
+            }
 
             [Header("Physics")]
             [Tooltip("The layers of objects that the CharacterController can interact with.")]
             [SerializeField] private LayerMask m_walkableLayers;
 
             private Rigidbody m_rb;
-
-            new public CapsuleCollider collider => GameManager.PlayerModel.collider;
-
-            public void OnGravityChange()
+            private Rigidbody rb
             {
-                GameManager.PlayerModel.OnGravityChange();
-                GameManager.PlayerModel.OnGravityChange();
+                get
+                {
+                    if (!m_rb)
+                        InitialiseRigidbody();
+                    return m_rb;
+                }
             }
+
+            new public CapsuleCollider collider { get { return model.collider; } }
 
             [ContextMenu("Initialise GameManager.PlayerModel/Collider")]
             private void InitialiseModel()
             {
-                GameManager.PlayerModel.InitialiseCollider();
+                m_model = GetComponentInChildren<PlayerModel>();
+                m_model.InitialiseCollider();
             }
 
             [ContextMenu("Initialise Rigidbody")]
@@ -106,8 +123,8 @@ namespace Millivolt
                 m_isHeaded = isHeaded;
 
                 // project camera direction onto player direction for relative movement
-                Vector3 camRight = Vector3.ProjectOnPlane(Camera.main.transform.right, GameManager.PlayerModel.transform.up);
-                Vector3 camForward = Vector3.ProjectOnPlane(Camera.main.transform.forward, GameManager.PlayerModel.transform.up);
+                Vector3 camRight = Vector3.ProjectOnPlane(Camera.main.transform.right, model.transform.up);
+                Vector3 camForward = Vector3.ProjectOnPlane(Camera.main.transform.forward, model.transform.up);
 
                 // normalise value
                 camRight = camRight.normalized;
@@ -153,10 +170,10 @@ namespace Millivolt
                 }
 
                 // tell animator what to do
-                m_animation.PassFloatParameter("Speed", m_walkVelocity.magnitude / m_topSpeed);
+                animation.PassFloatParameter("Speed", m_walkVelocity.magnitude / m_topSpeed);
 
                 // move player
-                m_rb.velocity = m_walkVelocity + m_verticalVelocity + m_platformVelocity + m_externalVelocity;
+                rb.velocity = m_walkVelocity + m_verticalVelocity + m_platformVelocity + m_externalVelocity;
             }
 
             /// <summary>
@@ -178,18 +195,18 @@ namespace Millivolt
             /// <param name="value"></param>
             public void SetExternalVelocity(Vector3 value)
             {
-                m_rb.velocity = Vector3.zero;
+                rb.velocity = Vector3.zero;
                 m_verticalVelocity = Vector3.zero;
                 m_externalVelocity = value;
-            }           
+            }
 
             [Header("Jumping")]
             [Tooltip("The velocity added to the player in units per second when they jump.")]
             [SerializeField] private float m_jumpSpeed;
             [Tooltip("Distance below bottom of player for grounded check.")]
-            [SerializeField, Range(0,0.5f)] private float m_groundCheckDistance;
+            [SerializeField, Range(0, 0.5f)] private float m_groundCheckDistance;
             [Tooltip("The radius of the grounded check.")]
-            [SerializeField, Range(0,1)] private float m_groundCheckRadius;
+            [SerializeField, Range(0, 1)] private float m_groundCheckRadius;
             [Tooltip("The speed at which the player must be moving for them to be able to 'bonk' their head on ceilings.")]
             [SerializeField, Min(0)] private float m_headBonkSpeed;
 
@@ -221,6 +238,9 @@ namespace Millivolt
             {
                 get
                 {
+                    if (!collider)
+                        return false;
+
                     // check the space underneath the player to determine if grounded
                     // if there is no walkable object under the player, they are not grounded
                     RaycastHit[] hits = Physics.BoxCastAll(transform.position + collider.center,
