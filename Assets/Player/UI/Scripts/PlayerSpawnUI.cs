@@ -38,17 +38,17 @@ namespace Millivolt
 
                     Vector2 finalShrinksize = new Vector2(0, screenEndSize.y);
 
-                    Tween.Size(m_growScreen.rectTransform, finalShrinksize, screenEndSize, 0.15f, m_startDelay, Tween.EaseInOutStrong);
+                    Tween.Size(m_growScreen.rectTransform, finalShrinksize, screenEndSize, 0.15f, m_startDelay, Tween.EaseInOutStrong, Tween.LoopType.None, null, null, false);
                     m_delay += 0.17f;
                     m_disableDelay += 0.17f;
 
-                    Tween.Size(m_growScreen.rectTransform, m_growScreen.rectTransform.sizeDelta, new Vector2(800, 450), 0.2f, m_startDelay + m_delay, Tween.EaseInOutStrong);
+                    Tween.Size(m_growScreen.rectTransform, m_growScreen.rectTransform.sizeDelta, new Vector2(800, 450), 0.2f, m_startDelay + m_delay, Tween.EaseInOutStrong, Tween.LoopType.None, null, null, false);
 
                     m_delay += 0.2f;
                     m_disableDelay += 0.2f;
 
-                    Tween.Color(m_bgScreen, new Color(0, 0, 0, 0), 0.01f, m_startDelay + m_delay);
-                    Tween.Color(m_growScreen, new Color(m_growScreen.color.r, m_growScreen.color.g, m_growScreen.color.b, 0), 0.4f, m_startDelay + m_delay);
+                    Tween.Color(m_bgScreen, new Color(0, 0, 0, 0), 0.01f, m_startDelay + m_delay, null, Tween.LoopType.None, null, null, false);
+                    Tween.Color(m_growScreen, new Color(m_growScreen.color.r, m_growScreen.color.g, m_growScreen.color.b, 0), 0.4f, m_startDelay + m_delay, null, Tween.LoopType.None, null, null, false);
 
                     m_disableDelay += 0.5f;
 
@@ -62,8 +62,8 @@ namespace Millivolt
                     gameObject.SetActive(false);
                     m_delay = 0;
                     m_disableDelay = 0;
-                    Tween.Size(m_growScreen.rectTransform, m_growScreen.rectTransform.sizeDelta, new Vector2(0, 0), 0, 0 + m_delay, Tween.EaseInOutStrong);
-                    Tween.Color(m_bgScreen, new Color(0, 0, 0, 1), 0, 0);
+                    Tween.Size(m_growScreen.rectTransform, m_growScreen.rectTransform.sizeDelta, new Vector2(0, 0), 0, 0 + m_delay, Tween.EaseInOutStrong, Tween.LoopType.None, null, null, false);
+                    Tween.Color(m_bgScreen, new Color(0, 0, 0, 1), 0, 0, null, Tween.LoopType.None, null, null, false);
                     Tween.Color(m_growScreen, new Color(1, 1, 1, 1), 0, 0);
                     GameManager.PlayerController.canMove = true;
                 }
