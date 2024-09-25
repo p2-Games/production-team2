@@ -101,7 +101,7 @@ namespace Millivolt
 
 				m_prevLevelName = serializedObject.FindProperty("m_prevLevelName");
 				m_nextLevelName = serializedObject.FindProperty("m_nextLevelName");
-				m_activeCheckpoint = serializedObject.FindProperty("activeCheckpoint");
+				m_activeCheckpoint = serializedObject.FindProperty("activeCheckpointIndex");
 				m_levelCheckpoints = serializedObject.FindProperty("m_levelCheckpoints");
 				m_lvlData = serializedObject.FindProperty("m_levelData");
 				m_spawnScreen = serializedObject.FindProperty("m_spawnScreen");

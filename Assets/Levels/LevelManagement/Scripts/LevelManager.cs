@@ -31,8 +31,10 @@ namespace Millivolt
 			public string prevLevelName => m_prevLevelName;
 			public string nextLevelName => m_nextLevelName;
 
-			[SerializeField] public int activeCheckpoint;
+			[SerializeField] public int activeCheckpointIndex;
 			[SerializeField] private List<Checkpoint> m_levelCheckpoints;
+
+			public Checkpoint activeCheckpoint { get { return m_levelCheckpoints[activeCheckpointIndex]; } }
 
 			// Level Data
 			[SerializeField] private LevelData m_levelData;
@@ -40,14 +42,6 @@ namespace Millivolt
 
 			//Spawn screen ref
 			[SerializeField] private GameObject m_spawnScreen;
-
-			private void Start()
-			{
-				if (m_levelCheckpoints.Count == 0)
-					FindAllCheckpoints();
-				InitialiseCheckpoints();
-				SpawnPlayer();
-			}
 
 			/// <summary>
 			/// Will search through the level for any checkpoints and add them to the array
@@ -76,14 +70,12 @@ namespace Millivolt
 				{
 					m_levelCheckpoints[id].Initialise(id);
 				}
-				activeCheckpoint = 0;
+				activeCheckpointIndex = 0;
 			}
 
 			public void SpawnPlayer()
 			{
 				m_spawnScreen.SetActive(true);
-				GameManager.PlayerController.transform.position = m_levelCheckpoints[activeCheckpoint].respawnPoint.position;
-				GameManager.PlayerController.transform.localEulerAngles = new Vector3(0, m_levelCheckpoints[activeCheckpoint].respawnPoint.localEulerAngles.y, 0);
 
 				GameManager.PlayerController.ResetPlayer();
 				GameManager.PlayerModel.ResetRotation();
@@ -92,14 +84,20 @@ namespace Millivolt
 
                 GameManager.Instance.ChangeGravity(levelData.gravityDirection, levelData.gravityMagnitude);
 
+				GameManager.PlayerController.transform.position = activeCheckpoint.respawnPoint.position;
+				//GameManager.PlayerModel.transform.rotation = Quaternion.LookRotation(activeCheckpoint.transform.forward, -Physics.gravity.normalized);
+
                 FindAllCheckpoints();
 				InitialiseCheckpoints();
 			}
 
 			public void Reload()
 			{
-				Start();
-			}
+                if (m_levelCheckpoints.Count == 0)
+                    FindAllCheckpoints();
+                InitialiseCheckpoints();
+                SpawnPlayer();
+            }
 
 #if UNITY_EDITOR
 			[SerializeField] private bool m_drawGizmos = true;
