@@ -5,159 +5,118 @@
 ///
 ///</summary>
 
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using Millivolt.UI;
-using Millivolt.Player;
 
 namespace Millivolt
 {
-    using Millivolt.Player.UI;
     using System.Collections.Generic;
-    using Utilities;
-	public class LevelManager : MonoBehaviour
+    using UnityEditor;
+
+    namespace Level
 	{
-		public static LevelManager Instance;
-        private void Awake()
-        {
-			if (Instance)
-				Destroy(Instance.gameObject);
-			Instance = this;
-        }
-			
-		[Header("Scene Properties")]
-        [HideInInspector, SerializeField] private string m_prevLevelName;
-        [HideInInspector, SerializeField] private string m_nextLevelName;
-
-		public string prevLevelName => m_prevLevelName;
-		public string nextLevelName => m_nextLevelName;
-
-        //[Header("Checkpoint Properties")]
-		[SerializeField] public int currentCheckpoint;
-		[SerializeField] private List<Checkpoint> m_levelCheckpoints;
-		[Tooltip("This will find all the checkpoints in the scene and add them to the list automatically on play.\nWILL NOT SORT PROPERLY")]
-		[SerializeField] private bool m_autoAddCheckpoints;
-
-		[Header("Level Data")]
-		[SerializeField] private LevelData m_levelData;
-		public LevelData levelData => m_levelData;
-			
-		//Spawn screen ref
-		private GameObject m_spawnScreen;
-
-
-		//public PlayerController m_player;
-
-        private void Start()
-        {
-			m_spawnScreen = FindObjectOfType<PlayerSpawnUI>().gameObject;
-			if (m_autoAddCheckpoints)
-				FindAllCheckpoints();
-			InitialiseCheckpoints();
-			SpawnPlayer();
-        }
-
-            
-
-        /// <summary>
-        /// Will search through the level for any checkpoints and add them to the array
-        /// </summary>
-        [ContextMenu("Find Checkpoints")]
-		private void FindAllCheckpoints()
+		public class LevelManager : MonoBehaviour
 		{
-			Transform checkpointParent = GameObject.FindWithTag("Checkpoints").transform;
-			if (checkpointParent.childCount == 0)
+			public static LevelManager Instance;
+			private void Awake()
 			{
-                Debug.Log("No checkpoints found in scene!");
-				return;
-            }
-
-            m_levelCheckpoints = new List<Checkpoint>();
-			foreach (Transform child in checkpointParent)
-				m_levelCheckpoints.Add(child.GetComponent<Checkpoint>());
-		}
-
-		/// <summary>
-		/// Give all checkpoints in the level an ID
-		/// </summary>
-		private void InitialiseCheckpoints()
-		{
-			int id = 0;
-			foreach (Checkpoint point in m_levelCheckpoints)
-			{
-				point.checkpointID = id;
-				id++;
+				if (Instance)
+					Destroy(Instance.gameObject);
+				Instance = this;
 			}
-			m_levelCheckpoints[0].activeCheckpoint = true;
-		}
 
-		/// <summary>
-		/// Sets a specific checkpoint to active by its id and then sets the rest inactive
-		/// </summary>
-		/// <param name="id"></param>
-        public void SetActiveCheckpoint(int id)
-		{
-			currentCheckpoint = id;
-			foreach (Checkpoint point in m_levelCheckpoints)
+			[Header("Scene Properties")]
+			[HideInInspector, SerializeField] private string m_prevLevelName;
+			[HideInInspector, SerializeField] private string m_nextLevelName;
+
+			public string prevLevelName => m_prevLevelName;
+			public string nextLevelName => m_nextLevelName;
+
+			[SerializeField] public int activeCheckpoint;
+			[SerializeField] private List<Checkpoint> m_levelCheckpoints;
+
+			// Level Data
+			[SerializeField] private LevelData m_levelData;
+			public LevelData levelData => m_levelData;
+
+			//Spawn screen ref
+			[SerializeField] private GameObject m_spawnScreen;
+
+			private void Start()
 			{
-				if (point.checkpointID == id)
+				if (m_levelCheckpoints.Count == 0)
+					FindAllCheckpoints();
+				InitialiseCheckpoints();
+				SpawnPlayer();
+			}
+
+			/// <summary>
+			/// Will search through the level for any checkpoints and add them to the array
+			/// </summary>
+			[ContextMenu("Find Checkpoints")]
+			private void FindAllCheckpoints()
+			{
+				Transform checkpointParent = GameObject.FindWithTag("Checkpoints").transform;
+				if (checkpointParent.childCount == 0)
 				{
-					point.activeCheckpoint = true;
+					Debug.Log("No checkpoints found in scene!");
+					return;
 				}
-				else
-				{
-					point.activeCheckpoint = false;
-				}
+
+				m_levelCheckpoints = new List<Checkpoint>();
+				foreach (Transform child in checkpointParent)
+					m_levelCheckpoints.Add(child.GetComponent<Checkpoint>());
 			}
-		}
 
-		public void SpawnPlayer()
-		{
-			m_spawnScreen.SetActive(true);
-			GameManager.PlayerController.transform.position = GetActiveCheckpoint().respawnPoint.position;
-            GameManager.PlayerController.transform.localEulerAngles = new Vector3(0, GetActiveCheckpoint().respawnPoint.localEulerAngles.y, 0);
-
-			GameManager.PlayerController.ResetPlayer();
-			GameManager.PlayerInteraction.ResetInteraction();
-			GameManager.PlayerStatus.ResetStatus();
-
-			FindObjectOfType<PlayerLookTarget>().SetToPlayerPosition();
-			FindObjectOfType<SmoothObjectTracking>().SetToPlayerPosition();
-			FindAllCheckpoints();
-			InitialiseCheckpoints();
-        }
-
-		private void Update()
-		{
-
-
-
-			//if (!GameManager.PlayerController)
-			//{
-            //    GameManager.PlayerController = FindObjectOfType<PlayerController>(); 
-			//	//SpawnPlayer();
-			//}
-
-			if (!m_spawnScreen)
-				m_spawnScreen = FindObjectOfType<PlayerSpawnUI>().gameObject;
-
-        }
-
-
-        /// <summary>
-        /// Returns the currently active checkpoint
-        /// </summary>
-        /// <returns></returns>
-        public Checkpoint GetActiveCheckpoint()
+			/// <summary>
+			/// Give all checkpoints in the level an ID
+			/// </summary>
+			private void InitialiseCheckpoints()
 			{
-				return m_levelCheckpoints[currentCheckpoint];
+				for (int id = 0; id < m_levelCheckpoints.Count; id++)
+				{
+					m_levelCheckpoints[id].Initialise(id);
+				}
+				activeCheckpoint = 0;
 			}
 
-            public void Reload()
-            {
+			public void SpawnPlayer()
+			{
+				m_spawnScreen.SetActive(true);
+				GameManager.PlayerController.transform.position = m_levelCheckpoints[activeCheckpoint].respawnPoint.position;
+				GameManager.PlayerController.transform.localEulerAngles = new Vector3(0, m_levelCheckpoints[activeCheckpoint].respawnPoint.localEulerAngles.y, 0);
+
+				GameManager.PlayerController.ResetPlayer();
+				GameManager.PlayerModel.ResetRotation();
+				GameManager.PlayerInteraction.ResetInteraction();
+				GameManager.PlayerStatus.ResetStatus();
+
+                GameManager.Instance.ChangeGravity(levelData.gravityDirection, levelData.gravityMagnitude);
+
+                FindAllCheckpoints();
+				InitialiseCheckpoints();
+			}
+
+			public void Reload()
+			{
 				Start();
+			}
+
+#if UNITY_EDITOR
+			[SerializeField] private bool m_drawGizmos = true;
+
+            private void OnDrawGizmos()
+            {
+				if (!m_drawGizmos)
+					return;
+
+				if (levelData)
+				{
+					Handles.color = Color.yellow;
+                    Handles.ArrowHandleCap(0, transform.position, Quaternion.Euler(levelData.gravityDirection) * Quaternion.FromToRotation(Vector3.forward, Vector3.up), 1.4f, EventType.Repaint);
+                }
             }
+#endif
         }
+	}
 	
 }

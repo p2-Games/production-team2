@@ -48,6 +48,10 @@ namespace Millivolt
                 {
                     if (m_timer < m_retrieveObjectTime)
                         m_timer += Time.deltaTime;
+
+                    // if the held object has been destroyed externally, reset this object
+                    if (m_isActive && !m_heldObject)
+                        isActive = false;
                 }
 
                 // for items getting put in
@@ -78,6 +82,9 @@ namespace Millivolt
 
                         // deactivate the object
                         m_heldObject.gameObject.SetActive(false);
+
+                        // play a sound effect
+                        SFXController.Instance.PlayRandomSoundClip("ScrewInsert", m_respawnTransform.position);
 
                         ToggleState();
                     }

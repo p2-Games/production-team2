@@ -13,14 +13,13 @@ namespace Millivolt
 {
     namespace Player
     {
-        [RequireComponent(typeof(CapsuleCollider), typeof(Rigidbody), typeof(PlayerInput))]
+        [RequireComponent(typeof(Rigidbody), typeof(PlayerInput))]
         public class PlayerController : MonoBehaviour
         {
             void Start()
             {
                 InitialiseRigidbody();
-                InitialiseCollider();
-                m_parent = GetComponentInParent<PlayerRotationParent>();
+                InitialiseModel();
                 m_animation = GetComponent<AnimationController>();
             }
 
@@ -32,36 +31,23 @@ namespace Millivolt
             private AnimationController m_animation;
 
             [Header("Physics")]
-            [Tooltip("The acceleration of gravity of the player, on the player's transform.up axis.")]
-            [SerializeField] private float m_gravity;
             [Tooltip("The layers of objects that the CharacterController can interact with.")]
             [SerializeField] private LayerMask m_walkableLayers;
 
             private Rigidbody m_rb;
-            private CapsuleCollider m_collider;
 
-            private PlayerRotationParent m_parent;
-            public Transform parent
+            new public CapsuleCollider collider => GameManager.PlayerModel.collider;
+
+            public void OnGravityChange()
             {
-                get
-                {
-                    if (!m_parent)
-                        m_parent = GetComponentInParent<PlayerRotationParent>();
-                    return m_parent.transform;
-                }
+                GameManager.PlayerModel.OnGravityChange();
+                GameManager.PlayerModel.OnGravityChange();
             }
 
-            public void SetGravity(float magnitude, Vector3 direction)
+            [ContextMenu("Initialise GameManager.PlayerModel/Collider")]
+            private void InitialiseModel()
             {
-                // set parent rotation
-                m_parent.ResetPosition();
-                parent.rotation = Quaternion.Euler(direction);
-
-                // set the physics gravity
-                Physics.gravity = -parent.up * magnitude;
-
-                // set magnitude/value of gravity
-                m_gravity = -Mathf.Abs(magnitude);
+                GameManager.PlayerModel.InitialiseCollider();
             }
 
             [ContextMenu("Initialise Rigidbody")]
@@ -76,21 +62,6 @@ namespace Millivolt
                 m_rb.constraints = RigidbodyConstraints.FreezeRotation;
             }
 
-            [ContextMenu("Initialise Collider")]
-            private void InitialiseCollider()
-            {
-                m_collider = GetComponent<CapsuleCollider>();
-
-                PhysicMaterial pm = new PhysicMaterial();
-                pm.frictionCombine = PhysicMaterialCombine.Minimum;
-                pm.staticFriction = 0f;
-                pm.dynamicFriction = 0f;
-                pm.bounceCombine = PhysicMaterialCombine.Minimum;
-                pm.bounciness = 0f;
-
-                m_collider.material = pm;
-            }
-
             [Header("Movement")]
             [Tooltip("The movement speed of the player in units per second.")]
             [SerializeField] private float m_topSpeed;
@@ -102,16 +73,27 @@ namespace Millivolt
 
             private Vector2 m_moveInput;
             private Vector3 m_walkVelocity;
+            private Vector3 m_verticalVelocity;
             private Vector3 m_externalVelocity;
             private Vector3 m_platformVelocity;
 
-            private Vector3 m_verticalVelocity;
-
             private Vector3 m_surfaceNormal;
+
+            public Vector3 upDirection => -Physics.gravity.normalized;
+            public Vector3 movementDirection
+            {
+                get
+                {
+                    if (!canMove || m_walkVelocity == Vector3.zero)
+                        return Vector3.zero;
+
+                    return Vector3.ProjectOnPlane(m_walkVelocity, upDirection).normalized;
+                }
+            }
 
             public void Move(InputAction.CallbackContext context)
             {
-                m_moveInput = context.ReadValue<Vector2>();
+                m_moveInput = Vector2.ClampMagnitude(context.ReadValue<Vector2>(), 1f);
             }
 
             /// <summary>
@@ -119,12 +101,13 @@ namespace Millivolt
             /// </summary>
             private void MovePlayer()
             {
-                // only do the boxcast once per physics frame
+                // only do the boxcasts once per physics frame
                 m_isGrounded = isGrounded;
+                m_isHeaded = isHeaded;
 
                 // project camera direction onto player direction for relative movement
-                Vector3 camRight = Vector3.ProjectOnPlane(Camera.main.transform.right, transform.up);
-                Vector3 camForward = Vector3.ProjectOnPlane(Camera.main.transform.forward, transform.up);
+                Vector3 camRight = Vector3.ProjectOnPlane(Camera.main.transform.right, GameManager.PlayerModel.transform.up);
+                Vector3 camForward = Vector3.ProjectOnPlane(Camera.main.transform.forward, GameManager.PlayerModel.transform.up);
 
                 // normalise value
                 camRight = camRight.normalized;
@@ -150,6 +133,10 @@ namespace Millivolt
                 if (m_surfaceNormal != Vector3.zero)
                     m_walkVelocity = Vector3.ProjectOnPlane(m_walkVelocity, m_surfaceNormal)/*.normalized * m_walkVelocity.magnitude*/;
 
+                // if hitting head and moving and high enough speed, then bonk head
+                if (m_isHeaded && m_verticalVelocity.magnitude > m_headBonkSpeed)
+                    m_verticalVelocity = Vector3.zero;
+
                 // only apply gravity if not grounded
                 if (!m_isGrounded)
                     m_verticalVelocity += Physics.gravity * Time.fixedDeltaTime;
@@ -160,8 +147,9 @@ namespace Millivolt
                 // if the player should jump, add the jump velocity
                 if (m_willJump)
                 {
-                    m_verticalVelocity += m_jumpSpeed * transform.up;
+                    AddJumpForce();
                     m_willJump = false;
+                    SFXController.Instance.PlayRandomSoundClip("Footsteps", transform);
                 }
 
                 // tell animator what to do
@@ -193,20 +181,7 @@ namespace Millivolt
                 m_rb.velocity = Vector3.zero;
                 m_verticalVelocity = Vector3.zero;
                 m_externalVelocity = value;
-            }
-            [Header("Heading")]
-            [SerializeField] private float m_rotationAcceleration;
-
-            private void Update()
-            {
-                // move player to face correct direction when move direction is not zero
-                //transform.rotation = Quaternion.RotateTowards(transform.localRotation, m_targetBodyRotation, m_rotationAcceleration * Time.deltaTime);
-                if (m_walkVelocity.sqrMagnitude != 0)
-                {
-                    transform.rotation = Quaternion.LookRotation(Vector3.ProjectOnPlane(m_walkVelocity, -Physics.gravity), -Physics.gravity);
-                }
-                //transform.rotation = m_targetBodyRotation;
-            }
+            }           
 
             [Header("Jumping")]
             [Tooltip("The velocity added to the player in units per second when they jump.")]
@@ -215,8 +190,11 @@ namespace Millivolt
             [SerializeField, Range(0,0.5f)] private float m_groundCheckDistance;
             [Tooltip("The radius of the grounded check.")]
             [SerializeField, Range(0,1)] private float m_groundCheckRadius;
+            [Tooltip("The speed at which the player must be moving for them to be able to 'bonk' their head on ceilings.")]
+            [SerializeField, Min(0)] private float m_headBonkSpeed;
 
             private bool m_isGrounded;
+            private bool m_isHeaded;
 
             private bool m_willJump = false;
 
@@ -232,6 +210,11 @@ namespace Millivolt
                 }
             }
 
+            private void AddJumpForce()
+            {
+                m_verticalVelocity += m_jumpSpeed * upDirection;
+            }
+
             /// Returns if the player is standing on a Walkable collider.
             /// </summary>
             public bool isGrounded
@@ -240,13 +223,14 @@ namespace Millivolt
                 {
                     // check the space underneath the player to determine if grounded
                     // if there is no walkable object under the player, they are not grounded
-                    RaycastHit[] hits = Physics.BoxCastAll(transform.position + m_collider.center,
+                    RaycastHit[] hits = Physics.BoxCastAll(transform.position + collider.center,
                         new Vector3(m_groundCheckRadius, m_groundCheckDistance, m_groundCheckRadius),
-                        -transform.up, transform.rotation, m_collider.height / 2, m_walkableLayers, QueryTriggerInteraction.Ignore);
+                        -upDirection, transform.rotation, collider.height / 2, m_walkableLayers, QueryTriggerInteraction.Ignore);
 
                     // if no hits, the player is not standing on anything
                     if (hits.Length == 0)
                     {
+                        // reset value of surface normal
                         m_surfaceNormal = Vector3.zero;
                         return false;
                     }
@@ -257,6 +241,7 @@ namespace Millivolt
                         // reset their various velocities to 0
                         if (!m_isGrounded)
                         {
+                            SFXController.Instance.PlayRandomSoundClip("Footsteps", transform);
                             m_verticalVelocity = Vector3.zero;
                             m_platformVelocity = Vector3.zero;
                             if (m_externalVelocity != Vector3.zero)
@@ -267,7 +252,7 @@ namespace Millivolt
                         }
 
                         // get closest hit walkable object
-                        Vector3 playerFeet = transform.position + m_collider.center - transform.up * m_collider.height / 2;
+                        Vector3 playerFeet = transform.position + collider.center - upDirection * collider.height / 2;
                         RaycastHit hit = hits[0];
                         for (int h = 1; h < hits.Length; h++)
                         {
@@ -276,7 +261,7 @@ namespace Millivolt
                         }
 
                         // if the closest object does not meet the slope limit requirements, then the player is NOT standing on it
-                        if (Vector3.Angle(hit.normal, transform.up) > m_slopeLimit)
+                        if (Vector3.Angle(hit.normal, upDirection) > m_slopeLimit)
                             return false;
 
                         // save the normal of the surface the player is standing on
@@ -286,8 +271,8 @@ namespace Millivolt
                     }
 
                     // ALTERNATE METHOD: checkbox
-                    //return Physics.CheckBox(new Vector3(transform.position.x, transform.position.y - m_collider.height / 2, transform.position.z), 
-                    //   new Vector3(m_groundCheckRadius, m_groundCheckDistance, m_groundCheckRadius), Quaternion.identity, m_walkableLayers);
+                    // return Physics.CheckBox(new Vector3(transform.position.x, transform.position.y - collider.height / 2, transform.position.z), 
+                    //    new Vector3(m_groundCheckRadius, m_groundCheckDistance, m_groundCheckRadius), Quaternion.identity, m_walkableLayers);
                 }
             }
 
@@ -299,24 +284,15 @@ namespace Millivolt
                 m_externalVelocity = Vector3.zero;
                 m_verticalVelocity = Vector3.zero;
                 m_platformVelocity = Vector3.zero;
-
-                SetGravity(LevelManager.Instance.levelData.gravityMagnitude, LevelManager.Instance.levelData.gravityDirection);
             }
 
-            public bool hittingHead
+            public bool isHeaded
             {
                 get
                 {
-                    return Physics.BoxCast(transform.position + m_collider.center, new Vector3(m_groundCheckRadius, m_groundCheckDistance, m_groundCheckRadius),
-                        transform.up, /*out RaycastHit hit,*/ transform.rotation, m_collider.height / 2, ~(1 << LayerMask.NameToLayer("Player")), QueryTriggerInteraction.Ignore);
+                    return Physics.BoxCast(transform.position + collider.center, new Vector3(m_groundCheckRadius, m_groundCheckDistance, m_groundCheckRadius),
+                        upDirection, /*out RaycastHit hit,*/ transform.rotation, collider.height / 2, ~(1 << LayerMask.NameToLayer("Player")), QueryTriggerInteraction.Ignore);
                 }
-            }
-
-            private void OnCollisionEnter(Collision collision)
-            {
-                // check if the player is hitting their head on the ceiling
-                if (hittingHead && m_verticalVelocity.sqrMagnitude > 0)
-                    m_verticalVelocity = Vector3.zero;
             }
 
 #if UNITY_EDITOR
@@ -326,22 +302,25 @@ namespace Millivolt
                 if (!m_drawGizmos)
                     return;
 
-                if (!m_collider)
-                    InitialiseCollider();
+                PlayerModel model;
 
-                Handles.matrix = transform.localToWorldMatrix;
+                if (!GameManager.PlayerModel)
+                {
+                    model = GetComponentInChildren<PlayerModel>();
+                    model.InitialiseCollider();
+                }
+                else
+                    model = GameManager.PlayerModel;
+
+                Handles.matrix = model.transform.localToWorldMatrix;
 
                 Handles.color = Color.green;
-                Handles.DrawWireCube(m_collider.center - Vector3.up * m_collider.height / 2,
+                Handles.DrawWireCube(model.collider.center - Vector3.up * model.collider.height / 2,
                     new Vector3(m_groundCheckRadius * 2, m_groundCheckDistance * 2, m_groundCheckRadius * 2));
 
                 Handles.color = Color.cyan;
-                Handles.DrawWireCube(m_collider.center + Vector3.up * m_collider.height / 2,
+                Handles.DrawWireCube(model.collider.center + Vector3.up * model.collider.height / 2,
                     new Vector3(m_groundCheckRadius * 2, m_groundCheckDistance * 2, m_groundCheckRadius * 2));
-
-                Handles.color = Color.magenta;
-                Handles.ArrowHandleCap(0, m_collider.center - Vector3.up * m_collider.height / 2,
-                                        Quaternion.LookRotation(Vector3.down, (Mathf.Abs(m_gravity) * -transform.up).normalized), 1, EventType.Repaint);
             }
 #endif
         }

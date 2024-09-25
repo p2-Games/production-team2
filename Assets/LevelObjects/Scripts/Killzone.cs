@@ -10,29 +10,34 @@ using UnityEngine;
 namespace Millivolt
 {
     using Player;
+    using LevelObjects.PickupObjects;
 
     namespace LevelObjects
     {
         public class Killzone : LevelObject
         {
-            private Collider m_collider;
-
             private void Start()
             {
-                InitialiseCollider();
-            }
-
-            private void InitialiseCollider()
-            {
-                m_collider = GetComponent<Collider>();
-                m_collider.isTrigger = true;
+                Collider collider = GetComponent<Collider>();
+                collider.isTrigger = true;
             }
 
             private void OnTriggerEnter(Collider other)
             {
-                PlayerStatus player = other.GetComponentInChildren<PlayerStatus>();
-                if (player)
-                    player.TakeDamage(player.maxHealth);
+                // if inactive, don't kill
+                if (!m_isActive)
+                    return;
+
+                // if the other object is the player, kill them
+                if (other.GetComponent<PlayerModel>())
+                    GameManager.PlayerStatus.TakeDamage(GameManager.PlayerStatus.maxHealth);
+                // if the other object is a pickup, destroy it
+                else
+                {
+                    PickupObject pickup = other.GetComponent<PickupObject>();
+                    if (pickup)
+                        Destroy(other.gameObject);
+                }
             }
         }
     }

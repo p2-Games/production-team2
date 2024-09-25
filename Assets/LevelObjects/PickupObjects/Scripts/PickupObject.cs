@@ -58,6 +58,11 @@ namespace Millivolt
 
                     m_timer = 0;
                 }
+
+                private void OnCollisionEnter(Collision collision)
+                {
+                    SFXController.Instance.PlayRandomSoundClip("ScrewDrop", transform);
+                }
             }
         }
     }

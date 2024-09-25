@@ -48,12 +48,12 @@ MonoBehaviour:
   m_isActive: 0
   m_name: Invisible Trigger
   m_description: Detects when objects enter the trigger.
+  m_drawGizmos: 1
   spawnParent: {fileID: 0}
   m_canInteract: 1
   m_togglesOnce: 0
-  m_interactDelay: 0
   m_interactionFilter:
-  - Player
+  - PlayerModel
   - LevelObject
   m_activateEvents:
     m_PersistentCalls:
@@ -61,6 +61,9 @@ MonoBehaviour:
   m_deactivateEvents:
     m_PersistentCalls:
       m_Calls: []
+  m_soundClipCollectionName: 
+  m_activateSoundClipName: 
+  m_deactivateSoundClipName: 
 --- !u!65 &2546976418633969673
 BoxCollider:
   m_ObjectHideFlags: 0

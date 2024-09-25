@@ -6,16 +6,17 @@
 ///
 ///</summary>
 
-using Millivolt.Player.UI;
 using System.Collections;
 using UnityEngine;
 
 namespace Millivolt
 {
     using LevelObjects.HazardObjects;
+    using Level;
 
     namespace Player
     {
+        using UI;
 
         public class PlayerStatus : MonoBehaviour
         {
@@ -37,7 +38,8 @@ namespace Millivolt
 
             [Header("Hurt and Death effect references")]
             [Tooltip("This needs the screen effect material for the hurt effect")]
-            [SerializeField] private Material m_staticVignette;
+            //[SerializeField] private Material m_staticVignette;
+            [SerializeField] private ScreenShaderController m_screenShaderController;
 
             [Header("Knockback Properties")]
             [SerializeField] private float m_horizontalForce;
@@ -54,10 +56,11 @@ namespace Millivolt
             private void Start()
             {
                 m_currentHealth = m_maxHealth;
-                UpdateVignetteEffect();
                 //Theres no conversion to GameObject for some reason so I did a hold variable for now </3
                 PlayerDeathUI hold = (PlayerDeathUI)FindObjectOfType(typeof(PlayerDeathUI), true);
                 m_deathCanvas = hold.gameObject;
+                m_screenShaderController = GetComponent<ScreenShaderController>();
+                UpdateVignetteEffect();
             }
 
             private void OnDestroy()
@@ -77,34 +80,35 @@ namespace Millivolt
 
                 m_currentHealth -= value;
 
+
                 UpdateVignetteEffect();
 
                 m_regen = StartCoroutine(RegenHealth());
                 if (m_currentHealth <= 0)
                     Die();
+                else
+                    // play a damage sound effect
+                    SFXController.Instance.PlayRandomSoundClip("PlayerDamage", transform.parent);
             }
 
             /// <summary>
-            /// This will be called once the players health has hit 0, thiswill load the player to their last checkpoint and give them full health
+            /// This will be called once the player's health has hit 0, this will load the player to their last checkpoint and give them full health
             /// </summary>
             public void Die()
             {
-                Debug.Log("You are dead.");
+                ResetPlayer();
 
-                // LOGIC HERE
+                // play a death sound effect
+                SFXController.Instance.PlayRandomSoundClip("PlayerDamage", transform.parent);
+            }
+
+            public void ResetPlayer()
+            {
                 m_currentHealth = m_maxHealth;
                 UpdateVignetteEffect();
                 m_deathCanvas.SetActive(true);
-                Invoke(nameof(Respawn), m_respawnTime);
-            }
-
-            /// <summary>
-            /// Calls the levelmanager to respawn the player at the currently active checkpoint
-            /// </summary>
-            private void Respawn()
-            {
                 GameManager.PlayerController.canMove = false;
-                GameManager.LevelManager.SpawnPlayer();
+                LevelManager.Instance.Invoke(nameof(LevelManager.Instance.SpawnPlayer), m_respawnTime);
             }
 
             /// <summary>
@@ -124,7 +128,6 @@ namespace Millivolt
 
                 //Launch player upwards based on vertical force
                 GameManager.PlayerController.AddVerticalVelocity(m_verticalForce * -Physics.gravity.normalized);
-
             }
 
             public void ResetStatus()
@@ -158,10 +161,11 @@ namespace Millivolt
 
                 if (effectAmount > 0.1)
                 {
-                    m_staticVignette.SetFloat("_VignetteIntensity", effectAmount);
+                    //m_staticVignette.SetFloat("_VignetteIntensity", effectAmount);
+                    m_screenShaderController.UpdateShader("_VignetteIntensity", effectAmount);
                 }
                 else
-                    m_staticVignette.SetFloat("_VignetteIntensity", 0);
+                    m_screenShaderController.UpdateShader("_VignetteIntensity", 0);
             }
         }
     }

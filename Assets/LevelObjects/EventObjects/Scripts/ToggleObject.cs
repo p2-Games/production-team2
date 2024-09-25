@@ -5,6 +5,8 @@
 ///
 ///</summary>
 
+using UnityEngine;
+
 namespace Millivolt
 {
     namespace LevelObjects
@@ -12,7 +14,7 @@ namespace Millivolt
         namespace EventObjects
         {
             public class ToggleObject : EventObject
-            {
+            {               
                 public override void Interact()
                 {
                     base.Interact();
