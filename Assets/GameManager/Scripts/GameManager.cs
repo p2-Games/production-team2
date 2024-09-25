@@ -14,6 +14,7 @@ namespace Millivolt
     using Player;
     using UI;
 	using Level;
+    using UnityEditor;
 
 	public enum GameState
 	{
@@ -25,33 +26,44 @@ namespace Millivolt
 
 	public class GameManager : MonoBehaviour
 	{			
-		[SerializeField] private GameState m_gameState;
+        public static GameManager Instance { get; private set; }
 
-		[SerializeField] private UIMenu m_pauseMenu;
-		private UIMenu pauseMenu
-		{
-			get
-			{
-                if (!m_pauseMenu)
-				{
-					PauseMenu pm = (PauseMenu)FindObjectOfType(typeof(PauseMenu), true);
-                    m_pauseMenu = pm.GetComponent<UIMenu>();
-				}
-				return m_pauseMenu;
-            }
-        }
-
-		private string m_currentSceneName;
-
+		// Player object static references
 		public static PlayerController PlayerController { get; private set; }
 		public static PlayerInteraction PlayerInteraction { get; private set; }
         public static PlayerStatus PlayerStatus { get; private set; }
 		public static PlayerModel PlayerModel { get; private set; }
 
-        //Static reference
-        public static GameManager Instance { get; private set; }
+        private void Awake()
+        {
+			if (!Instance)
+				Instance = this;
+			else if (Instance != this)
+			{
+				Destroy(gameObject);
+				return;
+			}
+            DontDestroyOnLoad(gameObject);
+        }
 
-		public GameState gameState
+        // game state
+        [SerializeField] private GameState m_gameState;
+
+        [SerializeField] private UIMenu m_pauseMenu;
+        private UIMenu pauseMenu
+        {
+            get
+            {
+                if (!m_pauseMenu)
+                {
+                    PauseMenu pm = (PauseMenu)FindObjectOfType(typeof(PauseMenu), true);
+                    m_pauseMenu = pm.GetComponent<UIMenu>();
+                }
+                return m_pauseMenu;
+            }
+        }
+
+        public GameState gameState
 		{
 			get => m_gameState;
 			set
@@ -74,51 +86,6 @@ namespace Millivolt
             }
 		}
 
-        private void Awake()
-        {
-			if (!Instance)
-				Instance = this;
-			else if (Instance != this)
-			{
-				Destroy(gameObject);
-				return;
-			}
-            DontDestroyOnLoad(gameObject);
-        }
-
-        private void Start()
-        {
-            Reload();
-        }
-
-        private void Setup()
-		{
-			m_currentSceneName = SceneManager.GetActiveScene().name;
-
-			// get player references
-			Transform player = GameObject.FindWithTag("Player").transform.parent;
-			PlayerController = player.GetComponent<PlayerController>();
-			PlayerInteraction = player.GetComponentInChildren<PlayerInteraction>();
-			PlayerStatus = player.GetComponentInChildren<PlayerStatus>();
-			PlayerModel = player.GetComponentInChildren<PlayerModel>();
-		}
-
-        /// <summary>
-        /// Load the next level as set up in the current levels leveldata
-        /// </summary>
-        public void LoadNextLevel()
-		{
-			SceneManager.LoadScene(LevelManager.Instance.nextLevelName);
-		}
-
-        /// <summary>
-        /// Load the previous level as set up in the current levels leveldata
-        /// </summary>
-        public void LoadLastLevel()
-		{
-            SceneManager.LoadScene(LevelManager.Instance.prevLevelName);
-        }
-
 		public void PauseGame()
 		{
 			if (gameState != GameState.PAUSE)
@@ -133,24 +100,43 @@ namespace Millivolt
 			}
 		}
 
-		public void ChangeGravity(Vector3 value)
+        // level loading
+        private string m_currentSceneName;
+        private bool m_isLoading;
+
+		public bool isLoading => m_isLoading;
+
+        public void LevelSetup()
 		{
-			Physics.gravity = value;
-            PlayerModel.OnGravityChange();
+			// get player references
+			Transform player = FindObjectOfType<PlayerController>(true).transform;
+			player.gameObject.SetActive(true);
+
+			PlayerController = player.GetComponent<PlayerController>();
+			PlayerInteraction = player.GetComponentInChildren<PlayerInteraction>();
+			PlayerStatus = player.GetComponentInChildren<PlayerStatus>();
+			PlayerModel = player.GetComponentInChildren<PlayerModel>();
+
+            LevelManager.Instance.LevelSetup();
         }
-		public void ChangeGravity(Vector3 eulerDirection, float magnitude)
+
+		public void LoadScene(string sceneName)
 		{
-			ChangeGravity(Quaternion.Euler(eulerDirection) * Vector3.up * magnitude);
+			m_currentSceneName = sceneName;
+			UIMenuManager.Instance.ClearActiveMenus();
+			SceneManager.LoadScene(sceneName);
 		}
-		[ContextMenu("Reset Gravity")]
-		public void ResetGravity()
+
+        public void LoadLevel(string levelName)
 		{
-			ChangeGravity(LevelManager.Instance.levelData.gravityDirection, LevelManager.Instance.levelData.gravityMagnitude);
+			m_currentSceneName = levelName;
+			UIMenuManager.Instance.ClearActiveMenus();
+            StartCoroutine(LoadSceneAsync(levelName, LoadSceneMode.Single, false));
 		}
-		
+
         public void RestartLevel()
 		{
-			StartCoroutine(LoadAsyncScene(SceneManager.GetActiveScene().name));
+			StartCoroutine(ReloadCurrentScene());
         }
 
 		public void ExitToMenu()
@@ -161,27 +147,62 @@ namespace Millivolt
 
 		public void ExitGame()
 		{
-			Application.Quit();
-		}
+#if UNITY_EDITOR
+            EditorApplication.isPlaying = false;
+#else
+            Application.Quit();
+#endif
+        }
 
-		public void Reload()
+        public	IEnumerator LoadSceneAsync(string sceneName, LoadSceneMode loadSceneMode, bool doSetup)
 		{
-			Setup();
-			LevelManager.Instance.Reload();
-			EventSystemManager.Instance.Reload();
-		}
-
-		IEnumerator LoadAsyncScene(string sceneName)
-		{
-			AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
+			m_isLoading = true;
+			AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName, loadSceneMode);
 
 			while (!asyncLoad.isDone)
-			{
 				yield return null;
-			}
+			m_isLoading = false;
 
-			Reload();
+			if (doSetup)
+				LevelSetup();
 		}
-	}
-	
+
+		private IEnumerator UnloadSceneAsync(string sceneName)
+		{
+			UIMenuManager.Instance.ClearActiveMenus();
+
+            m_isLoading = true;
+			AsyncOperation asyncUnload = SceneManager.UnloadSceneAsync(sceneName, UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
+
+            while (!asyncUnload.isDone)
+                yield return null;
+			m_isLoading = false;
+        }
+
+		private IEnumerator ReloadCurrentScene()
+		{
+			StartCoroutine(UnloadSceneAsync(m_currentSceneName));
+			while (!m_isLoading)
+				yield return null;
+
+			StartCoroutine(LoadSceneAsync(m_currentSceneName, LoadSceneMode.Additive, true));
+        }
+
+		// gravity methods
+        public void ChangeGravity(Vector3 value)
+        {
+            Physics.gravity = value;
+            PlayerModel.OnGravityChange();
+        }
+        public void ChangeGravity(Vector3 eulerDirection, float magnitude)
+        {
+            ChangeGravity(Quaternion.Euler(eulerDirection) * Vector3.up * magnitude);
+        }
+        [ContextMenu("Reset Gravity")]
+        public void ResetGravity()
+        {
+            ChangeGravity(LevelManager.Instance.levelData.gravityDirection, LevelManager.Instance.levelData.gravityMagnitude);
+        }
+    }
+
 }

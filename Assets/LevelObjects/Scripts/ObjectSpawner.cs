@@ -26,6 +26,9 @@ namespace Millivolt
             "\nThis would be on Start if Object Can Spawn is true.")]
         [SerializeField] private bool m_spawnAtStart = false;
 
+        [Tooltip("If the pickup should automatically respawn when destroyed.")]
+        [SerializeField] private bool m_autoRespawn = false;
+
         private GameObject m_spawnedObject;
 
         private void Start()
@@ -36,7 +39,7 @@ namespace Millivolt
 
         private void Update()
         {
-            if (m_spawnAtStart && !m_spawnedObject && m_objectCanSpawn)
+            if (!m_spawnedObject && m_autoRespawn && m_objectCanSpawn)
                 SpawnObject();
         }
 

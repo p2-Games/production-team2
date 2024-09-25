@@ -14,7 +14,7 @@ namespace Millivolt
 	{
 		using EGL = EditorGUILayout;
 
-		[CustomEditor(typeof(LevelManager))]
+		//[CustomEditor(typeof(LevelManager))]
 		public class LevelManagerEditor : Editor
 		{
 			private SceneAsset m_prev, m_next;

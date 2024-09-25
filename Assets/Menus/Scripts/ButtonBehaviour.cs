@@ -18,6 +18,8 @@ namespace Millivolt
             [SerializeField] private GameObject m_selectIcon;
             [SerializeField] private Button m_buttonObj;
 
+            public Button button => m_buttonObj;
+
             private void Start()
             {
                 m_buttonObj = GetComponent<Button>();
