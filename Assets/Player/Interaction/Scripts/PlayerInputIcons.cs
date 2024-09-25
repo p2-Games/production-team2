@@ -20,10 +20,9 @@ namespace Millivolt
                 public static PlayerInputIcons Instance { get; private set; }
                 private void Awake()
                 {
-                    if (!Instance)
-                        Instance = this;
-                    else if (Instance != this)
-                        Destroy(gameObject);
+                    if (Instance)
+                        Destroy(Instance.gameObject);
+                    Instance = this;
 
                     DontDestroyOnLoad(gameObject);
                 }
