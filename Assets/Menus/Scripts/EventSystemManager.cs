@@ -31,11 +31,11 @@ namespace Millivolt
 
             private void Start()
             {
-                eventSystem = GetComponentInChildren<EventSystem>();
+                m_eventSystem = GetComponentInChildren<EventSystem>();
             }
 
             [Header("Component References")]
-            public EventSystem eventSystem;
+            [SerializeField] private EventSystem m_eventSystem;
 
             /// <summary>
             /// Set's the event system's currently selected game object for UI
@@ -43,15 +43,10 @@ namespace Millivolt
             /// <param name="newSelectedObject"></param>
             public void SetCurrentSelectedGameObject(GameObject newSelectedObject)
             {
-                eventSystem.SetSelectedGameObject(newSelectedObject);
+                m_eventSystem.SetSelectedGameObject(newSelectedObject);
                 Button newSelectable = newSelectedObject.GetComponent<Button>();
                 newSelectable.Select();
                 newSelectable.OnSelect(null);
-            }
-
-            public void Reload()
-            {
-                Start();
             }
         }
     }
