@@ -19,7 +19,6 @@ namespace Millivolt
 
         [Header("Menu")]
         [SerializeField] private ButtonBehaviour[] m_mainButtons;
-        [SerializeField] private GameObject m_exitAnim;
 
         [SerializeField] private GameObject m_menu;
         [SerializeField] private GameObject m_bg;

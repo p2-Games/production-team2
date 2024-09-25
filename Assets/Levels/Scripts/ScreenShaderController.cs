@@ -15,15 +15,11 @@ namespace Millivolt
 	public class ScreenShaderController : MonoBehaviour
 	{
 		[SerializeField] private UniversalRendererData m_renderData = null;
-		[SerializeField] private string m_shaderName = null;
-		public string ShaderName => m_shaderName;
-
-		[SerializeField] private string m_shaderFloat;
-		public string ShaderFloat => m_shaderFloat;
-
-		private Material m_holdMat;
-
 		[SerializeField] private Material m_shaderMat;
+		[SerializeField] private string m_shaderName = null;
+		
+		private string m_shaderFloat;
+		private Material m_holdMat;
 
 		private bool TryGetFeature(out ScriptableRendererFeature feature)
 		{
