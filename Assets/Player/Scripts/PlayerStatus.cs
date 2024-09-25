@@ -40,6 +40,7 @@ namespace Millivolt
             [Tooltip("This needs the screen effect material for the hurt effect")]
             //[SerializeField] private Material m_staticVignette;
             [SerializeField] private ScreenShaderController m_screenShaderController;
+            [SerializeField] private GameObject m_spawnScreenEffect;
 
             [Header("Knockback Properties")]
             [SerializeField] private float m_horizontalForce;
@@ -108,6 +109,7 @@ namespace Millivolt
                 UpdateVignetteEffect();
                 m_deathCanvas.SetActive(true);
                 GameManager.PlayerController.canMove = false;
+                m_spawnScreenEffect.SetActive(true);
                 LevelManager.Instance.Invoke(nameof(LevelManager.Instance.SpawnPlayer), m_respawnTime);
             }
 

@@ -24,24 +24,14 @@ namespace Millivolt
 				Instance = this;
 			}
 
-			[Header("Scene Properties")]
-			[HideInInspector, SerializeField] private string m_prevLevelName;
-			[HideInInspector, SerializeField] private string m_nextLevelName;
-
-			public string prevLevelName => m_prevLevelName;
-			public string nextLevelName => m_nextLevelName;
-
 			[SerializeField] public int activeCheckpointIndex;
-			[SerializeField] private List<Checkpoint> m_levelCheckpoints;
+			private List<Checkpoint> m_levelCheckpoints;
 
 			public Checkpoint activeCheckpoint { get { return m_levelCheckpoints[activeCheckpointIndex]; } }
 
 			// Level Data
 			[SerializeField] private LevelData m_levelData;
 			public LevelData levelData => m_levelData;
-
-			//Spawn screen ref
-			[SerializeField] private GameObject m_spawnScreen;
 
 			/// <summary>
 			/// Will search through the level for any checkpoints and add them to the array
@@ -75,8 +65,6 @@ namespace Millivolt
 
 			public void SpawnPlayer()
 			{
-				m_spawnScreen.SetActive(true);
-
 				GameManager.PlayerController.ResetPlayer();
 				GameManager.PlayerModel.ResetRotation();
 				GameManager.PlayerInteraction.ResetInteraction();
@@ -91,10 +79,9 @@ namespace Millivolt
 				InitialiseCheckpoints();
 			}
 
-			public void Reload()
+			public void LevelSetup()
 			{
-                if (m_levelCheckpoints.Count == 0)
-                    FindAllCheckpoints();
+                FindAllCheckpoints();
                 InitialiseCheckpoints();
                 SpawnPlayer();
             }

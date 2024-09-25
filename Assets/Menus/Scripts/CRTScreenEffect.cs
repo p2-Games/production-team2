@@ -15,11 +15,11 @@ namespace Millivolt
     {
         namespace UI
         {
-	        public class PlayerDeathUI : MonoBehaviour
-	        {
-		        [SerializeField] private Image m_shrinkScreen;
+            public class CRTScreenEffect : MonoBehaviour
+            {
+                [SerializeField] private Image m_shrinkScreen;
 
-		        private float m_delay;
+                private float m_delay;
 
                 private float m_disableDelay;
 
@@ -39,9 +39,6 @@ namespace Millivolt
                     Tween.Size(m_shrinkScreen.rectTransform, m_shrinkScreen.rectTransform.sizeDelta, finalShrinksize, 0.2f, m_delay, Tween.EaseInOutStrong, Tween.LoopType.None, null, null, false);
 
                     m_disableDelay += 1f;
-                    //Destroy(gameObject, 1f);
-
-                    Invoke(nameof(DisableThis), m_disableDelay);
                 }
 
                 private void DisableThis()
