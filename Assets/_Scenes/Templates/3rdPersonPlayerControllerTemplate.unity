@@ -123,18 +123,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!134 &109066516
-PhysicMaterial:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: DynamicMaterial
-  dynamicFriction: 0
-  staticFriction: 0
-  bounciness: 0
-  frictionCombine: 1
-  bounceCombine: 1
 --- !u!1001 &414809068
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -461,7 +449,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Material
       value: 
-      objectReference: {fileID: 109066516}
+      objectReference: {fileID: 1982914802}
     - target: {fileID: 6821388206902358153, guid: ff2eab9ba8148954697e7c7ccf1e9783,
         type: 3}
       propertyPath: m_RootOrder
@@ -2038,66 +2026,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: PauseMenuCanvas
       objectReference: {fileID: 0}
-    - target: {fileID: 372460934407212412, guid: 91e3f48e175d3fa4f806bea570ca1fa1,
-        type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-    - target: {fileID: 372460934407212415, guid: 91e3f48e175d3fa4f806bea570ca1fa1,
-        type: 3}
-      propertyPath: m_Colors.m_SelectedColor.a
-      value: 0.54901963
-      objectReference: {fileID: 0}
-    - target: {fileID: 372460934407212415, guid: 91e3f48e175d3fa4f806bea570ca1fa1,
-        type: 3}
-      propertyPath: m_Colors.m_HighlightedColor.a
-      value: 0.54901963
-      objectReference: {fileID: 0}
-    - target: {fileID: 372460934921199284, guid: 91e3f48e175d3fa4f806bea570ca1fa1,
-        type: 3}
-      propertyPath: m_Colors.m_SelectedColor.a
-      value: 0.54901963
-      objectReference: {fileID: 0}
-    - target: {fileID: 372460934921199284, guid: 91e3f48e175d3fa4f806bea570ca1fa1,
-        type: 3}
-      propertyPath: m_Colors.m_HighlightedColor.a
-      value: 0.54901963
-      objectReference: {fileID: 0}
-    - target: {fileID: 372460934921199285, guid: 91e3f48e175d3fa4f806bea570ca1fa1,
-        type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-    - target: {fileID: 372460935070773194, guid: 91e3f48e175d3fa4f806bea570ca1fa1,
-        type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-    - target: {fileID: 372460935070773237, guid: 91e3f48e175d3fa4f806bea570ca1fa1,
-        type: 3}
-      propertyPath: m_Colors.m_SelectedColor.a
-      value: 0.54901963
-      objectReference: {fileID: 0}
-    - target: {fileID: 372460935070773237, guid: 91e3f48e175d3fa4f806bea570ca1fa1,
-        type: 3}
-      propertyPath: m_Colors.m_HighlightedColor.a
-      value: 0.54901963
-      objectReference: {fileID: 0}
-    - target: {fileID: 2668174095231238555, guid: 91e3f48e175d3fa4f806bea570ca1fa1,
-        type: 3}
-      propertyPath: m_Colors.m_SelectedColor.a
-      value: 0.54901963
-      objectReference: {fileID: 0}
-    - target: {fileID: 2668174095231238555, guid: 91e3f48e175d3fa4f806bea570ca1fa1,
-        type: 3}
-      propertyPath: m_Colors.m_HighlightedColor.a
-      value: 0.54901963
-      objectReference: {fileID: 0}
-    - target: {fileID: 5882375064311642769, guid: 91e3f48e175d3fa4f806bea570ca1fa1,
-        type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 91e3f48e175d3fa4f806bea570ca1fa1, type: 3}
 --- !u!114 &1736106870 stripped
@@ -2240,6 +2168,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 985219edccb029d41b0c6fb337c311f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!134 &1982914802
+PhysicMaterial:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: DynamicMaterial
+  dynamicFriction: 0
+  staticFriction: 0
+  bounciness: 0
+  frictionCombine: 1
+  bounceCombine: 1
 --- !u!1001 &2129953959
 PrefabInstance:
   m_ObjectHideFlags: 0
