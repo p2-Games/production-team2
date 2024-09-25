@@ -72,8 +72,8 @@ namespace Millivolt
                     if (!m_objectToLaunch && CanTrigger(other.gameObject))
                     {
                         m_newObjectPosition = transform.position;
-                        m_newObjectPosition.y += other.gameObject.GetComponent<Collider>().bounds.extents.y;
-                        m_objectToLaunch = other.gameObject.GetComponent<Rigidbody>();
+                        m_newObjectPosition += other.gameObject.GetComponent<Collider>().bounds.extents.y * -Physics.gravity.normalized;
+                        m_objectToLaunch = other.attachedRigidbody;
                     }
                 }
 

@@ -34,7 +34,7 @@ namespace Millivolt
 
             private void OnTriggerEnter(Collider other)
             {
-				if (other.CompareTag("Player") && m_checkpointID != LevelManager.Instance.activeCheckpoint)
+				if (other.CompareTag("Player") && m_checkpointID != LevelManager.Instance.activeCheckpointIndex)
 				{
 					SetActiveCheckpoint();
 				}
@@ -42,7 +42,7 @@ namespace Millivolt
 
 			public void SetActiveCheckpoint()
 			{
-                LevelManager.Instance.activeCheckpoint = m_checkpointID;
+                LevelManager.Instance.activeCheckpointIndex = m_checkpointID;
             }
         }
 	}
