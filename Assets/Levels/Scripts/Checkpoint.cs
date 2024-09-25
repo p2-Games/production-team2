@@ -43,7 +43,6 @@ namespace Millivolt
 			public void SetActiveCheckpoint()
 			{
 				LevelManager.Instance.activeCheckpointIndex = m_checkpointID;
-				print("Active checkpoint is:" +  LevelManager.Instance.activeCheckpointIndex);
             }
         }
 	}
