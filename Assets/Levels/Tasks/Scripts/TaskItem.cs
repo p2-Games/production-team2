@@ -47,7 +47,8 @@ namespace Millivolt
 			public void CompleteTask()
 			{
 				m_toggle.isOn = true;
-				m_events.Invoke();
+                m_toggle.GetComponentInChildren<TextMeshProUGUI>().text = "<s>" + m_name + "</s>";
+                m_events.Invoke();
 				if (m_taskParent)
 					m_taskParent.CompleteSubtask();
 			}

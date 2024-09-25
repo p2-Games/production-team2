@@ -1,7 +1,7 @@
 ///<summary>
 /// Author: Emily
 ///
-///
+/// Script that handles the behaviour of the buttons
 ///
 ///</summary>
 
@@ -25,6 +25,7 @@ namespace Millivolt
 
             public void ActivateButton()
             {
+                m_buttonObj = GetComponent<Button>();
                 m_selectIcon.SetActive(true);
                 m_buttonObj.Select();
             }

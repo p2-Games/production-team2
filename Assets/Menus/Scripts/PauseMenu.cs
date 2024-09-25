@@ -49,7 +49,7 @@ namespace Millivolt
             public void ResetToCheckpoint()
             {
                 GameManager.Instance.PauseGame();
-                GameManager.PlayerStatus.ResetPlayer();
+                GameManager.PlayerStatus.Die();
             }
 
             public void RestartLevel()
