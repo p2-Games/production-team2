@@ -7,6 +7,7 @@
 
 using Millivolt.UI;
 using Pixelplacement;
+using System.Collections;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
@@ -26,12 +27,24 @@ namespace Millivolt
         [Header("Level Select")]
         [SerializeField] private GameObject m_levelSelector;
         [SerializeField] private Button[] m_levelButtons;
+        [SerializeField] private float m_levelLoadDelay = 0.5f;
 
         private void Start()
         {
             UIMenu menu = GetComponent<UIMenu>();
             menu.ActivateMenu();
             SetActiveButton(m_selectedButton);
+        }
+
+        public void LoadFromLevelSelect(string levelName)
+        {
+            StartCoroutine(LoadLevelOnDelay(levelName));
+        }
+
+        private IEnumerator LoadLevelOnDelay(string levelName)
+        {
+            yield return new WaitForSecondsRealtime(m_levelLoadDelay);
+            GameManager.Instance.LoadLevel(levelName);
         }
 
         public void SetActiveButton(int index)
