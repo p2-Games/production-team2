@@ -28,6 +28,7 @@ namespace Millivolt
 			private List<Checkpoint> m_levelCheckpoints;
 
 			public Checkpoint activeCheckpoint { get { return m_levelCheckpoints[activeCheckpointIndex]; } }
+			public int checkpointCount { get { return m_levelCheckpoints.Count; } }
 
 			// Level Data
 			[SerializeField] private LevelData m_levelData;
@@ -77,6 +78,17 @@ namespace Millivolt
 
                 FindAllCheckpoints();
 				InitialiseCheckpoints();
+			}
+
+			public Checkpoint GetCheckpoint(int index)
+			{
+				if (index < 0 || index >= m_levelCheckpoints.Count)
+				{
+					Debug.LogError("Checkpoint at index " + index + " does not exist.");
+					return null;
+				}
+
+				return m_levelCheckpoints[index];
 			}
 
 			public void LevelSetup()
