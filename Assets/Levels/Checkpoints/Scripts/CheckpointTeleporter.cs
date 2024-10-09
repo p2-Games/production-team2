@@ -42,6 +42,8 @@ namespace Millivolt
                         button.SetActive(false);
                     }
                 }
+
+                m_buttonTransform.gameObject.SetActive(false);
             }
 
             public bool CheckpointIsUnlocked(int index)
@@ -56,6 +58,7 @@ namespace Millivolt
             
             public void TeleportToCheckpoint(int index)
             {
+                SetDisplayActive(false);
                 LevelManager.Instance.GetCheckpoint(index).SetActiveCheckpoint();
                 GameManager.PlayerStatus.Die();
             }
@@ -73,6 +76,12 @@ namespace Millivolt
             private void AddButtonListener(Button button, int param)
             {
                 button.onClick.AddListener(() => TeleportToCheckpoint(param));
+            }
+
+            public void SetDisplayActive(bool value)
+            {
+                if (m_buttonTransform.gameObject.activeSelf != value)
+                    m_buttonTransform.gameObject.SetActive(value);
             }
         }
     }
