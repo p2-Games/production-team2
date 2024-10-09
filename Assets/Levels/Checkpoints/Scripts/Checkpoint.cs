@@ -19,9 +19,12 @@ namespace Millivolt
             [SerializeField] private int m_checkpointID;
             public int checkpointID { get => m_checkpointID; }
 
+			private CheckpointTeleporter m_teleporter;
+
 			public void Initialise(int id)
 			{
 				m_checkpointID = id;
+				m_teleporter = transform.parent.GetComponent<CheckpointTeleporter>();
 			}
 
             private void OnEnable()
@@ -43,6 +46,10 @@ namespace Millivolt
 			public void SetActiveCheckpoint()
 			{
 				LevelManager.Instance.activeCheckpointIndex = m_checkpointID;
+
+				// if checkpoint is not unlocked for the teleporter, then unlock it
+				if (!m_teleporter.CheckpointIsUnlocked(m_checkpointID))
+					m_teleporter.UnlockCheckpoint(m_checkpointID);
             }
         }
 	}
