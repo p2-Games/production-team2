@@ -43,7 +43,12 @@ namespace Millivolt
 				}
             }
 
-			public void SetActiveCheckpoint()
+            private void OnTriggerExit(Collider other)
+            {
+                m_teleporter.SetDisplayActive(false);
+            }
+
+            public void SetActiveCheckpoint()
 			{
 				LevelManager.Instance.activeCheckpointIndex = m_checkpointID;
 
@@ -51,6 +56,11 @@ namespace Millivolt
 				if (!m_teleporter.CheckpointIsUnlocked(m_checkpointID))
 					m_teleporter.UnlockCheckpoint(m_checkpointID);
             }
+
+			public void Interact()
+			{
+				m_teleporter.SetDisplayActive(true);
+			}
         }
 	}
 }
