@@ -72,7 +72,7 @@ namespace Millivolt
 
             private IEnumerator RotateWithGravity(Quaternion targetAngle)
             {
-                GameManager.PlayerController.canMove = false;
+                GameManager.PlayerController.SetCanMove(false, CanMoveType.Gravity);
 
                 //transform.rotation = transform.localRotation;
                 Quaternion startAngle = transform.rotation;
@@ -86,7 +86,7 @@ namespace Millivolt
                     yield return new WaitForEndOfFrame();
                 }
 
-                GameManager.PlayerController.canMove = true;
+                GameManager.PlayerController.SetCanMove(true, CanMoveType.Gravity);
             }
 
             public void ResetRotation()
