@@ -5,8 +5,11 @@
 ///
 ///</summary>
 
+using Millivolt.UI;
 using TMPro;
+using UnityEditor.Events;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace Millivolt
@@ -19,6 +22,10 @@ namespace Millivolt
             [SerializeField] private Button m_buttonPrefab;
             [SerializeField] private bool m_checkpointsStartUnlocked = false;
             private bool[] m_unlockedCheckpoints;
+
+            [SerializeField] private UIMenu m_containerUI;
+
+            private int m_selectedButton;
 
             public void Start()
             {
@@ -43,7 +50,8 @@ namespace Millivolt
                     }
                 }
 
-                m_buttonTransform.gameObject.SetActive(false);
+                m_containerUI.gameObject.SetActive(false);
+                //m_buttonTransform.gameObject.SetActive(false);
             }
 
             public bool CheckpointIsUnlocked(int index)
@@ -73,15 +81,41 @@ namespace Millivolt
                 }
             }
 
+            public void SetActiveButton(int index)
+            {
+                m_selectedButton = index;
+                for (int d = 0; d < m_buttonTransform.childCount; d++)
+                {
+                    if (d == m_selectedButton)
+                        m_buttonTransform.GetChild(d).GetComponent<ButtonBehaviour>().ActivateButton();
+                    else
+                        m_buttonTransform.GetChild(d).GetComponent<ButtonBehaviour>().DeactivateButton();
+                }
+            }
+
             private void AddButtonListener(Button button, int param)
             {
                 button.onClick.AddListener(() => TeleportToCheckpoint(param));
+
+                EventTrigger trigger = GetComponentInParent<EventTrigger>();
+                EventTrigger.Entry entry = new EventTrigger.Entry();
+                entry.eventID = EventTriggerType.PointerClick;
+                entry.callback.AddListener((eventData) => { SetActiveButton(param); });
+                //trigger.delegates.Add(entry);
             }
 
             public void SetDisplayActive(bool value)
             {
-                if (m_buttonTransform.gameObject.activeSelf != value)
-                    m_buttonTransform.gameObject.SetActive(value);
+                //if (m_buttonTransform.gameObject.activeSelf != value)
+                //m_buttonTransform.gameObject.SetActive(value);
+
+                if (value)
+                {
+                    m_containerUI.firstSelected = m_buttonTransform.transform.GetChild(0).gameObject;
+                    m_containerUI.ActivateMenu();
+                }
+                else
+                    m_containerUI.DeactivateMenu();
             }
         }
     }
