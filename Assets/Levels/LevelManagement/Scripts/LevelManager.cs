@@ -27,7 +27,11 @@ namespace Millivolt
 			[SerializeField] public int activeCheckpointIndex;
 			private List<Checkpoint> m_levelCheckpoints;
 
-			public Checkpoint activeCheckpoint { get { return m_levelCheckpoints[activeCheckpointIndex]; } }
+            //Bool to check if its the first time loading into the level
+            private bool m_firstCheckpointInit = true;
+
+            public Checkpoint activeCheckpoint { get { return m_levelCheckpoints[activeCheckpointIndex]; } }
+			public int checkpointCount { get { return m_levelCheckpoints.Count; } }
 
 			// Level Data
 			[SerializeField] private LevelData m_levelData;
@@ -73,10 +77,25 @@ namespace Millivolt
                 GameManager.Instance.ChangeGravity(levelData.gravityDirection, levelData.gravityMagnitude);
 
 				GameManager.PlayerController.transform.position = m_levelCheckpoints[activeCheckpointIndex].respawnPoint.position;
-				//GameManager.PlayerModel.transform.rotation = Quaternion.LookRotation(activeCheckpoint.transform.forward, -Physics.gravity.normalized);
+                //GameManager.PlayerModel.transform.rotation = Quaternion.LookRotation(activeCheckpoint.transform.forward, -Physics.gravity.normalized);
 
-                FindAllCheckpoints();
-				InitialiseCheckpoints();
+                if (m_firstCheckpointInit)
+                {
+                    FindAllCheckpoints();
+                    InitialiseCheckpoints();
+                    m_firstCheckpointInit = false;
+                }
+			}
+
+			public Checkpoint GetCheckpoint(int index)
+			{
+				if (index < 0 || index >= m_levelCheckpoints.Count)
+				{
+					Debug.LogError("Checkpoint at index " + index + " does not exist.");
+					return null;
+				}
+
+				return m_levelCheckpoints[index];
 			}
 
 			public void LevelSetup()

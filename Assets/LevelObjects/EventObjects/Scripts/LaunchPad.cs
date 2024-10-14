@@ -40,7 +40,7 @@ namespace Millivolt
                         if (GameManager.PlayerController.gameObject == m_objectToLaunch.gameObject)
                         {
                             GameManager.PlayerController.SetExternalVelocity(m_initialVelocity);
-                            GameManager.PlayerController.canMove = false;
+                            GameManager.PlayerController.SetCanMove(false, Player.CanMoveType.LevelObject);
                         }
                         else
                             m_objectToLaunch.velocity = m_initialVelocity;
