@@ -108,7 +108,7 @@ namespace Millivolt
                 m_currentHealth = m_maxHealth;
                 UpdateVignetteEffect();
                 m_deathCanvas.SetActive(true);
-                GameManager.PlayerController.canMove = false;
+                GameManager.PlayerController.SetCanMove(false, CanMoveType.Dead);
                 m_spawnScreenEffect.SetActive(true);
                 LevelManager.Instance.Invoke(nameof(LevelManager.Instance.SpawnPlayer), m_respawnTime);
             }
