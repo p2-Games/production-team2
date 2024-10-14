@@ -22,7 +22,7 @@ namespace Millivolt
 
 				private void Plant()
 				{
-					GameManager.PlayerController.canMove = !m_inUse;
+					GameManager.PlayerController.SetCanMove(!m_inUse, Player.CanMoveType.HeldObject);
 				}
             }
 		}

@@ -16,6 +16,11 @@ namespace Millivolt
         [RequireComponent(typeof(Rigidbody), typeof(PlayerInput))]
         public class PlayerController : MonoBehaviour
         {
+            private void Start()
+            {
+                m_canMove = new PlayerCanMove();
+            }
+
             private void FixedUpdate()
             {
                 MovePlayer();
@@ -43,6 +48,13 @@ namespace Millivolt
                 }
             }
 
+            private PlayerCanMove m_canMove;
+            public bool canMove { get { return m_canMove.canMove; } }
+            public void SetCanMove(bool value, CanMoveType type)
+            {
+                m_canMove.SetCanMove(value, type);
+            }
+
             [Header("Physics")]
             [Tooltip("The layers of objects that the CharacterController can interact with.")]
             [SerializeField] private LayerMask m_walkableLayers;
@@ -57,7 +69,6 @@ namespace Millivolt
                     return m_rb;
                 }
             }
-
             new public CapsuleCollider collider { get { return model.collider; } }
 
             [ContextMenu("Initialise GameManager.PlayerModel/Collider")]
@@ -85,8 +96,6 @@ namespace Millivolt
             [SerializeField] private float m_acceleration;
             [SerializeField] private float m_decceleration;
             [SerializeField, Range(0, 90)] private float m_slopeLimit;
-
-            public bool canMove = true;
 
             private Vector2 m_moveInput;
             private Vector3 m_walkVelocity;
@@ -267,7 +276,7 @@ namespace Millivolt
                             if (m_externalVelocity != Vector3.zero)
                             {
                                 m_externalVelocity = Vector3.zero;
-                                canMove = true;
+                                SetCanMove(true, CanMoveType.LevelObject);
                             }
                         }
 
