@@ -400,6 +400,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 533785080986299010, guid: 114f0aac45558d34a974b052bc00f8f1,
+        type: 3}
+      propertyPath: m_clipCollections.Array.data[2].m_soundClips.Array.data[0].m_volume
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1406492273165564207, guid: 114f0aac45558d34a974b052bc00f8f1,
         type: 3}
       propertyPath: m_RootOrder
@@ -1245,11 +1250,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 153493580}
+  soundClipCollection:
+    m_collectionName: 
+    m_soundClips: []
   place: {fileID: 2003614536}
   collectionToPlay: Footsteps
   clipToPlay: Footstep1
-  soundCollectionName: {fileID: 208534405}
-  soundName: {fileID: 14421173}
+  SoundGroupNameText: {fileID: 208534405}
+  SoundNameText: {fileID: 14421173}
 --- !u!4 &2003614536
 Transform:
   m_ObjectHideFlags: 0
