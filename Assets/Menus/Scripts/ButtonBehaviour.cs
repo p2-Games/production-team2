@@ -28,13 +28,15 @@ namespace Millivolt
             public void ActivateButton()
             {
                 m_buttonObj = GetComponent<Button>();
-                m_selectIcon.SetActive(true);
+                if (m_selectIcon)
+                    m_selectIcon.SetActive(true);
                 m_buttonObj.Select();
             }
 
             public void DeactivateButton()
             {
-                m_selectIcon.SetActive(false);
+                if (m_selectIcon)
+                    m_selectIcon.SetActive(false);
             }
         }
     }

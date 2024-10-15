@@ -27,9 +27,15 @@ namespace Millivolt
 			public bool hideOnInactive => m_hideOnInactive;
 
             [SerializeField] private bool m_interactable = true;
+            public bool interactable => m_interactable;
 
             [Header("")]
             [SerializeField] private GameObject m_firstSelected;
+            public GameObject firstSelected
+            {
+                get => m_firstSelected;
+                set { m_firstSelected = value; }
+            }
 
             Vector2 m_screenScale
             {
@@ -100,6 +106,7 @@ namespace Millivolt
                 ActivateAnimation();
                 if (m_interactable)
                 {
+                    //GameManager.PlayerController.SetCanMove(false, Player.CanMoveType.Menu);
                     EventSystemManager esm = FindObjectOfType<EventSystemManager>();
                     esm.SetCurrentSelectedGameObject(m_firstSelected);
                 }
@@ -114,6 +121,7 @@ namespace Millivolt
                 UIMenuManager.Instance.activeMenus.Remove(this);
                 UIMenuManager.Instance.SetActiveMenu();
                 UIMenuManager.Instance.CursorLockupdate();
+                //GameManager.PlayerController.SetCanMove(true, Player.CanMoveType.Menu);
                 DeactivateAnimation();
                 m_isActive = false;
             }
