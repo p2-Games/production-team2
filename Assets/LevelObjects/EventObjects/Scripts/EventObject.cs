@@ -27,16 +27,26 @@ namespace Millivolt
                             m_activateEvents.Invoke();
 
                             // play sound effect
-                            if (m_soundClipCollectionName != string.Empty && m_activateSoundClipName != string.Empty)
-                                SFXController.Instance.PlaySoundClip(m_soundClipCollectionName, m_activateSoundClipName, transform);
+                            if (m_soundClipCollectionName != string.Empty)
+                            { 
+                                if (m_activateSoundClipName != string.Empty)
+                                    SFXController.Instance.PlaySoundClip(m_soundClipCollectionName, m_activateSoundClipName, transform);
+                                else
+                                    SFXController.Instance.PlayRandomSoundClip(m_soundClipCollectionName, transform);
+                            }
                         }
                         else
                         {
                             m_deactivateEvents.Invoke();
 
                             // play sound effect
-                            if (m_soundClipCollectionName != string.Empty && m_deactivateSoundClipName != string.Empty)
-                                SFXController.Instance.PlaySoundClip(m_soundClipCollectionName, m_deactivateSoundClipName, transform);
+                            if (m_soundClipCollectionName != string.Empty)
+                            { 
+                                if (m_deactivateSoundClipName != string.Empty)
+                                    SFXController.Instance.PlaySoundClip(m_soundClipCollectionName, m_deactivateSoundClipName, transform);
+                                else
+                                    SFXController.Instance.PlayRandomSoundClip(m_soundClipCollectionName, transform);
+                            }
                         }
 
                         if (m_togglesOnce)
