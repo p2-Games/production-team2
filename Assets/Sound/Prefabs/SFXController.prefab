@@ -65,7 +65,7 @@ MonoBehaviour:
     m_soundClips:
     - m_clipName: Death
       m_audioClip: {fileID: 8300000, guid: 7fab0c4f196795e46bb09cec1d48f5dd, type: 3}
-      m_volume: 1
+      m_volume: 0.75
       m_range: 10
       m_loop: 0
   - m_collectionName: Door
@@ -157,7 +157,7 @@ MonoBehaviour:
       m_loop: 0
   - m_collectionName: PlayerDamage
     m_soundClips:
-    - m_clipName: PlayerHurt1
+    - m_clipName: PlayerHurt
       m_audioClip: {fileID: 8300000, guid: 1bcf26ee708b80744a405c28a303e0d8, type: 3}
       m_volume: 0.75
       m_range: 10
@@ -172,7 +172,7 @@ MonoBehaviour:
       m_volume: 0.75
       m_range: 10
       m_loop: 0
-  - m_collectionName: PressurePlates
+  - m_collectionName: PressurePlate
     m_soundClips:
     - m_clipName: PlateOn
       m_audioClip: {fileID: 8300000, guid: 572acc019f970e740aefd819e59d4403, type: 3}
@@ -192,7 +192,7 @@ MonoBehaviour:
       m_range: 10
       m_loop: 0
     - m_clipName: ScrewDrop2
-      m_audioClip: {fileID: 8300000, guid: 2640150de70caad4facb31f6c03ddbe1, type: 3}
+      m_audioClip: {fileID: 8300000, guid: 62f71005814b1d648b48fc818bd0b608, type: 3}
       m_volume: 0.5
       m_range: 10
       m_loop: 0
@@ -218,10 +218,17 @@ MonoBehaviour:
       m_volume: 0.75
       m_range: 10
       m_loop: 0
-  - m_collectionName: ScrewSocket
+  - m_collectionName: ScrewInsert
     m_soundClips:
     - m_clipName: ScrewInsert
       m_audioClip: {fileID: 8300000, guid: 23335f723dd64e540a2c073226574e85, type: 3}
+      m_volume: 0.75
+      m_range: 10
+      m_loop: 0
+  - m_collectionName: Music
+    m_soundClips:
+    - m_clipName: Menu
+      m_audioClip: {fileID: 8300000, guid: 1ff56899f5f65744babfde407ee5b10e, type: 3}
       m_volume: 0.75
       m_range: 10
       m_loop: 0

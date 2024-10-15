@@ -19,7 +19,7 @@ namespace Millivolt
                 Immovable
             }
 
-            [RequireComponent(typeof(Rigidbody), typeof(Collider))]
+            [RequireComponent(typeof(Rigidbody))]
             public class PickupObject : LevelObject
             {
                 [Header("Pickup Object Details")]
