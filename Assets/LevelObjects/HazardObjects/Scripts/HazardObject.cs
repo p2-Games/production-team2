@@ -31,6 +31,9 @@ namespace Millivolt
                 {
                     GameObject player = GameObject.FindGameObjectWithTag("Player");
 
+                    if (!player)
+                        return;
+
                     Vector3 closestPoint = gameObject.GetComponent<Collider>().ClosestPoint(player.transform.position);
 
                     Vector3 dir = (player.transform.position - closestPoint).normalized;

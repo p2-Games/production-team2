@@ -12,9 +12,9 @@ namespace Millivolt
 	namespace LevelObjects
 	{
 		using EventObjects;
-		using PickupObjects;
+        using Millivolt.Level;
+        using PickupObjects;
 
-		[RequireComponent(typeof(LevelObject))]
         public class Interactable : MonoBehaviour
 		{
 			[Tooltip("How long in seconds it takes for an object to be able to be interacted with again after being interacted with.")]
@@ -37,8 +37,7 @@ namespace Millivolt
 						return pickupObject.playerCanGrab;
                     }
 
-					Debug.LogError("The Interactable component on " + name + " does not have an EventObject or PickupObject.");
-					return false;
+					return true;
                 }
 			}
 
@@ -63,7 +62,13 @@ namespace Millivolt
 					m_interactTimer = 0;
                     return;
 				}
-			}
+
+				Checkpoint checkpoint = GetComponent<Checkpoint>();
+                if (checkpoint)
+                {
+                    checkpoint.Interact();
+                }
+            }
 
 			protected virtual void Update()
 			{

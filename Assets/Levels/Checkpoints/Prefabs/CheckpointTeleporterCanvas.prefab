@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1895482760118047435}
   - component: {fileID: 1895482760118047428}
   - component: {fileID: 1895482760118047429}
+  - component: {fileID: 6778975687642954480}
   m_Layer: 5
   m_Name: CheckpointTeleporterCanvas
   m_TagString: Untagged
@@ -101,6 +102,34 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &6778975687642954480
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1895482760118047430}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72bc3ec8eff614946a7812c3984a6740, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_hideOnInactive: 0
+  m_interactable: 1
+  m_firstSelected: {fileID: 0}
+  m_enableTweening: 1
+  m_tweenEnableStartX: 0.5
+  m_tweenEnableStartY: -1.5
+  m_tweenEnableEndX: 0.5
+  m_tweenEnableEndY: 0.5
+  m_enableTweenDuration: 0.5
+  m_enableTweenDelay: 0
+  m_tweenDisableEndX: 0.5
+  m_tweenDisableEndY: -1.5
+  m_disableTweenDuration: 0.5
+  m_disableTweenDelay: 0
+  m_drawTweenGizmos: 1
+  m_uiGroup: {fileID: 1895482760344442962}
 --- !u!1 &1895482760344442962
 GameObject:
   m_ObjectHideFlags: 0

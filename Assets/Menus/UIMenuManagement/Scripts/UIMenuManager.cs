@@ -42,7 +42,13 @@ namespace Millivolt
 							activeMenus[i].gameObject.SetActive(false);
 					}
 					else
+					{
                         activeMenus[0].GetComponent<GraphicRaycaster>().enabled = true; activeMenus[0].gameObject.SetActive(true);
+                        if (activeMenus[i].interactable)
+                        {
+                            EventSystemManager.Instance.SetCurrentSelectedGameObject(activeMenus[i].firstSelected);
+                        }
+                    }
                 }
 			}
 

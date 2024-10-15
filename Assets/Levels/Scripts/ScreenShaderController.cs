@@ -48,8 +48,8 @@ namespace Millivolt
 				blitScript.settings.blitMaterial = m_holdMat;
                 var material = blitScript.settings.blitMaterial;
 
-
-                material.SetFloat(floatName, value);
+				if(material)
+					material.SetFloat(floatName, value);
             }
 		}
 
