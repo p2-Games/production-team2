@@ -46,7 +46,7 @@ namespace Millivolt
             DontDestroyOnLoad(gameObject);
         }
 
-        // game state
+        // Game state
         [SerializeField] private GameState m_gameState;
 
         [SerializeField] private UIMenu m_pauseMenu;

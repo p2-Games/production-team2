@@ -9,6 +9,7 @@ using UnityEngine;
 
 namespace Millivolt
 {
+    using Millivolt.UI;
     using System.Collections.Generic;
     using UnityEditor;
 
@@ -77,7 +78,9 @@ namespace Millivolt
                 GameManager.Instance.ChangeGravity(levelData.gravityDirection, levelData.gravityMagnitude);
 
 				GameManager.PlayerController.transform.position = m_levelCheckpoints[activeCheckpointIndex].respawnPoint.position;
-                //GameManager.PlayerModel.transform.rotation = Quaternion.LookRotation(activeCheckpoint.transform.forward, -Physics.gravity.normalized);
+				//GameManager.PlayerModel.transform.rotation = Quaternion.LookRotation(activeCheckpoint.transform.forward, -Physics.gravity.normalized);
+
+				UIMenuManager.Instance.CursorLockupdate();
 
                 if (m_firstCheckpointInit)
                 {
