@@ -12,6 +12,7 @@ using UnityEngine.Events;
 using UnityEngine.UI;
 using Pixelplacement;
 using TMPro;
+using System.Linq;
 
 namespace Millivolt
 {
@@ -40,9 +41,19 @@ namespace Millivolt
 			[SerializeField] private string m_name;
 			[Tooltip("If this is a subtask assign its parent task here")]
 			[SerializeField] private TaskItem m_taskParent;
+			[Tooltip("If you dont want having all subtasks being complete to autocomplete the task then tick this")]
+			[SerializeField] private bool m_subtasksDontComplete;
+
+			//EVENTS
 			[Tooltip("Events are called when the task is completed")]
 			[SerializeField] private UnityEvent m_events;
 
+			private Vector2 m_orignalPos
+			{
+				get { return GetComponent<RectTransform>().sizeDelta; }
+			}
+
+			private CanvasGroup m_canvasGroup;
 
 			public void CompleteTask()
 			{
@@ -64,6 +75,7 @@ namespace Millivolt
 			{
 				m_taskParent = transform.parent.parent.parent.GetComponent<TaskItem>();
                 m_toggle.GetComponentInChildren<TextMeshProUGUI>().text = m_name;
+				m_canvasGroup = GetComponent<CanvasGroup>();
                 m_completedSubtasks = 0;
 				if (m_subtasks)
 					m_numberOfSubtasks = m_subtasks.childCount;
@@ -88,11 +100,35 @@ namespace Millivolt
 			public void DeactivateTask()
 			{
 				Vector2 screenStartSize = GetComponent<RectTransform>().sizeDelta;
-				Vector2 screenEndSize = new Vector2(screenStartSize.x, 30);
+				//Vector2 screenEndSize = new Vector2(screenStartSize.x, 30);
+				Vector2 screenEndSize = new Vector2(m_orignalPos.x, 30);
 
 				Tween.Size(GetComponent<RectTransform>(), screenStartSize, screenEndSize, 0.5f, 0f);
 				StartCoroutine(UpdateListGroup(screenEndSize));
 			}
+
+			public void FadeOutTask()
+			{
+				Tween.CanvasGroupAlpha(m_canvasGroup, 0, 0.5f, 0, Tween.EaseOut);
+				StartCoroutine(FadeCheck());
+			}
+
+			IEnumerator FadeCheck()
+			{
+				while (m_canvasGroup.alpha > 0)
+				{
+					yield return null;
+				}
+				gameObject.SetActive(false);
+
+				int activeCount = m_taskParent.transform.Cast<Transform>().Where(child => child.gameObject.activeSelf).Count();
+
+                Vector2 screenStartSize = GetComponent<RectTransform>().sizeDelta;
+                Vector2 screenEndSize = new Vector2(screenStartSize.x, 30 + (activeCount * 40));
+
+                Tween.Size(GetComponent<RectTransform>(), screenStartSize, screenEndSize, 0.5f, 0f);
+                StartCoroutine(UpdateListGroup(screenEndSize));
+            }
 
 			IEnumerator UpdateListGroup(Vector2 finalSize)
 			{
