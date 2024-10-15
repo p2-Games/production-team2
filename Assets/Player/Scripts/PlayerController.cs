@@ -175,7 +175,7 @@ namespace Millivolt
                 {
                     AddJumpForce();
                     m_willJump = false;
-                    SFXController.Instance.PlayRandomSoundClip("Footsteps", transform);
+                    SFXController.Instance.PlayRandomSoundClip("Jump", transform);
                 }
 
                 // tell animator what to do

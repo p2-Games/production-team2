@@ -34,8 +34,8 @@ namespace Millivolt
                 // if the other object is a pickup, destroy it
                 else
                 {
-                    PickupObject pickup = other.GetComponent<PickupObject>();
-                    if (pickup)
+                    Interactable obj = other.GetComponent<Interactable>();
+                    if (obj)
                         Destroy(other.gameObject);
                 }
             }
