@@ -5,6 +5,8 @@
 ///
 ///</summary>
 
+using System.Collections;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -14,24 +16,34 @@ namespace Millivolt
     {
         public class AdditiveSceneLoader : MonoBehaviour
         {
-            [SerializeField] private string m_sceneName;
+            [SerializeField] private string[] m_sceneNames;
 
-            private void Awake()
+            private Coroutine m_currentLoad;
+            private void Start()
             {
-                if (m_sceneName == string.Empty)
-                    return;
-
-                // check that the scene is not already loaded by comparing against
-                // all currently loaded scene names
-                for (int s = 0; s < SceneManager.sceneCount; s++)
+                foreach (string name in m_sceneNames)
                 {
-                    // if the scene is already loaded, then quit
-                    if (SceneManager.GetSceneAt(s).name == m_sceneName)
-                        return;
-                }
+                    if (name == string.Empty)
+                        continue;
 
-                // otherwise, load the scene
-                StartCoroutine(GameManager.Instance.LoadSceneAsync(m_sceneName, LoadSceneMode.Additive, true));
+                    // check that the scene is not already loaded by comparing against
+                    // all currently loaded scene names
+                    bool isLoaded = false;
+                    for (int s = 0; s < SceneManager.sceneCount; s++)
+                    {
+                        // if the scene is already loaded, then go to next scene to be loaded
+                        if (SceneManager.GetSceneAt(s).name == name)
+                        {
+                            isLoaded = true;
+                            break;
+                        }
+                    }
+                    if (isLoaded)
+                        continue;
+
+                    // otherwise, load the scene
+                    m_currentLoad = StartCoroutine(GameManager.Instance.LoadSceneAsync(name, LoadSceneMode.Additive, name == m_sceneNames.Last())); ;
+                }
             }
         }
     }
