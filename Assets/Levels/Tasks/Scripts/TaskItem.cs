@@ -41,8 +41,8 @@ namespace Millivolt
 			[SerializeField] private string m_name;
 			[Tooltip("If this is a subtask assign its parent task here")]
 			[SerializeField] private TaskItem m_taskParent;
-			[Tooltip("If you dont want having all subtasks being complete to autocomplete the task then tick this")]
-			[SerializeField] private bool m_subtasksDontComplete;
+			//[Tooltip("If you dont want having all subtasks being complete to autocomplete the task then tick this")]
+			//[SerializeField] private bool m_subtasksDontComplete;
 
 			//EVENTS
 			[Tooltip("Events are called when the task is completed")]
@@ -53,7 +53,7 @@ namespace Millivolt
 				get { return GetComponent<RectTransform>().sizeDelta; }
 			}
 
-			private CanvasGroup m_canvasGroup;
+			[SerializeField] private CanvasGroup m_canvasGroup;
 
 			public void CompleteTask()
 			{
@@ -75,7 +75,6 @@ namespace Millivolt
 			{
 				m_taskParent = transform.parent.parent.parent.GetComponent<TaskItem>();
                 m_toggle.GetComponentInChildren<TextMeshProUGUI>().text = m_name;
-				m_canvasGroup = GetComponent<CanvasGroup>();
                 m_completedSubtasks = 0;
 				if (m_subtasks)
 					m_numberOfSubtasks = m_subtasks.childCount;
@@ -107,19 +106,29 @@ namespace Millivolt
 				StartCoroutine(UpdateListGroup(screenEndSize));
 			}
 
+			public void FadeInTask()
+			{
+				m_canvasGroup.alpha = 0;
+				gameObject.SetActive(true);
+                Tween.CanvasGroupAlpha(m_canvasGroup, 1, 1.5f, 0, Tween.EaseOut);
+                StartCoroutine(FadeCheck(1));
+            }
+
 			public void FadeOutTask()
 			{
-				Tween.CanvasGroupAlpha(m_canvasGroup, 0, 0.5f, 0, Tween.EaseOut);
-				StartCoroutine(FadeCheck());
+				Tween.CanvasGroupAlpha(m_canvasGroup, 0, 1.5f, 0, Tween.EaseOut);
+				StartCoroutine(FadeCheck(0));
 			}
 
-			IEnumerator FadeCheck()
-			{
-				while (m_canvasGroup.alpha > 0)
+			IEnumerator FadeCheck(float alphaTarget)
+			{				
+				while (m_canvasGroup.alpha != alphaTarget)
 				{
 					yield return null;
 				}
-				gameObject.SetActive(false);
+
+				if (m_canvasGroup.alpha == 0)
+					gameObject.SetActive(false);
 
 				int activeCount = m_taskParent.transform.Cast<Transform>().Where(child => child.gameObject.activeSelf).Count();
 
@@ -132,7 +141,7 @@ namespace Millivolt
 
 			IEnumerator UpdateListGroup(Vector2 finalSize)
 			{
-				while (GetComponent<RectTransform>().sizeDelta.y < finalSize.y)
+				while (GetComponent<RectTransform>().sizeDelta.y != finalSize.y)
 				{
 					LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)transform.parent);
 					yield return null;
