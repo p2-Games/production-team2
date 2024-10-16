@@ -127,8 +127,7 @@ namespace Millivolt
 					yield return null;
 				}
 
-				if (m_canvasGroup.alpha == 0)
-					gameObject.SetActive(false);
+				
 
 				int activeCount = m_taskParent.transform.Cast<Transform>().Where(child => child.gameObject.activeSelf).Count();
 
@@ -137,6 +136,9 @@ namespace Millivolt
 
                 Tween.Size(GetComponent<RectTransform>(), screenStartSize, screenEndSize, 0.5f, 0f);
                 StartCoroutine(UpdateListGroup(screenEndSize));
+
+                if (m_canvasGroup.alpha == 0)
+                    gameObject.SetActive(false);
             }
 
 			IEnumerator UpdateListGroup(Vector2 finalSize)
