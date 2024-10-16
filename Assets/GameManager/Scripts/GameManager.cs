@@ -33,6 +33,7 @@ namespace Millivolt
 		public static PlayerInteraction PlayerInteraction { get; private set; }
         public static PlayerStatus PlayerStatus { get; private set; }
 		public static PlayerModel PlayerModel { get; private set; }
+		public static PlayerSettings PlayerSettings { get; private set; }
 
         private void Awake()
         {
