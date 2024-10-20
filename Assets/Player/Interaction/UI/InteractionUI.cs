@@ -14,6 +14,7 @@ namespace Millivolt
 	namespace Player
 	{
 		using LevelObjects;
+        using Millivolt.Level;
 
         namespace UI
 		{
@@ -28,7 +29,7 @@ namespace Millivolt
 				[Tooltip("Constant height of the container.")]
                 [SerializeField] private float m_height = 33;
 
-				private LevelObject m_target;
+				private GameObject m_target;
 
 				public bool isActive { get => m_container.gameObject.activeSelf; }
 
@@ -50,11 +51,20 @@ namespace Millivolt
 				{
 					if (target)
 					{
-						m_target = target.GetComponent<LevelObject>();
-						m_itemNameDisplay.text = m_target.name;
-						m_container.sizeDelta = new Vector2(m_widthPerChar * m_itemNameDisplay.text.Length, m_height);
-						m_buttonDisplay.sprite = PlayerInputIcons.Instance.GetInputIcon(InputType.Interact);
-					}
+						m_target = target.gameObject;
+						LevelObject levelObj;
+						if (levelObj = m_target.GetComponent<LevelObject>())
+						{
+							m_itemNameDisplay.text = levelObj.name;
+						}
+						else if (m_target.GetComponent<Checkpoint>())
+						{
+							m_itemNameDisplay.text = "Teleport to other checkpoint.";
+						}
+
+                        m_container.sizeDelta = new Vector2(m_widthPerChar * m_itemNameDisplay.text.Length, m_height);
+                        m_buttonDisplay.sprite = PlayerInputIcons.Instance.GetInputIcon(InputType.Interact);
+                    }
 
 					SetDisplayActive(target);
 				}
