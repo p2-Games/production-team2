@@ -14,7 +14,7 @@ namespace Millivolt
         private AudioSource m_source;
         private bool m_isPlaying = false;
 
-        public void Init(SFXController.SoundClip soundClip)
+        public void Init(SFXController.SoundClip soundClip, SoundType type)
         {
             // get source component
             m_source = GetComponent<AudioSource>();
@@ -25,6 +25,17 @@ namespace Millivolt
             m_source.volume = soundClip.volume;
             m_source.maxDistance = soundClip.range;
             m_source.loop = soundClip.loop;
+
+            // global volume
+            switch (type)
+            {
+                case SoundType.Effect:
+                    break;
+                case SoundType.Music:
+                    break;
+                case SoundType.Voice:
+                    break;
+            }
 
             // play clip
             m_source.Play();
