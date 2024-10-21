@@ -1,7 +1,7 @@
 ///<summary>
-/// Author:
+/// Author: Emily
 ///
-///
+/// Options Menu Handling
 ///
 ///</summary>
 
@@ -22,6 +22,8 @@ namespace Millivolt
 			
 			[SerializeField] Slider m_sensitivitySlider;
 
+			[SerializeField] PlayerSettings m_playerSettings;
+
 			public void SwitchMenu(int value)
 			{
 				for (int i = 0; i < m_optionSubMenus.Length; i++)
@@ -35,12 +37,12 @@ namespace Millivolt
 
             private void Start()
             {
-				//m_sensitivitySlider.onValueChanged.AddListener(() => AdjustSensitivity());
+				m_sensitivitySlider.onValueChanged.AddListener(delegate { AdjustSensitivity(m_sensitivitySlider.value); });
             }
 
-			public void AdjustSensitivity(float val)
+			public void AdjustSensitivity(float value)
 			{
-				
+				m_playerSettings.AdjustCameraSensitivity(value);
 			}
         }
 	}
