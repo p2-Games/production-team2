@@ -5,6 +5,7 @@
 ///
 ///</summary>
 
+using Pixelplacement;
 using UnityEngine;
 
 namespace Millivolt
@@ -25,43 +26,46 @@ namespace Millivolt
                 [Header("Pickup Object Details")]
                 [SerializeField] protected PickupType m_type;
 
-                [SerializeField] protected float m_useTime;
-                protected float m_timer;
-
-                protected bool m_inUse = false;
-                public bool inUse => m_inUse;
+                private bool m_isDissolving = false;
 
                 public PickupType pickupType => m_type;
-                public bool playerCanGrab => m_type != PickupType.Immovable;
+                public bool playerCanGrab => m_type != PickupType.Immovable && !m_isDissolving;
 
-                protected Rigidbody m_rb;
-                public Rigidbody rb => m_rb;
+                protected Rigidbody m_rb; public Rigidbody rb => m_rb;
 
                 protected virtual void Start()
                 {
                     m_rb = GetComponent<Rigidbody>();
-                    m_timer = 0;
-                }
-
-                protected virtual void Update()
-                {
-                    if (m_timer < m_useTime)
-                        m_timer += Time.deltaTime;
-                }
-
-                public virtual void Use()
-                {
-                    if (m_timer < m_useTime)
-                        return;
-
-                    m_inUse = !m_inUse;
-
-                    m_timer = 0;
                 }
 
                 private void OnCollisionEnter(Collision collision)
                 {
                     SFXController.Instance.PlayRandomSoundClip("ScrewDrop", transform);
+                }
+
+                public void Destroy()
+                {
+                    m_isDissolving = true;
+
+                    // if this is the held object, then drop it
+                    GameManager.PlayerInteraction.DropObject();
+
+                    // disable gravity so it floats
+                    m_rb.useGravity = false;
+
+                    GetComponent<MeshDissolver>().Dissolve();
+                }
+
+                private void OnDestroy()
+                {
+                    ParticleSystem[] particles = GetComponentsInChildren<ParticleSystem>();
+
+                    foreach (ParticleSystem particle in particles)
+                    {
+                        ParticleSystem.MainModule main = particle.main;
+                        main.loop = false;
+                        particle.transform.SetParent(null, true);
+                    }
                 }
             }
         }

@@ -5,12 +5,18 @@
 ///
 ///</summary>
 
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Millivolt
 {
+    public enum SoundType
+    {
+        Effect,
+        Music,
+        Voice
+    }
+
     public class SFXController : MonoBehaviour
     {
         [System.Serializable]
@@ -60,18 +66,18 @@ namespace Millivolt
         [SerializeField] private SoundClipObject m_soundClipObjectPrefab;
         [SerializeField] private List<SoundClipCollection> m_clipCollections;
 
-        private void PlayAudioClipObject(SoundClip soundClip, Transform obj)
+        private void PlayAudioClipObject(SoundClip soundClip, Transform obj, SoundType type)
         {           
             SoundClipObject newSoundClipObject = Instantiate(m_soundClipObjectPrefab, obj);
             newSoundClipObject.name = soundClip.clipName;
-            newSoundClipObject.Init(soundClip);
+            newSoundClipObject.Init(soundClip, type);
         }
 
-        private void PlayAudioClipPosition(SoundClip soundClip, Vector3 position)
+        private void PlayAudioClipPosition(SoundClip soundClip, Vector3 position, SoundType type)
         {
             SoundClipObject newSoundClipObject = Instantiate(m_soundClipObjectPrefab, position, Quaternion.identity);
             newSoundClipObject.name = soundClip.clipName;
-            newSoundClipObject.Init(soundClip);
+            newSoundClipObject.Init(soundClip, type);
         }
 
         /// <summary>
@@ -79,7 +85,7 @@ namespace Millivolt
         /// </summary>
         /// <param name="collectionName"></param>
         /// <param name="clipName"></param>
-        public void PlaySoundClip(string collectionName, string clipName, Transform obj)
+        public void PlaySoundClip(string collectionName, string clipName, Transform obj, SoundType type = 0)
         {
             // check if transform is null
             if (obj == null)
@@ -96,10 +102,10 @@ namespace Millivolt
                 return;
             }
 
-            PlayAudioClipObject(soundClip, obj);
+            PlayAudioClipObject(soundClip, obj, type);
         }
 
-        public void PlaySoundClip(string collectionName, string clipName, Vector3 position)
+        public void PlaySoundClip(string collectionName, string clipName, Vector3 position, SoundType type = 0)
         {
             SoundClip soundClip = m_clipCollections.Find(collection => collection.collectionName == collectionName).soundClips.Find(clip => clip.clipName == clipName);
             if (soundClip == null)
@@ -108,13 +114,13 @@ namespace Millivolt
                 return;
             }
 
-            PlayAudioClipPosition(soundClip, position);
+            PlayAudioClipPosition(soundClip, position, type);
         }
 
         /// <summary>
         /// Play a random sound clip from a specified collection on a GameObject.
         /// </summary>
-        public void PlayRandomSoundClip(string collectionName, Transform obj)
+        public void PlayRandomSoundClip(string collectionName, Transform obj, SoundType type = 0)
         {
             SoundClipCollection collection = m_clipCollections.Find(collection => collection.collectionName == collectionName);
             if (collection == null)
@@ -130,13 +136,13 @@ namespace Millivolt
                 return;
             }
 
-            PlayAudioClipObject(soundClips[Random.Range(0, soundClips.Count)], obj);
+            PlayAudioClipObject(soundClips[Random.Range(0, soundClips.Count)], obj, type);
         }
 
         /// <summary>
         /// Plays a random sound clip from a specified collection at a point in world space.
         /// </summary>
-        public void PlayRandomSoundClip(string collectionName, Vector3 position)
+        public void PlayRandomSoundClip(string collectionName, Vector3 position, SoundType type = 0)
         {
             SoundClipCollection collection = m_clipCollections.Find(collection => collection.collectionName == collectionName);
             if (collection == null)
@@ -152,7 +158,7 @@ namespace Millivolt
                 return;
             }
 
-            PlayAudioClipPosition(soundClips[Random.Range(0, soundClips.Count)], position);
+            PlayAudioClipPosition(soundClips[Random.Range(0, soundClips.Count)], position, type);
         }
 
         private void LogMissingCollectionError(string collectionName)

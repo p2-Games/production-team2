@@ -9,8 +9,8 @@ using UnityEngine;
 
 namespace Millivolt
 {
+    using Millivolt.LevelObjects.PickupObjects;
     using Player;
-    using LevelObjects.PickupObjects;
 
     namespace LevelObjects
     {
@@ -32,11 +32,12 @@ namespace Millivolt
                 if (other.GetComponent<PlayerModel>())
                     GameManager.PlayerStatus.TakeDamage(GameManager.PlayerStatus.maxHealth);
                 // if the other object is a pickup, destroy it
-                else
+                else if (other.TryGetComponent(out Interactable obj))
                 {
-                    Interactable obj = other.GetComponent<Interactable>();
-                    if (obj)
-                        Destroy(other.gameObject);
+                    if (obj.TryGetComponent(out PickupObject pickup))
+                        pickup.Destroy();
+                    else
+                        Destroy(obj.gameObject);
                 }
             }
         }

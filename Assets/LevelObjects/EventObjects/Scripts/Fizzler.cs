@@ -5,6 +5,7 @@
 ///
 ///</summary>
 
+using Millivolt.LevelObjects.PickupObjects;
 using UnityEngine;
 
 namespace Millivolt
@@ -21,7 +22,10 @@ namespace Millivolt
                 {
 					if (CanTrigger(other.gameObject))
 					{
-						Destroy(other.gameObject);
+						if (other.TryGetComponent(out PickupObject pickup))
+							pickup.Destroy();
+						else
+							Destroy(other.gameObject);
 						m_activateEvents.Invoke();
 					}
                 }

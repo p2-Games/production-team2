@@ -100,19 +100,6 @@ namespace Millivolt
             }
 
             /// <summary>
-            /// Uses the currently held Pickup if the player has one and it has a Use effect.
-            /// </summary>
-            /// <param name="context"></param>
-            public void UsePickup(InputAction.CallbackContext context)
-            {
-                if (m_heldPickup)
-                {
-                    m_heldPickup.Use();
-                    m_interactTime = 0;
-                }
-            }
-
-            /// <summary>
             /// Interacts with the closest Object to the player, as shown in the Interaction UI display.
             /// </summary>
             /// <param name="context"></param>
@@ -134,11 +121,7 @@ namespace Millivolt
                             }
                             break;
                         case InteractionState.Holding:
-                            // don't let the player drop the object while it is in use
-                            if (!m_heldPickup.inUse)
-                            {
-                                DropObject();
-                            }
+                            DropObject();
                             break;
                     }
                 }
@@ -159,16 +142,21 @@ namespace Millivolt
                 if (m_state != InteractionState.Open)
                     return;
 
-                // if the object in the trigger is already the closest object, stop
-                if (m_closestObject && m_closestObject.gameObject == other.gameObject)
+                // if the object does not have an interactable, stop
+                if (other.gameObject.TryGetComponent(out Interactable interactable))
+                {
+                    // if the object is not interactable, stop
+                    if (!interactable.canInteract)
+                        return;
+
+                    // if the object in the trigger is already the closest object, stop
+                    if (m_closestObject == interactable)
+                        return;
+                }
+                else
                     return;
 
-                // if the object is not interactable, stop
-                Interactable interactable = other.gameObject.GetComponent<Interactable>();
-                if (!interactable || !interactable.canInteract)
-                    return;
-
-                // if the object can is closer than the saved current closest object
+                // if the object is closer than the saved current closest object
                 if (NewObjectIsCloserThanCurrent(other.transform))
                 {
                     SetClosestObject(interactable);

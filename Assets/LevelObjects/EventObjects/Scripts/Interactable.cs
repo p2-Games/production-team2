@@ -25,19 +25,20 @@ namespace Millivolt
 			{
 				get
 				{
-                    EventObject eventObject = GetComponent<EventObject>();
-                    if (eventObject)
+                    if (TryGetComponent(out EventObject eventObject))
                     {
 						return eventObject.canInteract;
                     }
 
-                    PickupObject pickupObject = GetComponent<PickupObject>();
-                    if (pickupObject)
+                    if (TryGetComponent(out PickupObject pickupObject))
                     {
 						return pickupObject.playerCanGrab;
                     }
 
-					return true;
+					if (GetComponent<Checkpoint>())
+						return true;
+
+					return false;
                 }
 			}
 
