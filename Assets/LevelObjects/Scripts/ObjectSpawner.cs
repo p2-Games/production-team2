@@ -10,6 +10,7 @@ using UnityEngine;
 namespace Millivolt
 {
     using LevelObjects;
+    using Millivolt.LevelObjects.PickupObjects;
 
     public class ObjectSpawner : MonoBehaviour
     {
@@ -49,7 +50,12 @@ namespace Millivolt
         {
             // destroy existing game object
             if (m_spawnedObject)
-                Destroy(m_spawnedObject.gameObject);
+            {
+                if (m_spawnedObject.TryGetComponent(out PickupObject pickup))
+                    pickup.Destroy();
+                else
+                    Destroy(m_spawnedObject.gameObject);
+            }
 
             // spawn the object
             m_spawnedObject = Instantiate(m_object, m_spawnPoint.position, m_spawnPoint.rotation);
