@@ -5,6 +5,7 @@
 ///
 ///</summary>
 
+using System.Collections;
 using UnityEngine;
 
 namespace Millivolt
@@ -20,11 +21,20 @@ namespace Millivolt
         private void Start()
         {
             if (m_playOnStart)
-                PlaySound();
+                StartCoroutine(StartSound());
+        }
+
+        private IEnumerator StartSound()
+        {
+            yield return new WaitUntil(() => SFXController.Instance != null);
+            PlaySound();
         }
 
         public void PlaySound()
         {
+            if (!SFXController.Instance)
+                return;
+
             Transform target = m_attachToPlayer ? GameManager.PlayerController.transform : transform;
             if (m_clipName != string.Empty)
                 SFXController.Instance.PlaySoundClip(m_collectionName, m_clipName, target);

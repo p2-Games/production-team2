@@ -48,7 +48,7 @@ namespace Millivolt
                 }
             }
 
-            private PlayerCanMove m_canMove;
+            private PlayerCanMove m_canMove = new PlayerCanMove();
             public bool canMove { get { return m_canMove.canMove; } }
             public void SetCanMove(bool value, CanMoveType type)
             {
