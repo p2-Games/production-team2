@@ -34,6 +34,8 @@ namespace Millivolt
                                 else
                                     SFXController.Instance.PlayRandomSoundClip(m_soundClipCollectionName, transform);
                             }
+
+                            OnActivate();
                         }
                         else
                         {
@@ -47,6 +49,8 @@ namespace Millivolt
                                 else
                                     SFXController.Instance.PlayRandomSoundClip(m_soundClipCollectionName, transform);
                             }
+
+                            OnDeactivate();
                         }
 
                         if (m_togglesOnce)
@@ -65,7 +69,7 @@ namespace Millivolt
                 [Tooltip("Filter for what can interact with this object.\n" +
                         "Accepts System Types (class names) and Tags.\n" +
                         "If a filter begins with '!', then it will be ignored instead of accepted.")]
-                [SerializeField] protected string[] m_interactionFilter = { typeof(PlayerModel).Name, typeof(LevelObject).Name };
+                [SerializeField] protected string[] m_interactionFilter = { "Player", typeof(LevelObject).Name };
 
                 [Tooltip("The events that will occur when the object is set active.")]
                 [SerializeField] protected UnityEvent m_activateEvents;
@@ -82,6 +86,9 @@ namespace Millivolt
 
                 protected bool CanTrigger(GameObject obj)
                 {
+                    if (obj == gameObject)
+                        return false;
+                    
                     if (obj == GameManager.PlayerInteraction.heldObject)
                         return false;
 
@@ -98,6 +105,10 @@ namespace Millivolt
                     }
                     return false;
                 }
+
+                protected virtual void OnActivate() { }
+
+                protected virtual void OnDeactivate() { }
 
                 public virtual void Interact()
                 {
