@@ -17,6 +17,8 @@ namespace Millivolt
 
         [SerializeField] private bool m_playOnStart = false;
         [SerializeField] private bool m_attachToPlayer = false;
+
+        [SerializeField] private SoundType m_type;
         
         private void Start()
         {
@@ -37,9 +39,9 @@ namespace Millivolt
 
             Transform target = m_attachToPlayer ? GameManager.PlayerController.transform : transform;
             if (m_clipName != string.Empty)
-                SFXController.Instance.PlaySoundClip(m_collectionName, m_clipName, target);
+                SFXController.Instance.PlaySoundClip(m_collectionName, m_clipName, target, m_type);
             else
-                SFXController.Instance.PlayRandomSoundClip(m_collectionName, target);
+                SFXController.Instance.PlayRandomSoundClip(m_collectionName, target, m_type);
         }
 
         public void StopSounds()
