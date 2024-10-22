@@ -48,9 +48,6 @@ namespace Millivolt
                 StartCoroutine(DisableGravity());
             Tween.ShaderFloat(material, "_DissolveStrength", 0.85f, m_duration, m_delay);
             Destroy(gameObject, m_delay + m_duration);
-
-            // dissolve any other mesh dissolvers
-            GetComponentsInChildren<MeshDissolver>().ToList().ForEach(dissolver => dissolver.Dissolve());
         }
 
         private IEnumerator DisableGravity()
