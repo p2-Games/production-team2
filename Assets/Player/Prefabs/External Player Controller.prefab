@@ -146,12 +146,11 @@ MonoBehaviour:
   m_walkableLayers:
     serializedVersion: 2
     m_Bits: 64
-  m_topSpeed: 2.5
+  m_topSpeed: 3.5
   m_acceleration: 20
   m_decceleration: 15
   m_slopeLimit: 80
-  canMove: 1
-  m_jumpSpeed: 5
+  m_jumpSpeed: 6
   m_groundCheckDistance: 0.01
   m_groundCheckRadius: 0.2
   m_headBonkSpeed: 3
@@ -168,7 +167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4163509ce45c6b44e8ffe5c74000a33d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_animator: {fileID: 4264429827561564493}
+  m_animator: {fileID: 8887132741317739926}
 --- !u!114 &6821388206902358164
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -391,6 +390,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6821388206192318489}
     m_Modifications:
+    - target: {fileID: 1384289508145061918, guid: eece1ceeb51baf045a27f125b6963f2f,
+        type: 3}
+      propertyPath: m_Radius
+      value: 0.85
+      objectReference: {fileID: 0}
     - target: {fileID: 1882291236619556433, guid: eece1ceeb51baf045a27f125b6963f2f,
         type: 3}
       propertyPath: m_Name
@@ -399,7 +403,7 @@ PrefabInstance:
     - target: {fileID: 2228776203337802585, guid: eece1ceeb51baf045a27f125b6963f2f,
         type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2228776203337802585, guid: eece1ceeb51baf045a27f125b6963f2f,
         type: 3}
@@ -588,22 +592,32 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6414711927474844897, guid: fa458ade2cca1e944ba049a9ad2c45c3,
+        type: 3}
+      propertyPath: m_gravityRotationTime
+      value: 1.1
+      objectReference: {fileID: 0}
     - target: {fileID: 7848022046994107671, guid: fa458ade2cca1e944ba049a9ad2c45c3,
         type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8771907145932962591, guid: fa458ade2cca1e944ba049a9ad2c45c3,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: a92df69118c31f243b4b057e98fdf943, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fa458ade2cca1e944ba049a9ad2c45c3, type: 3}
---- !u!95 &4264429827561564493 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 2393275940316276359, guid: fa458ade2cca1e944ba049a9ad2c45c3,
-    type: 3}
-  m_PrefabInstance: {fileID: 1880485512224526282}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6821388206192318489 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4950199202765903827, guid: fa458ade2cca1e944ba049a9ad2c45c3,
+    type: 3}
+  m_PrefabInstance: {fileID: 1880485512224526282}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &8887132741317739926 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 7011440206974126684, guid: fa458ade2cca1e944ba049a9ad2c45c3,
     type: 3}
   m_PrefabInstance: {fileID: 1880485512224526282}
   m_PrefabAsset: {fileID: 0}
@@ -752,9 +766,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_renderData: {fileID: 11400000, guid: c40be3174f62c4acf8c1216858c64956, type: 2}
-  m_shaderName: HurtStatic
-  m_shaderFloat: 
   m_shaderMat: {fileID: 2100000, guid: 331419b5c2198db408a61e0faa63d484, type: 2}
+  m_shaderName: HurtStatic
 --- !u!4 &8902741228031686417 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6487815084251829567, guid: a692d36eca9d5a441b86092069b69f0b,
