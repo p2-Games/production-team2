@@ -79,6 +79,7 @@ namespace Millivolt
             {
                 GameManager.Instance.ExitToMenu();
             }
+
         }
 	}
 }
