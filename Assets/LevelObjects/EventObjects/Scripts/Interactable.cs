@@ -32,7 +32,7 @@ namespace Millivolt
 
                     if (TryGetComponent(out PickupObject pickupObject))
                     {
-						return pickupObject.playerCanGrab;
+						return pickupObject.canInteract;
                     }
 
 					if (GetComponent<Checkpoint>())
@@ -57,7 +57,7 @@ namespace Millivolt
 				}
 
 				PickupObject pickupObject = GetComponent<PickupObject>();
-				if (pickupObject && pickupObject.playerCanGrab)
+				if (pickupObject && pickupObject.canInteract)
 				{
 					player.GrabObject(pickupObject);
 					m_interactTimer = 0;

@@ -29,7 +29,7 @@ namespace Millivolt
                 private bool m_isDissolving = false;
 
                 public PickupType pickupType => m_type;
-                public bool playerCanGrab => m_type != PickupType.Immovable && !m_isDissolving;
+                public bool canInteract => m_type != PickupType.Immovable && !m_isDissolving;
 
                 protected Rigidbody m_rb; public Rigidbody rb => m_rb;
 
@@ -49,9 +49,6 @@ namespace Millivolt
 
                     // if this is the held object, then drop it
                     GameManager.PlayerInteraction.DropObject();
-
-                    // disable gravity so it floats
-                    m_rb.useGravity = false;
 
                     GetComponent<MeshDissolver>().Dissolve();
                 }
