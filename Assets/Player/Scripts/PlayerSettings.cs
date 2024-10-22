@@ -24,6 +24,12 @@ namespace Millivolt
 
         private Vector2[] m_sensitivityVectors = new Vector2[2];
 
+        private float m_musicVolume;
+        public float musicVolume => m_musicVolume;
+
+        private float m_sfxVolume;
+        public float sfxVolume => m_sfxVolume;
+
         private void Awake()
         {
             if (!Instance)
@@ -38,15 +44,19 @@ namespace Millivolt
 
         private void Start()
         {
-            m_povSettings = m_camera.GetCinemachineComponent<CinemachinePOV>();
-
             m_sensitivityVectors[0] = m_minMaxVerticalSpeed;
             m_sensitivityVectors[1] = m_minMaxHorizontalSpeed;
+
+            m_musicVolume = 1;
+            m_sfxVolume = 1;
+
+            if (m_camera)
+                m_povSettings = m_camera.GetCinemachineComponent<CinemachinePOV>();
         }
 
         public void AdjustCameraSensitivity(float value)
         {
-            float[] holdValues = new float[4];
+            float[] holdValues = new float[2];
 
             for (int i = 0; i < m_sensitivityVectors.Length; i++)
             {
@@ -65,6 +75,16 @@ namespace Millivolt
             m_povSettings.m_VerticalAxis.m_MaxSpeed = holdValues[0];
             m_povSettings.m_HorizontalAxis.m_MaxSpeed = holdValues[1];
 
+        }
+
+        public void AdjustMusicVolume(float value)
+        {
+            m_musicVolume = value;
+        }
+
+        public void AdjustSFXVolume(float value)
+        {
+            m_sfxVolume = value;
         }
     }
 }

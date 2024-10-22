@@ -14,6 +14,10 @@ namespace Millivolt
         private AudioSource m_source;
         private bool m_isPlaying = false;
 
+        //Emily's work
+        private float m_originalVolume;
+        private int m_typeVal;
+
         public void Init(SFXController.SoundClip soundClip, SoundType type)
         {
             // get source component
@@ -26,12 +30,17 @@ namespace Millivolt
             m_source.maxDistance = soundClip.range;
             m_source.loop = soundClip.loop;
 
+            m_originalVolume = m_source.volume;
+            m_typeVal = (int)type;
+
             // global volume
             switch (type)
             {
                 case SoundType.Effect:
+                    m_source.volume *= GameManager.PlayerSettings.sfxVolume;
                     break;
                 case SoundType.Music:
+                    m_source.volume *= GameManager.PlayerSettings.musicVolume;
                     break;
                 case SoundType.Voice:
                     break;
@@ -47,10 +56,27 @@ namespace Millivolt
             // don't destroy the object if it should loop
             if (m_source.loop)
                 return;
+
+            VolumeCheck();
                 
             // destroy SoundClipObject when clip finishes playing
             if (m_isPlaying && !m_source.isPlaying)
                 Destroy(gameObject);
+        }
+
+        private void VolumeCheck()
+        {
+            switch(m_typeVal)
+            {
+                case 0:
+                    m_source.volume = m_originalVolume * GameManager.PlayerSettings.sfxVolume;
+                    break;
+                case 1:
+                    m_source.volume = m_originalVolume * GameManager.PlayerSettings.musicVolume;
+                    break;
+                case 2:
+                    break;
+            }
         }
     }
 

@@ -45,6 +45,9 @@ namespace Millivolt
 				return;
 			}
             DontDestroyOnLoad(gameObject);
+
+
+            PlayerSettings = FindObjectOfType<PlayerSettings>();
         }
 
         // Game state
