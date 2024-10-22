@@ -89,7 +89,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_normalCam: {fileID: 0}
-  m_altCam: {fileID: 0}
+  m_highCam: {fileID: 0}
+  horizontalSensitivity: 0.25
+  verticalSensitivity: 0.25
+  m_transitionBuffer: 5
   m_screenXRange: 0.3
   m_shoulderMoveSpeed: 300
 --- !u!1 &6821388206902358165
@@ -330,38 +333,6 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 791adf62-c3a2-4b9e-af5e-28e3044a7080
     m_ActionName: Player/Pause[/Keyboard/escape]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7464017017590126018}
-        m_TargetAssemblyTypeName: Millivolt.Player.PlayerInteraction, Assembly-CSharp
-        m_MethodName: UsePickup
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: eb046b55-4191-440b-859e-480fa4884b5a
-    m_ActionName: Player/UsePickup[/Keyboard/f]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8059815153313717433}
-        m_TargetAssemblyTypeName: Millivolt.Player.CameraController, Assembly-CSharp
-        m_MethodName: AltLook
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: 6587a56e-d78e-479c-abfc-a9232b6da34e
-    m_ActionName: Player/AltLook[/Keyboard/alt]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard&Mouse
   m_DefaultActionMap: Player

@@ -33,8 +33,6 @@ namespace Millivolt
             Jump,
             Interact,
             Pause,
-            UsePickup,
-            AltLook,
             INPUT_COUNT
         }
 
