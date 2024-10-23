@@ -29,13 +29,13 @@ namespace Millivolt
             public float verticalSensitivity;
 
             [Header("Transitioner")]
-            [SerializeField] private float m_transitionBuffer = 5f;
-            private bool m_highCamIsActive = false;
+            [SerializeField] private float m_axisBoundary = -20f;
+            private bool m_highCamIsEnabled = false;
 
             [Header("Dynamic Shoulder"), SerializeField] private float m_screenXRange = 0.3f;
             [SerializeField] private float m_shoulderMoveSpeed = 3f;
+            private float m_horizontalMoveDelta;
             private float m_screenXVelocity;
-            private float m_horizontalInput;
 
             [ContextMenu("Init")]
             private void Start()
@@ -55,13 +55,13 @@ namespace Millivolt
 
             public void Move(InputAction.CallbackContext context)
             {
-                m_horizontalInput = context.ReadValue<Vector2>().x;
+                m_horizontalMoveDelta = context.ReadValue<Vector2>().x;
             }
 
             public void Update()
             {
                 // calc target position of focus point
-                float targetScreenX = 0.5f - m_horizontalInput * m_screenXRange;
+                float targetScreenX = 0.5f - m_horizontalMoveDelta * m_screenXRange;
 
                 //float currentScreenX = Mathf.MoveTowards(m_normalBody.m_ScreenX, targetScreenX, m_dynamicAimSpeed);
                 float currentScreenX = Mathf.SmoothDamp(m_normalBody.m_ScreenX, targetScreenX, ref m_screenXVelocity, m_shoulderMoveSpeed * Time.deltaTime);
@@ -69,15 +69,18 @@ namespace Millivolt
                 //m_highBody.m_ScreenX = currentScreenX;
 
                 // determine which camera to use for the better high look
-                if (!m_highCamIsActive && m_normalPOV.m_VerticalAxis.Value <= m_normalPOV.m_VerticalAxis.m_MinValue + m_transitionBuffer)
+                float normalValue = m_normalPOV.m_VerticalAxis.Value;
+                float highValue = m_highPOV.m_VerticalAxis.Value;
+
+                if (!m_highCamIsEnabled && normalValue < m_axisBoundary)
                 {
-                    m_highCam.Priority += 2;
-                    m_highCamIsActive = true;
+                    m_highCam.Priority = 11;
+                    m_highCamIsEnabled = true;
                 }
-                else if (m_highCamIsActive && m_highPOV.m_VerticalAxis.Value >= m_highPOV.m_VerticalAxis.m_MaxValue - m_transitionBuffer)
+                else if (m_highCamIsEnabled && highValue > m_axisBoundary)
                 {
-                    m_highCam.Priority -= 2;
-                    m_highCamIsActive = false;
+                    m_highCam.Priority = 9;
+                    m_highCamIsEnabled = false;
                 }
             }
 

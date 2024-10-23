@@ -53,7 +53,15 @@ namespace Millivolt
 
             private Interactable m_closestObject;
 
-            public GameObject heldObject;
+            public GameObject heldObject
+            {
+                get
+                {
+                    if (m_heldPickup)
+                        return m_heldPickup.gameObject;
+                    else return null;
+                }
+            }
             public bool canInteract => m_state != InteractionState.Closed && m_interactTimer >= m_interactTime;
 
             private void Start()
