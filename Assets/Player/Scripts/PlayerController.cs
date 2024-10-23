@@ -58,6 +58,7 @@ namespace Millivolt
             [Header("Physics")]
             [Tooltip("The layers of objects that the CharacterController can interact with.")]
             [SerializeField] private LayerMask m_walkableLayers;
+            [SerializeField] private bool m_inheritVelocity;
 
             private Rigidbody m_rb;
             private Rigidbody rb
@@ -261,6 +262,11 @@ namespace Millivolt
                     {
                         // reset value of surface normal
                         m_surfaceNormal = Vector3.zero;
+
+                        // if the player should not inherit the velocity of platforms, then reset their platform
+                        // velocity while they aren't grounded
+                        if (!m_inheritVelocity && m_platformVelocity != Vector3.zero)
+                            m_platformVelocity = Vector3.zero;
                         return false;
                     }
                     // if the player is on a walkable object
