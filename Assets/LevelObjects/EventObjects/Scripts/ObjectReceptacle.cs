@@ -11,6 +11,8 @@ namespace Millivolt
 {
     namespace LevelObjects
     {
+        using PickupObjects;
+
         namespace EventObjects
         {
             [RequireComponent(typeof(Collider))]
@@ -70,8 +72,8 @@ namespace Millivolt
                         return;
 
                     // if its the correct object, accept the object
-                    LevelObject obj = other.GetComponent<LevelObject>();
-                    if (obj && obj.name == m_objectName)
+                    PickupObject obj = other.GetComponent<PickupObject>();
+                    if (obj && obj.name == m_objectName && obj.canInteract)
                     {
                         // if the object has a spawn parent, then toggle whether it can still spawn the object
                         if (obj.spawnParent)

@@ -45,7 +45,7 @@ namespace Millivolt
             private void Update()
             {
                 // rotate player to face correct direction
-                if (GameManager.PlayerController.canMove)
+                if (GameManager.PlayerController && GameManager.PlayerController.canMove)
                 {
                     Vector3 movementDirection = GameManager.PlayerController.movementDirection;
                     // ensure the movement vector isn't zero

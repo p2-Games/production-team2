@@ -87,6 +87,8 @@ namespace Millivolt
 
 			public void ActivateTask()
 			{
+				FadeInTask();
+
 				//Start at 30 increment by 30 for every subtask
 				Vector2 screenStartSize = GetComponent<RectTransform>().sizeDelta;
 				Vector2 screenEndSize = new Vector2(screenStartSize.x, 30 + (m_numberOfSubtasks * 40));
@@ -98,6 +100,8 @@ namespace Millivolt
 
 			public void DeactivateTask()
 			{
+				FadeOutTask();
+
 				Vector2 screenStartSize = GetComponent<RectTransform>().sizeDelta;
 				//Vector2 screenEndSize = new Vector2(screenStartSize.x, 30);
 				Vector2 screenEndSize = new Vector2(m_orignalPos.x, 30);

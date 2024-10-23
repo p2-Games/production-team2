@@ -634,18 +634,6 @@ MonoBehaviour:
   m_activateEvents:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 9181099975267403601}
-        m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
-        m_MethodName: Play
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: OnActivate
-          m_BoolArgument: 1
-        m_CallState: 2
       - m_Target: {fileID: 858209431965004748}
         m_TargetAssemblyTypeName: Millivolt.LevelObjects.Events.GravityChanger, Assembly-CSharp
         m_MethodName: ChangeGravity
@@ -660,19 +648,7 @@ MonoBehaviour:
         m_CallState: 2
   m_deactivateEvents:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 9181099975267403601}
-        m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
-        m_MethodName: Play
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: OnDeactivate
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   m_soundClipCollectionName: PressurePlate
   m_activateSoundClipName: PlateOn
   m_deactivateSoundClipName: PlateOff
@@ -687,8 +663,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.35, y: 0.3, z: 1.35}
-  m_Center: {x: 0, y: 0.2, z: 0}
+  m_Size: {x: 0.32705307, y: 0.3, z: 0.31671238}
+  m_Center: {x: -0.004440993, y: 0.20000002, z: -0.03929341}
 --- !u!95 &9181099975267403601
 Animator:
   serializedVersion: 5
