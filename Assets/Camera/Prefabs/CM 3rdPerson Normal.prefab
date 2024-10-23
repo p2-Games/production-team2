@@ -77,7 +77,7 @@ MonoBehaviour:
   m_SoftZoneHeight: 0.4702262
   m_BiasX: 0.0000021098904
   m_BiasY: -0.00000025351477
-  m_CenterOnActivate: 1
+  m_CenterOnActivate: 0
   m_GroupFramingMode: 2
   m_AdjustmentMode: 2
   m_GroupFramingSize: 0.8
@@ -101,9 +101,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c9beda531928fc40968802117a5d256, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_RecenterTarget: 2
+  m_RecenterTarget: 0
   m_VerticalAxis:
-    Value: 43.999985
+    Value: 0
     m_SpeedMode: 1
     m_MaxSpeed: 0.12
     m_AccelTime: 0.2
@@ -111,8 +111,8 @@ MonoBehaviour:
     m_InputAxisName: Mouse Y
     m_InputAxisValue: 0
     m_InvertInput: 1
-    m_MinValue: -20
-    m_MaxValue: 65
+    m_MinValue: -90
+    m_MaxValue: 70
     m_Wrap: 0
     m_Recentering:
       m_enabled: 0
@@ -203,7 +203,7 @@ MonoBehaviour:
   m_LockStageInInspector: 
   m_StreamingVersion: 20170927
   m_Priority: 10
-  m_StandbyUpdate: 2
+  m_StandbyUpdate: 1
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 0}
   m_Lens:
@@ -250,9 +250,9 @@ MonoBehaviour:
   m_CameraRadius: 0.1
   m_Strategy: 0
   m_MaximumEffort: 4
-  m_SmoothingTime: 0.2
-  m_Damping: 4
-  m_DampingWhenOccluded: 2
+  m_SmoothingTime: 0.1
+  m_Damping: 1
+  m_DampingWhenOccluded: 0.5
   m_OptimalTargetDistance: 0
 --- !u!114 &2582690241731788639
 MonoBehaviour:

@@ -45,8 +45,8 @@ namespace Millivolt
 
             private void Start()
             {
-				m_musicVolSlider.value = GameManager.PlayerSettings.musicVolume;
-				m_sfxVolSlider.value = GameManager.PlayerSettings.sfxVolume;
+				m_musicVolSlider.value = PlayerSettings.Instance.musicVolume;
+				m_sfxVolSlider.value = PlayerSettings.Instance.sfxVolume;
 
 				m_sensitivitySlider.onValueChanged.AddListener(delegate { AdjustSensitivity(m_sensitivitySlider.value); });
 				m_musicVolSlider.onValueChanged.AddListener(delegate { AdjustMusicVolume(m_musicVolSlider.value); });
@@ -57,17 +57,17 @@ namespace Millivolt
 
 			public void AdjustSensitivity(float value)
 			{
-				GameManager.PlayerSettings.AdjustCameraSensitivity(value);
+				PlayerSettings.Instance.AdjustCameraSensitivity(value);
 			}
 
 			public void AdjustMusicVolume(float value)
 			{
-				GameManager.PlayerSettings.AdjustMusicVolume(value);
+				PlayerSettings.Instance.AdjustMusicVolume(value);
 			}
 
             public void AdjustSFXVolume(float value)
             {
-				GameManager.PlayerSettings.AdjustSFXVolume(value);
+				PlayerSettings.Instance.AdjustSFXVolume(value);
             }
         }
 	}

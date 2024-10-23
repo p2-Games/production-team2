@@ -40,7 +40,8 @@ namespace Millivolt
 
                 private void OnCollisionEnter(Collision collision)
                 {
-                    SFXController.Instance.PlayRandomSoundClip("ScrewDrop", transform);
+                    if (gameObject != GameManager.PlayerInteraction.heldObject)
+                        SFXController.Instance.PlayRandomSoundClip("ScrewDrop", transform);
                 }
 
                 public void Destroy()

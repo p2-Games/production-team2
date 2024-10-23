@@ -44,54 +44,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2e32932993b0a446974f0a2195d6250, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &5470636451635300383
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5348543024361144199}
-  - component: {fileID: 8059815153313717433}
-  m_Layer: 3
-  m_Name: CameraController
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5348543024361144199
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5470636451635300383}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 6821388206902358153}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8059815153313717433
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5470636451635300383}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 53f43d5e674a45b43a2e6f1fac98b890, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_normalCam: {fileID: 0}
-  m_altCam: {fileID: 0}
-  m_screenXRange: 0.3
-  m_shoulderMoveSpeed: 300
 --- !u!1 &6821388206902358165
 GameObject:
   m_ObjectHideFlags: 0
@@ -127,7 +79,6 @@ Transform:
   - {fileID: 6821388206192318489}
   - {fileID: 8902741228031686417}
   - {fileID: 4713140480262397579}
-  - {fileID: 5348543024361144199}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -220,8 +171,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 8059815153313717433}
-        m_TargetAssemblyTypeName: Millivolt.Player.CameraController, Assembly-CSharp
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: Millivolt.Cameras.CameraController, Assembly-CSharp
         m_MethodName: Move
         m_Mode: 0
         m_Arguments:
@@ -330,38 +281,6 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 791adf62-c3a2-4b9e-af5e-28e3044a7080
     m_ActionName: Player/Pause[/Keyboard/escape]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7464017017590126018}
-        m_TargetAssemblyTypeName: Millivolt.Player.PlayerInteraction, Assembly-CSharp
-        m_MethodName: UsePickup
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: eb046b55-4191-440b-859e-480fa4884b5a
-    m_ActionName: Player/UsePickup[/Keyboard/f]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8059815153313717433}
-        m_TargetAssemblyTypeName: Millivolt.Player.CameraController, Assembly-CSharp
-        m_MethodName: AltLook
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: 6587a56e-d78e-479c-abfc-a9232b6da34e
-    m_ActionName: Player/AltLook[/Keyboard/alt]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard&Mouse
   m_DefaultActionMap: Player
@@ -463,7 +382,7 @@ PrefabInstance:
     - target: {fileID: 4274433419345854684, guid: eece1ceeb51baf045a27f125b6963f2f,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.751
+      value: 0.82
       objectReference: {fileID: 0}
     - target: {fileID: 8149319609767766237, guid: eece1ceeb51baf045a27f125b6963f2f,
         type: 3}
