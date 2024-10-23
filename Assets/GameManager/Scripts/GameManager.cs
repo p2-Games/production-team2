@@ -118,6 +118,8 @@ namespace Millivolt
 			PlayerModel = player.GetComponentInChildren<PlayerModel>();
 
             LevelManager.Instance.LevelSetup();
+
+			SceneManager.SetActiveScene(SceneManager.GetSceneByName(LevelManager.Instance.levelData.levelName));
         }
 
 		public void LoadScene(string sceneName)
