@@ -37,10 +37,10 @@ namespace Millivolt
             switch (type)
             {
                 case SoundType.Effect:
-                    m_source.volume *= GameManager.PlayerSettings.sfxVolume;
+                    m_source.volume *= PlayerSettings.Instance.sfxVolume;
                     break;
                 case SoundType.Music:
-                    m_source.volume *= GameManager.PlayerSettings.musicVolume;
+                    m_source.volume *= PlayerSettings.Instance.musicVolume;
                     break;
                 case SoundType.Voice:
                     break;
@@ -69,10 +69,10 @@ namespace Millivolt
             switch(m_typeVal)
             {
                 case 0:
-                    m_source.volume = m_originalVolume * GameManager.PlayerSettings.sfxVolume;
+                    m_source.volume = m_originalVolume * PlayerSettings.Instance.sfxVolume;
                     break;
                 case 1:
-                    m_source.volume = m_originalVolume * GameManager.PlayerSettings.musicVolume;
+                    m_source.volume = m_originalVolume * PlayerSettings.Instance.musicVolume;
                     break;
                 case 2:
                     break;

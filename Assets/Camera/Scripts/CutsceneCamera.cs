@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace Millivolt
 {
-    namespace Cutscene
+    namespace Cameras
     {
         [RequireComponent(typeof(CinemachineVirtualCamera))]
         public class CutsceneCamera : MonoBehaviour
