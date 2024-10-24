@@ -97,6 +97,9 @@ namespace Millivolt
 
             public void UpdateSensitivity(float h, float v)
             {
+                horizontalSensitivity = h;
+                verticalSensitivity = v;
+
                 m_normalPOV.m_HorizontalAxis.m_MaxSpeed = horizontalSensitivity;
                 m_normalPOV.m_VerticalAxis.m_MaxSpeed = verticalSensitivity;
 
