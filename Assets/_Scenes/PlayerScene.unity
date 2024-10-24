@@ -123,6 +123,18 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!134 &390680850
+PhysicMaterial:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: DynamicMaterial
+  dynamicFriction: 0
+  staticFriction: 0
+  bounciness: 0
+  frictionCombine: 1
+  bounceCombine: 1
 --- !u!1001 &414809068
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -189,7 +201,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Follow
       value: 
-      objectReference: {fileID: 767687914}
+      objectReference: {fileID: 767687913}
     - target: {fileID: 447493189218253627, guid: 2aac13b1912922049b5b1a2f1a25d51f,
         type: 3}
       propertyPath: m_Name
@@ -214,18 +226,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45e653bab7fb20e499bda25e1b646fea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!134 &532331935
-PhysicMaterial:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: DynamicMaterial
-  dynamicFriction: 0
-  staticFriction: 0
-  bounciness: 0
-  frictionCombine: 1
-  bounceCombine: 1
 --- !u!1001 &563426704
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -367,7 +367,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Material
       value: 
-      objectReference: {fileID: 532331935}
+      objectReference: {fileID: 390680850}
     - target: {fileID: 4606180051231618150, guid: ff2eab9ba8148954697e7c7ccf1e9783,
         type: 3}
       propertyPath: m_spawnScreenEffect
@@ -471,12 +471,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 767687912}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &767687914 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6821388206902358153, guid: ff2eab9ba8148954697e7c7ccf1e9783,
-    type: 3}
-  m_PrefabInstance: {fileID: 767687912}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &770836996
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -484,11 +478,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2582690240613012620, guid: 0b3d3948491a8114e9a077358c03c889,
+        type: 3}
+      propertyPath: m_LookaheadIgnoreY
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2582690240613012620, guid: 0b3d3948491a8114e9a077358c03c889,
+        type: 3}
+      propertyPath: m_TrackedObjectOffset.y
+      value: 1.2
+      objectReference: {fileID: 0}
     - target: {fileID: 2582690241731788609, guid: 0b3d3948491a8114e9a077358c03c889,
         type: 3}
       propertyPath: m_Follow
       value: 
-      objectReference: {fileID: 767687914}
+      objectReference: {fileID: 767687913}
     - target: {fileID: 2582690241731788611, guid: 0b3d3948491a8114e9a077358c03c889,
         type: 3}
       propertyPath: m_Name
