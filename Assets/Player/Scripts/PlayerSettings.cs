@@ -6,6 +6,7 @@
 ///</summary>
 
 using Cinemachine;
+using Millivolt.Cameras;
 using UnityEngine;
 
 namespace Millivolt
@@ -13,9 +14,6 @@ namespace Millivolt
 	public class PlayerSettings : MonoBehaviour
 	{
         public static PlayerSettings Instance { get; private set; }
-
-        [SerializeField] private CinemachineVirtualCamera m_camera;
-        private CinemachinePOV m_povSettings;
 
         [Tooltip("The min and max value of the verical speed")]
         [SerializeField] private Vector2 m_minMaxVerticalSpeed;
@@ -49,9 +47,6 @@ namespace Millivolt
 
             m_musicVolume = 1;
             m_sfxVolume = 1;
-
-            if (m_camera)
-                m_povSettings = m_camera.GetCinemachineComponent<CinemachinePOV>();
         }
 
         public void AdjustCameraSensitivity(float value)
@@ -72,8 +67,7 @@ namespace Millivolt
                 holdValues[i] = finalValue;
             }
 
-            m_povSettings.m_VerticalAxis.m_MaxSpeed = holdValues[0];
-            m_povSettings.m_HorizontalAxis.m_MaxSpeed = holdValues[1];
+            GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>().UpdateSensitivity(holdValues[1], holdValues[0]);
 
         }
 

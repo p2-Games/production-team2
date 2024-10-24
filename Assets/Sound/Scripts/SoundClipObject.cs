@@ -40,6 +40,7 @@ namespace Millivolt
                     m_source.volume *= PlayerSettings.Instance.sfxVolume;
                     break;
                 case SoundType.Music:
+                    m_source.spatialBlend = 0;
                     m_source.volume *= PlayerSettings.Instance.musicVolume;
                     break;
                 case SoundType.Voice:

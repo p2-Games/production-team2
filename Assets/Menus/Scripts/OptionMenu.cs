@@ -36,7 +36,9 @@ namespace Millivolt
 			public void OpenOptions()
 			{
 				GetComponent<UIMenu>().ActivateMenu();
-			}
+                m_musicVolSlider.value = PlayerSettings.Instance.musicVolume;
+                m_sfxVolSlider.value = PlayerSettings.Instance.sfxVolume;
+            }
 
 			public void CloseOptions()
 			{

@@ -5,6 +5,7 @@
 ///
 ///</summary>
 
+using Millivolt.UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -16,7 +17,7 @@ namespace Millivolt
 	    {
             public void Pause(InputAction.CallbackContext context)
             {
-                if (context.started)
+                if (context.started && UIMenuManager.Instance.activeMenus.Count < 2)
                 {
                     GameManager.Instance.PauseGame();
                 }

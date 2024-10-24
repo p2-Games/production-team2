@@ -48,7 +48,7 @@ namespace Millivolt
 
                 // init sensitivity
                 horizontalSensitivity = m_normalPOV.m_HorizontalAxis.m_MaxSpeed;
-                verticalSensitivity = m_normalPOV.m_HorizontalAxis.m_MaxSpeed;
+                verticalSensitivity = m_normalPOV.m_VerticalAxis.m_MaxSpeed;
                 m_highPOV.m_HorizontalAxis.m_MaxSpeed = horizontalSensitivity;
                 m_highPOV.m_VerticalAxis.m_MaxSpeed = verticalSensitivity;
             }
