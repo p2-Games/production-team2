@@ -96,11 +96,11 @@ namespace Millivolt
 				Tween.Size(GetComponent<RectTransform>(), screenStartSize, screenEndSize, 0.5f, 0f);
 				StartCoroutine(UpdateListGroup(screenEndSize));
 				//LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)transform.parent);
+
 			}
 
 			public void DeactivateTask()
 			{
-				FadeOutTask();
 
 				Vector2 screenStartSize = GetComponent<RectTransform>().sizeDelta;
 				//Vector2 screenEndSize = new Vector2(screenStartSize.x, 30);
@@ -108,6 +108,8 @@ namespace Millivolt
 
 				Tween.Size(GetComponent<RectTransform>(), screenStartSize, screenEndSize, 0.5f, 0f);
 				StartCoroutine(UpdateListGroup(screenEndSize));
+
+				FadeOutTask();
 			}
 
 			public void FadeInTask()
@@ -130,17 +132,17 @@ namespace Millivolt
 				{
 					yield return null;
 				}
-
 				
-
-				int activeCount = m_taskParent.transform.Cast<Transform>().Where(child => child.gameObject.activeSelf).Count();
-
-                Vector2 screenStartSize = GetComponent<RectTransform>().sizeDelta;
-                Vector2 screenEndSize = new Vector2(screenStartSize.x, 30 + (activeCount * 40));
-
-                Tween.Size(GetComponent<RectTransform>(), screenStartSize, screenEndSize, 0.5f, 0f);
-                StartCoroutine(UpdateListGroup(screenEndSize));
-
+ 				//int activeCount = m_taskParent.transform.Cast<Transform>().Where(child => child.gameObject.activeSelf).Count();
+				//
+                //Vector2 screenStartSize = GetComponent<RectTransform>().sizeDelta;
+                //Vector2 screenEndSize = new Vector2(screenStartSize.x, 30 + (activeCount * 40));
+				//
+				//if (activeCount > 0)
+				//{
+				//	Tween.Size(GetComponent<RectTransform>(), screenStartSize, screenEndSize, 0.5f, 0f);
+				//	StartCoroutine(UpdateListGroup(screenEndSize));
+				//}
                 if (m_canvasGroup.alpha == 0)
                     gameObject.SetActive(false);
             }
