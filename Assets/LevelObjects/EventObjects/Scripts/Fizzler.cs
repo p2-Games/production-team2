@@ -20,12 +20,12 @@ namespace Millivolt
 
                 private void OnTriggerEnter(Collider other)
                 {
-					if (CanTrigger(other.gameObject))
+					if (!CanTrigger(other.gameObject))
 					{
 						if (other.TryGetComponent(out PickupObject pickup))
 							pickup.Destroy();
 						else
-							Destroy(other.gameObject);
+							//Destroy(other.gameObject);
 						m_activateEvents.Invoke();
 					}
                 }
