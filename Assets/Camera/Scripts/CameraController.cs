@@ -60,6 +60,17 @@ namespace Millivolt
 
             public void Update()
             {
+                if (GameManager.Instance.gameState == GameState.PAUSE)
+                {
+                    m_normalCam.enabled = false;
+                    m_highCam.enabled = false;
+                }
+                else
+                {
+                    m_normalCam.enabled = true;
+                    m_highCam.enabled = true;
+                }
+
                 // calc target position of focus point
                 float targetScreenX = 0.5f - m_horizontalMoveDelta * m_screenXRange;
 
