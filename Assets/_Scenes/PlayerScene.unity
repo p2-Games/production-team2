@@ -123,7 +123,7 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!134 &390680850
+--- !u!134 &98503248
 PhysicMaterial:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -365,9 +365,14 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 182938637857744680, guid: ff2eab9ba8148954697e7c7ccf1e9783,
         type: 3}
+      propertyPath: m_Radius
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 182938637857744680, guid: ff2eab9ba8148954697e7c7ccf1e9783,
+        type: 3}
       propertyPath: m_Material
       value: 
-      objectReference: {fileID: 390680850}
+      objectReference: {fileID: 98503248}
     - target: {fileID: 4606180051231618150, guid: ff2eab9ba8148954697e7c7ccf1e9783,
         type: 3}
       propertyPath: m_spawnScreenEffect
@@ -427,6 +432,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6821388206902358154, guid: ff2eab9ba8148954697e7c7ccf1e9783,
+        type: 3}
+      propertyPath: m_slopeLimit
+      value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: 6821388206902358154, guid: ff2eab9ba8148954697e7c7ccf1e9783,
+        type: 3}
+      propertyPath: m_groundCheckRadius
+      value: 0.16
+      objectReference: {fileID: 0}
+    - target: {fileID: 6821388206902358154, guid: ff2eab9ba8148954697e7c7ccf1e9783,
+        type: 3}
+      propertyPath: m_groundCheckDistance
+      value: 0.037
       objectReference: {fileID: 0}
     - target: {fileID: 6821388206902358164, guid: ff2eab9ba8148954697e7c7ccf1e9783,
         type: 3}
