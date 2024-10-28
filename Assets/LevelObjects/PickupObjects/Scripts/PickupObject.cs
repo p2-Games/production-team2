@@ -29,7 +29,7 @@ namespace Millivolt
                 private bool m_isDissolving = false;
 
                 public PickupType pickupType => m_type;
-                public bool canInteract => m_type != PickupType.Immovable && !m_isDissolving;
+                public bool canInteract => m_type != PickupType.Immovable || !m_isDissolving;
 
                 protected Rigidbody m_rb; public Rigidbody rb => m_rb;
 
