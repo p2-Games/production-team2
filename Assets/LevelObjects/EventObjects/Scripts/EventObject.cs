@@ -95,7 +95,7 @@ namespace Millivolt
                     {
                         if (type[0] == '!')
                         {
-                            string actualType = type.Substring(1);
+                            string actualType = type[1..];
                             if (obj.tag == actualType || obj.GetComponent(actualType))
                                 return false;
                         }
