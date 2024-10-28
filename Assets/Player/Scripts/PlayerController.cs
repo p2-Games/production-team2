@@ -179,8 +179,15 @@ namespace Millivolt
                     SFXController.Instance.PlayRandomSoundClip("Jump", transform);
                 }
 
+                // get if player is moving up or down in relation to gravity
+                float direction = 0;
+                if (m_verticalVelocity.sqrMagnitude > 0)
+                    direction = Vector3.SignedAngle(upDirection, m_verticalVelocity.normalized, upDirection) < 180f ? 1 : -1f;
+
                 // tell animator what to do
-                animation.PassFloatParameter("Speed", m_walkVelocity.magnitude / m_topSpeed);
+                animation.PassFloatParameter("MoveSpeed", m_walkVelocity.magnitude / m_topSpeed);
+                animation.PassFloatParameter("VerticalSpeed", m_verticalVelocity.magnitude * direction);
+                animation.PassBoolParameter("IsGrounded", m_isGrounded);
 
                 // move player
                 rb.velocity = m_walkVelocity + m_verticalVelocity + m_platformVelocity + m_externalVelocity;
