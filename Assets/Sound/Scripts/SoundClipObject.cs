@@ -22,6 +22,9 @@ namespace Millivolt
         {
             // get source component
             m_source = GetComponent<AudioSource>();
+            if (!m_source.enabled)
+                return;
+
             m_source.clip = soundClip.audioClip;
             m_source.playOnAwake = true;
 

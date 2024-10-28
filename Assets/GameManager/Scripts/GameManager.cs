@@ -15,8 +15,9 @@ namespace Millivolt
     using UI;
 	using Level;
     using UnityEditor;
+    using Millivolt.Cameras;
 
-	public enum GameState
+    public enum GameState
 	{
 		MENU,
 		PAUSE,
@@ -44,6 +45,11 @@ namespace Millivolt
 				return;
 			}
             DontDestroyOnLoad(gameObject);
+        }
+
+        private void Start()
+        {
+			m_currentSceneName = SceneManager.GetActiveScene().name;
         }
 
         // Game state
@@ -119,15 +125,8 @@ namespace Millivolt
 
             LevelManager.Instance.LevelSetup();
 
-			SceneManager.SetActiveScene(SceneManager.GetSceneByName(LevelManager.Instance.levelData.levelName));
+			SceneManager.SetActiveScene(SceneManager.GetSceneByName(m_currentSceneName));
         }
-
-		public void LoadScene(string sceneName)
-		{
-			m_currentSceneName = sceneName;
-			UIMenuManager.Instance.ClearActiveMenus();
-			SceneManager.LoadScene(sceneName);
-		}
 
         public void LoadLevel(string levelName)
 		{
@@ -156,7 +155,7 @@ namespace Millivolt
 #endif
         }
 
-        public	IEnumerator LoadSceneAsync(string sceneName, LoadSceneMode loadSceneMode, bool doSetup)
+        public IEnumerator LoadSceneAsync(string sceneName, LoadSceneMode loadSceneMode, bool doSetup)
 		{
 			m_isLoading = true;
 			AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName, loadSceneMode);
