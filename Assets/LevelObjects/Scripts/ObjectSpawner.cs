@@ -34,20 +34,23 @@ namespace Millivolt
 
         private void Start()
         {
-            if (m_spawnAtStart && m_objectCanSpawn)
-                SpawnObject();
-        }
-
-        private void Update()
-        {
-            if (!m_spawnedObject && m_autoRespawn && m_objectCanSpawn)
+            if (m_spawnAtStart)
                 SpawnObject();
         }
 
         public void SetCanSpawnObject(bool value) => m_objectCanSpawn = value;
 
+        public void AutoRespawn()
+        {
+            if (m_autoRespawn)
+                SpawnObject();
+        }
+
         public void SpawnObject()
         {
+            if (!m_objectCanSpawn)
+                return;
+            
             // destroy existing game object
             if (m_spawnedObject)
             {
@@ -61,9 +64,8 @@ namespace Millivolt
             m_spawnedObject = Instantiate(m_object, m_spawnPoint.position, m_spawnPoint.rotation);
 
             // if the spawned object is a LevelObject, set this MonoBehaviour to be its spawn parent
-            LevelObject levelObject = m_spawnedObject.GetComponent<LevelObject>();
-            if (levelObject)
-                levelObject.spawnParent = this;
+            if (m_spawnedObject.TryGetComponent(out LevelObject levelObj))
+                levelObj.spawnParent = this;
         }
     }
 }

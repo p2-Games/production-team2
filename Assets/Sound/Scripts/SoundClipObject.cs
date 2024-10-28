@@ -20,11 +20,11 @@ namespace Millivolt
 
         public void Init(SFXController.SoundClip soundClip, SoundType type)
         {
+            // get source component
+            m_source = GetComponent<AudioSource>();
             if (!m_source.enabled)
                 return;
 
-            // get source component
-            m_source = GetComponent<AudioSource>();
             m_source.clip = soundClip.audioClip;
             m_source.playOnAwake = true;
 
