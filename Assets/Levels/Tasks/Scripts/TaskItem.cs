@@ -13,6 +13,8 @@ using UnityEngine.UI;
 using Pixelplacement;
 using TMPro;
 using System.Linq;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace Millivolt
 {
@@ -44,8 +46,21 @@ namespace Millivolt
 			//[Tooltip("If you dont want having all subtasks being complete to autocomplete the task then tick this")]
 			//[SerializeField] private bool m_subtasksDontComplete;
 
-			//EVENTS
-			[Tooltip("Events are called when the task is completed")]
+			[SerializeField] private TaskListManager m_taskListManager;
+
+			[Space(30)]
+			[SerializeField] private GameObject m_subtaskParent;
+
+			[SerializeField] private float m_taskSpace;
+			public float taskSpace => m_taskSpace;
+
+            [Space(30)]
+            public List<TaskItem> activeTasks = new List<TaskItem>();
+            public List<TaskItem> inactiveTasks = new List<TaskItem>();
+
+
+            //EVENTS
+            [Tooltip("Events are called when the task is completed")]
 			[SerializeField] private UnityEvent m_events;
 
 			private Vector2 m_orignalPos
@@ -71,10 +86,33 @@ namespace Millivolt
 					CompleteTask();
 			}
 
-			private void Start()
+            private void OnEnable()
+            {
+				Start();
+            }
+
+			private void UpdateTaskSpace()
+			{
+				m_taskSpace = 30 + (activeTasks.Count * 30) + (activeTasks.Count * m_taskListManager.spacing);
+			}
+
+			public void InitiliseSubtask()
+			{
+                foreach (TaskItem task in inactiveTasks)
+                {
+                    Tween.CanvasGroupAlpha(task.GetComponent<CanvasGroup>(), 0, 0, 0);
+                }
+				m_subtaskParent.transform.position += new Vector3(m_taskListManager.subtaskOffset, 0, 0);
+				UpdateTaskSpace();
+            }
+
+            private void Start()
 			{
 				m_taskParent = transform.parent.parent.parent.GetComponent<TaskItem>();
+				m_taskListManager = GetComponentInParent<TaskListManager>();
                 m_toggle.GetComponentInChildren<TextMeshProUGUI>().text = m_name;
+				InitiliseSubtask();
+				UpdateTaskSpace();
                 m_completedSubtasks = 0;
 				if (m_subtasks)
 					m_numberOfSubtasks = m_subtasks.childCount;
@@ -85,76 +123,131 @@ namespace Millivolt
 				m_toggle.GetComponentInChildren<TextMeshProUGUI>().text = m_name;
 			}
 
+			//public void ActivateTask()
+			//{
+			//	FadeInTask();
+			//
+			//	//Start at 30 increment by 30 for every subtask
+			//	Vector2 screenStartSize = GetComponent<RectTransform>().sizeDelta;
+			//	Vector2 screenEndSize = new Vector2(screenStartSize.x, 30 + (m_numberOfSubtasks * 40));
+			//
+			//	Tween.Size(GetComponent<RectTransform>(), screenStartSize, screenEndSize, 0.5f, 0f);
+			//	StartCoroutine(UpdateListGroup(screenEndSize));
+			//	//LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)transform.parent);
+			//
+			//}
+
 			public void ActivateTask()
 			{
-				FadeInTask();
-
-				//Start at 30 increment by 30 for every subtask
-				Vector2 screenStartSize = GetComponent<RectTransform>().sizeDelta;
-				Vector2 screenEndSize = new Vector2(screenStartSize.x, 30 + (m_numberOfSubtasks * 40));
-
-				Tween.Size(GetComponent<RectTransform>(), screenStartSize, screenEndSize, 0.5f, 0f);
-				StartCoroutine(UpdateListGroup(screenEndSize));
-				//LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)transform.parent);
-
+				m_taskListManager.inactiveTasks.Remove(this);
+				m_taskListManager.activeTasks.Add(this);
+				Tween.CanvasGroupAlpha(m_canvasGroup, 1, 0.5f, 0, Tween.EaseIn);
+				m_taskListManager.SpaceActiveTasks();
 			}
 
-			public void DeactivateTask()
+			public void ActivateSubtask()
 			{
-
-				Vector2 screenStartSize = GetComponent<RectTransform>().sizeDelta;
-				//Vector2 screenEndSize = new Vector2(screenStartSize.x, 30);
-				Vector2 screenEndSize = new Vector2(m_orignalPos.x, 30);
-
-				Tween.Size(GetComponent<RectTransform>(), screenStartSize, screenEndSize, 0.5f, 0f);
-				StartCoroutine(UpdateListGroup(screenEndSize));
-
-				FadeOutTask();
-			}
-
-			public void FadeInTask()
-			{
-				m_canvasGroup.alpha = 0;
-				gameObject.SetActive(true);
-                Tween.CanvasGroupAlpha(m_canvasGroup, 1, 1.5f, 0, Tween.EaseOut);
-                StartCoroutine(FadeCheck(1));
+				m_taskParent.inactiveTasks.Remove(this);
+				m_taskParent.activeTasks.Add(this);
+                Tween.CanvasGroupAlpha(m_canvasGroup, 1, 0.5f, 0, Tween.EaseIn);
+				m_taskParent.UpdateTaskSpace();
+				m_taskListManager.SpaceActiveTasks();
             }
 
-			public void FadeOutTask()
+			public void CrossoutTask()
 			{
-				Tween.CanvasGroupAlpha(m_canvasGroup, 0, 1.5f, 0, Tween.EaseOut);
-				StartCoroutine(FadeCheck(0));
+
 			}
 
-			IEnumerator FadeCheck(float alphaTarget)
-			{				
-				while (m_canvasGroup.alpha != alphaTarget)
-				{
-					yield return null;
-				}
-				
- 				//int activeCount = m_taskParent.transform.Cast<Transform>().Where(child => child.gameObject.activeSelf).Count();
-				//
-                //Vector2 screenStartSize = GetComponent<RectTransform>().sizeDelta;
-                //Vector2 screenEndSize = new Vector2(screenStartSize.x, 30 + (activeCount * 40));
-				//
-				//if (activeCount > 0)
-				//{
-				//	Tween.Size(GetComponent<RectTransform>(), screenStartSize, screenEndSize, 0.5f, 0f);
-				//	StartCoroutine(UpdateListGroup(screenEndSize));
-				//}
-                if (m_canvasGroup.alpha == 0)
-                    gameObject.SetActive(false);
+            public void CrossoutSubtask()
+            {
+
             }
 
-			IEnumerator UpdateListGroup(Vector2 finalSize)
-			{
-				while (GetComponent<RectTransform>().sizeDelta.y != finalSize.y)
+            public void DeactivateTask(float delay)
+            {
+				if (delay > 0)
 				{
-					LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)transform.parent);
-					yield return null;
+					StartCoroutine(Delay(delay));
+					return;
 				}
+                m_taskListManager.activeTasks.Remove(this);
+                m_taskListManager.inactiveTasks.Add(this);
+                Tween.CanvasGroupAlpha(m_canvasGroup, 0, 0.5f, 0, Tween.EaseIn);
+                m_taskListManager.SpaceActiveTasks();
+            }
+
+            public void DeactivateSubtask()
+            {
+                m_taskParent.activeTasks.Remove(this);
+                m_taskParent.inactiveTasks.Add(this);
+                Tween.CanvasGroupAlpha(m_canvasGroup, 0, 0.5f, 0, Tween.EaseIn);
+                m_taskParent.UpdateTaskSpace();
+                m_taskListManager.SpaceActiveTasks();
+            }
+
+			private IEnumerator Delay(float delay)
+			{
+				yield return new WaitForSeconds(delay);
+				DeactivateTask(0);
 			}
+
+            //public void DeactivateTask()
+            //{
+            //
+            //	Vector2 screenStartSize = GetComponent<RectTransform>().sizeDelta;
+            //	//Vector2 screenEndSize = new Vector2(screenStartSize.x, 30);
+            //	Vector2 screenEndSize = new Vector2(m_orignalPos.x, 30);
+            //
+            //	Tween.Size(GetComponent<RectTransform>(), screenStartSize, screenEndSize, 0.5f, 0f);
+            //	StartCoroutine(UpdateListGroup(screenEndSize));
+            //
+            //	FadeOutTask();
+            //}
+
+            //public void FadeInTask()
+			//{
+			//	m_canvasGroup.alpha = 0;
+			//	gameObject.SetActive(true);
+            //    Tween.CanvasGroupAlpha(m_canvasGroup, 1, 1.5f, 0, Tween.EaseOut);
+            //    StartCoroutine(FadeCheck(1));
+            //}
+
+			//public void FadeOutTask()
+			//{
+			//	Tween.CanvasGroupAlpha(m_canvasGroup, 0, 1.5f, 0, Tween.EaseOut);
+			//	StartCoroutine(FadeCheck(0));
+			//}
+
+			//IEnumerator FadeCheck(float alphaTarget)
+			//{				
+			//	while (m_canvasGroup.alpha != alphaTarget)
+			//	{
+			//		yield return null;
+			//	}
+			//	
+ 			//	//int activeCount = m_taskParent.transform.Cast<Transform>().Where(child => child.gameObject.activeSelf).Count();
+			//	//
+            //    //Vector2 screenStartSize = GetComponent<RectTransform>().sizeDelta;
+            //    //Vector2 screenEndSize = new Vector2(screenStartSize.x, 30 + (activeCount * 40));
+			//	//
+			//	//if (activeCount > 0)
+			//	//{
+			//	//	Tween.Size(GetComponent<RectTransform>(), screenStartSize, screenEndSize, 0.5f, 0f);
+			//	//	StartCoroutine(UpdateListGroup(screenEndSize));
+			//	//}
+            //    if (m_canvasGroup.alpha == 0)
+            //        gameObject.SetActive(false);
+            //}
+
+			//IEnumerator UpdateListGroup(Vector2 finalSize)
+			//{
+			//	while (GetComponent<RectTransform>().sizeDelta.y != finalSize.y)
+			//	{
+			//		LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)transform.parent);
+			//		yield return null;
+			//	}
+			//}
 		}
 	}
 }
