@@ -51,6 +51,10 @@ namespace Millivolt
                     // if this is the held object, then drop it
                     GameManager.PlayerInteraction.DropObject();
 
+                    // check if spawn parent should auto respawn this object
+                    if (spawnParent)
+                        spawnParent.AutoRespawn();
+
                     GetComponent<MeshDissolver>().Dissolve();
                 }
 
