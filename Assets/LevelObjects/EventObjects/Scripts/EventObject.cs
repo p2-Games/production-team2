@@ -5,7 +5,6 @@
 ///
 ///</summary>
 
-using Millivolt.Player;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -89,14 +88,14 @@ namespace Millivolt
                     if (obj == gameObject)
                         return false;
                     
-                    if (obj == GameManager.PlayerInteraction.heldObject)
+                    if (GameManager.PlayerInteraction && obj == GameManager.PlayerInteraction.heldObject)
                         return false;
 
                     foreach (string type in m_interactionFilter)
                     {
                         if (type[0] == '!')
                         {
-                            string actualType = type.Substring(1);
+                            string actualType = type[1..];
                             if (obj.tag == actualType || obj.GetComponent(actualType))
                                 return false;
                         }
