@@ -18,8 +18,6 @@ namespace Millivolt
 		{
 			[SerializeField] private GameObject m_taskParent;
 
-
-
 			[Space(30)]
 			[Header("Task Layout")]
 			[SerializeField] private float m_spacing;
@@ -35,6 +33,13 @@ namespace Millivolt
 			public List<TaskItem> activeTasks = new List<TaskItem>();
             public List<TaskItem> inactiveTasks = new List<TaskItem>();
 
+
+			private CanvasGroup m_canvasGroup;
+			private bool m_isVisible = true;
+
+			/// <summary>
+			/// Hide all inactive tasks
+			/// </summary>
 			public void InitialiseTasks()
 			{
 				foreach (TaskItem task in inactiveTasks)
@@ -45,8 +50,12 @@ namespace Millivolt
             private void OnEnable()
             {
 				InitialiseTasks();
+				m_canvasGroup = GetComponent<CanvasGroup>();
             }
 
+			/// <summary>
+			/// Will set all task positions to the correct spots
+			/// </summary>
             public void SpaceActiveTasks()
 			{
 				float space = 0;
@@ -76,6 +85,19 @@ namespace Millivolt
 
 					space += activeTasks[i].taskSpace + m_spacing;
 				}
+			}
+
+			/// <summary>
+			/// Will toggle if the task list is visible on the screen or not
+			/// </summary>
+			public void ToggleTaskList()
+			{
+				m_isVisible = !m_isVisible;
+
+				if (m_isVisible)
+					m_canvasGroup.alpha = 1;
+				else
+					m_canvasGroup.alpha = 0;
 			}
         }
 	}
