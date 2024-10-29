@@ -48,6 +48,9 @@ namespace Millivolt
 
 			[SerializeField] private TaskListManager m_taskListManager;
 
+			[SerializeField] private float m_points;
+			private float m_currentPoints;
+
 			[Space(30)]
 			[SerializeField] private GameObject m_subtaskParent;
 
@@ -70,21 +73,21 @@ namespace Millivolt
 
 			[SerializeField] private CanvasGroup m_canvasGroup;
 
-			public void CompleteTask()
-			{
-				m_toggle.isOn = true;
-                m_toggle.GetComponentInChildren<TextMeshProUGUI>().text = "<s>" + m_name + "</s>";
-                m_events.Invoke();
-				if (m_taskParent)
-					m_taskParent.CompleteSubtask();
-			}
-
-			public void CompleteSubtask()
-			{
-				m_completedSubtasks++;
-				if (m_completedSubtasks >= m_numberOfSubtasks)
-					CompleteTask();
-			}
+			//public void CompleteTask()
+			//{
+			//	m_toggle.isOn = true;
+            //    m_toggle.GetComponentInChildren<TextMeshProUGUI>().text = "<s>" + m_name + "</s>";
+            //    m_events.Invoke();
+			//	if (m_taskParent)
+			//		m_taskParent.CompleteSubtask();
+			//}
+			//
+			//public void CompleteSubtask()
+			//{
+			//	m_completedSubtasks++;
+			//	if (m_completedSubtasks >= m_numberOfSubtasks)
+			//		CompleteTask();
+			//}
 
             private void OnEnable()
             {
@@ -103,7 +106,8 @@ namespace Millivolt
                     Tween.CanvasGroupAlpha(task.GetComponent<CanvasGroup>(), 0, 0, 0);
                 }
 				m_subtaskParent.transform.position += new Vector3(m_taskListManager.subtaskOffset, 0, 0);
-				UpdateTaskSpace();
+
+                UpdateTaskSpace();
             }
 
             private void Start()
@@ -111,6 +115,9 @@ namespace Millivolt
 				m_taskParent = transform.parent.parent.parent.GetComponent<TaskItem>();
 				m_taskListManager = GetComponentInParent<TaskListManager>();
                 m_toggle.GetComponentInChildren<TextMeshProUGUI>().text = m_name;
+				m_currentPoints = 0;
+				if (m_points > 1)
+                    m_toggle.GetComponentInChildren<TextMeshProUGUI>().text += (" (" + m_currentPoints + "/" + m_points + ")");
 				InitiliseSubtask();
 				UpdateTaskSpace();
                 m_completedSubtasks = 0;
@@ -154,14 +161,44 @@ namespace Millivolt
 				m_taskListManager.SpaceActiveTasks();
             }
 
-			public void CrossoutTask()
+			public void CompleteTask()
 			{
-
+				m_currentPoints++;
+				if (m_points > 1)
+					m_toggle.GetComponentInChildren<TextMeshProUGUI>().text = m_name + (" (" + m_currentPoints + "/" + m_points + ")");
+                if (m_currentPoints >= m_points)
+				{
+                    foreach (TaskItem task in activeTasks)
+					{
+						m_events.AddListener(delegate () { task.DeactivateSubtask(); });
+                    }
+					CrossoutTask();
+                    //m_taskParent.UpdateTaskSpace();
+                    //m_taskListManager.SpaceActiveTasks();
+                }
 			}
+
+            public void CompleteSubtask()
+            {
+                m_currentPoints++;
+				if (m_points > 1)
+					m_toggle.GetComponentInChildren<TextMeshProUGUI>().text = m_name + (" (" + m_currentPoints + "/" + m_points + ")");
+                if (m_currentPoints >= m_points)
+                    CrossoutSubtask();
+            }
+
+            public void CrossoutTask()
+			{
+                m_toggle.isOn = true;
+                m_toggle.GetComponentInChildren<TextMeshProUGUI>().text = "<s>" + m_toggle.GetComponentInChildren<TextMeshProUGUI>().text + "</s>";
+                m_events.Invoke();
+            }
 
             public void CrossoutSubtask()
             {
-
+                m_toggle.isOn = true;
+                m_toggle.GetComponentInChildren<TextMeshProUGUI>().text = "<s>" + m_toggle.GetComponentInChildren<TextMeshProUGUI>().text + "</s>";
+                m_events.Invoke();
             }
 
             public void DeactivateTask(float delay)

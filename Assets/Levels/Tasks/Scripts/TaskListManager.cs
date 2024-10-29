@@ -55,10 +55,26 @@ namespace Millivolt
 				{
 
                     //I dont undertsnad why I have to add 80 on the end but whatEVER I GUESS
-                    Vector2 taskPosition = new Vector2(0, (i * (space + m_spacing) * -1) + 80);
+                    Vector2 taskPosition = new Vector2(0, ((space + m_spacing) * -1) + 80);
+
+					taskPosition.y += m_spacing;
 
                     Tween.LocalPosition(activeTasks[i].transform, taskPosition, m_movingDuration, m_movingDelay, Tween.EaseInOut, Tween.LoopType.None, null, null, false);
-					space += activeTasks[i].taskSpace;
+
+
+					float subSpace = 0;
+
+					for (int j = 0; j < activeTasks[i].activeTasks.Count; j++)
+					{
+						Vector2 subtaskPos = new Vector2(m_subtaskOffset, ((subSpace + m_spacing) * -1) + m_spacing);
+
+						subtaskPos.y += m_spacing;
+
+                        Tween.LocalPosition(activeTasks[i].activeTasks[j].transform, subtaskPos, m_movingDuration, m_movingDelay, Tween.EaseInOut, Tween.LoopType.None, null, null, false);
+						subSpace += 30 + m_spacing;
+					}
+
+					space += activeTasks[i].taskSpace + m_spacing;
 				}
 			}
         }

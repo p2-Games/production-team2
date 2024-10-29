@@ -238,7 +238,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2087831275461294806}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 31a19414c41e5ae4aae2af33fee712f6, type: 3}
   m_Name: 
@@ -279,8 +279,8 @@ RectTransform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 190, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -299,7 +299,13 @@ MonoBehaviour:
   m_toggle: {fileID: 2087831276401461671}
   m_subtasks: {fileID: 2087831276671856538}
   m_name: TestTask
-  m_taskParent: {fileID: 0}
+  m_taskParent: {fileID: 2087831275819491838}
+  m_taskListManager: {fileID: 0}
+  m_points: 0
+  m_subtaskParent: {fileID: 2087831276671856539}
+  m_taskSpace: 0
+  activeTasks: []
+  inactiveTasks: []
   m_events:
     m_PersistentCalls:
       m_Calls:
