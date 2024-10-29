@@ -50,15 +50,24 @@ namespace Millivolt
 
             private PlayerCanMove m_canMove = new PlayerCanMove();
             public bool canMove { get { return m_canMove.canMove; } }
+
+            /// <summary>
+            /// Set if the player can move for a variety of reasons.
+            /// </summary>
+            /// <param name="value">If the player can move or not.</param>
+            /// <param name="type">The reason they can/can't move.</param>
             public void SetCanMove(bool value, CanMoveType type)
             {
                 m_canMove.SetCanMove(value, type);
             }
 
             [Header("Physics")]
-            [Tooltip("The layers of objects that the CharacterController can interact with.")]
+            [Tooltip("The layers of objects that the PlayerController can stand on.")]
             [SerializeField] private LayerMask m_walkableLayers;
+            [Tooltip("If the Player will inherit the velocity of moving objects after jumping/falling off of them.")]
             [SerializeField] private bool m_inheritVelocity;
+
+            public Vector3 feetPosition { get { return transform.position + collider.center - upDirection * collider.height / 2; } }
 
             private Rigidbody m_rb;
             private Rigidbody rb
@@ -294,11 +303,10 @@ namespace Millivolt
                         }
 
                         // get closest hit walkable object
-                        Vector3 playerFeet = transform.position + collider.center - upDirection * collider.height / 2;
                         RaycastHit hit = hits[0];
                         for (int h = 1; h < hits.Length; h++)
                         {
-                            if (Vector3.Distance(hits[h].point, playerFeet) < Vector3.Distance(hit.point, playerFeet))
+                            if (Vector3.Distance(hits[h].point, feetPosition) < Vector3.Distance(hit.point, feetPosition))
                                 hit = hits[h];
                         }
 

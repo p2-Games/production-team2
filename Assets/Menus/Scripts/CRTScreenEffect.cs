@@ -40,14 +40,6 @@ namespace Millivolt
 
                     m_disableDelay += 1f;
                 }
-
-                private void DisableThis()
-                {
-                    gameObject.SetActive(false);
-                    m_delay = 0;
-                    m_disableDelay = 0;
-                    Tween.Size(m_shrinkScreen.rectTransform, m_shrinkScreen.rectTransform.sizeDelta, new Vector2(800, 450), 0, 0, Tween.EaseInOutStrong, Tween.LoopType.None, null, null, false);
-                }
             }
         }
     }

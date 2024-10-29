@@ -40,7 +40,7 @@ namespace Millivolt
 
                 private void OnCollisionEnter(Collision collision)
                 {
-                    if (gameObject != GameManager.PlayerInteraction.heldObject)
+                    if (GameManager.PlayerInteraction && gameObject != GameManager.PlayerInteraction.heldObject)
                         SFXController.Instance.PlayRandomSoundClip("ScrewDrop", transform);
                 }
 
@@ -56,18 +56,6 @@ namespace Millivolt
                         spawnParent.AutoRespawn();
 
                     GetComponent<MeshDissolver>().Dissolve();
-                }
-
-                private void OnDestroy()
-                {
-                    ParticleSystem[] particles = GetComponentsInChildren<ParticleSystem>();
-
-                    foreach (ParticleSystem particle in particles)
-                    {
-                        ParticleSystem.MainModule main = particle.main;
-                        main.loop = false;
-                        particle.transform.SetParent(null, true);
-                    }
                 }
             }
         }
