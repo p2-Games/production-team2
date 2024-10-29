@@ -19,6 +19,7 @@ namespace Millivolt
         private int m_selectedButton;
 
         [Header("Menu")]
+        [SerializeField] private GameObject m_introFadeObject;
         [SerializeField] private ButtonBehaviour[] m_mainButtons;
 
         [SerializeField] private GameObject m_menu;
@@ -77,7 +78,7 @@ namespace Millivolt
 
         public void OptionsMenu()
         {
-
+            
         }
 
         public void Credits()

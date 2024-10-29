@@ -9,6 +9,7 @@ using UnityEngine;
 
 namespace Millivolt
 {
+    using Millivolt.Player;
     using Millivolt.UI;
     using System.Collections.Generic;
     using UnityEditor;
@@ -73,7 +74,6 @@ namespace Millivolt
 				GameManager.PlayerController.ResetPlayer();
 				GameManager.PlayerModel.ResetRotation();
 				GameManager.PlayerInteraction.ResetInteraction();
-				GameManager.PlayerStatus.ResetStatus();
 
                 GameManager.Instance.ChangeGravity(levelData.gravityDirection, levelData.gravityMagnitude);
 
@@ -106,6 +106,7 @@ namespace Millivolt
                 FindAllCheckpoints();
                 InitialiseCheckpoints();
                 SpawnPlayer();
+				PlayerRespawn.Instance.StartRespawn(GameManager.PlayerController.feetPosition);
             }
 
 #if UNITY_EDITOR
