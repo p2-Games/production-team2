@@ -199,6 +199,19 @@ namespace Millivolt
         {
             ChangeGravity(Quaternion.Euler(eulerDirection) * Vector3.up * magnitude);
         }
+
+
+		public void SetGravity(Vector3 value)
+		{
+			Physics.gravity = value;
+			PlayerModel.transform.up = -Physics.gravity.normalized;
+		}
+		public void SetGravity(Vector3 eulerDirection, float magnitude)
+		{
+			Physics.gravity = Quaternion.Euler(eulerDirection) * Vector3.up * magnitude;
+			PlayerModel.transform.up = -Physics.gravity.normalized;
+
+        }
         [ContextMenu("Reset Gravity")]
         public void ResetGravity()
         {

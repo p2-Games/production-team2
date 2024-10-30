@@ -47,7 +47,7 @@ namespace Millivolt
             [SerializeField] private float m_interactTime;
             [SerializeField] private bool m_drawGizmos = false;
 
-            private InteractionState m_state;
+            private InteractionState m_state = InteractionState.Closed;
             private PickupObject m_heldPickup;
             private float m_interactTimer;
 
@@ -73,6 +73,18 @@ namespace Millivolt
             {
                 m_trigger = GetComponent<SphereCollider>();
                 m_trigger.isTrigger = true;
+            }
+
+            /// <summary>
+            /// If the PlayerInteraction logic should be active or inactive.
+            /// </summary>
+            /// <param name="value"></param>
+            public void SetInteractionState(bool value)
+            {
+                if (value)
+                    m_state = InteractionState.Open;
+                else
+                    ResetInteraction();
             }
 
             private void SetClosestObject(Interactable interactable)
@@ -217,6 +229,7 @@ namespace Millivolt
 
             public void ResetInteraction()
             {
+                m_state = InteractionState.Closed;
                 DropObject();
                 m_interactTimer = 0f;
                 SetClosestObject(null);

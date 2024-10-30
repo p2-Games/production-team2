@@ -41,18 +41,28 @@ namespace Millivolt.Player
 
         public void StartRespawn(Vector3 spawnPosition)
         {
-            transform.position = m_playerModel.transform.position;
+            // go to player feet
+            transform.position = spawnPosition;
 
+            // activate screen effect
             m_spawnScreenEffect.gameObject.SetActive(true);
 
             // will change out for dissolve/anim
+            // turns off the player model to make it 'appear'
             m_playerModel.SetActive(false);
-            m_vcam.Priority = 12;
 
+            // Disable player interaction
+            GameManager.PlayerInteraction.SetInteractionState(false);
+
+            // decide on which cam to use
+            m_vcam.Priority = 12;
             Transform chosenAngle = m_camAngles[Random.Range(0, m_camAngles.Length)];
             m_vcam.transform.SetPositionAndRotation(chosenAngle.position, chosenAngle.rotation);
-            Instantiate(m_respawnParticle, m_playerModel.transform.position, m_respawnParticle.transform.rotation);
 
+            // create particle
+            Instantiate(m_respawnParticle, transform);
+
+            // start timings
             Invoke(nameof(ReactivatePlayer), m_reactivatePlayerDelay);
         }
 
@@ -70,6 +80,7 @@ namespace Millivolt.Player
         private void GiveControlBack()
         {
             GameManager.PlayerController.SetCanMove(true, CanMoveType.Dead);
+            GameManager.PlayerInteraction.SetInteractionState(true);
         }
 
         private void OnValidate()

@@ -72,10 +72,9 @@ namespace Millivolt
 			public void SpawnPlayer()
 			{
 				GameManager.PlayerController.ResetPlayer();
-				GameManager.PlayerModel.ResetRotation();
-				GameManager.PlayerInteraction.ResetInteraction();
+				GameManager.PlayerModel.StopAllCoroutines();
 
-                GameManager.Instance.ChangeGravity(levelData.gravityDirection, levelData.gravityMagnitude);
+                GameManager.Instance.SetGravity(levelData.gravityDirection, levelData.gravityMagnitude);
 
 				GameManager.PlayerController.transform.position = m_levelCheckpoints[activeCheckpointIndex].respawnPoint.position;
 				//GameManager.PlayerModel.transform.rotation = Quaternion.LookRotation(activeCheckpoint.transform.forward, -Physics.gravity.normalized);
