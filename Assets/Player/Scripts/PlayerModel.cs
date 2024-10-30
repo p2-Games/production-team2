@@ -66,23 +66,27 @@ namespace Millivolt
             public void OnGravityChange()
             {
                 Vector3 gravityDir = Physics.gravity.normalized;
-                Vector3 forward = new Vector3(gravityDir.z, gravityDir.x, gravityDir.y);
-                StartCoroutine(RotateWithGravity(Quaternion.LookRotation(forward, -gravityDir)));
+                StartCoroutine(RotateWithGravity(-gravityDir));
             }
 
-            private IEnumerator RotateWithGravity(Quaternion targetAngle)
+            private IEnumerator RotateWithGravity(Vector3 targetUp)
             {
                 GameManager.PlayerController.SetCanMove(false, CanMoveType.Gravity);
 
                 //transform.rotation = transform.localRotation;
-                Quaternion startAngle = transform.rotation;
+                Vector3 startUp = transform.up;
                 float timer = 0;
 
                 while (timer < m_gravityRotationTime)
                 {
                     timer += Time.deltaTime;
 
-                    transform.rotation = Quaternion.Slerp(startAngle, targetAngle, timer / m_gravityRotationTime);
+                    float t = timer / m_gravityRotationTime;
+
+                    t = -(Mathf.Cos(Mathf.PI * t) - 1f) / 2f;
+
+                    transform.up = Vector3.Slerp(startUp, targetUp, t);
+
                     yield return new WaitForEndOfFrame();
                 }
 

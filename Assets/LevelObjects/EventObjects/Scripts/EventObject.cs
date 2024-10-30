@@ -83,12 +83,13 @@ namespace Millivolt
 
                 public virtual bool canInteract => m_canInteract;
 
-                protected bool CanTrigger(GameObject obj)
+                protected bool CanTrigger(GameObject obj, bool triggeredByHeldObject = false)
                 {
                     if (obj == gameObject)
                         return false;
                     
-                    if (GameManager.PlayerInteraction && obj == GameManager.PlayerInteraction.heldObject)
+                    // if this object cannot be triggered by the held object, and the object IS the held object, then it cannot trigger
+                    if (!triggeredByHeldObject && GameManager.PlayerInteraction && obj == GameManager.PlayerInteraction.heldObject)
                         return false;
 
                     foreach (string type in m_interactionFilter)
