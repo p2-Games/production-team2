@@ -209,7 +209,7 @@ namespace Millivolt
                 m_state = InteractionState.Holding;
             }
 
-            public void DropObject()
+            public void DropObject(bool allowInteraction = true)
             {
                 if (m_heldPickup)
                 {
@@ -224,13 +224,14 @@ namespace Millivolt
                 // SHIT
                 Physics.IgnoreLayerCollision(3, 9, false);
 
-                m_state = InteractionState.Open;
+                if (allowInteraction)
+                    m_state = InteractionState.Open;
             }
 
             public void ResetInteraction()
             {
                 m_state = InteractionState.Closed;
-                DropObject();
+                DropObject(false);
                 m_interactTimer = 0f;
                 SetClosestObject(null);
             }
