@@ -24,6 +24,9 @@ namespace Millivolt
             private void FixedUpdate()
             {
                 MovePlayer();
+                if (!m_isGrounded)
+                    m_airTime += Time.fixedDeltaTime;
+                m_animation.PassFloatParameter("AirTime", m_airTime);
             }
 
             private AnimationController m_animation;
@@ -107,6 +110,8 @@ namespace Millivolt
             [SerializeField] private float m_decceleration;
             [SerializeField, Range(0, 90)] private float m_slopeLimit;
 
+            private float m_airTime;
+
             private Vector2 m_moveInput;
             private Vector3 m_walkVelocity;
             private Vector3 m_verticalVelocity;
@@ -126,6 +131,16 @@ namespace Millivolt
                     return Vector3.ProjectOnPlane(m_walkVelocity, upDirection).normalized;
                 }
             }
+
+            // get if player is moving up or down in relation to gravity
+            public int verticalDirection
+            {
+                get
+                {
+                    return Vector3.SignedAngle(upDirection, m_verticalVelocity.normalized, upDirection) < 180f ? 1 : -1;
+                }
+            }
+
 
             public void Move(InputAction.CallbackContext context)
             {
@@ -185,17 +200,14 @@ namespace Millivolt
                 {
                     AddJumpForce();
                     m_willJump = false;
+                    m_animation.SetTriggerParameter("Jump");
                     SFXController.Instance.PlayRandomSoundClip("Jump", transform);
                 }
 
-                // get if player is moving up or down in relation to gravity
-                float direction = 0;
-                if (m_verticalVelocity.sqrMagnitude > 0)
-                    direction = Vector3.SignedAngle(upDirection, m_verticalVelocity.normalized, upDirection) < 180f ? 1 : -1f;
-
                 // tell animator what to do
                 animation.PassFloatParameter("MoveSpeed", m_walkVelocity.magnitude / m_topSpeed);
-                animation.PassFloatParameter("VerticalSpeed", m_verticalVelocity.magnitude * direction);
+                // until in-air amimations are complete !!!
+                //animation.PassFloatParameter("VerticalSpeed", m_verticalVelocity.magnitude * verticalDirection);
                 animation.PassBoolParameter("IsGrounded", m_isGrounded);
 
                 // move player
@@ -289,10 +301,11 @@ namespace Millivolt
                     else
                     {
                         // if the player is changing from not grounded to grounded aka landing,
-                        // reset their various velocities to 0
                         if (!m_isGrounded)
                         {
                             SFXController.Instance.PlayRandomSoundClip("Footsteps", transform);
+                            
+                            // reset their various velocities to 0
                             m_verticalVelocity = Vector3.zero;
                             m_platformVelocity = Vector3.zero;
                             if (m_externalVelocity != Vector3.zero)
@@ -300,6 +313,9 @@ namespace Millivolt
                                 m_externalVelocity = Vector3.zero;
                                 SetCanMove(true, CanMoveType.LevelObject);
                             }
+
+                            // reset their air time
+                            m_airTime = 0;
                         }
 
                         // get closest hit walkable object

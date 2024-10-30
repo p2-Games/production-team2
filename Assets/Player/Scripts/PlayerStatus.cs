@@ -102,6 +102,9 @@ namespace Millivolt
                 // toggle canvases
                 m_deathScreenEffect.gameObject.SetActive(true);
 
+                // disable interaction
+                GameManager.PlayerInteraction.ResetInteraction();
+
                 // play a death sound effect
                 SFXController.Instance.PlayRandomSoundClip("PlayerDamage", transform.parent);
             }

@@ -51,9 +51,6 @@ namespace Millivolt.Player
             // turns off the player model to make it 'appear'
             m_playerModel.SetActive(false);
 
-            // Disable player interaction
-            GameManager.PlayerInteraction.SetInteractionState(false);
-
             // decide on which cam to use
             m_vcam.Priority = 12;
             Transform chosenAngle = m_camAngles[Random.Range(0, m_camAngles.Length)];
