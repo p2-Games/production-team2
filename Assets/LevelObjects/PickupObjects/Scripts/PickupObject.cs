@@ -5,7 +5,6 @@
 ///
 ///</summary>
 
-using Pixelplacement;
 using UnityEngine;
 
 namespace Millivolt
@@ -29,7 +28,15 @@ namespace Millivolt
                 private bool m_isDissolving = false;
 
                 public PickupType pickupType => m_type;
-                public bool canInteract => m_type != PickupType.Immovable || !m_isDissolving;
+                public bool canInteract
+                {
+                    get
+                    {
+                        if (m_type == PickupType.Immovable || m_isDissolving)
+                            return false;
+                        return true;
+                    }
+                }
 
                 protected Rigidbody m_rb; public Rigidbody rb => m_rb;
 

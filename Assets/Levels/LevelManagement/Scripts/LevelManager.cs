@@ -26,7 +26,18 @@ namespace Millivolt
 				Instance = this;
 			}
 
-			[SerializeField] public int activeCheckpointIndex;
+			[SerializeField] public int activeCheckpointIndex
+			{
+				get { return m_activeCheckpointIndex; }
+				set
+				{
+					m_levelCheckpoints[m_activeCheckpointIndex].DisableCheckpoint();
+					m_levelCheckpoints[value].EnableCheckpoint();
+					m_activeCheckpointIndex = value;
+				}
+			}
+			private int m_activeCheckpointIndex;
+
 			private List<Checkpoint> m_levelCheckpoints;
 
             //Bool to check if its the first time loading into the level
@@ -105,7 +116,7 @@ namespace Millivolt
                 FindAllCheckpoints();
                 InitialiseCheckpoints();
                 SpawnPlayer();
-				PlayerRespawn.Instance.StartRespawn(GameManager.PlayerController.feetPosition);
+				PlayerRespawn.Instance.StartRespawn(activeCheckpoint.transform.position + new Vector3(0, 0.6f, 0));
             }
 
 #if UNITY_EDITOR
