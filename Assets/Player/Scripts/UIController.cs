@@ -1,7 +1,7 @@
 ///<summary>
-/// Author: EMily
+/// Author: Emily
 ///
-///
+/// Detects the pause button being pressed and calls GameManager to pause the game
 ///
 ///</summary>
 

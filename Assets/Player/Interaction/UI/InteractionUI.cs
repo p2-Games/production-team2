@@ -59,7 +59,7 @@ namespace Millivolt
 						}
 						else if (m_target.GetComponent<Checkpoint>())
 						{
-							m_itemNameDisplay.text = "Teleport to other checkpoint.";
+							m_itemNameDisplay.text = "Use Checkpoint";
 						}
 
                         m_container.sizeDelta = new Vector2(m_widthPerChar * m_itemNameDisplay.text.Length, m_height);

@@ -24,6 +24,9 @@ namespace Millivolt
             private void FixedUpdate()
             {
                 MovePlayer();
+                if (!m_isGrounded)
+                    m_airTime += Time.fixedDeltaTime;
+                m_animation.PassFloatParameter("AirTime", m_airTime);
             }
 
             private AnimationController m_animation;
@@ -50,15 +53,24 @@ namespace Millivolt
 
             private PlayerCanMove m_canMove = new PlayerCanMove();
             public bool canMove { get { return m_canMove.canMove; } }
+
+            /// <summary>
+            /// Set if the player can move for a variety of reasons.
+            /// </summary>
+            /// <param name="value">If the player can move or not.</param>
+            /// <param name="type">The reason they can/can't move.</param>
             public void SetCanMove(bool value, CanMoveType type)
             {
                 m_canMove.SetCanMove(value, type);
             }
 
             [Header("Physics")]
-            [Tooltip("The layers of objects that the CharacterController can interact with.")]
+            [Tooltip("The layers of objects that the PlayerController can stand on.")]
             [SerializeField] private LayerMask m_walkableLayers;
+            [Tooltip("If the Player will inherit the velocity of moving objects after jumping/falling off of them.")]
             [SerializeField] private bool m_inheritVelocity;
+
+            public Vector3 feetPosition { get { return transform.position + collider.center - upDirection * collider.height / 2; } }
 
             private Rigidbody m_rb;
             private Rigidbody rb
@@ -98,6 +110,8 @@ namespace Millivolt
             [SerializeField] private float m_decceleration;
             [SerializeField, Range(0, 90)] private float m_slopeLimit;
 
+            private float m_airTime;
+
             private Vector2 m_moveInput;
             private Vector3 m_walkVelocity;
             private Vector3 m_verticalVelocity;
@@ -117,6 +131,16 @@ namespace Millivolt
                     return Vector3.ProjectOnPlane(m_walkVelocity, upDirection).normalized;
                 }
             }
+
+            // get if player is moving up or down in relation to gravity
+            public int verticalDirection
+            {
+                get
+                {
+                    return Vector3.SignedAngle(upDirection, m_verticalVelocity.normalized, upDirection) < 180f ? 1 : -1;
+                }
+            }
+
 
             public void Move(InputAction.CallbackContext context)
             {
@@ -176,17 +200,14 @@ namespace Millivolt
                 {
                     AddJumpForce();
                     m_willJump = false;
+                    m_animation.SetTriggerParameter("Jump");
                     SFXController.Instance.PlayRandomSoundClip("Jump", transform);
                 }
 
-                // get if player is moving up or down in relation to gravity
-                float direction = 0;
-                if (m_verticalVelocity.sqrMagnitude > 0)
-                    direction = Vector3.SignedAngle(upDirection, m_verticalVelocity.normalized, upDirection) < 180f ? 1 : -1f;
-
                 // tell animator what to do
                 animation.PassFloatParameter("MoveSpeed", m_walkVelocity.magnitude / m_topSpeed);
-                animation.PassFloatParameter("VerticalSpeed", m_verticalVelocity.magnitude * direction);
+                // until in-air amimations are complete !!!
+                //animation.PassFloatParameter("VerticalSpeed", m_verticalVelocity.magnitude * verticalDirection);
                 animation.PassBoolParameter("IsGrounded", m_isGrounded);
 
                 // move player
@@ -280,10 +301,11 @@ namespace Millivolt
                     else
                     {
                         // if the player is changing from not grounded to grounded aka landing,
-                        // reset their various velocities to 0
                         if (!m_isGrounded)
                         {
                             SFXController.Instance.PlayRandomSoundClip("Footsteps", transform);
+                            
+                            // reset their various velocities to 0
                             m_verticalVelocity = Vector3.zero;
                             m_platformVelocity = Vector3.zero;
                             if (m_externalVelocity != Vector3.zero)
@@ -291,14 +313,16 @@ namespace Millivolt
                                 m_externalVelocity = Vector3.zero;
                                 SetCanMove(true, CanMoveType.LevelObject);
                             }
+
+                            // reset their air time
+                            m_airTime = 0;
                         }
 
                         // get closest hit walkable object
-                        Vector3 playerFeet = transform.position + collider.center - upDirection * collider.height / 2;
                         RaycastHit hit = hits[0];
                         for (int h = 1; h < hits.Length; h++)
                         {
-                            if (Vector3.Distance(hits[h].point, playerFeet) < Vector3.Distance(hit.point, playerFeet))
+                            if (Vector3.Distance(hits[h].point, feetPosition) < Vector3.Distance(hit.point, feetPosition))
                                 hit = hits[h];
                         }
 

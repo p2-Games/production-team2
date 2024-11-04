@@ -13,6 +13,8 @@ using UnityEngine.UI;
 using Pixelplacement;
 using TMPro;
 using System.Linq;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace Millivolt
 {
@@ -44,8 +46,24 @@ namespace Millivolt
 			//[Tooltip("If you dont want having all subtasks being complete to autocomplete the task then tick this")]
 			//[SerializeField] private bool m_subtasksDontComplete;
 
-			//EVENTS
-			[Tooltip("Events are called when the task is completed")]
+			[SerializeField] private TaskListManager m_taskListManager;
+
+			[SerializeField] private float m_points;
+			private float m_currentPoints;
+
+			[Space(30)]
+			[SerializeField] private GameObject m_subtaskParent;
+
+			[SerializeField] private float m_taskSpace;
+			public float taskSpace => m_taskSpace;
+
+            [Space(30)]
+            public List<TaskItem> activeTasks = new List<TaskItem>();
+            public List<TaskItem> inactiveTasks = new List<TaskItem>();
+
+
+            //EVENTS
+            [Tooltip("Events are called when the task is completed")]
 			[SerializeField] private UnityEvent m_events;
 
 			private Vector2 m_orignalPos
@@ -55,106 +73,203 @@ namespace Millivolt
 
 			[SerializeField] private CanvasGroup m_canvasGroup;
 
-			public void CompleteTask()
-			{
-				m_toggle.isOn = true;
-                m_toggle.GetComponentInChildren<TextMeshProUGUI>().text = "<s>" + m_name + "</s>";
-                m_events.Invoke();
-				if (m_taskParent)
-					m_taskParent.CompleteSubtask();
-			}
 
-			public void CompleteSubtask()
-			{
-				m_completedSubtasks++;
-				if (m_completedSubtasks >= m_numberOfSubtasks)
-					CompleteTask();
-			}
+            private void OnEnable()
+            {
+				Start();
+            }
 
-			private void Start()
+            /// <summary>
+            /// Updates the space a single task + substasks should take up
+            /// </summary>
+            private void UpdateTaskSpace()
+			{
+				m_taskSpace = 30 + (activeTasks.Count * 30) + (activeTasks.Count * m_taskListManager.spacing);
+			}
+            
+            /// <summary>
+            /// Makes sure that all the Inactive tasks are hidden
+            /// </summary>
+            public void InitiliseSubtask()
+			{
+                foreach (TaskItem task in inactiveTasks)
+                {
+                    Tween.CanvasGroupAlpha(task.GetComponent<CanvasGroup>(), 0, 0, 0);
+                }
+				m_subtaskParent.transform.position += new Vector3(m_taskListManager.subtaskOffset, 0, 0);
+
+                UpdateTaskSpace();
+            }
+
+            private void Start()
 			{
 				m_taskParent = transform.parent.parent.parent.GetComponent<TaskItem>();
+				m_taskListManager = GetComponentInParent<TaskListManager>();
                 m_toggle.GetComponentInChildren<TextMeshProUGUI>().text = m_name;
+				m_currentPoints = 0;
+				if (m_points > 1)
+                    m_toggle.GetComponentInChildren<TextMeshProUGUI>().text += (" (" + m_currentPoints + "/" + m_points + ")");
+				InitiliseSubtask();
+				UpdateTaskSpace();
                 m_completedSubtasks = 0;
 				if (m_subtasks)
 					m_numberOfSubtasks = m_subtasks.childCount;
 			}
 
-			private void OnValidate()
+
+            /// <summary>
+            /// Updates Text of task in real time in editor
+            /// </summary>
+            private void OnValidate()
 			{
 				m_toggle.GetComponentInChildren<TextMeshProUGUI>().text = m_name;
 			}
 
-			public void ActivateTask()
+            /// <summary>
+            /// Sets a Main task as active
+            /// </summary>
+            /// <param name="delay"></param>
+			public void ActivateTask(float delay)
 			{
-				FadeInTask();
-
-				//Start at 30 increment by 30 for every subtask
-				Vector2 screenStartSize = GetComponent<RectTransform>().sizeDelta;
-				Vector2 screenEndSize = new Vector2(screenStartSize.x, 30 + (m_numberOfSubtasks * 40));
-
-				Tween.Size(GetComponent<RectTransform>(), screenStartSize, screenEndSize, 0.5f, 0f);
-				StartCoroutine(UpdateListGroup(screenEndSize));
-				//LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)transform.parent);
-
+                if (delay > 0)
+                {
+                    StartCoroutine(DelayFunction(delay, ActivateTask));
+                    return;
+                }
+                m_taskListManager.inactiveTasks.Remove(this);
+				m_taskListManager.activeTasks.Add(this);
+				Tween.CanvasGroupAlpha(m_canvasGroup, 1, 0.5f, 0, Tween.EaseIn);
+				m_taskListManager.SpaceActiveTasks();
 			}
 
-			public void DeactivateTask()
+            /// <summary>
+            /// Sets a subtask as active
+            /// </summary>
+            /// <param name="delay"></param>
+			public void ActivateSubtask(float delay)
 			{
-
-				Vector2 screenStartSize = GetComponent<RectTransform>().sizeDelta;
-				//Vector2 screenEndSize = new Vector2(screenStartSize.x, 30);
-				Vector2 screenEndSize = new Vector2(m_orignalPos.x, 30);
-
-				Tween.Size(GetComponent<RectTransform>(), screenStartSize, screenEndSize, 0.5f, 0f);
-				StartCoroutine(UpdateListGroup(screenEndSize));
-
-				FadeOutTask();
-			}
-
-			public void FadeInTask()
-			{
-				m_canvasGroup.alpha = 0;
-				gameObject.SetActive(true);
-                Tween.CanvasGroupAlpha(m_canvasGroup, 1, 1.5f, 0, Tween.EaseOut);
-                StartCoroutine(FadeCheck(1));
+                if (delay > 0)
+                {
+                    StartCoroutine(DelayFunction(delay, ActivateSubtask));
+                    return;
+                }
+                m_taskParent.inactiveTasks.Remove(this);
+				m_taskParent.activeTasks.Add(this);
+                Tween.CanvasGroupAlpha(m_canvasGroup, 1, 0.5f, 0, Tween.EaseIn);
+				m_taskParent.UpdateTaskSpace();
+				m_taskListManager.SpaceActiveTasks();
             }
 
-			public void FadeOutTask()
+            /// <summary>
+            /// Will give a task a point, If the points match or exceed the number of points needed to complete the task then it will auto crossout the 
+            /// task and set all subtasks inactive
+            /// </summary>
+			public void CompleteTask(float delay)
 			{
-				Tween.CanvasGroupAlpha(m_canvasGroup, 0, 1.5f, 0, Tween.EaseOut);
-				StartCoroutine(FadeCheck(0));
+                if (delay > 0)
+                {
+                    StartCoroutine(DelayFunction(delay, CompleteTask));
+                    return;
+                }
+                m_currentPoints++;
+				if (m_points > 1)
+					m_toggle.GetComponentInChildren<TextMeshProUGUI>().text = m_name + (" (" + m_currentPoints + "/" + m_points + ")");
+                if (m_currentPoints >= m_points)
+				{
+                    foreach (TaskItem task in activeTasks)
+					{
+						m_events.AddListener(delegate () { task.DeactivateSubtask(0); });
+                    }
+					CrossoutTask();
+                    //m_taskParent.UpdateTaskSpace();
+                    //m_taskListManager.SpaceActiveTasks();
+                }
 			}
 
-			IEnumerator FadeCheck(float alphaTarget)
-			{				
-				while (m_canvasGroup.alpha != alphaTarget)
-				{
-					yield return null;
-				}
-				
- 				//int activeCount = m_taskParent.transform.Cast<Transform>().Where(child => child.gameObject.activeSelf).Count();
-				//
-                //Vector2 screenStartSize = GetComponent<RectTransform>().sizeDelta;
-                //Vector2 screenEndSize = new Vector2(screenStartSize.x, 30 + (activeCount * 40));
-				//
-				//if (activeCount > 0)
-				//{
-				//	Tween.Size(GetComponent<RectTransform>(), screenStartSize, screenEndSize, 0.5f, 0f);
-				//	StartCoroutine(UpdateListGroup(screenEndSize));
-				//}
-                if (m_canvasGroup.alpha == 0)
-                    gameObject.SetActive(false);
+            /// <summary>
+            /// Will give a subtask a point, If the points match or exceed the number of points needed to complete the task then it will auto crossout the subtask
+            /// </summary>
+            /// <param name="delay"></param>
+            public void CompleteSubtask(float delay)
+            {
+                if (delay > 0)
+                {
+                    StartCoroutine(DelayFunction(delay, CompleteSubtask));
+                    return;
+                }
+                m_currentPoints++;
+				if (m_points > 1)
+					m_toggle.GetComponentInChildren<TextMeshProUGUI>().text = m_name + (" (" + m_currentPoints + "/" + m_points + ")");
+                if (m_currentPoints >= m_points)
+                    CrossoutSubtask();
             }
 
-			IEnumerator UpdateListGroup(Vector2 finalSize)
+            /// <summary>
+            /// Will turn the toggle on the task to ON, and put a strike through the words
+            /// </summary>
+            private void CrossoutTask()
 			{
-				while (GetComponent<RectTransform>().sizeDelta.y != finalSize.y)
+                m_toggle.isOn = true;
+                m_toggle.GetComponentInChildren<TextMeshProUGUI>().text = "<s>" + m_toggle.GetComponentInChildren<TextMeshProUGUI>().text + "</s>";
+                m_events.Invoke();
+            }
+
+            /// <summary>
+            /// Will turn the toggle on the subtask to ON, and put a strike through the words
+            /// </summary>
+            private void CrossoutSubtask()
+            {
+                m_toggle.isOn = true;
+                m_toggle.GetComponentInChildren<TextMeshProUGUI>().text = "<s>" + m_toggle.GetComponentInChildren<TextMeshProUGUI>().text + "</s>";
+                m_events.Invoke();
+            }
+
+            /// <summary>
+            /// Will fade out a Task and then resize the Tasklist
+            /// </summary>
+            /// <param name="delay"></param>
+            public void DeactivateTask(float delay)
+            {
+				if (delay > 0)
 				{
-					LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)transform.parent);
-					yield return null;
+                    StartCoroutine(DelayFunction(delay, DeactivateTask));
+                    return;
 				}
-			}
+                m_taskListManager.activeTasks.Remove(this);
+                m_taskListManager.inactiveTasks.Add(this);
+                Tween.CanvasGroupAlpha(m_canvasGroup, 0, 0.5f, 0, Tween.EaseIn);
+                m_taskListManager.SpaceActiveTasks();
+            }
+
+            /// <summary>
+            /// Will fade out a Subtask and then resize the Tasklist
+            /// </summary>
+            /// <param name="delay"></param>
+            public void DeactivateSubtask(float delay)
+            {
+                if (delay > 0)
+                {
+                    StartCoroutine(DelayFunction(delay, DeactivateSubtask));
+                    return;
+                }
+                m_taskParent.activeTasks.Remove(this);
+                m_taskParent.inactiveTasks.Add(this);
+                Tween.CanvasGroupAlpha(m_canvasGroup, 0, 0.5f, 0, Tween.EaseIn);
+                m_taskParent.UpdateTaskSpace();
+                m_taskListManager.SpaceActiveTasks();
+            }		
+            
+            /// <summary>
+            /// Will wait for a set amount of time and then call function
+            /// </summary>
+            /// <param name="delay"></param>
+            /// <param name="function"></param>
+            /// <returns></returns>
+            private IEnumerator DelayFunction(float delay, Action<float> function)
+            {
+                yield return new WaitForSeconds(delay);
+                function?.Invoke(0);
+            }
 		}
 	}
 }

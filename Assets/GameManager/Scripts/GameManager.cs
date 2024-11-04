@@ -108,9 +108,7 @@ namespace Millivolt
 
         // level loading
         private string m_currentSceneName;
-        private bool m_isLoading;
-
-		public bool isLoading => m_isLoading;
+		public bool isLoading = false;
 
         public void LevelSetup()
 		{
@@ -132,7 +130,8 @@ namespace Millivolt
 		{
 			m_currentSceneName = levelName;
 			UIMenuManager.Instance.ClearActiveMenus();
-            StartCoroutine(LoadSceneAsync(levelName, LoadSceneMode.Single, false));
+            isLoading = true;
+            StartCoroutine(LoadSceneAsync(levelName, LoadSceneMode.Single));
 		}
 
         public void RestartLevel()
@@ -155,38 +154,41 @@ namespace Millivolt
 #endif
         }
 
-        public IEnumerator LoadSceneAsync(string sceneName, LoadSceneMode loadSceneMode, bool doSetup)
+        public IEnumerator LoadSceneAsync(string sceneName, LoadSceneMode loadSceneMode)
 		{
-			m_isLoading = true;
 			AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName, loadSceneMode);
 
 			while (!asyncLoad.isDone)
 				yield return null;
-			m_isLoading = false;
-
-			if (doSetup)
-				LevelSetup();
+			isLoading = false;
 		}
 
 		private IEnumerator UnloadSceneAsync(string sceneName)
 		{
 			UIMenuManager.Instance.ClearActiveMenus();
-
-            m_isLoading = true;
 			AsyncOperation asyncUnload = SceneManager.UnloadSceneAsync(sceneName, UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
 
             while (!asyncUnload.isDone)
-                yield return null;
-			m_isLoading = false;
+                yield return new WaitForFixedUpdate();
+			isLoading = false;
         }
 
 		private IEnumerator ReloadCurrentScene()
 		{
+            // unload the game scene
+			isLoading = true;
 			StartCoroutine(UnloadSceneAsync(m_currentSceneName));
-			while (!m_isLoading)
-				yield return null;
+			while (isLoading)
+				yield return new WaitForFixedUpdate();
 
-			StartCoroutine(LoadSceneAsync(m_currentSceneName, LoadSceneMode.Additive, true));
+			// reload the game scene
+			isLoading = true;
+            StartCoroutine(LoadSceneAsync(m_currentSceneName, LoadSceneMode.Additive));
+			while (isLoading)
+				yield return new WaitForFixedUpdate();
+
+			// redo level setup
+			LevelSetup();
         }
 
 		// gravity methods
@@ -198,6 +200,19 @@ namespace Millivolt
         public void ChangeGravity(Vector3 eulerDirection, float magnitude)
         {
             ChangeGravity(Quaternion.Euler(eulerDirection) * Vector3.up * magnitude);
+        }
+
+
+		public void SetGravity(Vector3 value)
+		{
+			Physics.gravity = value;
+			PlayerModel.transform.up = -Physics.gravity.normalized;
+		}
+		public void SetGravity(Vector3 eulerDirection, float magnitude)
+		{
+			Physics.gravity = Quaternion.Euler(eulerDirection) * Vector3.up * magnitude;
+			PlayerModel.transform.up = -Physics.gravity.normalized;
+
         }
         [ContextMenu("Reset Gravity")]
         public void ResetGravity()

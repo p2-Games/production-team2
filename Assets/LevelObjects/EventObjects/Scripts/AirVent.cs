@@ -5,6 +5,7 @@
 ///
 ///</summary>
 
+using System.Collections;
 using UnityEngine;
 
 namespace Millivolt.LevelObjects.EventObjects
@@ -13,19 +14,14 @@ namespace Millivolt.LevelObjects.EventObjects
     {
         [Header("Air Vent Properties")]
         [SerializeField] GameObject[] m_objectsToDisable;
-        [SerializeField] GameObject m_emissiveObject;
         
         private Rigidbody m_rb;
-        private Material m_mat;
 
         private void Start()
         {
             m_rb = GetComponent<Rigidbody>();
             m_rb.useGravity = false;
             m_rb.isKinematic = true;
-
-            m_mat = m_emissiveObject.GetComponent<MeshRenderer>().material;
-            m_mat.SetColor("_EmissionColor", Color.red);
         }
 
         protected override void OnActivate()
@@ -33,7 +29,9 @@ namespace Millivolt.LevelObjects.EventObjects
             m_rb.isKinematic = false;
             m_rb.useGravity = true;
 
-            m_mat.SetColor("_EmissionColor", Color.green);
+            gameObject.layer = 10;
+
+            StartCoroutine(RotateForward());
 
             foreach (GameObject obj in m_objectsToDisable)
             {
@@ -41,14 +39,17 @@ namespace Millivolt.LevelObjects.EventObjects
             }
         }
 
-        private void OnCollisionEnter(Collision collision)
+        private IEnumerator RotateForward()
         {
-            if (!m_isActive)
-                return;
+            Quaternion initialRotation = transform.rotation;
+            Quaternion targetRotation = initialRotation * Quaternion.AngleAxis(25, transform.forward);
 
-            if (CanTrigger(collision.collider.gameObject))
+            float t = 0;
+            while (transform.rotation != targetRotation)
             {
-                GetComponent<MeshDissolver>().Dissolve();
+                yield return new WaitForFixedUpdate();
+                t += Time.fixedDeltaTime;
+                m_rb.MoveRotation(Quaternion.Lerp(initialRotation, targetRotation, t));
             }
         }
     }

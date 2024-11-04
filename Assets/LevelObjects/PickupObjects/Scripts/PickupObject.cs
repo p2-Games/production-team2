@@ -5,7 +5,6 @@
 ///
 ///</summary>
 
-using Pixelplacement;
 using UnityEngine;
 
 namespace Millivolt
@@ -29,7 +28,15 @@ namespace Millivolt
                 private bool m_isDissolving = false;
 
                 public PickupType pickupType => m_type;
-                public bool canInteract => m_type != PickupType.Immovable || !m_isDissolving;
+                public bool canInteract
+                {
+                    get
+                    {
+                        if (m_type == PickupType.Immovable || m_isDissolving)
+                            return false;
+                        return true;
+                    }
+                }
 
                 protected Rigidbody m_rb; public Rigidbody rb => m_rb;
 
@@ -40,7 +47,7 @@ namespace Millivolt
 
                 private void OnCollisionEnter(Collision collision)
                 {
-                    if (gameObject != GameManager.PlayerInteraction.heldObject)
+                    if (GameManager.PlayerInteraction && gameObject != GameManager.PlayerInteraction.heldObject)
                         SFXController.Instance.PlayRandomSoundClip("ScrewDrop", transform);
                 }
 
@@ -56,18 +63,6 @@ namespace Millivolt
                         spawnParent.AutoRespawn();
 
                     GetComponent<MeshDissolver>().Dissolve();
-                }
-
-                private void OnDestroy()
-                {
-                    ParticleSystem[] particles = GetComponentsInChildren<ParticleSystem>();
-
-                    foreach (ParticleSystem particle in particles)
-                    {
-                        ParticleSystem.MainModule main = particle.main;
-                        main.loop = false;
-                        particle.transform.SetParent(null, true);
-                    }
                 }
             }
         }
