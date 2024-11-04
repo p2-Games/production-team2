@@ -56,7 +56,7 @@ namespace Millivolt
                     LevelManager.Instance.SpawnPlayer();
 
                     // play respawn effect
-                    PlayerRespawn.Instance.StartRespawn(GameManager.PlayerController.feetPosition);
+                    PlayerRespawn.Instance.StartRespawn(LevelManager.Instance.activeCheckpoint.transform.position + new Vector3(0, 0.6f, 0));
                 }
             }
         }

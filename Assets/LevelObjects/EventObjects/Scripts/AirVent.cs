@@ -5,6 +5,7 @@
 ///
 ///</summary>
 
+using System.Collections;
 using UnityEngine;
 
 namespace Millivolt.LevelObjects.EventObjects
@@ -28,20 +29,27 @@ namespace Millivolt.LevelObjects.EventObjects
             m_rb.isKinematic = false;
             m_rb.useGravity = true;
 
+            gameObject.layer = 10;
+
+            StartCoroutine(RotateForward());
+
             foreach (GameObject obj in m_objectsToDisable)
             {
                 obj.SetActive(false);
             }
         }
 
-        private void OnCollisionEnter(Collision collision)
+        private IEnumerator RotateForward()
         {
-            if (!m_isActive)
-                return;
+            Quaternion initialRotation = transform.rotation;
+            Quaternion targetRotation = initialRotation * Quaternion.AngleAxis(25, transform.forward);
 
-            if (CanTrigger(collision.collider.gameObject))
+            float t = 0;
+            while (transform.rotation != targetRotation)
             {
-                GetComponent<MeshDissolver>().Dissolve();
+                yield return new WaitForFixedUpdate();
+                t += Time.fixedDeltaTime;
+                m_rb.MoveRotation(Quaternion.Lerp(initialRotation, targetRotation, t));
             }
         }
     }
