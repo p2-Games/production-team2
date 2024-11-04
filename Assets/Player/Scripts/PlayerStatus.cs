@@ -39,27 +39,18 @@ namespace Millivolt
             [Header("Hurt and Death effect references")]
             [Tooltip("This needs the screen effect material for the hurt effect")]
             //[SerializeField] private Material m_staticVignette;
-            [SerializeField] private ScreenShaderController m_screenShaderController;
-            [SerializeField] private GameObject m_spawnScreenEffect;
+            [SerializeField] private PlayerDeathUI m_deathScreenEffect;
+
+            private ScreenShaderController m_screenShaderController;
 
             [Header("Knockback Properties")]
             [SerializeField] private float m_horizontalForce;
             [SerializeField] private float m_verticalForce;
             public float knockbackForce => m_horizontalForce;
 
-            private GameObject m_deathCanvas;
-
-            [Header("Respawn Properties")]
-            [SerializeField] private float m_respawnTime;
-            //Player
-            //private PlayerController m_player;
-
             private void Start()
             {
                 m_currentHealth = m_maxHealth;
-                //Theres no conversion to GameObject for some reason so I did a hold variable for now </3
-                PlayerDeathUI hold = (PlayerDeathUI)FindObjectOfType(typeof(PlayerDeathUI), true);
-                m_deathCanvas = hold.gameObject;
                 m_screenShaderController = GetComponent<ScreenShaderController>();
                 UpdateVignetteEffect();
             }
@@ -81,7 +72,6 @@ namespace Millivolt
 
                 m_currentHealth -= value;
 
-
                 UpdateVignetteEffect();
 
                 m_regen = StartCoroutine(RegenHealth());
@@ -97,20 +87,26 @@ namespace Millivolt
             /// </summary>
             public void Die()
             {
-                ResetPlayer();
+                // stop the player from moving
+                GameManager.PlayerController.SetCanMove(false, CanMoveType.Dead);
+
+                // stop regen
+                StopAllCoroutines();
+
+                // reset player health
+                m_currentHealth = m_maxHealth;
+
+                // 
+                UpdateVignetteEffect();
+
+                // toggle canvases
+                m_deathScreenEffect.gameObject.SetActive(true);
+
+                // disable interaction
+                GameManager.PlayerInteraction.ResetInteraction();
 
                 // play a death sound effect
                 SFXController.Instance.PlayRandomSoundClip("PlayerDamage", transform.parent);
-            }
-
-            public void ResetPlayer()
-            {
-                m_currentHealth = m_maxHealth;
-                UpdateVignetteEffect();
-                m_deathCanvas.SetActive(true);
-                GameManager.PlayerController.SetCanMove(false, CanMoveType.Dead);
-                m_spawnScreenEffect.SetActive(true);
-                LevelManager.Instance.Invoke(nameof(LevelManager.Instance.SpawnPlayer), m_respawnTime);
             }
 
             /// <summary>
@@ -130,12 +126,6 @@ namespace Millivolt
 
                 //Launch player upwards based on vertical force
                 GameManager.PlayerController.AddVerticalVelocity(m_verticalForce * -Physics.gravity.normalized);
-            }
-
-            public void ResetStatus()
-            {
-                m_currentHealth = m_maxHealth;
-                StopAllCoroutines();
             }
 
             /// <summary>

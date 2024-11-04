@@ -9,6 +9,7 @@ using UnityEngine;
 
 namespace Millivolt
 {
+    using Millivolt.Player;
     using Millivolt.UI;
     using System.Collections.Generic;
     using UnityEditor;
@@ -71,11 +72,9 @@ namespace Millivolt
 			public void SpawnPlayer()
 			{
 				GameManager.PlayerController.ResetPlayer();
-				GameManager.PlayerModel.ResetRotation();
-				GameManager.PlayerInteraction.ResetInteraction();
-				GameManager.PlayerStatus.ResetStatus();
+				GameManager.PlayerModel.StopAllCoroutines();
 
-                GameManager.Instance.ChangeGravity(levelData.gravityDirection, levelData.gravityMagnitude);
+                GameManager.Instance.SetGravity(levelData.gravityDirection, levelData.gravityMagnitude);
 
 				GameManager.PlayerController.transform.position = m_levelCheckpoints[activeCheckpointIndex].respawnPoint.position;
 				//GameManager.PlayerModel.transform.rotation = Quaternion.LookRotation(activeCheckpoint.transform.forward, -Physics.gravity.normalized);
@@ -106,6 +105,7 @@ namespace Millivolt
                 FindAllCheckpoints();
                 InitialiseCheckpoints();
                 SpawnPlayer();
+				PlayerRespawn.Instance.StartRespawn(GameManager.PlayerController.feetPosition);
             }
 
 #if UNITY_EDITOR

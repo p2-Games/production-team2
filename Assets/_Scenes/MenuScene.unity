@@ -3163,6 +3163,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b17012d0e87436e4197c7b12945b5d7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_introFadeObject: {fileID: 2048994512}
   m_mainButtons:
   - {fileID: 1152491986}
   - {fileID: 1564339538}
@@ -5028,6 +5029,12 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1985983727}
   m_CullTransparentMesh: 1
+--- !u!1 &2048994512 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1363708072242761908, guid: 15cb00f2a19f0ad4db846cdab962f011,
+    type: 3}
+  m_PrefabInstance: {fileID: 4238096713515371098}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2104640354
 GameObject:
   m_ObjectHideFlags: 0
@@ -5573,6 +5580,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Screen Fade
+      objectReference: {fileID: 0}
+    - target: {fileID: 1363708072242761908, guid: 15cb00f2a19f0ad4db846cdab962f011,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 15cb00f2a19f0ad4db846cdab962f011, type: 3}

@@ -20,7 +20,7 @@ namespace Millivolt
 
                 private void OnTriggerEnter(Collider other)
                 {
-					if (CanTrigger(other.gameObject))
+					if (CanTrigger(other.gameObject, true))
 					{
 						if (other.TryGetComponent(out PickupObject pickup))
 							pickup.Destroy();

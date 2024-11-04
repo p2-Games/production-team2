@@ -8,6 +8,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using Pixelplacement;
+using Millivolt.Level;
 
 namespace Millivolt
 {
@@ -50,6 +51,12 @@ namespace Millivolt
                     m_delay = 0;
                     m_disableDelay = 0;
                     Tween.Size(m_shrinkScreen.rectTransform, m_shrinkScreen.rectTransform.sizeDelta, new Vector2(800, 450), 0, 0, Tween.EaseInOutStrong, Tween.LoopType.None, null, null, false);
+
+                    // initiate respawn sequence
+                    LevelManager.Instance.SpawnPlayer();
+
+                    // play respawn effect
+                    PlayerRespawn.Instance.StartRespawn(GameManager.PlayerController.feetPosition);
                 }
             }
         }
