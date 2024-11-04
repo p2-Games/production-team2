@@ -6,7 +6,6 @@
 ///</summary>
 
 using System.Collections;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -18,8 +17,12 @@ namespace Millivolt
         {
             [SerializeField] private string[] m_sceneNames;
 
-            private Coroutine m_currentLoad;
             private void Start()
+            {
+                StartCoroutine(LoadScenes());
+            }
+
+            private IEnumerator LoadScenes()
             {
                 foreach (string name in m_sceneNames)
                 {
@@ -28,22 +31,37 @@ namespace Millivolt
 
                     // check that the scene is not already loaded by comparing against
                     // all currently loaded scene names
-                    bool isLoaded = false;
+                    bool sceneIsAlreadyLoaded = false;
                     for (int s = 0; s < SceneManager.sceneCount; s++)
                     {
                         // if the scene is already loaded, then go to next scene to be loaded
                         if (SceneManager.GetSceneAt(s).name == name)
                         {
-                            isLoaded = true;
+                            sceneIsAlreadyLoaded = true;
                             break;
                         }
                     }
-                    if (isLoaded)
+                    if (sceneIsAlreadyLoaded)
                         continue;
 
+                    // wait until game manager has finished loading a scene until the next one starts to load
+                    while (GameManager.Instance.isLoading)
+                        yield return new WaitForFixedUpdate();
+
                     // otherwise, load the scene
-                    m_currentLoad = StartCoroutine(GameManager.Instance.LoadSceneAsync(name, LoadSceneMode.Additive, name == m_sceneNames.Last())); ;
+                    GameManager.Instance.isLoading = true;
+                    StartCoroutine(GameManager.Instance.LoadSceneAsync(name, LoadSceneMode.Additive)); ;
                 }
+
+                StartCoroutine(CheckLoadingIsDone());
+            }
+
+            private IEnumerator CheckLoadingIsDone()
+            {
+                while (GameManager.Instance.isLoading)
+                    yield return new WaitForFixedUpdate();
+
+                GameManager.Instance.LevelSetup();
             }
         }
     }

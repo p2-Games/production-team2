@@ -14,17 +14,19 @@ namespace Millivolt
         public class Checkpoint : MonoBehaviour
 		{
 			[SerializeField] private Transform m_respawnPoint;
-			public Transform respawnPoint => m_respawnPoint;
-
             [SerializeField] private int m_checkpointID;
+
+			public Transform respawnPoint => m_respawnPoint;
             public int checkpointID { get => m_checkpointID; }
 
 			private CheckpointTeleporter m_teleporter;
+			private Animator m_animator;
 
 			public void Initialise(int id)
 			{
 				m_checkpointID = id;
 				m_teleporter = transform.parent.GetComponent<CheckpointTeleporter>();
+				m_animator = GetComponentInChildren<Animator>();
 			}
 
             private void OnEnable()
@@ -45,7 +47,7 @@ namespace Millivolt
 
             private void OnTriggerExit(Collider other)
             {
-                m_teleporter.SetDisplayActive(false);
+                m_teleporter?.SetDisplayActive(false);
             }
 
             public void SetActiveCheckpoint()
@@ -53,13 +55,23 @@ namespace Millivolt
 				LevelManager.Instance.activeCheckpointIndex = m_checkpointID;
 
 				// if checkpoint is not unlocked for the teleporter, then unlock it
-				if (!m_teleporter.CheckpointIsUnlocked(m_checkpointID))
+				if (m_teleporter && !m_teleporter.CheckpointIsUnlocked(m_checkpointID))
 					m_teleporter.UnlockCheckpoint(m_checkpointID);
             }
 
 			public void Interact()
 			{
-				m_teleporter.SetDisplayActive(true);
+				m_teleporter?.SetDisplayActive(true);
+			}
+
+			public void EnableCheckpoint()
+			{
+                m_animator.Play("OnActivate");
+            }
+
+            public void DisableCheckpoint()
+			{
+				m_animator.Play("OnDeactivate");
 			}
         }
 	}

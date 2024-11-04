@@ -8,6 +8,7 @@
 using Cinemachine;
 using Millivolt.Level;
 using Millivolt.Player.UI;
+using System.Collections;
 using UnityEngine;
 
 namespace Millivolt.Player
@@ -25,7 +26,7 @@ namespace Millivolt.Player
         [SerializeField] private PlayerSpawnUI m_spawnScreenEffect;
 
         [SerializeField] private GameObject m_playerModel;
-        [SerializeField] private ParticleSystem m_respawnParticle;
+        [SerializeField] private ParticleSystem m_respawnParticlePrefab;
         [SerializeField] private bool m_drawGizmos = true;
 
         [Header("Timing")]
@@ -39,8 +40,17 @@ namespace Millivolt.Player
         [SerializeField, Range(30, 120)] private float m_fieldOfView;
         [SerializeField] private Transform[] m_camAngles = new Transform[0];
 
+        private GameObject m_respawnParticle;
+
         public void StartRespawn(Vector3 spawnPosition)
         {
+            // if already in progress, stop
+            StopAllCoroutines();
+
+            // destroy the particle
+            if (m_respawnParticle)
+                Destroy(m_respawnParticle);
+
             // go to player feet
             transform.position = spawnPosition;
 
@@ -57,25 +67,28 @@ namespace Millivolt.Player
             m_vcam.transform.SetPositionAndRotation(chosenAngle.position, chosenAngle.rotation);
 
             // create particle
-            Instantiate(m_respawnParticle, transform);
+            m_respawnParticle = Instantiate(m_respawnParticlePrefab, transform).gameObject;
 
             // start timings
-            Invoke(nameof(ReactivatePlayer), m_reactivatePlayerDelay);
+            StartCoroutine(ReactivatePlayer());
         }
 
-        private void ReactivatePlayer()
+        private IEnumerator ReactivatePlayer()
         {
+            yield return new WaitForSeconds(m_reactivatePlayerDelay);
             m_playerModel.SetActive(true);
-            Invoke(nameof(ResetCamera), m_resetCameraDelay);
+            StartCoroutine(ResetCamera());
         }
-        private void ResetCamera()
+        private IEnumerator ResetCamera()
         {
+            yield return new WaitForSeconds(m_resetCameraDelay);
             m_vcam.Priority = 0;
-            Invoke(nameof(GiveControlBack), m_giveControlBackDelay);
+            StartCoroutine(GiveControlBack());
         }
 
-        private void GiveControlBack()
+        private IEnumerator GiveControlBack()
         {
+            yield return new WaitForSeconds(m_giveControlBackDelay);
             GameManager.PlayerController.SetCanMove(true, CanMoveType.Dead);
             GameManager.PlayerInteraction.SetInteractionState(true);
         }
