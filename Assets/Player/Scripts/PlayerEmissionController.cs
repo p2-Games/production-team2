@@ -5,12 +5,15 @@
 ///
 ///</summary>
 
+using Pixelplacement;
 using UnityEngine;
 
 namespace Millivolt
 {
 	public class PlayerEmissionController : MonoBehaviour
 	{
+
+
 		[Header("Emotion Colours")]
 		[SerializeField] private Color m_defaultColour;
 		[SerializeField] private Color m_happyColour;
@@ -22,19 +25,32 @@ namespace Millivolt
 		[SerializeField] private Material m_armsMat;
 		[SerializeField] private Material m_legsMat;
 
-		private void SetEmissionDefault()
-		{
+		[Header("Transition details")]
+		[SerializeField] private float m_transitionDuration;
+		[SerializeField] private float m_transitionDelay;
 
+		public void SetEmissionDefault()
+		{
+			Tween.ShaderColor(m_headMat, "_EmissionColor", m_defaultColour, m_transitionDuration, m_transitionDelay, Tween.EaseIn);
+			Tween.ShaderColor(m_torsoMat, "_EmissionColor", m_defaultColour, m_transitionDuration, m_transitionDelay, Tween.EaseIn);
+			Tween.ShaderColor(m_armsMat, "_EmissionColor", m_defaultColour, m_transitionDuration, m_transitionDelay, Tween.EaseIn);
+			Tween.ShaderColor(m_legsMat, "_EmissionColor", m_defaultColour, m_transitionDuration, m_transitionDelay, Tween.EaseIn);
 		}
 
-        private void SetEmissionHappy()
+        public void SetEmissionHappy()
         {
-
+            Tween.ShaderColor(m_headMat, "_EmissionColor", m_defaultColour, m_transitionDuration, m_transitionDelay, Tween.EaseIn);
+            Tween.ShaderColor(m_torsoMat, "_EmissionColor", m_defaultColour, m_transitionDuration, m_transitionDelay, Tween.EaseIn);
+            Tween.ShaderColor(m_armsMat, "_EmissionColor", m_defaultColour, m_transitionDuration, m_transitionDelay, Tween.EaseIn);
+            Tween.ShaderColor(m_legsMat, "_EmissionColor", m_defaultColour, m_transitionDuration, m_transitionDelay, Tween.EaseIn);
         }
 
-        private void SetEmissionShocked()
+        public void SetEmissionShocked()
         {
-
+            Tween.ShaderColor(m_headMat, "_EmissionColor", m_defaultColour, m_transitionDuration, m_transitionDelay, Tween.EaseIn);
+            Tween.ShaderColor(m_torsoMat, "_EmissionColor", m_defaultColour, m_transitionDuration, m_transitionDelay, Tween.EaseIn);
+            Tween.ShaderColor(m_armsMat, "_EmissionColor", m_defaultColour, m_transitionDuration, m_transitionDelay, Tween.EaseIn);
+            Tween.ShaderColor(m_legsMat, "_EmissionColor", m_defaultColour, m_transitionDuration, m_transitionDelay, Tween.EaseIn);
         }
     }
 }
