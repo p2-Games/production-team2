@@ -312,7 +312,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Material
       value: 
-      objectReference: {fileID: 830493604}
+      objectReference: {fileID: 1403851743}
     - target: {fileID: 4606180051231618150, guid: ff2eab9ba8148954697e7c7ccf1e9783,
         type: 3}
       propertyPath: m_respawn
@@ -457,7 +457,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_animator
       value: 
-      objectReference: {fileID: 767687915}
+      objectReference: {fileID: 767687914}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ff2eab9ba8148954697e7c7ccf1e9783, type: 3}
 --- !u!4 &767687913 stripped
@@ -466,15 +466,15 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 767687912}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &767687914 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4865520768248367753, guid: ff2eab9ba8148954697e7c7ccf1e9783,
+--- !u!95 &767687914 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 6809633789572600137, guid: ff2eab9ba8148954697e7c7ccf1e9783,
     type: 3}
   m_PrefabInstance: {fileID: 767687912}
   m_PrefabAsset: {fileID: 0}
---- !u!95 &767687915 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 5568452030273021590, guid: ff2eab9ba8148954697e7c7ccf1e9783,
+--- !u!1 &767687915 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2708191099566105681, guid: ff2eab9ba8148954697e7c7ccf1e9783,
     type: 3}
   m_PrefabInstance: {fileID: 767687912}
   m_PrefabAsset: {fileID: 0}
@@ -569,18 +569,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45e653bab7fb20e499bda25e1b646fea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!134 &830493604
-PhysicMaterial:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: DynamicMaterial
-  dynamicFriction: 0
-  staticFriction: 0
-  bounciness: 0
-  frictionCombine: 1
-  bounceCombine: 1
 --- !u!1 &1121948974
 GameObject:
   m_ObjectHideFlags: 0
@@ -779,6 +767,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!134 &1403851743
+PhysicMaterial:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: DynamicMaterial
+  dynamicFriction: 0
+  staticFriction: 0
+  bounciness: 0
+  frictionCombine: 1
+  bounceCombine: 1
 --- !u!1 &1424283614
 GameObject:
   m_ObjectHideFlags: 0
@@ -1907,22 +1907,22 @@ PrefabInstance:
     - target: {fileID: 4212235776539409915, guid: 8ea15293907ec3f42a9a3f4f115c4ec7,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.5142315
+      value: 0.5141357
       objectReference: {fileID: 0}
     - target: {fileID: 4212235776539409915, guid: 8ea15293907ec3f42a9a3f4f115c4ec7,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.029931404
+      value: 0.031534508
       objectReference: {fileID: 0}
     - target: {fileID: 4212235776539409915, guid: 8ea15293907ec3f42a9a3f4f115c4ec7,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.8556807
+      value: 0.8555213
       objectReference: {fileID: 0}
     - target: {fileID: 4212235776539409915, guid: 8ea15293907ec3f42a9a3f4f115c4ec7,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.049805827
+      value: -0.05247339
       objectReference: {fileID: 0}
     - target: {fileID: 4212235776597187050, guid: 8ea15293907ec3f42a9a3f4f115c4ec7,
         type: 3}
@@ -1942,22 +1942,22 @@ PrefabInstance:
     - target: {fileID: 4212235776597187050, guid: 8ea15293907ec3f42a9a3f4f115c4ec7,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.97774917
+      value: 0.97741896
       objectReference: {fileID: 0}
     - target: {fileID: 4212235776597187050, guid: 8ea15293907ec3f42a9a3f4f115c4ec7,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.20968305
+      value: 0.21121699
       objectReference: {fileID: 0}
     - target: {fileID: 4212235776597187050, guid: 8ea15293907ec3f42a9a3f4f115c4ec7,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.0061568674
+      value: 0.006154787
       objectReference: {fileID: 0}
     - target: {fileID: 4212235776597187050, guid: 8ea15293907ec3f42a9a3f4f115c4ec7,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.0013203697
+      value: -0.0013300291
       objectReference: {fileID: 0}
     - target: {fileID: 4212235778317294376, guid: 8ea15293907ec3f42a9a3f4f115c4ec7,
         type: 3}
@@ -1978,7 +1978,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_playerModel
       value: 
-      objectReference: {fileID: 767687914}
+      objectReference: {fileID: 767687915}
     - target: {fileID: 4212235778317294377, guid: 8ea15293907ec3f42a9a3f4f115c4ec7,
         type: 3}
       propertyPath: m_spawnScreenEffect
