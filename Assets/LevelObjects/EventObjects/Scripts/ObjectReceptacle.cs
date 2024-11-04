@@ -72,8 +72,7 @@ namespace Millivolt
                         return;
 
                     // if its the correct object, accept the object
-                    PickupObject obj = other.GetComponent<PickupObject>();
-                    if (obj && obj.name == m_objectName && obj.canInteract)
+                    if (other.TryGetComponent(out PickupObject obj) && obj.canInteract && obj.name == m_objectName)
                     {
                         // if the object has a spawn parent, then toggle whether it can still spawn the object
                         if (obj.spawnParent)
