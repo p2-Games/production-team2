@@ -15,7 +15,7 @@ namespace Millivolt
         {
             public void PlayFootstep()
             {
-                if (GameManager.PlayerController.isGrounded)
+                if (GameManager.Player.Controller.isGrounded)
                     SFXController.Instance.PlayRandomSoundClip("Footsteps", transform.parent.parent);
             }
         }
