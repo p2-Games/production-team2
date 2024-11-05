@@ -14,6 +14,7 @@ namespace Millivolt
         public class Checkpoint : MonoBehaviour
 		{
 			[SerializeField] private Transform m_respawnPoint;
+			[SerializeField] private GameObject m_particle;
             [SerializeField] private int m_checkpointID;
 
 			public Transform respawnPoint => m_respawnPoint;
@@ -67,6 +68,7 @@ namespace Millivolt
 			public void EnableCheckpoint()
 			{
                 m_animator.Play("OnActivate");
+				m_particle.SetActive(true);
             }
 
             public void DisableCheckpoint()
