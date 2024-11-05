@@ -15,10 +15,17 @@ namespace Millivolt
 	{
         public static PlayerSettings Instance { get; private set; }
 
+        [Header("Min/Max Sensitivity Speed")]
         [Tooltip("The min and max value of the verical speed")]
         [SerializeField] private Vector2 m_minMaxVerticalSpeed;
+        public Vector2 minMaxVerticalSpeed => m_minMaxVerticalSpeed;
         [Tooltip("The min and max value of the horizontal speed")]
         [SerializeField] private Vector2 m_minMaxHorizontalSpeed;
+        public Vector2 minMaxHorizontalSpeed => m_minMaxHorizontalSpeed;
+
+        [Header("Sensitivity")]
+        public float horizontalSensitivity = 0.25f;
+        public float verticalSensitivity = 0.12f;
 
         private Vector2[] m_sensitivityVectors = new Vector2[2];
 
@@ -49,26 +56,36 @@ namespace Millivolt
             m_sfxVolume = 1;
         }
 
-        public void AdjustCameraSensitivity(float value)
+        public void AdjustVerticalCameraSensitivity(float value)
         {
-            float[] holdValues = new float[2];
+            //Get Difference
+            float minMaxDifference = m_sensitivityVectors[0].y - m_sensitivityVectors[0].x;
 
-            for (int i = 0; i < m_sensitivityVectors.Length; i++)
-            {
-                //Get Difference
-                float minMaxDifference = m_sensitivityVectors[i].y - m_sensitivityVectors[i].x;
+            //multiply slider value against the difference
+            float sensitivityValue = minMaxDifference * value;
 
-                //multiply slider value against the difference
-                float sensitivityValue = minMaxDifference * value;
+            //Add that value to the minimum and then apply to the camera
+            float finalValue = m_sensitivityVectors[0].x + sensitivityValue;
 
-                //Add that value to the minimum and then apply to the camera
-                float finalValue = m_sensitivityVectors[i].x + sensitivityValue;
+            if (Camera.main.TryGetComponent(out CameraController cc))
+                cc.UpdateSensitivity(horizontalSensitivity, finalValue);
+            verticalSensitivity = finalValue;
+        }
 
-                holdValues[i] = finalValue;
-            }
+        public void AdjustHorizontalCameraSensitivity(float value)
+        {
+            //Get Difference
+            float minMaxDifference = m_sensitivityVectors[1].y - m_sensitivityVectors[1].x;
 
-            GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>().UpdateSensitivity(holdValues[1], holdValues[0]);
+            //multiply slider value against the difference
+            float sensitivityValue = minMaxDifference * value;
 
+            //Add that value to the minimum and then apply to the camera
+            float finalValue = m_sensitivityVectors[1].x + sensitivityValue;
+
+            if (Camera.main.TryGetComponent(out CameraController cc))
+                cc.UpdateSensitivity(finalValue, verticalSensitivity);
+            horizontalSensitivity = finalValue;
         }
 
         public void AdjustMusicVolume(float value)
