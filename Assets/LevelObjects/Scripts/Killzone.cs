@@ -30,7 +30,7 @@ namespace Millivolt
 
                 // if the other object is the player, kill them
                 if (other.GetComponent<PlayerModel>())
-                    GameManager.PlayerStatus.TakeDamage(GameManager.PlayerStatus.maxHealth);
+                    GameManager.Player.Status.TakeDamage(GameManager.Player.Status.maxHealth);
                 // if the other object is a pickup, destroy it
                 else if (other.TryGetComponent(out Interactable obj))
                 {

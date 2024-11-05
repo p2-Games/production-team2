@@ -19,6 +19,7 @@ namespace Millivolt
             private void Start()
             {
                 m_canMove = new PlayerCanMove();
+                SetCanMove(false, CanMoveType.Dead);
             }
 
             private void FixedUpdate()
@@ -370,13 +371,13 @@ namespace Millivolt
 
                 PlayerModel model;
 
-                if (!GameManager.PlayerModel)
+                if (!GameManager.Player)
                 {
                     model = GetComponentInChildren<PlayerModel>();
                     model.InitialiseCollider();
                 }
                 else
-                    model = GameManager.PlayerModel;
+                    model = GameManager.Player.Model;
 
                 Handles.matrix = model.transform.localToWorldMatrix;
 
