@@ -67,7 +67,7 @@ namespace Millivolt
             {
                 SetDisplayActive(false);
                 LevelManager.Instance.GetCheckpoint(index).SetActiveCheckpoint();
-                GameManager.PlayerStatus.Die();
+                GameManager.Player.Status.Die();
             }
 
             public void InitialiseButtons(int checkpointCount)

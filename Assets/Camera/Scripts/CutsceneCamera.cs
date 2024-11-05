@@ -32,13 +32,13 @@ namespace Millivolt
 
             private IEnumerator Play()
             {
-                GameManager.PlayerController.SetCanMove(false, Player.CanMoveType.Cutscene);
+                GameManager.Player.Controller.SetCanMove(false, Player.CanMoveType.Cutscene);
 
                 m_vcam.Priority += 10;
                 yield return new WaitForSecondsRealtime(m_duration);
                 m_vcam.Priority -= 10;
 
-                GameManager.PlayerController.SetCanMove(true, Player.CanMoveType.Cutscene);
+                GameManager.Player.Controller.SetCanMove(true, Player.CanMoveType.Cutscene);
             }
         }
     }
