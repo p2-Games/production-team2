@@ -123,18 +123,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!134 &216694098
-PhysicMaterial:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: DynamicMaterial
-  dynamicFriction: 0
-  staticFriction: 0
-  bounciness: 0
-  frictionCombine: 1
-  bounceCombine: 1
 --- !u!1 &372818521
 GameObject:
   m_ObjectHideFlags: 0
@@ -324,7 +312,27 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Material
       value: 
-      objectReference: {fileID: 216694098}
+      objectReference: {fileID: 1778596645}
+    - target: {fileID: 442316462220853181, guid: ff2eab9ba8148954697e7c7ccf1e9783,
+        type: 3}
+      propertyPath: m_emotions.Array.data[0].m_blink
+      value: 
+      objectReference: {fileID: 2100000, guid: b599b704078f422428d73f7c767f8c8c, type: 2}
+    - target: {fileID: 442316462220853181, guid: ff2eab9ba8148954697e7c7ccf1e9783,
+        type: 3}
+      propertyPath: m_emotions.Array.data[1].m_blink
+      value: 
+      objectReference: {fileID: 2100000, guid: b599b704078f422428d73f7c767f8c8c, type: 2}
+    - target: {fileID: 442316462220853181, guid: ff2eab9ba8148954697e7c7ccf1e9783,
+        type: 3}
+      propertyPath: m_emotions.Array.data[2].m_blink
+      value: 
+      objectReference: {fileID: 2100000, guid: b599b704078f422428d73f7c767f8c8c, type: 2}
+    - target: {fileID: 442316462220853181, guid: ff2eab9ba8148954697e7c7ccf1e9783,
+        type: 3}
+      propertyPath: m_emotions.Array.data[3].m_blink
+      value: 
+      objectReference: {fileID: 2100000, guid: b599b704078f422428d73f7c767f8c8c, type: 2}
     - target: {fileID: 4606180051231618150, guid: ff2eab9ba8148954697e7c7ccf1e9783,
         type: 3}
       propertyPath: m_respawn
@@ -1465,6 +1473,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!134 &1778596645
+PhysicMaterial:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: DynamicMaterial
+  dynamicFriction: 0
+  staticFriction: 0
+  bounciness: 0
+  frictionCombine: 1
+  bounceCombine: 1
 --- !u!1001 &1840679662
 PrefabInstance:
   m_ObjectHideFlags: 0
