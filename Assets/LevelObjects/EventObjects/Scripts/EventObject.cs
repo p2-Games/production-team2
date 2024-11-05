@@ -89,7 +89,7 @@ namespace Millivolt
                         return false;
                     
                     // if this object cannot be triggered by the held object, and the object IS the held object, then it cannot trigger
-                    if (!triggeredByHeldObject && GameManager.PlayerInteraction && obj == GameManager.PlayerInteraction.heldObject)
+                    if (!triggeredByHeldObject && GameManager.Player && obj == GameManager.Player.Interaction.heldObject)
                         return false;
 
                     foreach (string type in m_interactionFilter)
