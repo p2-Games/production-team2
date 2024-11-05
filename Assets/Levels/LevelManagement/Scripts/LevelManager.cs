@@ -82,12 +82,12 @@ namespace Millivolt
 
 			public void SpawnPlayer()
 			{
-				GameManager.PlayerController.ResetPlayer();
-				GameManager.PlayerModel.StopAllCoroutines();
+				GameManager.Player.Controller.ResetPlayer();
+				GameManager.Player.Model.StopAllCoroutines();
 
                 GameManager.Instance.SetGravity(levelData.gravityDirection, levelData.gravityMagnitude);
 
-				GameManager.PlayerController.transform.position = m_levelCheckpoints[activeCheckpointIndex].respawnPoint.position;
+				GameManager.Player.Controller.transform.position = m_levelCheckpoints[activeCheckpointIndex].respawnPoint.position;
 				//GameManager.PlayerModel.transform.rotation = Quaternion.LookRotation(activeCheckpoint.transform.forward, -Physics.gravity.normalized);
 
 				UIMenuManager.Instance.CursorLockupdate();

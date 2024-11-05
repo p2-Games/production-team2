@@ -67,6 +67,7 @@ namespace Millivolt
             private void Start()
             {
                 InitialiseTrigger();
+                ResetInteraction();
             }
 
             private void InitialiseTrigger()
@@ -209,7 +210,7 @@ namespace Millivolt
                 m_state = InteractionState.Holding;
             }
 
-            public void DropObject(bool allowInteraction = true)
+            public void DropObject(bool openState = true)
             {
                 if (m_heldPickup)
                 {
@@ -224,8 +225,10 @@ namespace Millivolt
                 // SHIT
                 Physics.IgnoreLayerCollision(3, 9, false);
 
-                if (allowInteraction)
+                if (openState)
                     m_state = InteractionState.Open;
+                else
+                    m_state = InteractionState.Closed;
             }
 
             public void ResetInteraction()

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4950199202765903827}
   - component: {fileID: 6414711927474844897}
+  - component: {fileID: -7188941382758535049}
   - component: {fileID: 1770264457107024098}
   m_Layer: 0
   m_Name: PlayerModel
@@ -49,6 +50,36 @@ MonoBehaviour:
   m_forwardRotationSpeed: 5
   m_forwardSnapAngle: 0.3
   m_gravityRotationTime: 0.5
+--- !u!114 &-7188941382758535049
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4950199202765903824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d03d87f936a95ab4dbf2afae26278528, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_head: {fileID: 0}
+  m_faceMatIndex: 1
+  m_emotions:
+  - m_type: 0
+    m_regular: {fileID: 2100000, guid: 9fb1a15119a1e7e42a91b0ade9fd5ba2, type: 2}
+    m_blink: {fileID: 2100000, guid: 4df6f84cd6a4acd4b8b9bf642778a34e, type: 2}
+  - m_type: 1
+    m_regular: {fileID: 2100000, guid: b773c2709856a124ba55ccab172cd132, type: 2}
+    m_blink: {fileID: 2100000, guid: 4df6f84cd6a4acd4b8b9bf642778a34e, type: 2}
+  - m_type: 2
+    m_regular: {fileID: 2100000, guid: 82421996649fc9f41b1e3f4370da87c3, type: 2}
+    m_blink: {fileID: 2100000, guid: 4df6f84cd6a4acd4b8b9bf642778a34e, type: 2}
+  - m_type: 3
+    m_regular: {fileID: 2100000, guid: 4df6f84cd6a4acd4b8b9bf642778a34e, type: 2}
+    m_blink: {fileID: 2100000, guid: 4df6f84cd6a4acd4b8b9bf642778a34e, type: 2}
+  m_blinkDuration: 0.15
+  m_blinkInterval: 5
+  m_blinkIntervalVariation: 2
 --- !u!136 &1770264457107024098
 CapsuleCollider:
   m_ObjectHideFlags: 0
