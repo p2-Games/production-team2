@@ -1,14 +1,13 @@
 ///<summary>
-/// Author:
+/// Author: Halen
 ///
-///
+/// Holds references to all the different Player components.
 ///
 ///</summary>
 
-using Millivolt.Player;
 using UnityEngine;
 
-namespace Millivolt
+namespace Millivolt.Player
 {
     public class PlayerComponents : MonoBehaviour
     {
