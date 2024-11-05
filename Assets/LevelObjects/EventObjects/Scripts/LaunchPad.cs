@@ -37,10 +37,10 @@ namespace Millivolt
                     if (m_objectToLaunch && Vector3.Distance(m_objectToLaunch.position, m_newObjectPosition) < m_minDistanceToLaunch)
                     {
                         // different behaviour if the object to launch is the player
-                        if (GameManager.PlayerController.gameObject == m_objectToLaunch.gameObject)
+                        if (GameManager.Player.Controller.gameObject == m_objectToLaunch.gameObject)
                         {
-                            GameManager.PlayerController.SetExternalVelocity(m_initialVelocity);
-                            GameManager.PlayerController.SetCanMove(false, Player.CanMoveType.LevelObject);
+                            GameManager.Player.Controller.SetExternalVelocity(m_initialVelocity);
+                            GameManager.Player.Controller.SetCanMove(false, Player.CanMoveType.LevelObject);
                         }
                         else
                             m_objectToLaunch.velocity = m_initialVelocity;

@@ -88,7 +88,10 @@ namespace Millivolt
             public void Die()
             {
                 // stop the player from moving
-                GameManager.PlayerController.SetCanMove(false, CanMoveType.Dead);
+                GameManager.Player.Controller.SetCanMove(false, CanMoveType.Dead);
+
+                // stop the player from respawning if they are already
+                PlayerRespawn.Instance.StopAllCoroutines();
 
                 // stop regen
                 StopAllCoroutines();
@@ -103,7 +106,7 @@ namespace Millivolt
                 m_deathScreenEffect.gameObject.SetActive(true);
 
                 // disable interaction
-                GameManager.PlayerInteraction.ResetInteraction();
+                GameManager.Player.Interaction.ResetInteraction();
 
                 // play a death sound effect
                 SFXController.Instance.PlayRandomSoundClip("PlayerDamage", transform.parent);
@@ -115,17 +118,17 @@ namespace Millivolt
             public void PlayerKnockback(HazardObject hazard)
             {
                 //Find the closest point on the hazard collider to the player
-                Vector3 closestPoint = hazard.gameObject.GetComponent<Collider>().ClosestPoint(GameManager.PlayerController.transform.position);
+                Vector3 closestPoint = hazard.gameObject.GetComponent<Collider>().ClosestPoint(GameManager.Player.Controller.transform.position);
                 
                 //Get the direction that the player needs to be knocked towards
-                Vector3 dir = (GameManager.PlayerController.transform.position - closestPoint).normalized;
-                dir = Vector3.ProjectOnPlane(dir, GameManager.PlayerController.transform.up).normalized;
+                Vector3 dir = (GameManager.Player.Controller.transform.position - closestPoint).normalized;
+                dir = Vector3.ProjectOnPlane(dir, GameManager.Player.Controller.transform.up).normalized;
 
                 //Launch the player backwards
-                GameManager.PlayerController.SetExternalVelocity(dir * m_horizontalForce);
+                GameManager.Player.Controller.SetExternalVelocity(dir * m_horizontalForce);
 
                 //Launch player upwards based on vertical force
-                GameManager.PlayerController.AddVerticalVelocity(m_verticalForce * -Physics.gravity.normalized);
+                GameManager.Player.Controller.AddVerticalVelocity(m_verticalForce * -Physics.gravity.normalized);
             }
 
             /// <summary>

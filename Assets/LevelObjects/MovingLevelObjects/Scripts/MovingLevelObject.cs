@@ -78,7 +78,7 @@ namespace Millivolt
                 private void OnTriggerStay(Collider other)
                 {
                     if (other.CompareTag("Player"))
-                        GameManager.PlayerController.SetPlatformVelocity(m_rb.GetPointVelocity(other.ClosestPointOnBounds(GameManager.PlayerController.transform.position)));
+                        GameManager.Player.Controller.SetPlatformVelocity(m_rb.GetPointVelocity(other.ClosestPointOnBounds(GameManager.Player.Controller.transform.position)));
                 }
 
 #if UNITY_EDITOR

@@ -37,7 +37,7 @@ namespace Millivolt
             if (!SFXController.Instance)
                 return;
 
-            Transform target = m_attachToPlayer ? GameManager.PlayerController.transform : transform;
+            Transform target = m_attachToPlayer ? GameManager.Player.Controller.transform : transform;
             if (m_clipName != string.Empty)
                 SFXController.Instance.PlaySoundClip(m_collectionName, m_clipName, target, m_type);
             else
