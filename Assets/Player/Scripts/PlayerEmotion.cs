@@ -8,6 +8,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Millivolt.Player
 {
@@ -65,12 +66,27 @@ namespace Millivolt.Player
             m_currentBlinkTime += Time.deltaTime;
 
             if (m_currentBlinkTime >= m_targetBlinkInterval)
+            {
                 Blink();
+                m_targetBlinkInterval = m_blinkInterval + Random.Range(-m_blinkIntervalVariation, m_blinkIntervalVariation);
+                m_currentBlinkTime = 0;
+            }
+        }
+
+        public void CycleEmotion(InputAction.CallbackContext context)
+        {
+            if (context.performed)
+            {
+                int emotionChoice = (int)m_currentEmotion.type + 1;
+                if (emotionChoice == System.Enum.GetNames(typeof(EmotionMode)).Length)
+                    emotionChoice = 0;
+                ChangeEmotion((EmotionMode)emotionChoice);
+            }
         }
 
         public void ChangeEmotion(EmotionMode newEmotion)
         {
-            if (m_currentEmotion.type == newEmotion)
+            if (m_currentEmotion != null && m_currentEmotion.type == newEmotion)
                 return;
 
             // stop any blinking
@@ -86,10 +102,7 @@ namespace Millivolt.Player
         public void Blink()
         {
             ChangeMaterial(m_currentEmotion.blink);
-            ChangeMaterialOnDelay(m_currentEmotion.regular, m_blinkDuration);
-
-            m_targetBlinkInterval = m_blinkInterval + Random.Range(-m_blinkIntervalVariation, m_blinkIntervalVariation);
-            m_currentBlinkTime = 0;
+            StartCoroutine(ChangeMaterialOnDelay(m_currentEmotion.regular, m_blinkDuration));
         }
 
         /// <summary>
@@ -101,11 +114,11 @@ namespace Millivolt.Player
             //Temp array to hold all the materials on robert
             Material[] holdMats = m_head.GetComponent<SkinnedMeshRenderer>().materials;
             //Create instance of the material you want to change to
-            Material emotionInstance = new Material(material);
+            Material emotionInstance = new(material);
             //Grabs the material in the array spot to change to the face you want
             holdMats[m_faceMatIndex] = emotionInstance;
             //Wipes the material list and replaces it with the new one
-            GetComponent<MeshRenderer>().materials = holdMats;
+            m_head.GetComponent<SkinnedMeshRenderer>().materials = holdMats;
         }
 
         private IEnumerator ChangeMaterialOnDelay(Material material, float delay)
