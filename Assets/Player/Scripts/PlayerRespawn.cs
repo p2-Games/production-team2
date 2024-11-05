@@ -44,9 +44,6 @@ namespace Millivolt.Player
 
         public void StartRespawn(Vector3 spawnPosition)
         {
-            // if already in progress, stop
-            StopAllCoroutines();
-
             // destroy the particle
             if (m_respawnParticle)
                 Destroy(m_respawnParticle);

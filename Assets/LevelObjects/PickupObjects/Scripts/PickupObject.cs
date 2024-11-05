@@ -56,7 +56,8 @@ namespace Millivolt
                     m_isDissolving = true;
 
                     // if this is the held object, then drop it
-                    GameManager.Player.Interaction.DropObject();
+                    if (GameManager.Player && GameManager.Player.Interaction.heldObject == gameObject)
+                        GameManager.Player.Interaction.DropObject();
 
                     // check if spawn parent should auto respawn this object
                     if (spawnParent)

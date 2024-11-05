@@ -103,7 +103,7 @@ namespace Millivolt
 
         // level loading
         private string m_currentSceneName;
-		public bool isLoading = false;
+		[HideInInspector] public bool isLoading = false;
 
         public void LevelSetup()
 		{

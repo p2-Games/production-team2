@@ -19,6 +19,7 @@ namespace Millivolt
             private void Start()
             {
                 m_canMove = new PlayerCanMove();
+                SetCanMove(false, CanMoveType.Dead);
             }
 
             private void FixedUpdate()

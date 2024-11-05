@@ -90,6 +90,9 @@ namespace Millivolt
                 // stop the player from moving
                 GameManager.Player.Controller.SetCanMove(false, CanMoveType.Dead);
 
+                // stop the player from respawning if they are already
+                PlayerRespawn.Instance.StopAllCoroutines();
+
                 // stop regen
                 StopAllCoroutines();
 
