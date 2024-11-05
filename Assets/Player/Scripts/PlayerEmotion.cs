@@ -84,6 +84,18 @@ namespace Millivolt.Player
             }
         }
 
+        public void ChangeEmotion(string emotionName)
+        {
+            foreach (EmotionFace emotion in m_emotions)
+            {
+                if (nameof(emotion.type).Contains(emotionName))
+                {
+                    ChangeEmotion(emotion.type);
+                    return;
+                }
+            }
+        }
+
         public void ChangeEmotion(EmotionMode newEmotion)
         {
             if (m_currentEmotion != null && m_currentEmotion.type == newEmotion)

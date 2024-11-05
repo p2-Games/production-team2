@@ -47,7 +47,7 @@ namespace Millivolt
 
                 private void OnCollisionEnter(Collision collision)
                 {
-                    if (GameManager.PlayerInteraction && gameObject != GameManager.PlayerInteraction.heldObject)
+                    if (GameManager.Player && gameObject != GameManager.Player.Interaction.heldObject)
                         SFXController.Instance.PlayRandomSoundClip("ScrewDrop", transform);
                 }
 
@@ -56,7 +56,7 @@ namespace Millivolt
                     m_isDissolving = true;
 
                     // if this is the held object, then drop it
-                    GameManager.PlayerInteraction.DropObject();
+                    GameManager.Player.Interaction.DropObject();
 
                     // check if spawn parent should auto respawn this object
                     if (spawnParent)

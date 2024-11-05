@@ -370,13 +370,13 @@ namespace Millivolt
 
                 PlayerModel model;
 
-                if (!GameManager.PlayerModel)
+                if (!GameManager.Player)
                 {
                     model = GetComponentInChildren<PlayerModel>();
                     model.InitialiseCollider();
                 }
                 else
-                    model = GameManager.PlayerModel;
+                    model = GameManager.Player.Model;
 
                 Handles.matrix = model.transform.localToWorldMatrix;
 
