@@ -73,34 +73,34 @@ MonoBehaviour:
     - m_clipName: DoorOpen
       m_audioClip: {fileID: 8300000, guid: 630b37ddfd620be45ac336948689c81e, type: 3}
       m_volume: 0.75
-      m_range: 10
+      m_range: 25
       m_loop: 0
   - m_collectionName: Footsteps
     m_soundClips:
     - m_clipName: Footstep1
       m_audioClip: {fileID: 8300000, guid: 51414a8396afeff469edef7945128e65, type: 3}
-      m_volume: 0.5
-      m_range: 10
+      m_volume: 0.75
+      m_range: 15
       m_loop: 0
     - m_clipName: Footstep2
       m_audioClip: {fileID: 8300000, guid: efca6ea2c45bf3e49b72931499f70a8a, type: 3}
-      m_volume: 0.5
-      m_range: 10
+      m_volume: 0.75
+      m_range: 15
       m_loop: 0
     - m_clipName: Footstep3
       m_audioClip: {fileID: 8300000, guid: 3d2e616b546f3c3498cb8f41cf59e353, type: 3}
-      m_volume: 0.5
-      m_range: 10
+      m_volume: 0.75
+      m_range: 15
       m_loop: 0
     - m_clipName: Footstep4
       m_audioClip: {fileID: 8300000, guid: 3d2e616b546f3c3498cb8f41cf59e353, type: 3}
-      m_volume: 0.5
-      m_range: 10
+      m_volume: 0.75
+      m_range: 15
       m_loop: 0
     - m_clipName: Footstep5
       m_audioClip: {fileID: 8300000, guid: 83fdbfefecd78104eb06a293d6e4552e, type: 3}
-      m_volume: 0.5
-      m_range: 10
+      m_volume: 0.75
+      m_range: 15
       m_loop: 0
   - m_collectionName: GravitySwitch
     m_soundClips:
@@ -121,26 +121,31 @@ MonoBehaviour:
       m_volume: 1
       m_range: 20
       m_loop: 1
+    - m_clipName: CoilOff
+      m_audioClip: {fileID: 8300000, guid: ba0341072f7ac37478b8790dfff1292b, type: 3}
+      m_volume: 1
+      m_range: 20
+      m_loop: 0
   - m_collectionName: Jump
     m_soundClips:
     - m_clipName: Jump1
       m_audioClip: {fileID: 8300000, guid: 718d263ae4761d84682974fb36859410, type: 3}
-      m_volume: 0.25
+      m_volume: 0.5
       m_range: 10
       m_loop: 0
     - m_clipName: Jump2
       m_audioClip: {fileID: 8300000, guid: f21aaa3469a0fdc4e88aadaa0e288868, type: 3}
-      m_volume: 0.25
+      m_volume: 0.5
       m_range: 10
       m_loop: 0
     - m_clipName: Jump3
       m_audioClip: {fileID: 8300000, guid: 1ad8b63ba109d9e4c97121420c5a0853, type: 3}
-      m_volume: 0.25
+      m_volume: 0.5
       m_range: 10
       m_loop: 0
     - m_clipName: Jump4
       m_audioClip: {fileID: 8300000, guid: 09ea221cfe3f1f64699297764b35a36c, type: 3}
-      m_volume: 0.25
+      m_volume: 0.5
       m_range: 10
       m_loop: 0
   - m_collectionName: LaunchPad
@@ -229,6 +234,11 @@ MonoBehaviour:
     m_soundClips:
     - m_clipName: Menu
       m_audioClip: {fileID: 8300000, guid: 1ff56899f5f65744babfde407ee5b10e, type: 3}
-      m_volume: 0.75
+      m_volume: 0.66
+      m_range: 10
+      m_loop: 0
+    - m_clipName: Level1
+      m_audioClip: {fileID: 8300000, guid: 28fadf4ab4060484c85e6cb107c9e043, type: 3}
+      m_volume: 0.5
       m_range: 10
       m_loop: 0
