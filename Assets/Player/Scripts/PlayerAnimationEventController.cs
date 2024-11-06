@@ -19,14 +19,14 @@ namespace Millivolt
                     SFXController.Instance.PlayRandomSoundClip("Footsteps", transform.parent.parent);
             }
 
-            public void DisableMovementForPickup()
+            public void ToggleMovementForPickup()
             {
-                GameManager.Player.Controller.SetCanMove(false, CanMoveType.Pickup);
+                GameManager.Player.Controller.SetCanMove(!GameManager.Player.Controller.GetCanMove(CanMoveType.Pickup), CanMoveType.Pickup);
             }
 
-            public void EnableMovementForPickup()
+            public void TriggerHolding()
             {
-                GameManager.Player.Controller.SetCanMove(true, CanMoveType.Pickup);
+                GameManager.Player.Animation.PassBoolParameter("IsHolding", !GameManager.Player.Animation.GetBoolParameter("IsHolding"));
             }
         }
     }

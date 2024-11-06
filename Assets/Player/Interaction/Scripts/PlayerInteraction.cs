@@ -192,7 +192,7 @@ namespace Millivolt
             public void GrabObject(PickupObject obj)
             {
                 // Play grab animation
-                GameManager.Player.Animation?.SetTriggerParameter("Grab");
+                GameManager.Player?.Animation.SetTriggerParameter("Grab");
                 
                 // set the held object to the pickup
                 m_heldPickup = obj;
@@ -216,7 +216,8 @@ namespace Millivolt
             public void DropObject(bool openState = true)
             {
                 // Play drop animation
-                GameManager.Player.Animation?.SetTriggerParameter("Drop");
+                if (openState)
+                    GameManager.Player?.Animation.SetTriggerParameter("Drop");
                 
                 if (m_heldPickup)
                 {
