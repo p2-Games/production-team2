@@ -109,6 +109,7 @@ namespace Millivolt
 
         public void LevelSetup()
 		{
+			m_loadingScreen.SetActive(false);
 			// destroy original Player references component
 			if (Player)
 				Destroy(Player);
@@ -128,6 +129,7 @@ namespace Millivolt
 
         public void RestartLevel()
 		{
+			m_loadingScreen.SetActive(true);
 			StartCoroutine(ReloadCurrentScene());
         }
 
@@ -153,7 +155,6 @@ namespace Millivolt
 			while (!asyncLoad.isDone)
 				yield return null;
 			isLoading = false;
-			m_loadingScreen.SetActive(false);
 		}
 
 		private IEnumerator UnloadSceneAsync(string sceneName)

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7984456537683936326}
   - component: {fileID: 2590779182527922114}
   m_Layer: 0
-  m_Name: LoadingText
+  m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -145,6 +145,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1024068318824248749}
+  - component: {fileID: 2761341036636425502}
   - component: {fileID: 2234436828831460317}
   - component: {fileID: 3513028751468097505}
   - component: {fileID: 7922142303014721107}
@@ -178,6 +179,19 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &2761341036636425502
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5571070952800454334}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f0271ad88090a74c867bab0ec6fe771, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_loadingBar: {fileID: 0}
 --- !u!223 &2234436828831460317
 Canvas:
   m_ObjectHideFlags: 0
