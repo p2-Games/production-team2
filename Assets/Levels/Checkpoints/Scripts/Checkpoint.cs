@@ -15,10 +15,12 @@ namespace Millivolt
 		{
 			[SerializeField] private Transform m_respawnPoint;
 			[SerializeField] private GameObject m_particle;
+			[SerializeField] private Transform m_frontArrow;
             [SerializeField] private int m_checkpointID;
 
 			public Transform respawnPoint => m_respawnPoint;
             public int checkpointID { get => m_checkpointID; }
+			public Vector3 frontPosition => m_frontArrow.position;
 
 			private CheckpointTeleporter m_teleporter;
 			private Animator m_animator;
