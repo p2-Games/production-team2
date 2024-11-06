@@ -16,6 +16,7 @@ namespace Millivolt.Player
         public PlayerStatus Status { get; private set; }
         public PlayerModel Model { get; private set; }
         public PlayerEmotion Emotion { get; private set; }
+        public AnimationController Animation { get; private set; }
 
         public void Awake()
         {
@@ -28,6 +29,7 @@ namespace Millivolt.Player
             Status = player.GetComponentInChildren<PlayerStatus>();
             Model = player.GetComponentInChildren<PlayerModel>();
             Emotion = player.GetComponentInChildren<PlayerEmotion>();
+            Animation = player.GetComponent<AnimationController>();
         }
     }
 }
