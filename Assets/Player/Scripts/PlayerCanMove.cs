@@ -18,7 +18,7 @@ namespace Millivolt
             Gravity,
             Dead,
             Menu,
-            HeldObject,
+            Pickup,
             COUNT
         }
 

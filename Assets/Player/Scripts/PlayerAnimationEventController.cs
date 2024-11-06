@@ -18,6 +18,16 @@ namespace Millivolt
                 if (GameManager.Player.Controller.isGrounded)
                     SFXController.Instance.PlayRandomSoundClip("Footsteps", transform.parent.parent);
             }
+
+            public void DisableMovementForPickup()
+            {
+                GameManager.Player.Controller.SetCanMove(false, CanMoveType.Pickup);
+            }
+
+            public void EnableMovementForPickup()
+            {
+                GameManager.Player.Controller.SetCanMove(true, CanMoveType.Pickup);
+            }
         }
     }
 }

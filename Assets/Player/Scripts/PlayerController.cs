@@ -27,18 +27,7 @@ namespace Millivolt
                 MovePlayer();
                 if (!m_isGrounded)
                     m_airTime += Time.fixedDeltaTime;
-                m_animation.PassFloatParameter("AirTime", m_airTime);
-            }
-
-            private AnimationController m_animation;
-            new public AnimationController animation
-            {
-                get
-                {
-                    if (!m_animation)
-                        m_animation = GetComponent<AnimationController>();
-                    return m_animation;
-                }
+                GameManager.Player.Animation.PassFloatParameter("AirTime", m_airTime);
             }
 
             private PlayerModel m_model;
@@ -201,15 +190,15 @@ namespace Millivolt
                 {
                     AddJumpForce();
                     m_willJump = false;
-                    m_animation.SetTriggerParameter("Jump");
+                    GameManager.Player.Animation?.SetTriggerParameter("Jump");
                     SFXController.Instance.PlayRandomSoundClip("Jump", transform);
                 }
 
                 // tell animator what to do
-                animation.PassFloatParameter("MoveSpeed", m_walkVelocity.magnitude / m_topSpeed);
+                GameManager.Player.Animation?.PassFloatParameter("MoveSpeed", m_walkVelocity.magnitude / m_topSpeed);
                 // until in-air amimations are complete !!!
                 //animation.PassFloatParameter("VerticalSpeed", m_verticalVelocity.magnitude * verticalDirection);
-                animation.PassBoolParameter("IsGrounded", m_isGrounded);
+                GameManager.Player.Animation?.PassBoolParameter("IsGrounded", m_isGrounded);
 
                 // move player
                 rb.velocity = m_walkVelocity + m_verticalVelocity + m_platformVelocity + m_externalVelocity;
