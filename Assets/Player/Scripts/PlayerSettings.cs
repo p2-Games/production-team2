@@ -29,10 +29,13 @@ namespace Millivolt
 
         private Vector2[] m_sensitivityVectors = new Vector2[2];
 
-        private float m_musicVolume;
+        [Space]
+
+        [Header("Audio")]
+        [SerializeField] private float m_musicVolume;
         public float musicVolume => m_musicVolume;
 
-        private float m_sfxVolume;
+        [SerializeField] private float m_sfxVolume;
         public float sfxVolume => m_sfxVolume;
 
         private void Awake()

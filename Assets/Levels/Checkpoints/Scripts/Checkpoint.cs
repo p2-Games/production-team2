@@ -64,7 +64,7 @@ namespace Millivolt
 
 			public void Interact()
 			{
-				m_teleporter?.SetDisplayActive(true);
+				m_teleporter?.SetDisplayActive();
 			}
 
 			public void EnableCheckpoint()

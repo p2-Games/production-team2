@@ -103,12 +103,18 @@ namespace Millivolt
                 //trigger.delegates.Add(entry);
             }
 
-            public void SetDisplayActive(bool value)
+            public void SetDisplayActive(bool value = true)
             {
                 //if (m_buttonTransform.gameObject.activeSelf != value)
                 //m_buttonTransform.gameObject.SetActive(value);
 
-                if (value)
+                if (!value)
+                {
+                    m_containerUI.DeactivateMenu();
+                    return;
+                }
+
+                if (!m_containerUI.isActive)
                 {
                     m_containerUI.firstSelected = m_buttonTransform.transform.GetChild(0).gameObject;
                     m_containerUI.ActivateMenu();
