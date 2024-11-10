@@ -17,9 +17,26 @@ namespace Millivolt
 	    {
             public void Pause(InputAction.CallbackContext context)
             {
-                if (context.started && UIMenuManager.Instance.activeMenus.Count < 2)
+                if (context.started)
                 {
-                    GameManager.Instance.PauseGame();
+                    // If no menus are open then Pause the game
+                    if (UIMenuManager.Instance.activeMenus.Count == 0)
+                    {
+                        GameManager.Instance.PauseGame();
+                        return;
+                    }
+
+
+                    // Check if the pause menu is the current active menu, if so Unpause the game
+                    if (UIMenuManager.Instance.activeMenus[0].GetComponent<PauseMenu>() != null)
+                    {
+                        GameManager.Instance.PauseGame();
+                    }
+                    // Otherwise deactivate the currently open menu
+                    else 
+                    {
+                        UIMenuManager.Instance.activeMenus[0].DeactivateMenu();
+                    }
                 }
             }
         }

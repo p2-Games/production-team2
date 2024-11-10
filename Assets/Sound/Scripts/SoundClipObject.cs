@@ -16,7 +16,7 @@ namespace Millivolt
 
         //Emily's work
         private float m_originalVolume;
-        private int m_typeVal;
+        private SoundType m_type;
 
         public void Init(SFXController.SoundClip soundClip, SoundType type)
         {
@@ -34,7 +34,7 @@ namespace Millivolt
             m_source.loop = soundClip.loop;
 
             m_originalVolume = m_source.volume;
-            m_typeVal = (int)type;
+            m_type = type;
 
             // global volume
             switch (type)
@@ -57,11 +57,13 @@ namespace Millivolt
 
         public void Update()
         {
+            // Check the what the volume of the sound should be
+            VolumeCheck();
+
             // don't destroy the object if it should loop
             if (m_source.loop)
                 return;
 
-            VolumeCheck();
                 
             // destroy SoundClipObject when clip finishes playing
             if (m_isPlaying && !m_source.isPlaying)
@@ -70,15 +72,15 @@ namespace Millivolt
 
         private void VolumeCheck()
         {
-            switch(m_typeVal)
+            switch(m_type)
             {
-                case 0:
+                case SoundType.Effect:
                     m_source.volume = m_originalVolume * PlayerSettings.Instance.sfxVolume;
                     break;
-                case 1:
+                case SoundType.Music:
                     m_source.volume = m_originalVolume * PlayerSettings.Instance.musicVolume;
                     break;
-                case 2:
+                case SoundType.Voice:
                     break;
             }
         }

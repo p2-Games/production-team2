@@ -18,7 +18,7 @@ namespace Millivolt
             Gravity,
             Dead,
             Menu,
-            HeldObject,
+            Pickup,
             COUNT
         }
 
@@ -49,6 +49,10 @@ namespace Millivolt
                 }
             }
 
+            public bool GetCanMove(CanMoveType type)
+            {
+                return !m_canMoves[(int)type];
+            }
             public void SetCanMove(bool value, CanMoveType type)
             {
                 m_canMoves[(int)type] = !value;

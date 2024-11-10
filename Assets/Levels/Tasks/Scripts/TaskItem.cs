@@ -24,11 +24,6 @@ namespace Millivolt
 		[Serializable]
 		public class TaskItem : MonoBehaviour
 		{
-			//public List<TaskItem> subtasks = new List<TaskItem>();
-
-			private int m_completedSubtasks;
-			private int m_numberOfSubtasks;
-
 			public string Name => m_name;
 			public bool completed => m_toggle.isOn;
 
@@ -111,9 +106,6 @@ namespace Millivolt
                     m_toggle.GetComponentInChildren<TextMeshProUGUI>().text += (" (" + m_currentPoints + "/" + m_points + ")");
 				InitiliseSubtask();
 				UpdateTaskSpace();
-                m_completedSubtasks = 0;
-				if (m_subtasks)
-					m_numberOfSubtasks = m_subtasks.childCount;
 			}
 
 

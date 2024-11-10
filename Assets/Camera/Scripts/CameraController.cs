@@ -21,9 +21,9 @@ namespace Millivolt
             private CinemachineFramingTransposer m_camBody;
             private CinemachinePOV m_camPOV;
 
-            [Header("Sensitivity")]
-            public float horizontalSensitivity;
-            public float verticalSensitivity;
+            //[Header("Sensitivity")]
+            //public float horizontalSensitivity;
+            //public float verticalSensitivity;
 
             [Header("High Look Transition")]
             [SerializeField] private float m_axisBoundary = -20f;
@@ -44,9 +44,9 @@ namespace Millivolt
                 m_camBody = m_3rdPersonCam.GetCinemachineComponent<CinemachineFramingTransposer>();
                 m_camPOV = m_3rdPersonCam.GetCinemachineComponent<CinemachinePOV>();
 
-                // init sensitivity
-                horizontalSensitivity = m_camPOV.m_HorizontalAxis.m_MaxSpeed;
-                verticalSensitivity = m_camPOV.m_VerticalAxis.m_MaxSpeed;
+                // init sensitivity                
+                m_camPOV.m_HorizontalAxis.m_MaxSpeed = PlayerSettings.Instance.horizontalSensitivity;
+                m_camPOV.m_VerticalAxis.m_MaxSpeed = PlayerSettings.Instance.verticalSensitivity;
             }
 
             public void Move(InputAction.CallbackContext context)
@@ -91,18 +91,15 @@ namespace Millivolt
                 }
                 else
                 {
-                    m_camPOV.m_HorizontalAxis.m_MaxSpeed = horizontalSensitivity;
-                    m_camPOV.m_VerticalAxis.m_MaxSpeed = verticalSensitivity;
+                    m_camPOV.m_HorizontalAxis.m_MaxSpeed = PlayerSettings.Instance.horizontalSensitivity;
+                    m_camPOV.m_VerticalAxis.m_MaxSpeed = PlayerSettings.Instance.verticalSensitivity;
                 }
             }
 
             public void UpdateSensitivity(float h, float v)
             {
-                horizontalSensitivity = h;
-                verticalSensitivity = v;
-
-                m_camPOV.m_HorizontalAxis.m_MaxSpeed = horizontalSensitivity;
-                m_camPOV.m_VerticalAxis.m_MaxSpeed = verticalSensitivity;
+                m_camPOV.m_HorizontalAxis.m_MaxSpeed = h;
+                m_camPOV.m_VerticalAxis.m_MaxSpeed = v;
             }
 
             private void ChangeFOV(float min, float max)
