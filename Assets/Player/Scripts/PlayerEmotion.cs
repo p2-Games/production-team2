@@ -189,5 +189,10 @@ namespace Millivolt.Player
                 yield return new WaitForEndOfFrame();
             }
         }
+
+        private void OnEnable()
+        {
+            ChangeEmotion(EmotionMode.Default);
+        }
     }
 }
