@@ -5,6 +5,7 @@
 ///
 ///</summary>
 
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,17 +17,30 @@ namespace Millivolt
 		{
 			[SerializeField] GameObject[] m_optionSubMenus;
 
-			[SerializeField] Slider m_masterVolSlider;
-			[SerializeField] Slider m_musicVolSlider;
-			[SerializeField] Slider m_sfxVolSlider;
-			
-			[SerializeField] Slider m_sensitivitySlider;
+			[Header("Sliders")]
+			[SerializeField] private Slider m_masterVolSlider;
+			[SerializeField] private Slider m_musicVolSlider;
+			[SerializeField] private Slider m_sfxVolSlider;
 
-			/// <summary>
-			/// Handles switching between the audio and camera settings
-			/// </summary>
-			/// <param name="value"></param>
-			public void SwitchMenu(int value)
+			[SerializeField] private Slider m_verticalSensitivitySlider;
+			[SerializeField] private Slider m_horizontalSensitivitySlider;
+
+			[Header("Text Displays")]
+			[SerializeField] private TextMeshProUGUI m_musicValueDisplay;
+			[SerializeField] private TextMeshProUGUI m_sfxValueDisplay;
+
+			[SerializeField] private TextMeshProUGUI m_verticalSensitivityValueDisplay;
+			[SerializeField] private TextMeshProUGUI m_horizontalSensitivityValueDisplay;
+
+            [Header("Sensitivity")]
+            public float horizontalSensitivity;
+            public float verticalSensitivity;
+
+            /// <summary>
+            /// Handles switching between the audio and camera settings
+            /// </summary>
+            /// <param name="value"></param>
+            public void SwitchMenu(int value)
 			{
 				for (int i = 0; i < m_optionSubMenus.Length; i++)
 				{
@@ -43,8 +57,22 @@ namespace Millivolt
 			public void OpenOptions()
 			{
 				GetComponent<UIMenu>().ActivateMenu();
-                m_musicVolSlider.value = PlayerSettings.Instance.musicVolume;
-                m_sfxVolSlider.value = PlayerSettings.Instance.sfxVolume;
+                m_musicVolSlider.value = PlayerSettings.Instance.musicVolume * 100;
+                m_sfxVolSlider.value = PlayerSettings.Instance.sfxVolume * 100;
+
+				float verticalMinMaxDifference = PlayerSettings.Instance.minMaxVerticalSpeed.y - PlayerSettings.Instance.minMaxVerticalSpeed.x;
+				float horizontalMinMaxDifference = PlayerSettings.Instance.minMaxHorizontalSpeed.y - PlayerSettings.Instance.minMaxHorizontalSpeed.x;
+
+				float vertVal = PlayerSettings.Instance.verticalSensitivity - PlayerSettings.Instance.minMaxVerticalSpeed.x;
+				vertVal /= verticalMinMaxDifference; 
+
+				m_verticalSensitivitySlider.value = vertVal * 100f;
+
+
+				float horiVal = PlayerSettings.Instance.horizontalSensitivity - PlayerSettings.Instance.minMaxHorizontalSpeed.x;
+				horiVal /= horizontalMinMaxDifference;
+
+				m_horizontalSensitivitySlider.value = horiVal * 100f;
             }
 
 			/// <summary>
@@ -61,8 +89,9 @@ namespace Millivolt
 				m_musicVolSlider.value = PlayerSettings.Instance.musicVolume;
 				m_sfxVolSlider.value = PlayerSettings.Instance.sfxVolume;
 
-				// Add listeners to all the sliders and make changes call their correct settings
-				m_sensitivitySlider.onValueChanged.AddListener(delegate { AdjustSensitivity(m_sensitivitySlider.value); });
+                // Add listeners to all the sliders and make changes call their correct settings
+                m_verticalSensitivitySlider.onValueChanged.AddListener(delegate { AdjustVeritcalSensitivity(m_verticalSensitivitySlider.value); });
+                m_horizontalSensitivitySlider.onValueChanged.AddListener(delegate { AdjustHorizontalSensitivity(m_horizontalSensitivitySlider.value); });
 				m_musicVolSlider.onValueChanged.AddListener(delegate { AdjustMusicVolume(m_musicVolSlider.value); });
 				m_sfxVolSlider.onValueChanged.AddListener(delegate { AdjustSFXVolume(m_sfxVolSlider.value); });
 
@@ -70,21 +99,36 @@ namespace Millivolt
             }
 
 			/// <summary>
-			/// Sets the value of the camera speed through PlayerSettings
+			/// Sets the value of the vertical camera speed through PlayerSettings
 			/// </summary>
 			/// <param name="value"></param>
-			public void AdjustSensitivity(float value)
+			public void AdjustVeritcalSensitivity(float value)
 			{
-				PlayerSettings.Instance.AdjustCameraSensitivity(value);
+				m_verticalSensitivityValueDisplay.text = value.ToString();
+				value /= 100f;
+				PlayerSettings.Instance.AdjustVerticalCameraSensitivity(value);
 			}
 
-			/// <summary>
-			/// Adjusts the output volume of music labeled sounds
-			/// </summary>
-			/// <param name="value"></param>
-			public void AdjustMusicVolume(float value)
+            /// <summary>
+            /// Sets the value of the horizontal camera speed through PlayerSettings
+            /// </summary>
+            /// <param name="value"></param>
+            public void AdjustHorizontalSensitivity(float value)
 			{
-				PlayerSettings.Instance.AdjustMusicVolume(value);
+                m_horizontalSensitivityValueDisplay.text = value.ToString();
+                value /= 100f;
+                PlayerSettings.Instance.AdjustHorizontalCameraSensitivity(value);
+            }
+
+            /// <summary>
+            /// Adjusts the output volume of music labeled sounds
+            /// </summary>
+            /// <param name="value"></param>
+            public void AdjustMusicVolume(float value)
+			{
+				m_musicValueDisplay.text = value + "%";
+                value /= 100f;
+                PlayerSettings.Instance.AdjustMusicVolume(value);
 			}
 
             /// <summary>
@@ -93,7 +137,9 @@ namespace Millivolt
             /// <param name="value"></param>
             public void AdjustSFXVolume(float value)
             {
-				PlayerSettings.Instance.AdjustSFXVolume(value);
+                m_sfxValueDisplay.text = value + "%";
+                value /= 100f;
+                PlayerSettings.Instance.AdjustSFXVolume(value);
             }
         }
 	}

@@ -28,7 +28,9 @@ namespace Millivolt
 	{			
         public static GameManager Instance { get; private set; }
 
-		public static PlayerComponents Player;		
+		public static PlayerComponents Player;
+
+		[SerializeField] private GameObject m_loadingScreen;
 
         private void Awake()
         {
@@ -107,6 +109,7 @@ namespace Millivolt
 
         public void LevelSetup()
 		{
+			m_loadingScreen.SetActive(false);
 			// destroy original Player references component
 			if (Player)
 				Destroy(Player);
@@ -120,11 +123,13 @@ namespace Millivolt
 			m_currentSceneName = levelName;
 			UIMenuManager.Instance.ClearActiveMenus();
             isLoading = true;
+			m_loadingScreen.SetActive(true);
             StartCoroutine(LoadSceneAsync(levelName, LoadSceneMode.Single));
 		}
 
         public void RestartLevel()
 		{
+			m_loadingScreen.SetActive(true);
 			StartCoroutine(ReloadCurrentScene());
         }
 

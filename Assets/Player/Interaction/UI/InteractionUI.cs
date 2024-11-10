@@ -59,6 +59,8 @@ namespace Millivolt
 						}
 						else if (m_target.GetComponent<Checkpoint>())
 						{
+							// Just removed because people were getting confused by the Checkpoint UI
+							return;
 							m_itemNameDisplay.text = "Use Checkpoint";
 						}
 

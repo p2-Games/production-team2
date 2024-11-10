@@ -63,6 +63,16 @@ namespace Millivolt
                 }
             }
 
+            /// <summary>
+            /// Make the player face the specified position in world space.
+            /// </summary>
+            /// <param name="targetPosition"></param>
+            public void SetHeading(Vector3 targetPosition)
+            {
+                Vector3 direction = targetPosition - transform.position;
+                transform.rotation = Quaternion.LookRotation(Vector3.ProjectOnPlane(direction, transform.up).normalized, transform.up);
+            }
+
             public void OnGravityChange()
             {
                 Vector3 gravityDir = Physics.gravity.normalized;
