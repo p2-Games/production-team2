@@ -130,12 +130,14 @@ namespace Millivolt
         public void RestartLevel()
 		{
 			m_loadingScreen.SetActive(true);
-			StartCoroutine(ReloadCurrentScene());
+
+			LoadLevel(m_currentSceneName);
         }
 
 		public void ExitToMenu()
 		{
 			gameState = GameState.MENU;
+			m_currentSceneName = "MenuScene";
 			SceneManager.LoadScene("MenuScene");
 		}
 
@@ -162,28 +164,10 @@ namespace Millivolt
 			UIMenuManager.Instance.ClearActiveMenus();
 			AsyncOperation asyncUnload = SceneManager.UnloadSceneAsync(sceneName, UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
 
-            while (!asyncUnload.isDone)
-                yield return new WaitForFixedUpdate();
+			while (!asyncUnload.isDone)
+				yield return new WaitForFixedUpdate();
 			isLoading = false;
-        }
-
-		private IEnumerator ReloadCurrentScene()
-		{
-            // unload the game scene
-			isLoading = true;
-			StartCoroutine(UnloadSceneAsync(m_currentSceneName));
-			while (isLoading)
-				yield return new WaitForFixedUpdate();
-
-			// reload the game scene
-			isLoading = true;
-            StartCoroutine(LoadSceneAsync(m_currentSceneName, LoadSceneMode.Additive));
-			while (isLoading)
-				yield return new WaitForFixedUpdate();
-
-			// redo level setup
-			LevelSetup();
-        }
+		}
 
 		// gravity methods
         public void ChangeGravity(Vector3 value)

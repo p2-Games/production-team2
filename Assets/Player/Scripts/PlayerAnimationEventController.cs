@@ -21,7 +21,7 @@ namespace Millivolt
 
             public void ToggleMovementForPickup()
             {
-                GameManager.Player.Controller.SetCanMove(!GameManager.Player.Controller.GetCanMove(CanMoveType.Pickup), CanMoveType.Pickup);
+                GameManager.Player.Controller.SetCanMove(CanMoveType.Pickup, !GameManager.Player.Controller.GetCanMove(CanMoveType.Pickup));
             }
 
             public void TriggerHolding()

@@ -2,7 +2,7 @@
 /// Author: Halen
 ///
 /// Handles interactions between the player and objects that can be interacted with in levels.
-/// If an InteractableObject is detected by this script, it interacts with it accordingly.
+/// If an Interactable is detected by this script, it interacts with it accordingly.
 ///
 ///</summary>
 
@@ -213,12 +213,35 @@ namespace Millivolt
                 m_state = InteractionState.Holding;
             }
 
-            public void DropObject(bool openState = true)
+            public void DropObject()
             {
-                // Play drop animation
-                if (openState)
-                    GameManager.Player?.Animation.SetTriggerParameter("Drop");
-                
+                // remove the held pickup                
+                if (m_heldPickup)
+                {
+                    // let the pickup's rigidbody work again
+                    m_heldPickup.rb.useGravity = true;
+
+                    // stop controlling the pickup
+                    m_heldPickup = null;
+
+                    // let the player collide with pickups again
+                    // SHIT but works
+                    Physics.IgnoreLayerCollision(3, 9, false);
+
+                    // in case player is mid pick up, let them move again
+                    // and do animator state machine logic for dropping the object
+                    GameManager.Player.Controller.SetCanMove(CanMoveType.Pickup, true);
+                    GameManager.Player.Animation.SetTriggerParameter("Drop");
+                    GameManager.Player.Animation.PassBoolParameter("IsHolding", false);
+                    m_state = InteractionState.Open;
+                }
+            }
+
+            public void ResetInteraction()
+            {
+                m_state = InteractionState.Closed;
+
+                // reset held pickup
                 if (m_heldPickup)
                 {
                     // let the pickup's rigidbody work again
@@ -229,19 +252,9 @@ namespace Millivolt
                 }
 
                 // let the player collide with pickups again
-                // SHIT
+                // SHIT but works
                 Physics.IgnoreLayerCollision(3, 9, false);
 
-                if (openState)
-                    m_state = InteractionState.Open;
-                else
-                    m_state = InteractionState.Closed;
-            }
-
-            public void ResetInteraction()
-            {
-                m_state = InteractionState.Closed;
-                DropObject(false);
                 m_interactTimer = 0f;
                 SetClosestObject(null);
             }

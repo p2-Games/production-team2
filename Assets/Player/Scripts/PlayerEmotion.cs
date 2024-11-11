@@ -112,7 +112,7 @@ namespace Millivolt.Player
 
         public void ChangeEmotion(EmotionMode newEmotionMode)
         {
-            if (m_currentEmotion != null && m_currentEmotion.type == newEmotionMode)
+            if (m_currentEmotion?.type == newEmotionMode)
                 return;
 
             // stop any blinking
@@ -135,6 +135,16 @@ namespace Millivolt.Player
             StartCoroutine(ChangeMaterialOnDelay(m_currentEmotion.regular, m_blinkDuration));
         }
 
+        public void SetEmotion(EmotionMode newEmotionMode)
+        {
+            StopAllCoroutines();
+
+            Emotion newEmotion = m_emotions[(int)newEmotionMode];
+
+            ChangeMaterial(newEmotion.regular);
+            SetColour(newEmotion.colour);
+        }
+
         /// <summary>
         /// ReInitalises all the materials on Robert. It HAS to be done like this (from my internet research) to properly get all the materials done correctly
         /// </summary>
@@ -153,10 +163,18 @@ namespace Millivolt.Player
 
         private void ChangeColour(Color colour)
         {
-            StartCoroutine(ChangeColorOverTime(m_headMat, m_currentEmotion.colour, colour));
-            StartCoroutine(ChangeColorOverTime(m_torsoMat, m_currentEmotion.colour, colour));
-            StartCoroutine(ChangeColorOverTime(m_armsMat, m_currentEmotion.colour, colour));
-            StartCoroutine(ChangeColorOverTime(m_legsMat, m_currentEmotion.colour, colour));
+            StartCoroutine(ChangeColorOverTime(m_headMat, m_headMat.GetColor("_EmissionColor"), colour));
+            StartCoroutine(ChangeColorOverTime(m_torsoMat, m_torsoMat.GetColor("_EmissionColor"), colour));
+            StartCoroutine(ChangeColorOverTime(m_armsMat, m_armsMat.GetColor("_EmissionColor"), colour));
+            StartCoroutine(ChangeColorOverTime(m_legsMat, m_legsMat.GetColor("_EmissionColor"), colour));
+        }
+
+        private void SetColour(Color colour)
+        {
+            m_headMat.SetColor("_EmissionColor", colour);
+            m_torsoMat.SetColor("_EmissionColor", colour);
+            m_armsMat.SetColor("_EmissionColor", colour);
+            m_legsMat.SetColor("_EmissionColor", colour);
         }
 
         private IEnumerator ChangeMaterialOnDelay(Material material, float delay)
@@ -192,7 +210,12 @@ namespace Millivolt.Player
 
         private void OnEnable()
         {
-            ChangeEmotion(EmotionMode.Default);
+            SetEmotion(EmotionMode.Default);
+        }
+
+        private void OnDisable()
+        {
+            SetEmotion(EmotionMode.Default);
         }
     }
 }

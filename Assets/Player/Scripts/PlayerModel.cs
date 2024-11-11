@@ -81,7 +81,7 @@ namespace Millivolt
 
             private IEnumerator RotateWithGravity(Vector3 targetUp)
             {
-                GameManager.Player.Controller.SetCanMove(false, CanMoveType.Gravity);
+                GameManager.Player.Controller.SetCanMove(CanMoveType.Gravity, false);
 
                 //transform.rotation = transform.localRotation;
                 Vector3 startUp = transform.up;
@@ -100,7 +100,7 @@ namespace Millivolt
                     yield return new WaitForEndOfFrame();
                 }
 
-                GameManager.Player.Controller.SetCanMove(true, CanMoveType.Gravity);
+                GameManager.Player.Controller.SetCanMove(CanMoveType.Gravity, true);
             }
 
             public void ResetRotation()

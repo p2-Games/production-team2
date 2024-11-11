@@ -9,6 +9,8 @@ using UnityEngine;
 
 namespace Millivolt
 {
+	using Player;
+
 	namespace LevelObjects
 	{
 		using EventObjects;
@@ -42,8 +44,12 @@ namespace Millivolt
                 }
 			}
 
-			public void Interact(Player.PlayerInteraction player)
+			public void Interact(PlayerInteraction player)
 			{
+				// ensure player can interact
+				if (!player.canInteract)
+					return;
+				
 				// ensure object is ready to be interacted with.
 				if (m_interactTimer < m_interactDelay)
 					return;

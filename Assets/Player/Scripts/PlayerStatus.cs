@@ -88,7 +88,7 @@ namespace Millivolt
             public void Die()
             {
                 // stop the player from moving
-                GameManager.Player.Controller.SetCanMove(false, CanMoveType.Dead);
+                GameManager.Player.Controller.SetCanMove(CanMoveType.Dead, false);
 
                 // stop the player from respawning if they are already
                 PlayerRespawn.Instance.StopAllCoroutines();
