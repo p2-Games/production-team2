@@ -44,9 +44,6 @@ namespace Millivolt.Player
 
         public void StartRespawn(Vector3 spawnPosition)
         {
-            // if already in progress, stop
-            StopAllCoroutines();
-
             // destroy the particle
             if (m_respawnParticle)
                 Destroy(m_respawnParticle);
@@ -89,8 +86,8 @@ namespace Millivolt.Player
         private IEnumerator GiveControlBack()
         {
             yield return new WaitForSeconds(m_giveControlBackDelay);
-            GameManager.PlayerController.SetCanMove(true, CanMoveType.Dead);
-            GameManager.PlayerInteraction.SetInteractionState(true);
+            GameManager.Player.Controller.SetCanMove(true, CanMoveType.Dead);
+            GameManager.Player.Interaction.SetInteractionState(true);
         }
 
         private void OnValidate()

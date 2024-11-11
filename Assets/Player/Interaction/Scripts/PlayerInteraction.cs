@@ -67,6 +67,7 @@ namespace Millivolt
             private void Start()
             {
                 InitialiseTrigger();
+                ResetInteraction();
             }
 
             private void InitialiseTrigger()
@@ -190,6 +191,9 @@ namespace Millivolt
             // picking up and dropping objects
             public void GrabObject(PickupObject obj)
             {
+                // Play grab animation
+                GameManager.Player?.Animation.SetTriggerParameter("Grab");
+                
                 // set the held object to the pickup
                 m_heldPickup = obj;
 
@@ -209,8 +213,12 @@ namespace Millivolt
                 m_state = InteractionState.Holding;
             }
 
-            public void DropObject(bool allowInteraction = true)
+            public void DropObject(bool openState = true)
             {
+                // Play drop animation
+                if (openState)
+                    GameManager.Player?.Animation.SetTriggerParameter("Drop");
+                
                 if (m_heldPickup)
                 {
                     // let the pickup's rigidbody work again
@@ -224,8 +232,10 @@ namespace Millivolt
                 // SHIT
                 Physics.IgnoreLayerCollision(3, 9, false);
 
-                if (allowInteraction)
+                if (openState)
                     m_state = InteractionState.Open;
+                else
+                    m_state = InteractionState.Closed;
             }
 
             public void ResetInteraction()

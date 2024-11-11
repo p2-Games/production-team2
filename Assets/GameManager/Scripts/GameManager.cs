@@ -15,7 +15,6 @@ namespace Millivolt
     using UI;
 	using Level;
     using UnityEditor;
-    using Millivolt.Cameras;
 
     public enum GameState
 	{
@@ -29,11 +28,9 @@ namespace Millivolt
 	{			
         public static GameManager Instance { get; private set; }
 
-		// Player object static references
-		public static PlayerController PlayerController { get; private set; }
-		public static PlayerInteraction PlayerInteraction { get; private set; }
-        public static PlayerStatus PlayerStatus { get; private set; }
-		public static PlayerModel PlayerModel { get; private set; }
+		public static PlayerComponents Player;
+
+		[SerializeField] private GameObject m_loadingScreen;
 
         private void Awake()
         {
@@ -108,22 +105,17 @@ namespace Millivolt
 
         // level loading
         private string m_currentSceneName;
-		public bool isLoading = false;
+		[HideInInspector] public bool isLoading = false;
 
         public void LevelSetup()
 		{
-			// get player references
-			Transform player = FindObjectOfType<PlayerController>(true).transform;
-			player.gameObject.SetActive(true);
-
-			PlayerController = player.GetComponent<PlayerController>();
-			PlayerInteraction = player.GetComponentInChildren<PlayerInteraction>();
-			PlayerStatus = player.GetComponentInChildren<PlayerStatus>();
-			PlayerModel = player.GetComponentInChildren<PlayerModel>();
-
-            LevelManager.Instance.LevelSetup();
-
+			m_loadingScreen.SetActive(false);
+			// destroy original Player references component
+			if (Player)
+				Destroy(Player);
+			Player = gameObject.AddComponent<PlayerComponents>();
 			SceneManager.SetActiveScene(SceneManager.GetSceneByName(m_currentSceneName));
+            LevelManager.Instance.LevelSetup();
         }
 
         public void LoadLevel(string levelName)
@@ -131,11 +123,13 @@ namespace Millivolt
 			m_currentSceneName = levelName;
 			UIMenuManager.Instance.ClearActiveMenus();
             isLoading = true;
+			m_loadingScreen.SetActive(true);
             StartCoroutine(LoadSceneAsync(levelName, LoadSceneMode.Single));
 		}
 
         public void RestartLevel()
 		{
+			m_loadingScreen.SetActive(true);
 			StartCoroutine(ReloadCurrentScene());
         }
 
@@ -195,7 +189,7 @@ namespace Millivolt
         public void ChangeGravity(Vector3 value)
         {
             Physics.gravity = value;
-            PlayerModel.OnGravityChange();
+            Player.Model.OnGravityChange();
         }
         public void ChangeGravity(Vector3 eulerDirection, float magnitude)
         {
@@ -206,12 +200,12 @@ namespace Millivolt
 		public void SetGravity(Vector3 value)
 		{
 			Physics.gravity = value;
-			PlayerModel.transform.up = -Physics.gravity.normalized;
+			Player.Model.transform.up = -Physics.gravity.normalized;
 		}
 		public void SetGravity(Vector3 eulerDirection, float magnitude)
 		{
 			Physics.gravity = Quaternion.Euler(eulerDirection) * Vector3.up * magnitude;
-			PlayerModel.transform.up = -Physics.gravity.normalized;
+			Player.Model.transform.up = -Physics.gravity.normalized;
 
         }
         [ContextMenu("Reset Gravity")]

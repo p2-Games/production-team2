@@ -45,9 +45,9 @@ namespace Millivolt
             private void Update()
             {
                 // rotate player to face correct direction
-                if (GameManager.PlayerController && GameManager.PlayerController.canMove)
+                if (GameManager.Player && GameManager.Player.Controller.canMove)
                 {
-                    Vector3 movementDirection = GameManager.PlayerController.movementDirection;
+                    Vector3 movementDirection = GameManager.Player.Controller.movementDirection;
                     // ensure the movement vector isn't zero
                     if (movementDirection != Vector3.zero)
                     {
@@ -63,6 +63,16 @@ namespace Millivolt
                 }
             }
 
+            /// <summary>
+            /// Make the player face the specified position in world space.
+            /// </summary>
+            /// <param name="targetPosition"></param>
+            public void SetHeading(Vector3 targetPosition)
+            {
+                Vector3 direction = targetPosition - transform.position;
+                transform.rotation = Quaternion.LookRotation(Vector3.ProjectOnPlane(direction, transform.up).normalized, transform.up);
+            }
+
             public void OnGravityChange()
             {
                 Vector3 gravityDir = Physics.gravity.normalized;
@@ -71,7 +81,7 @@ namespace Millivolt
 
             private IEnumerator RotateWithGravity(Vector3 targetUp)
             {
-                GameManager.PlayerController.SetCanMove(false, CanMoveType.Gravity);
+                GameManager.Player.Controller.SetCanMove(false, CanMoveType.Gravity);
 
                 //transform.rotation = transform.localRotation;
                 Vector3 startUp = transform.up;
@@ -90,7 +100,7 @@ namespace Millivolt
                     yield return new WaitForEndOfFrame();
                 }
 
-                GameManager.PlayerController.SetCanMove(true, CanMoveType.Gravity);
+                GameManager.Player.Controller.SetCanMove(true, CanMoveType.Gravity);
             }
 
             public void ResetRotation()

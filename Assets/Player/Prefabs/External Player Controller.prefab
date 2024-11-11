@@ -101,10 +101,10 @@ MonoBehaviour:
   m_topSpeed: 3.5
   m_acceleration: 20
   m_decceleration: 15
-  m_slopeLimit: 80
+  m_slopeLimit: 70
   m_jumpSpeed: 6
-  m_groundCheckDistance: 0.01
-  m_groundCheckRadius: 0.2
+  m_groundCheckDistance: 0.037
+  m_groundCheckRadius: 0.16
   m_headBonkSpeed: 3
   m_drawGizmos: 1
 --- !u!114 &8512867115368863021
@@ -119,7 +119,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4163509ce45c6b44e8ffe5c74000a33d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_animator: {fileID: 8887132741317739926}
+  m_animator: {fileID: 6809633789572600137}
 --- !u!114 &6821388206902358164
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -417,10 +417,20 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6821388206902358153}
     m_Modifications:
+    - target: {fileID: -7188941382758535049, guid: fa458ade2cca1e944ba049a9ad2c45c3,
+        type: 3}
+      propertyPath: m_head
+      value: 
+      objectReference: {fileID: 3419505730268411605}
     - target: {fileID: 1686589481259987730, guid: fa458ade2cca1e944ba049a9ad2c45c3,
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1770264457107024098, guid: fa458ade2cca1e944ba049a9ad2c45c3,
+        type: 3}
+      propertyPath: m_Radius
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 1770264457107024098, guid: fa458ade2cca1e944ba049a9ad2c45c3,
         type: 3}
@@ -539,15 +549,21 @@ PrefabInstance:
       objectReference: {fileID: 9100000, guid: a92df69118c31f243b4b057e98fdf943, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fa458ade2cca1e944ba049a9ad2c45c3, type: 3}
---- !u!4 &6821388206192318489 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4950199202765903827, guid: fa458ade2cca1e944ba049a9ad2c45c3,
+--- !u!1 &3419505730268411605 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3849546082223061279, guid: fa458ade2cca1e944ba049a9ad2c45c3,
     type: 3}
   m_PrefabInstance: {fileID: 1880485512224526282}
   m_PrefabAsset: {fileID: 0}
---- !u!95 &8887132741317739926 stripped
+--- !u!95 &6809633789572600137 stripped
 Animator:
-  m_CorrespondingSourceObject: {fileID: 7011440206974126684, guid: fa458ade2cca1e944ba049a9ad2c45c3,
+  m_CorrespondingSourceObject: {fileID: 4942839432107630211, guid: fa458ade2cca1e944ba049a9ad2c45c3,
+    type: 3}
+  m_PrefabInstance: {fileID: 1880485512224526282}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &6821388206192318489 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4950199202765903827, guid: fa458ade2cca1e944ba049a9ad2c45c3,
     type: 3}
   m_PrefabInstance: {fileID: 1880485512224526282}
   m_PrefabAsset: {fileID: 0}
