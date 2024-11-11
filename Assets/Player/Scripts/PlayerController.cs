@@ -19,7 +19,7 @@ namespace Millivolt
             private void Start()
             {
                 m_canMove = new PlayerCanMove();
-                SetCanMove(false, CanMoveType.Dead);
+                SetCanMove(CanMoveType.Dead, false);
             }
 
             private void FixedUpdate()
@@ -55,11 +55,11 @@ namespace Millivolt
             }
 
             /// <summary>
-            /// Set if the player can move for a variety of reasons.
+            /// Set if the player can move for the supplied reason
             /// </summary>
-            /// <param name="value">If the player can move or not.</param>
             /// <param name="type">The reason they can/can't move.</param>
-            public void SetCanMove(bool value, CanMoveType type)
+            /// <param name="value">If the player can move or not.</param>
+            public void SetCanMove(CanMoveType type, bool value)
             {
                 m_canMove.SetCanMove(value, type);
             }
@@ -311,7 +311,7 @@ namespace Millivolt
                             if (m_externalVelocity != Vector3.zero)
                             {
                                 m_externalVelocity = Vector3.zero;
-                                SetCanMove(true, CanMoveType.LevelObject);
+                                SetCanMove(CanMoveType.LevelObject, true);
                             }
 
                             // reset their air time

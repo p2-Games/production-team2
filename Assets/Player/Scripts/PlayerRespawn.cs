@@ -86,7 +86,7 @@ namespace Millivolt.Player
         private IEnumerator GiveControlBack()
         {
             yield return new WaitForSeconds(m_giveControlBackDelay);
-            GameManager.Player.Controller.SetCanMove(true, CanMoveType.Dead);
+            GameManager.Player.Controller.SetCanMove(CanMoveType.Dead, true);
             GameManager.Player.Interaction.SetInteractionState(true);
         }
 

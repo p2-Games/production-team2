@@ -215,9 +215,7 @@ namespace Millivolt
 
             public void DropObject()
             {
-                // Play drop animation
-                GameManager.Player?.Animation.SetTriggerParameter("Drop");
-                
+                // remove the held pickup                
                 if (m_heldPickup)
                 {
                     // let the pickup's rigidbody work again
@@ -225,13 +223,18 @@ namespace Millivolt
 
                     // stop controlling the pickup
                     m_heldPickup = null;
+
+                    // let the player collide with pickups again
+                    // SHIT but works
+                    Physics.IgnoreLayerCollision(3, 9, false);
+
+                    // in case player is mid pick up, let them move again
+                    // and do animator state machine logic for dropping the object
+                    GameManager.Player.Controller.SetCanMove(CanMoveType.Pickup, true);
+                    GameManager.Player.Animation.SetTriggerParameter("Drop");
+                    GameManager.Player.Animation.PassBoolParameter("IsHolding", false);
+                    m_state = InteractionState.Open;
                 }
-
-                // let the player collide with pickups again
-                // SHIT
-                Physics.IgnoreLayerCollision(3, 9, false);
-
-                m_state = InteractionState.Open;
             }
 
             public void ResetInteraction()
@@ -249,7 +252,7 @@ namespace Millivolt
                 }
 
                 // let the player collide with pickups again
-                // SHIT
+                // SHIT but works
                 Physics.IgnoreLayerCollision(3, 9, false);
 
                 m_interactTimer = 0f;
