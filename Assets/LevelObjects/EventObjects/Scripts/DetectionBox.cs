@@ -17,7 +17,7 @@ namespace Millivolt
             {
                 private int m_collidingObjects;
 
-                private void Start()
+                private void OnEnable()
                 {
                     m_collidingObjects = 0;
                 }
