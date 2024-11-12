@@ -56,9 +56,6 @@ namespace Millivolt
 
             public void Update()
             {
-                //Set sensitivity to 0 if the game is paused
-                PauseCheck();
-
                 // calc target position of focus point
                 float targetScreenX = 0.5f - m_horizontalMoveDelta * m_screenXRange;
 
@@ -82,18 +79,10 @@ namespace Millivolt
                 }
             }
 
-            private void PauseCheck()
+            public void ScaleWithTimeScale()
             {
-                if (GameManager.Instance.gameState == GameState.PAUSE)
-                {
-                    m_camPOV.m_HorizontalAxis.m_MaxSpeed = 0;
-                    m_camPOV.m_VerticalAxis.m_MaxSpeed = 0;
-                }
-                else
-                {
-                    m_camPOV.m_HorizontalAxis.m_MaxSpeed = PlayerSettings.Instance.horizontalSensitivity;
-                    m_camPOV.m_VerticalAxis.m_MaxSpeed = PlayerSettings.Instance.verticalSensitivity;
-                }
+                m_camPOV.m_HorizontalAxis.m_MaxSpeed = PlayerSettings.Instance.horizontalSensitivity * Time.timeScale;
+                m_camPOV.m_VerticalAxis.m_MaxSpeed = PlayerSettings.Instance.verticalSensitivity * Time.timeScale;
             }
 
             public void UpdateSensitivity(float h, float v)

@@ -15,6 +15,7 @@ namespace Millivolt
     using UI;
 	using Level;
     using UnityEditor;
+    using Millivolt.Cameras;
 
     public enum GameState
 	{
@@ -29,6 +30,8 @@ namespace Millivolt
         public static GameManager Instance { get; private set; }
 
 		public static PlayerComponents Player;
+
+		private CameraController m_cameraController;
 
 		[SerializeField] private GameObject m_loadingScreen;
 
@@ -73,17 +76,14 @@ namespace Millivolt
 			{
                 switch (value)
                 {
-                    case GameState.MENU:
-						Time.timeScale = 1;
-                        break;
+                    case GameState.MENU:						
+					case GameState.PLAYING:
+						SetTimeScale(1);
+						break;
                     case GameState.PAUSE:
-                        Time.timeScale = 0;
-                        break;
-                    case GameState.PLAYING:
-                        Time.timeScale = 1;
-                        break;
                     case GameState.FINISH:
-                        break;
+						SetTimeScale(0);
+						break;
                 }
 				m_gameState = value;
             }
@@ -100,8 +100,10 @@ namespace Millivolt
 			{
 				gameState = GameState.PLAYING;
 				pauseMenu.DeactivateMenu();
-			}
-		}
+            }
+
+            m_cameraController.ScaleWithTimeScale();
+        }
 
         // level loading
         private string m_currentSceneName;
@@ -114,6 +116,9 @@ namespace Millivolt
 			if (Player)
 				Destroy(Player);
 			Player = gameObject.AddComponent<PlayerComponents>();
+
+			m_cameraController = FindObjectOfType<CameraController>();
+
 			SceneManager.SetActiveScene(SceneManager.GetSceneByName(m_currentSceneName));
             LevelManager.Instance.LevelSetup();
         }
@@ -137,8 +142,7 @@ namespace Millivolt
 		public void ExitToMenu()
 		{
 			gameState = GameState.MENU;
-			m_currentSceneName = "MenuScene";
-			SceneManager.LoadScene("MenuScene");
+			LoadLevel("MenuScene");
 		}
 
 		public void ExitGame()
@@ -157,6 +161,9 @@ namespace Millivolt
 			while (!asyncLoad.isDone)
 				yield return null;
 			isLoading = false;
+
+			if (SceneManager.GetActiveScene().name == "MenuScene")
+				m_loadingScreen.SetActive(false);
 		}
 
 		private IEnumerator UnloadSceneAsync(string sceneName)
@@ -180,6 +187,16 @@ namespace Millivolt
             ChangeGravity(Quaternion.Euler(eulerDirection) * Vector3.up * magnitude);
         }
 
+		public void SetTimeScale(float value)
+		{
+			if (value < 0 || value > 1)
+			{
+				Debug.LogError("Cannot set time scale to a value less than 0 or greater than 1.");
+				return;
+			}
+			Time.timeScale = value;
+			m_cameraController.ScaleWithTimeScale();
+		}
 
 		public void SetGravity(Vector3 value)
 		{

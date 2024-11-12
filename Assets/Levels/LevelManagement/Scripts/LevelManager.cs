@@ -50,6 +50,10 @@ namespace Millivolt
 			[SerializeField] private LevelData m_levelData;
 			public LevelData levelData => m_levelData;
 
+			// Timer Details
+			private float m_levelTimer;
+			public float levelTimer => m_levelTimer;
+
 			/// <summary>
 			/// Will search through the level for any checkpoints and add them to the array
 			/// </summary>
@@ -101,7 +105,12 @@ namespace Millivolt
                 }
 			}
 
-			public Checkpoint GetCheckpoint(int index)
+            private void Update()
+            {
+				m_levelTimer += Time.deltaTime;
+            }
+
+            public Checkpoint GetCheckpoint(int index)
 			{
 				if (index < 0 || index >= m_levelCheckpoints.Count)
 				{
@@ -114,11 +123,12 @@ namespace Millivolt
 
 			public void LevelSetup()
 			{
-                FindAllCheckpoints();
-                InitialiseCheckpoints();
-                SpawnPlayer();
+				FindAllCheckpoints();
+				InitialiseCheckpoints();
+				SpawnPlayer();
+				m_levelTimer = 0;
 				PlayerRespawn.Instance.StartRespawn(activeCheckpoint.transform.position + new Vector3(0, 0.6f, 0));
-            }
+			}
 
 #if UNITY_EDITOR
 			[SerializeField] private bool m_drawGizmos = true;
