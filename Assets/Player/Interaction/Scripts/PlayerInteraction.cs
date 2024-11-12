@@ -45,10 +45,15 @@ namespace Millivolt
             [SerializeField] private Transform m_heldObjectOffset;
             [Tooltip("How long the player has to wait between interacting with objects.")]
             [SerializeField] private float m_interactTime;
+
+            [Tooltip("The layers the held pickup will use while being held.")]
+            [SerializeField] private LayerMask m_heldPickupMask;
+
             [SerializeField] private bool m_drawGizmos = false;
 
             private InteractionState m_state = InteractionState.Closed;
             private PickupObject m_heldPickup;
+
             private float m_interactTimer;
 
             private Interactable m_closestObject;
@@ -100,15 +105,9 @@ namespace Millivolt
                     m_interactTimer += Time.deltaTime;
 
                 // if the player has a held pickup
-                if (m_heldPickup)
+                if (m_heldPickup && m_heldPickup.gameObject.activeSelf)
                 {
-                    // if the pickup exists but is disabled, it has been accepted by a receptacle
-                    // so remove the reference and reset the interaction state
-                    if (!m_heldPickup.gameObject.activeSelf)
-                        DropObject();
-                    // keep held object in front of player
-                    else
-                        m_heldPickup.rb.MovePosition(m_heldObjectOffset.position);
+                    m_heldPickup.transform.position = m_heldObjectOffset.position;
                 }
 
                 // if the current closest object gets accepted by a receptacle or destroyed, update this 
@@ -175,15 +174,15 @@ namespace Millivolt
                     // if the object in the trigger is already the closest object, stop
                     if (m_closestObject == interactable)
                         return;
+
+                    // if the object is closer than the saved current closest object
+                    if (NewObjectIsCloserThanCurrent(other.transform))
+                    {
+                        SetClosestObject(interactable);
+                    }
                 }
                 else
-                    return;
-
-                // if the object is closer than the saved current closest object
-                if (NewObjectIsCloserThanCurrent(other.transform))
-                {
-                    SetClosestObject(interactable);
-                }
+                    return;               
             }
 
             private void OnTriggerExit(Collider other)
@@ -196,13 +195,17 @@ namespace Millivolt
             public void GrabObject(PickupObject obj)
             {
                 // Play grab animation
-                GameManager.Player?.Animation.SetTriggerParameter("Grab");
+                GameManager.Player.Animation.SetTriggerParameter("Grab");
                 
                 // set the held object to the pickup
                 m_heldPickup = obj;
 
                 // stop the pickup's rigidbody from pulling it around
                 m_heldPickup.rb.useGravity = false;
+
+                // reset pickup velocity
+                m_heldPickup.rb.velocity = Vector3.zero;
+                m_heldPickup.rb.constraints = RigidbodyConstraints.FreezePosition;
 
                 // reset the state of the closest object and interaction display
                 SetClosestObject(null);
@@ -224,6 +227,10 @@ namespace Millivolt
                 {
                     // let the pickup's rigidbody work again
                     m_heldPickup.rb.useGravity = true;
+
+                    // give the dropped object a velocity
+                    m_heldPickup.rb.constraints = RigidbodyConstraints.None;
+                    m_heldPickup.rb.velocity = GameManager.Player.Controller.rb.velocity * 1.2f;
 
                     // stop controlling the pickup
                     m_heldPickup = null;
