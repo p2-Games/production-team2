@@ -1,0 +1,167 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3991892515278678502
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9002112855858317853}
+  - component: {fileID: 9106347243528724065}
+  m_Layer: 0
+  m_Name: SolarFlare
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9002112855858317853
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3991892515278678502}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3.247715, y: 0.9374767, z: -11.958662}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 3309256805470975860}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9106347243528724065
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3991892515278678502}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77596aa18eacfa3409bb4205a89cbdec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_isActive: 0
+  m_name: Solar Flare
+  m_description: 'Start: Safe period where the KillZones are inactive and the flare
+    is not charging.
+
+    Charge: Safe period where the flare is charging up.
+
+    End/Flare:
+    Unsafe period where the KillZones are active and the player is killed if outside
+    the Safe Zones.'
+  m_drawGizmos: 1
+  spawnParent: {fileID: 0}
+  m_chargeEffect: {fileID: 5775108842212200216}
+  m_chargeSubEmitter: {fileID: 3348447750286806570}
+  m_flareBurst: {fileID: 5362257525309170309}
+  m_startDelay: 3
+  m_chargeDuration: 5
+  m_endDelay: 3
+  m_startEvents:
+    m_PersistentCalls:
+      m_Calls: []
+  m_chargeEvents:
+    m_PersistentCalls:
+      m_Calls: []
+  m_endEvents:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!1001 &3938181732974315336
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 9002112855858317853}
+    m_Modifications:
+    - target: {fileID: 1966926125174747196, guid: 4ad9a1f99cdc8ec4b9b2e3fd5fa6fe7c,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1966926125174747196, guid: 4ad9a1f99cdc8ec4b9b2e3fd5fa6fe7c,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1966926125174747196, guid: 4ad9a1f99cdc8ec4b9b2e3fd5fa6fe7c,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1966926125174747196, guid: 4ad9a1f99cdc8ec4b9b2e3fd5fa6fe7c,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1966926125174747196, guid: 4ad9a1f99cdc8ec4b9b2e3fd5fa6fe7c,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1966926125174747196, guid: 4ad9a1f99cdc8ec4b9b2e3fd5fa6fe7c,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1966926125174747196, guid: 4ad9a1f99cdc8ec4b9b2e3fd5fa6fe7c,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1966926125174747196, guid: 4ad9a1f99cdc8ec4b9b2e3fd5fa6fe7c,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1966926125174747196, guid: 4ad9a1f99cdc8ec4b9b2e3fd5fa6fe7c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1966926125174747196, guid: 4ad9a1f99cdc8ec4b9b2e3fd5fa6fe7c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1966926125174747196, guid: 4ad9a1f99cdc8ec4b9b2e3fd5fa6fe7c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6420284972836481093, guid: 4ad9a1f99cdc8ec4b9b2e3fd5fa6fe7c,
+        type: 3}
+      propertyPath: m_Name
+      value: Megatron Effect
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 4ad9a1f99cdc8ec4b9b2e3fd5fa6fe7c, type: 3}
+--- !u!4 &3309256805470975860 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1966926125174747196, guid: 4ad9a1f99cdc8ec4b9b2e3fd5fa6fe7c,
+    type: 3}
+  m_PrefabInstance: {fileID: 3938181732974315336}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &3348447750286806570 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 1792195257141610850, guid: 4ad9a1f99cdc8ec4b9b2e3fd5fa6fe7c,
+    type: 3}
+  m_PrefabInstance: {fileID: 3938181732974315336}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &5362257525309170309 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 8993032754894087629, guid: 4ad9a1f99cdc8ec4b9b2e3fd5fa6fe7c,
+    type: 3}
+  m_PrefabInstance: {fileID: 3938181732974315336}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &5775108842212200216 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 7386595597250938960, guid: 4ad9a1f99cdc8ec4b9b2e3fd5fa6fe7c,
+    type: 3}
+  m_PrefabInstance: {fileID: 3938181732974315336}
+  m_PrefabAsset: {fileID: 0}
