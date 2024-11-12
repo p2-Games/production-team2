@@ -44,9 +44,9 @@ namespace Millivolt.LevelObjects
 
 		[Space(16)]
 		// Events
-		[SerializeField] private UnityEvent m_startEvents;
-		[SerializeField] private UnityEvent m_chargeEvents;
-		[SerializeField] private UnityEvent m_endEvents;
+		[SerializeField] private UnityEvent<float> m_startEvents;
+		[SerializeField] private UnityEvent<float> m_chargeEvents;
+		[SerializeField] private UnityEvent<float> m_endEvents;
 
         private void Start()
         {
@@ -55,10 +55,16 @@ namespace Millivolt.LevelObjects
 
         private IEnumerator StartSolarFlarSequence()
 		{
+			// start
+			m_startEvents.Invoke(m_startDelay);
 			yield return new WaitForSeconds(m_startDelay);
-			m_chargeEvents.Invoke();
+
+			// charge
+			m_chargeEvents.Invoke(m_chargeDuration);
 			yield return new WaitForSeconds(m_chargeDuration);
-			m_endEvents.Invoke();
+
+			// flare/end
+			m_endEvents.Invoke(m_endDelay);
 			yield return new WaitForSeconds(m_endDelay);
 
 			// loop
