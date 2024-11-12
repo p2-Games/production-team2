@@ -27,6 +27,10 @@ namespace Millivolt
 			{
 				get
 				{
+                    // ensure object is ready to be interacted with.
+                    if (m_interactTimer < m_interactDelay)
+                        return false;
+
                     if (TryGetComponent(out EventObject eventObject))
                     {
 						return eventObject.canInteract;
@@ -46,14 +50,6 @@ namespace Millivolt
 
 			public void Interact(PlayerInteraction player)
 			{
-				// ensure player can interact
-				if (!player.canInteract)
-					return;
-				
-				// ensure object is ready to be interacted with.
-				if (m_interactTimer < m_interactDelay)
-					return;
-				
 				EventObject eventObject = GetComponent<EventObject>();
 				if (eventObject)
 				{

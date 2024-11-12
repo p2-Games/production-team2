@@ -73,7 +73,7 @@ namespace Millivolt
             public Vector3 feetPosition { get { return transform.position + collider.center - upDirection * collider.height / 2; } }
 
             private Rigidbody m_rb;
-            private Rigidbody rb
+            public Rigidbody rb
             {
                 get
                 {
