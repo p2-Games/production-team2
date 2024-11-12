@@ -164,6 +164,10 @@ namespace Millivolt
                 // if the object does not have an interactable, stop
                 if (other.gameObject.TryGetComponent(out Interactable interactable))
                 {
+                    // if the behaviour is not enabled, stop
+                    if (!interactable.enabled)
+                        return;
+                    
                     // if the object is not interactable, stop
                     if (!interactable.canInteract)
                         return;
