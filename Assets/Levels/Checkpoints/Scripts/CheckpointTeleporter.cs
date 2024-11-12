@@ -110,7 +110,7 @@ namespace Millivolt
 
                 if (!value)
                 {
-                    m_containerUI.DeactivateMenu();
+                    m_containerUI?.DeactivateMenu();
                     return;
                 }
 
