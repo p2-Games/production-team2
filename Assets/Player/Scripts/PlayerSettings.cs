@@ -70,8 +70,6 @@ namespace Millivolt
             //Add that value to the minimum and then apply to the camera
             float finalValue = m_sensitivityVectors[0].x + sensitivityValue;
 
-            if (Camera.main.TryGetComponent(out CameraController cc))
-                cc.UpdateSensitivity(horizontalSensitivity, finalValue);
             verticalSensitivity = finalValue;
         }
 
@@ -86,8 +84,6 @@ namespace Millivolt
             //Add that value to the minimum and then apply to the camera
             float finalValue = m_sensitivityVectors[1].x + sensitivityValue;
 
-            if (Camera.main.TryGetComponent(out CameraController cc))
-                cc.UpdateSensitivity(finalValue, verticalSensitivity);
             horizontalSensitivity = finalValue;
         }
 

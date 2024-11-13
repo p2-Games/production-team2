@@ -102,7 +102,7 @@ namespace Millivolt
 				pauseMenu.DeactivateMenu();
             }
 
-            m_cameraController.ScaleWithTimeScale();
+            m_cameraController.UpdateVcamSpeed();
         }
 
         // level loading
@@ -195,7 +195,7 @@ namespace Millivolt
 				return;
 			}
 			Time.timeScale = value;
-			m_cameraController.ScaleWithTimeScale();
+			m_cameraController?.UpdateVcamSpeed();
 		}
 
 		public void SetGravity(Vector3 value)

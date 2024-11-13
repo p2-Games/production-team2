@@ -55,7 +55,10 @@ namespace Millivolt
             if (m_spawnedObject)
             {
                 if (m_spawnedObject.TryGetComponent(out PickupObject pickup))
+                {
+                    m_spawnedObject = null;
                     pickup.Destroy();
+                }
                 else
                     Destroy(m_spawnedObject.gameObject);
             }

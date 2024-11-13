@@ -19,9 +19,9 @@ namespace Millivolt.Player
         Shocked,
         Sleepy
     }
-    
+
     public class PlayerEmotion : MonoBehaviour
-	{
+    {
         [System.Serializable]
         public class Emotion
         {
@@ -48,13 +48,13 @@ namespace Millivolt.Player
 
         [Header("Facial Expressions")]
         [SerializeField] private GameObject m_faceObject;
-        
+
         [Tooltip("Input the index for the material that is the face")]
         [SerializeField] private int m_faceMatIndex;
 
         [Tooltip("Drag all the emotion materials in.\n" +
             "Make sure the order of emotions matches the same order shown in the dropdowns.")]
-		[SerializeField] private List<Emotion> m_emotions;
+        [SerializeField] private List<Emotion> m_emotions;
 
         public string currentEmotion => nameof(m_currentEmotion.type);
         private Emotion m_currentEmotion;
@@ -71,7 +71,7 @@ namespace Millivolt.Player
             StopAllCoroutines();
 
             m_currentEmotion = m_emotions[0];
-            ChangeEmotion(0);
+            SetEmotion(0);
         }
 
         public void Update()
@@ -122,7 +122,7 @@ namespace Millivolt.Player
             Emotion newEmotion = m_emotions[(int)newEmotionMode];
 
             // change the material to the base one by default
-            ChangeMaterial(newEmotion.regular);
+            ChangeFaceMaterial(newEmotion.regular);
             ChangeColour(newEmotion.colour);
 
             // set the current emotion
@@ -131,7 +131,7 @@ namespace Millivolt.Player
 
         public void Blink()
         {
-            ChangeMaterial(m_currentEmotion.blink);
+            ChangeFaceMaterial(m_currentEmotion.blink);
             StartCoroutine(ChangeMaterialOnDelay(m_currentEmotion.regular, m_blinkDuration));
         }
 
@@ -141,7 +141,7 @@ namespace Millivolt.Player
 
             Emotion newEmotion = m_emotions[(int)newEmotionMode];
 
-            ChangeMaterial(newEmotion.regular);
+            ChangeFaceMaterial(newEmotion.regular);
             SetColour(newEmotion.colour);
         }
 
@@ -149,7 +149,7 @@ namespace Millivolt.Player
         /// ReInitalises all the materials on Robert. It HAS to be done like this (from my internet research) to properly get all the materials done correctly
         /// </summary>
         /// <param name="material"></param>
-        private void ChangeMaterial(Material material)
+        private void ChangeFaceMaterial(Material material)
         {
             //Temp array to hold all the materials on robert
             Material[] holdMats = m_faceObject.GetComponent<SkinnedMeshRenderer>().materials;
@@ -177,10 +177,16 @@ namespace Millivolt.Player
             m_legsMat.SetColor("_EmissionColor", colour);
         }
 
+        [ContextMenu("Reset Emotion")]
+        public void ResetEmotion()
+        {
+            SetColour(m_emotions[0].colour);
+        }
+
         private IEnumerator ChangeMaterialOnDelay(Material material, float delay)
         {
             yield return new WaitForSeconds(delay);
-            ChangeMaterial(material);
+            ChangeFaceMaterial(material);
         }
 
         private IEnumerator ChangeColorOverTime(Material material, Color startColour, Color endColour)
@@ -206,11 +212,6 @@ namespace Millivolt.Player
 
                 yield return new WaitForEndOfFrame();
             }
-        }
-
-        private void OnEnable()
-        {
-            SetEmotion(EmotionMode.Default);
         }
 
         private void OnDisable()

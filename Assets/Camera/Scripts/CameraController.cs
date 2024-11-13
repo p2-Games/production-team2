@@ -79,16 +79,10 @@ namespace Millivolt
                 }
             }
 
-            public void ScaleWithTimeScale()
+            public void UpdateVcamSpeed()
             {
                 m_camPOV.m_HorizontalAxis.m_MaxSpeed = PlayerSettings.Instance.horizontalSensitivity * Time.timeScale;
                 m_camPOV.m_VerticalAxis.m_MaxSpeed = PlayerSettings.Instance.verticalSensitivity * Time.timeScale;
-            }
-
-            public void UpdateSensitivity(float h, float v)
-            {
-                m_camPOV.m_HorizontalAxis.m_MaxSpeed = h;
-                m_camPOV.m_VerticalAxis.m_MaxSpeed = v;
             }
 
             private void ChangeFOV(float min, float max)
