@@ -54,6 +54,10 @@ namespace Millivolt
 
                 public void Destroy()
                 {
+                    // if screw is already being destroyed, don't try to destroy it again
+                    if (m_isDissolving)
+                        return;
+                    
                     m_isDissolving = true;
 
                     // if this is the held object, then drop it
@@ -62,7 +66,9 @@ namespace Millivolt
 
                     // check if spawn parent should auto respawn this object
                     if (spawnParent)
+                    {
                         spawnParent.AutoRespawn();
+                    }
 
                     GetComponent<MeshDissolver>().Dissolve();
                 }

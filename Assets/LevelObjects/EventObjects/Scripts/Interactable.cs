@@ -22,8 +22,14 @@ namespace Millivolt
 			[Tooltip("How long in seconds it takes for an object to be able to be interacted with again after being interacted with.")]
 			[SerializeField, Min(0)] private float m_interactDelay;
 			private float m_interactTimer;
-			
-			public bool canInteract
+
+            private void Update()
+            {
+                if (m_interactTimer < m_interactDelay)
+                    m_interactTimer += Time.deltaTime;
+            }
+
+            public bool canInteract
 			{
 				get
 				{
@@ -42,42 +48,39 @@ namespace Millivolt
                     }
 
 					if (GetComponent<Checkpoint>())
+					{ 
+#if UNITY_EDITOR
 						return true;
-
+#else
+						return false;
+#endif
+					}
 					return false;
                 }
 			}
 
 			public void Interact(PlayerInteraction player)
 			{
-				EventObject eventObject = GetComponent<EventObject>();
-				if (eventObject)
+				if (TryGetComponent(out EventObject eventObject))
 				{
 					eventObject.Interact();
 					m_interactTimer = 0;
 					return;
 				}
 
-				PickupObject pickupObject = GetComponent<PickupObject>();
-				if (pickupObject && pickupObject.canInteract)
+				if (TryGetComponent(out PickupObject pickupObject) && pickupObject.canInteract)
 				{
 					player.GrabObject(pickupObject);
 					m_interactTimer = 0;
                     return;
 				}
 
-				Checkpoint checkpoint = GetComponent<Checkpoint>();
-                if (checkpoint)
+                if (TryGetComponent(out Checkpoint checkpoint))
                 {
                     checkpoint.Interact();
+					return;
                 }
             }
-
-			protected virtual void Update()
-			{
-				if (m_interactTimer < m_interactDelay)
-					m_interactTimer += Time.deltaTime;
-			}
 		}
 	}
 }
