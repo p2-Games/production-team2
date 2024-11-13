@@ -123,18 +123,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!134 &53215875
-PhysicMaterial:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: DynamicMaterial
-  dynamicFriction: 0
-  staticFriction: 0
-  bounciness: 0
-  frictionCombine: 1
-  bounceCombine: 1
 --- !u!1 &372818521
 GameObject:
   m_ObjectHideFlags: 0
@@ -324,7 +312,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Material
       value: 
-      objectReference: {fileID: 53215875}
+      objectReference: {fileID: 1287353464}
     - target: {fileID: 231944331065544993, guid: ff2eab9ba8148954697e7c7ccf1e9783,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -1403,6 +1391,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45e653bab7fb20e499bda25e1b646fea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!134 &1287353464
+PhysicMaterial:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: DynamicMaterial
+  dynamicFriction: 0
+  staticFriction: 0
+  bounciness: 0
+  frictionCombine: 1
+  bounceCombine: 1
 --- !u!1 &1352334758
 GameObject:
   m_ObjectHideFlags: 0
@@ -1735,6 +1735,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 563426705}
     - target: {fileID: 1007834174, guid: 91e3f48e175d3fa4f806bea570ca1fa1, type: 3}
+      propertyPath: m_currentTimeText
+      value: 
+      objectReference: {fileID: 1736106872}
+    - target: {fileID: 1007834174, guid: 91e3f48e175d3fa4f806bea570ca1fa1, type: 3}
       propertyPath: m_buttons.Array.size
       value: 5
       objectReference: {fileID: 0}
@@ -2040,6 +2044,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a3b4f0119dbf14c46be5d5cabc084e57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1736106872 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5825238631055361760, guid: 91e3f48e175d3fa4f806bea570ca1fa1,
+    type: 3}
+  m_PrefabInstance: {fileID: 1736106869}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1761285755
