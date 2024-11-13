@@ -23,7 +23,7 @@ namespace Millivolt
             public class PickupObject : LevelObject
             {
                 [Header("Pickup Object Details")]
-                [SerializeField] protected PickupType m_type;
+                [SerializeField] private PickupType m_type;
 
                 private bool m_isDissolving = false;
 
@@ -38,11 +38,12 @@ namespace Millivolt
                     }
                 }
 
-                protected Rigidbody m_rb; public Rigidbody rb => m_rb;
-
+                private Rigidbody m_rb; public Rigidbody rb => m_rb;
+                private Collider m_collider; public new Collider collider => m_collider;
                 protected virtual void Start()
                 {
                     m_rb = GetComponent<Rigidbody>();
+                    m_collider = m_rb.GetComponent<Collider>();
                 }
 
                 private void OnCollisionEnter(Collision collision)

@@ -19,6 +19,13 @@ namespace Millivolt
             {
                 if (context.started)
                 {
+                    // If the player has finished the game then stop them from being able to pause or exit the menu
+                    if (GameManager.Instance.gameState == GameState.FINISH)
+                    {
+                        return;
+                    }
+
+
                     // If no menus are open then Pause the game
                     if (UIMenuManager.Instance.activeMenus.Count == 0)
                     {

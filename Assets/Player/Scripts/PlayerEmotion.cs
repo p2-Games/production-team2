@@ -102,7 +102,7 @@ namespace Millivolt.Player
         {
             foreach (Emotion emotion in m_emotions)
             {
-                if (nameof(emotion.type).Contains(emotionName))
+                if (emotion.type.ToString().Contains(emotionName))
                 {
                     ChangeEmotion(emotion.type);
                     return;
