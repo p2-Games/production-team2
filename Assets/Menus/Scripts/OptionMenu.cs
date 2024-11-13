@@ -73,6 +73,10 @@ namespace Millivolt
 				horiVal /= horizontalMinMaxDifference;
 
 				m_horizontalSensitivitySlider.value = horiVal * 100f;
+
+				// Set timescale again just to override the adjustment of the slider values causing the sensitivity to be set to whatever the slider
+				// is telling it to be
+				GameManager.Instance.SetTimeScale(0);
             }
 
 			/// <summary>
