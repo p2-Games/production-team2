@@ -5,7 +5,9 @@
 ///
 ///</summary>
 
+using Millivolt.Level;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 namespace Millivolt
@@ -19,6 +21,9 @@ namespace Millivolt
             [SerializeField] private GameObject m_closeScreen;
 
             [SerializeField] private List<ButtonBehaviour> m_buttons;
+
+            [Header("Timer references")]
+            [SerializeField] private TextMeshProUGUI m_currentTimeText;
 
             private int m_selectedOption;
 
@@ -42,6 +47,21 @@ namespace Millivolt
                     else
                         m_buttons[i].DeactivateButton();
                 }
+            }
+
+            private void OnEnable()
+            {
+                // Calculate the time in minutes, seconds and milliseconds
+                float timer = LevelManager.Instance.levelTimer;
+                int seconds = (int)timer % 60;
+                int milliseconds = (int)(timer % 1 * 100);
+                int minutes = (int)timer / 60;
+
+                // Format text into minutes and seconds 
+                string timerText = string.Format("{0:00}:{1:00}:{2:00}", minutes, seconds, milliseconds);
+
+                // Set the value of the timer text to whatever the value of the timer is in LevelManager
+                m_currentTimeText.text = timerText;
             }
 
             public void ResumeGame()

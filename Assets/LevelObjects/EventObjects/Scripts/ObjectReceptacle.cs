@@ -84,6 +84,9 @@ namespace Millivolt
                         // deactivate the object
                         m_heldObject.gameObject.SetActive(false);
 
+                        // have the player drop the object
+                        GameManager.Player.Interaction.DropObject();
+
                         // play a sound effect
                         SFXController.Instance.PlayRandomSoundClip("ScrewInsert", m_respawnTransform.position);
 
