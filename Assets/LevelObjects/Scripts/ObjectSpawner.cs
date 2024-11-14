@@ -17,8 +17,12 @@ namespace Millivolt
         [Tooltip("The object to be spawned by the script.")]
         [SerializeField] private GameObject m_object;
 
-        [Tooltip("The transform at which the object will be spawned. Also inherits rotation.")]
+        [Tooltip("The transform at which the object will be spawned")]
         [SerializeField] private Transform m_spawnPoint;
+
+        [Tooltip("If spawned objects should have a random orientation when spawned.\n" +
+            "Otherwise, will inherit the rotation of the spawn point Transform.")]
+        [SerializeField] private bool m_giveRandomOrientation = false;
 
         [Tooltip("Whether or not the object can be spawned.")]
         [SerializeField] private bool m_objectCanSpawn = true;
@@ -29,6 +33,8 @@ namespace Millivolt
 
         [Tooltip("If the pickup should automatically respawn when destroyed.")]
         [SerializeField] private bool m_autoRespawn = false;
+
+        private bool m_isSpawning = false;
 
         private GameObject m_spawnedObject;
 
@@ -42,7 +48,7 @@ namespace Millivolt
 
         public void AutoRespawn()
         {
-            if (m_autoRespawn)
+            if (m_autoRespawn && !m_isSpawning)
                 SpawnObject();
         }
 
@@ -50,7 +56,9 @@ namespace Millivolt
         {
             if (!m_objectCanSpawn)
                 return;
-            
+
+            m_isSpawning = true;
+
             // destroy existing game object
             if (m_spawnedObject)
             {
@@ -64,11 +72,13 @@ namespace Millivolt
             }
 
             // spawn the object
-            m_spawnedObject = Instantiate(m_object, m_spawnPoint.position, m_spawnPoint.rotation);
+            m_spawnedObject = Instantiate(m_object, m_spawnPoint.position, m_giveRandomOrientation ? Random.rotation : m_spawnPoint.rotation);
 
             // if the spawned object is a LevelObject, set this MonoBehaviour to be its spawn parent
             if (m_spawnedObject.TryGetComponent(out LevelObject levelObj))
                 levelObj.spawnParent = this;
+
+            m_isSpawning = false;
         }
     }
 }
