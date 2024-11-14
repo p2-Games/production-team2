@@ -44,6 +44,8 @@ namespace Millivolt.Player
 
         public void StartRespawn(Vector3 spawnPosition)
         {
+            StopAllCoroutines();
+            
             // destroy the particle
             if (m_respawnParticle)
                 Destroy(m_respawnParticle);
@@ -64,7 +66,7 @@ namespace Millivolt.Player
             m_vcam.transform.SetPositionAndRotation(chosenAngle.position, chosenAngle.rotation);
 
             // create particle
-            m_respawnParticle = Instantiate(m_respawnParticlePrefab, transform).gameObject;
+            m_respawnParticle = Instantiate(m_respawnParticlePrefab, spawnPosition, m_respawnParticlePrefab.transform.rotation).gameObject;
 
             // start timings
             StartCoroutine(ReactivatePlayer());
@@ -116,6 +118,8 @@ namespace Millivolt.Player
 
             foreach (Transform t in m_camAngles)
             {
+                if (!t) return;
+                
                 if (!t.gameObject.activeSelf)
                     continue;
 

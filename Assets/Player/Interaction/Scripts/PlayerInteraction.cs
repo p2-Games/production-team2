@@ -67,7 +67,7 @@ namespace Millivolt
                     else return null;
                 }
             }
-            public bool canInteract => m_state != InteractionState.Closed && m_interactTimer >= m_interactTime;
+            public bool canInteract => m_state != InteractionState.Closed && m_interactTimer >= m_interactTime && Time.timeScale > 0;
 
             private void Start()
             {
