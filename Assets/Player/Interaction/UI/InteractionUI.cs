@@ -52,19 +52,14 @@ namespace Millivolt
 					if (target)
 					{
 						m_target = target.gameObject;
-						LevelObject levelObj;
-						if (levelObj = m_target.GetComponent<LevelObject>())
+						if (target.TryGetComponent(out LevelObject levelObject))
 						{
-							m_itemNameDisplay.text = levelObj.name;
+							m_itemNameDisplay.text = levelObject.name;
 						}
-#if UNITY_EDITOR
-						else if (m_target.GetComponent<Checkpoint>())
+						else if (target.GetComponent<Checkpoint>())
 						{
-							// Just removed because people were getting confused by the Checkpoint UI
 							m_itemNameDisplay.text = "Use Checkpoint";
-							return;
 						}
-#endif
 
 						m_container.sizeDelta = new Vector2(m_widthPerChar * m_itemNameDisplay.text.Length, m_height);
                         m_buttonDisplay.sprite = PlayerInputIcons.Instance.GetInputIcon(InputType.Interact);
