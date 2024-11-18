@@ -100,7 +100,8 @@ namespace Millivolt
             /// </summary>
             public void ActivateMenu()
 			{
-                UIMenuManager.Instance.activeMenus.Insert(0, this);
+                if (interactable)
+                    UIMenuManager.Instance.activeMenus.Insert(0, this);
                 UIMenuManager.Instance.SetActiveMenu();
                 UIMenuManager.Instance.CursorLockupdate();
                 ActivateAnimation();
@@ -118,7 +119,8 @@ namespace Millivolt
 			/// </summary>
             public void DeactivateMenu()
             {
-                UIMenuManager.Instance.activeMenus.Remove(this);
+                if (m_interactable)
+                    UIMenuManager.Instance.activeMenus.Remove(this);
                 UIMenuManager.Instance.SetActiveMenu();
                 UIMenuManager.Instance.CursorLockupdate();
                 //GameManager.PlayerController.SetCanMove(true, Player.CanMoveType.Menu);

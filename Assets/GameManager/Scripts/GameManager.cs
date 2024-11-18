@@ -16,6 +16,7 @@ namespace Millivolt
 	using Level;
     using UnityEditor;
     using Millivolt.Cameras;
+    using Millivolt.Tasks;
 
     public enum GameState
 	{
@@ -34,6 +35,8 @@ namespace Millivolt
 		private CameraController m_cameraController;
 
 		[SerializeField] private GameObject m_loadingScreen;
+
+		public static TaskListManager Tasklist;
 
         private void Awake()
         {
@@ -116,6 +119,10 @@ namespace Millivolt
 			if (Player)
 				Destroy(Player);
 			Player = gameObject.AddComponent<PlayerComponents>();
+
+			if (Tasklist)
+				Destroy(Tasklist);
+			Tasklist = FindObjectOfType<TaskListManager>();
 
 			m_cameraController = FindObjectOfType<CameraController>();
 

@@ -5,6 +5,7 @@
 ///
 ///</summary>
 
+using Millivolt.UI;
 using Pixelplacement;
 using System.Collections.Generic;
 using UnityEngine;
@@ -35,6 +36,7 @@ namespace Millivolt
 
 
 			private CanvasGroup m_canvasGroup;
+			[SerializeField] private UIMenu m_taskList;
 			private bool m_isVisible = true;
 
 			/// <summary>
@@ -90,14 +92,12 @@ namespace Millivolt
 			/// <summary>
 			/// Will toggle if the task list is visible on the screen or not
 			/// </summary>
-			public void ToggleTaskList()
+			public void SetTaskListActive(bool value)
 			{
-				m_isVisible = !m_isVisible;
-
-				if (m_isVisible)
-					m_canvasGroup.alpha = 1;
+				if (value)
+					m_taskList.ActivateMenu();
 				else
-					m_canvasGroup.alpha = 0;
+					m_taskList.DeactivateMenu();
 			}
         }
 	}
