@@ -45,17 +45,15 @@ namespace Millivolt
             [SerializeField] private Transform m_heldObjectOffset;
             [Tooltip("How long the player has to wait between interacting with objects.")]
             [SerializeField] private float m_interactTime;
-
-            [Tooltip("The layers the held pickup will use while being held.")]
-            [SerializeField] private LayerMask m_heldPickupMask;
+            [SerializeField, Min(0)] private float m_pickupDropDistance;
 
             [SerializeField] private bool m_drawGizmos = false;
 
             private InteractionState m_state = InteractionState.Closed;
+
             private PickupObject m_heldPickup;
 
             private float m_interactTimer;
-
             private Interactable m_closestObject;
 
             public GameObject heldObject
@@ -105,9 +103,15 @@ namespace Millivolt
                     m_interactTimer += Time.deltaTime;
 
                 // if the player has a held pickup
-                if (m_heldPickup && m_heldPickup.gameObject.activeSelf)
+                if (m_heldPickup)
                 {
-                    m_heldPickup.transform.position = m_heldObjectOffset.position;
+                    // keep held object held in front of player
+                    float distance = Vector3.Distance(m_heldObjectOffset.position, m_heldPickup.transform.position);
+                    m_heldPickup.rb.AddForce((m_heldObjectOffset.position - m_heldPickup.transform.position).normalized * 10000f * distance * Time.deltaTime);
+
+                    // if pickup is too far away from the player
+                    if (Vector3.Distance(m_heldPickup.transform.position, transform.position) > m_pickupDropDistance)
+                        DropObject();
                 }
 
                 // if the current closest object gets accepted by a receptacle or destroyed, update this 
@@ -203,9 +207,12 @@ namespace Millivolt
                 // stop the pickup's rigidbody from pulling it around
                 m_heldPickup.rb.useGravity = false;
 
+                // change drag
+                m_heldPickup.rb.drag = 10;
+                m_heldPickup.rb.angularDrag = 2;
+
                 // reset pickup velocity
                 m_heldPickup.rb.velocity = Vector3.zero;
-                m_heldPickup.rb.constraints = RigidbodyConstraints.FreezePosition;
 
                 // reset the state of the closest object and interaction display
                 SetClosestObject(null);
@@ -228,8 +235,11 @@ namespace Millivolt
                     // let the pickup's rigidbody work again
                     m_heldPickup.rb.useGravity = true;
 
+                    // change drag
+                    m_heldPickup.rb.drag = 1;
+                    m_heldPickup.rb.angularDrag = 0;
+
                     // give the dropped object a velocity
-                    m_heldPickup.rb.constraints = RigidbodyConstraints.None;
                     m_heldPickup.rb.velocity = GameManager.Player.Controller.rb.velocity * 1.2f;
 
                     // stop controlling the pickup
@@ -294,6 +304,33 @@ namespace Millivolt
 
                 if (m_closestObject)
                     Handles.DrawLine(transform.position, m_closestObject.transform.position);
+
+                // pickup drop distance
+                Handles.matrix = transform.localToWorldMatrix;
+                Handles.color = Color.green;
+                Vector3 position = Vector3.zero;
+
+                Handles.DrawWireDisc(position, Vector3.right, m_pickupDropDistance);
+                Handles.DrawWireDisc(position, Vector3.up, m_pickupDropDistance);
+                Handles.DrawWireDisc(position, Vector3.forward, m_pickupDropDistance);
+
+                if (Camera.current.orthographic)
+                {
+                    Vector3 normal = position - Handles.inverseMatrix.MultiplyVector(Camera.current.transform.forward);
+                    float sqrMagnitude = normal.sqrMagnitude;
+                    float num0 = m_pickupDropDistance * m_pickupDropDistance;
+                    Handles.DrawWireDisc(position - num0 * normal / sqrMagnitude, normal, m_pickupDropDistance);
+                }
+                else
+                {
+                    Vector3 normal = position - Handles.inverseMatrix.MultiplyPoint(Camera.current.transform.position);
+                    float sqrMagnitude = normal.sqrMagnitude;
+                    float num0 = m_pickupDropDistance * m_pickupDropDistance;
+                    float num1 = num0 * num0 / sqrMagnitude;
+                    float num2 = Mathf.Sqrt(num0 - num1);
+                    Handles.DrawWireDisc(position - num0 * normal / sqrMagnitude, normal, num2);
+                }
+
             }
 #endif
         }
