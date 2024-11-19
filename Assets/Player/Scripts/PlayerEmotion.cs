@@ -210,7 +210,7 @@ namespace Millivolt.Player
                 // set colour from vector values (alpha is always 1)
                 material.SetColor("_EmissionColor", new(currentColour.x, currentColour.y, currentColour.z, 1)); 
 
-                yield return new WaitForEndOfFrame();
+                yield return null;
             }
         }
 

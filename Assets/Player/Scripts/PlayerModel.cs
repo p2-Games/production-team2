@@ -34,6 +34,8 @@ namespace Millivolt
                 m_collider.material = pm;
             }
 
+            [SerializeField] private GravityIndicatorUI m_gravityIndicatorUI;
+
             [Header("Rotation/Heading")]
             [Tooltip("Degrees per second the player rotates towards its movement direction at.")]
             [SerializeField] private float m_forwardRotationSpeed = 60f;
@@ -76,6 +78,18 @@ namespace Millivolt
             public void OnGravityChange()
             {
                 Vector3 gravityDir = Physics.gravity.normalized;
+
+                // if the gravity indicator is not yet active, then activate it
+                if (!m_gravityIndicatorUI.gameObject.activeSelf)
+                    m_gravityIndicatorUI.gameObject.SetActive(true);
+
+                // the game only uses direct world up and direct world down for gravity directions,
+                // so we can just compare the gravity direction with the world up to determine the direction
+                if (gravityDir == Vector3.up)
+                    m_gravityIndicatorUI.ChangeToUp();
+                else
+                    m_gravityIndicatorUI.ChangeToDown();
+                
                 StartCoroutine(RotateWithGravity(-gravityDir));
             }
 
@@ -97,7 +111,7 @@ namespace Millivolt
 
                     transform.up = Vector3.Slerp(startUp, targetUp, t);
 
-                    yield return new WaitForEndOfFrame();
+                    yield return null;
                 }
 
                 GameManager.Player.Controller.SetCanMove(CanMoveType.Gravity, true);

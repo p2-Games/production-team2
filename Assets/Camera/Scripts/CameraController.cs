@@ -99,7 +99,7 @@ namespace Millivolt
                     m_3rdPersonCam.m_Lens.FieldOfView = Mathf.Lerp(min, max, t);
 
                     t += Time.deltaTime;
-                    yield return new WaitForEndOfFrame();
+                    yield return null;
                 }
                 m_3rdPersonCam.m_Lens.FieldOfView = max;
             }
