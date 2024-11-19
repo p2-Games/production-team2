@@ -27,6 +27,8 @@ namespace Millivolt
 
             private int m_selectedOption;
 
+            private bool m_tasklistVisibilty;
+
             private void Awake()
             {
                 SetActiveButton(m_selectedOption);
@@ -62,12 +64,16 @@ namespace Millivolt
 
                 // Set the value of the timer text to whatever the value of the timer is in LevelManager
                 m_currentTimeText.text = timerText;
+
+                m_tasklistVisibilty = GameManager.Tasklist.menu.isActive;
+                if (!m_tasklistVisibilty)
+                    GameManager.Tasklist.SetTaskListActive(true);
             }
 
             public void ResumeGame()
             {
                 GameManager.Instance.PauseGame();
-                m_menu.DeactivateMenu();
+                m_menu.DeactivateMenu();                
             }
 
             public void ResetToCheckpoint()
@@ -98,6 +104,12 @@ namespace Millivolt
             private void CallExitToMenu()
             {
                 GameManager.Instance.ExitToMenu();
+            }
+
+            public void UpdateTaskListState()
+            {
+                if (!m_tasklistVisibilty)
+                    GameManager.Tasklist.SetTaskListActive(false);
             }
 
         }

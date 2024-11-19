@@ -36,8 +36,15 @@ namespace Millivolt
 
 
 			private CanvasGroup m_canvasGroup;
-			[SerializeField] private UIMenu m_taskList;
-			private bool m_isVisible = true;
+			[SerializeField] private UIMenu m_menu;
+			public UIMenu menu => m_menu;
+
+			[SerializeField] private float m_appearDuration;
+			public float appearDuration => m_appearDuration;
+
+			private bool m_canActivate;
+			public bool canActivate => m_canActivate;
+			
 
 			/// <summary>
 			/// Hide all inactive tasks
@@ -49,6 +56,13 @@ namespace Millivolt
 					Tween.CanvasGroupAlpha(task.GetComponent<CanvasGroup>(), 0, 0, 0);
 				}
 			}
+
+            private void Start()
+            {
+				m_menu.isActive = true;
+				m_canActivate = true;
+            }
+
             private void OnEnable()
             {
 				InitialiseTasks();
@@ -95,9 +109,22 @@ namespace Millivolt
 			public void SetTaskListActive(bool value)
 			{
 				if (value)
-					m_taskList.ActivateMenu();
+				{
+					m_canActivate = false;
+					m_menu.ActivateMenu();
+					Invoke(nameof(ReenableAfterDelay), 0.5f);
+				}
 				else
-					m_taskList.DeactivateMenu();
+				{
+                       m_canActivate = false;
+					m_menu.DeactivateMenu();
+                       Invoke(nameof(ReenableAfterDelay), 0.5f);
+                   }
+			}
+
+			private void ReenableAfterDelay()
+			{
+				m_canActivate = true;
 			}
         }
 	}

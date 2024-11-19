@@ -413,7 +413,8 @@ MonoBehaviour:
   inactiveTasks:
   - {fileID: 0}
   - {fileID: 0}
-  m_taskList: {fileID: 6689160016974090516}
+  m_menu: {fileID: 6689160016974090516}
+  m_appearDuration: 3
 --- !u!114 &6689160016974090516
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -428,16 +429,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_hideOnInactive: 0
   m_interactable: 0
+  m_canvasGroup: {fileID: 1766256420}
   m_firstSelected: {fileID: 0}
   m_enableTweening: 1
-  m_tweenEnableStartX: 1.5
+  m_tweenEnableStartX: 1.3
   m_tweenEnableStartY: 0.755
   m_tweenEnableEndX: 0.875
   m_tweenEnableEndY: 0.755
   m_enableTweenDuration: 0.5
   m_enableTweenDelay: 0
-  m_tweenDisableEndX: 1.5
-  m_tweenDisableEndY: 2
+  m_tweenDisableEndX: 1.3
+  m_tweenDisableEndY: 0.755
   m_disableTweenDuration: 0.5
   m_disableTweenDelay: 0
   m_drawTweenGizmos: 1

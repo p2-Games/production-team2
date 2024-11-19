@@ -14,7 +14,6 @@ using Pixelplacement;
 using TMPro;
 using System.Linq;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 
 namespace Millivolt
 {
@@ -32,6 +31,7 @@ namespace Millivolt
 			[SerializeField] private Toggle m_toggle;
 			[Tooltip("If this task has subtasks then drag the parent 'Subtask' object in here")]
 			[SerializeField] Transform m_subtasks;
+            [SerializeField] private Image m_taskBG;
 
 			[Header("Task Details")]
 			[Tooltip("This is the text that will appear on the task list")]
@@ -128,11 +128,33 @@ namespace Millivolt
                     StartCoroutine(DelayFunction(delay, ActivateTask));
                     return;
                 }
+
+                if (!GameManager.Tasklist.menu.isActive)
+                {
+                    GameManager.Tasklist.menu.ActivateMenu();
+                    Invoke(nameof(DeactivateTasklistAfterDelay), GameManager.Tasklist.appearDuration);
+                }
+
                 m_taskListManager.inactiveTasks.Remove(this);
 				m_taskListManager.activeTasks.Add(this);
 				Tween.CanvasGroupAlpha(m_canvasGroup, 1, 0.5f, 0, Tween.EaseIn);
+
+                Color taskColour = m_taskBG.color;
+
+                // Flash the bg of the Task on activation to make it pop more
+                for (int i = 0; i < 3; i++)
+                {
+                    Tween.Color(m_taskBG, m_taskBG.color, new Color(255, 255, 255, 10),0.1f, 0.5f + i * 0.2f);
+                    Tween.Color(m_taskBG, m_taskBG.color, taskColour, 0.1f, 0.5f + i * 0.2f);
+                }
+
 				m_taskListManager.SpaceActiveTasks();
 			}
+
+            private void DeactivateTasklistAfterDelay()
+            {
+                GameManager.Tasklist.menu.DeactivateMenu();
+            }
 
             /// <summary>
             /// Sets a subtask as active
@@ -145,6 +167,13 @@ namespace Millivolt
                     StartCoroutine(DelayFunction(delay, ActivateSubtask));
                     return;
                 }
+
+                if (!GameManager.Tasklist.menu.isActive)
+                {
+                    GameManager.Tasklist.menu.ActivateMenu();
+                    Invoke(nameof(DeactivateTasklistAfterDelay), GameManager.Tasklist.appearDuration);
+                }
+
                 m_taskParent.inactiveTasks.Remove(this);
 				m_taskParent.activeTasks.Add(this);
                 Tween.CanvasGroupAlpha(m_canvasGroup, 1, 0.5f, 0, Tween.EaseIn);
@@ -163,6 +192,13 @@ namespace Millivolt
                     StartCoroutine(DelayFunction(delay, CompleteTask));
                     return;
                 }
+
+                if (!GameManager.Tasklist.menu.isActive)
+                {
+                    GameManager.Tasklist.menu.ActivateMenu();
+                    Invoke(nameof(DeactivateTasklistAfterDelay), GameManager.Tasklist.appearDuration);
+                }
+
                 m_currentPoints++;
 				if (m_points > 1)
 					m_toggle.GetComponentInChildren<TextMeshProUGUI>().text = m_name + (" (" + m_currentPoints + "/" + m_points + ")");
@@ -189,6 +225,13 @@ namespace Millivolt
                     StartCoroutine(DelayFunction(delay, CompleteSubtask));
                     return;
                 }
+
+                if (!GameManager.Tasklist.menu.isActive)
+                {
+                    GameManager.Tasklist.menu.ActivateMenu();
+                    Invoke(nameof(DeactivateTasklistAfterDelay), GameManager.Tasklist.appearDuration);
+                }
+
                 m_currentPoints++;
 				if (m_points > 1)
 					m_toggle.GetComponentInChildren<TextMeshProUGUI>().text = m_name + (" (" + m_currentPoints + "/" + m_points + ")");

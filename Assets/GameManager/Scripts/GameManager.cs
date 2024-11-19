@@ -58,17 +58,18 @@ namespace Millivolt
         // Game state
         [SerializeField] private GameState m_gameState;
 
-        [SerializeField] private UIMenu m_pauseMenu;
-        private UIMenu pauseMenu
+        [SerializeField] private UIMenu m_pauseMenuPanel;
+		private PauseMenu m_pauseMenu;
+        private UIMenu pauseMenuPanel
         {
             get
             {
-                if (!m_pauseMenu)
+                if (!m_pauseMenuPanel)
                 {
-                    PauseMenu pm = (PauseMenu)FindObjectOfType(typeof(PauseMenu), true);
-                    m_pauseMenu = pm.GetComponent<UIMenu>();
+                    m_pauseMenu = (PauseMenu)FindObjectOfType(typeof(PauseMenu), true);
+                    m_pauseMenuPanel = m_pauseMenu.GetComponent<UIMenu>();
                 }
-                return m_pauseMenu;
+                return m_pauseMenuPanel;
             }
         }
 
@@ -96,13 +97,14 @@ namespace Millivolt
 		{
 			if (gameState != GameState.PAUSE)
 			{
-				pauseMenu.ActivateMenu();
+				pauseMenuPanel.ActivateMenu();
 				gameState = GameState.PAUSE;
 			}
 			else
 			{
 				gameState = GameState.PLAYING;
-				pauseMenu.DeactivateMenu();
+				pauseMenuPanel.DeactivateMenu();
+				m_pauseMenu.UpdateTaskListState();
             }
 
             m_cameraController.UpdateVcamSpeed();
