@@ -9,6 +9,8 @@ using UnityEngine;
 
 namespace Millivolt
 {
+    using Player;
+
     namespace LevelObjects
     {
         namespace PickupObjects
@@ -48,8 +50,16 @@ namespace Millivolt
 
                 private void OnCollisionEnter(Collision collision)
                 {
-                    if (GameManager.Player && gameObject != GameManager.Player.Interaction.heldObject)
-                        SFXController.Instance.PlayRandomSoundClip("ScrewDrop", transform);
+                    // if this object is being held, don't play sounds
+                    if (!GameManager.Player || gameObject == GameManager.Player.Interaction.heldObject)
+                        return;
+
+                    // if the other colliding object is the player, don't play sounds
+                    if (collision.gameObject.GetComponent<PlayerModel>())
+                        return;
+
+                    // play a sound effect
+                    SFXController.Instance.PlayRandomSoundClip("ScrewDrop", transform);
                 }
 
                 public void Destroy()
