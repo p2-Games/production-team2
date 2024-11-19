@@ -200,6 +200,7 @@ namespace Millivolt
             {
                 // Play grab animation
                 GameManager.Player.Animation.SetTriggerParameter("Grab");
+                GameManager.Player.Animation.PassBoolParameter("IsHolding", true);
                 
                 // set the held object to the pickup
                 m_heldPickup = obj;
