@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 499953266633231939}
   - component: {fileID: 4265850476071895444}
   - component: {fileID: 6049751433132741226}
+  - component: {fileID: 8266372990095761712}
   m_Layer: 0
   m_Name: GroundLight3
   m_TagString: Untagged
@@ -98,7 +99,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 583
+  m_VersionIndex: 586
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -181,6 +182,23 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 491030746110463833}
   m_Mesh: {fileID: 0}
+--- !u!114 &8266372990095761712
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 491030746110463833}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcad0e3bb65f3694fb3b8b62a66ac586, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_collectionName: LightSwitch
+  m_clipName: BigLightSwitch
+  m_playOnStart: 1
+  m_attachToPlayer: 0
+  m_type: 0
 --- !u!1 &1309216762620125156
 GameObject:
   m_ObjectHideFlags: 0
@@ -194,6 +212,7 @@ GameObject:
   - component: {fileID: 2537927994276848610}
   - component: {fileID: 8769508114397350088}
   - component: {fileID: 7901262473660065247}
+  - component: {fileID: 2506941623190875332}
   m_Layer: 0
   m_Name: GroundLight1
   m_TagString: Untagged
@@ -312,7 +331,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 588
+  m_VersionIndex: 591
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -395,6 +414,23 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1309216762620125156}
   m_Mesh: {fileID: 0}
+--- !u!114 &2506941623190875332
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1309216762620125156}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcad0e3bb65f3694fb3b8b62a66ac586, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_collectionName: LightSwitch
+  m_clipName: BigLightSwitch
+  m_playOnStart: 1
+  m_attachToPlayer: 0
+  m_type: 0
 --- !u!1 &1471629163542265170
 GameObject:
   m_ObjectHideFlags: 0
@@ -408,6 +444,7 @@ GameObject:
   - component: {fileID: 8065864738788800523}
   - component: {fileID: 1712377498265020472}
   - component: {fileID: 5483032866729380511}
+  - component: {fileID: 8546591905263509968}
   m_Layer: 0
   m_Name: GroundLight8
   m_TagString: Untagged
@@ -526,7 +563,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 588
+  m_VersionIndex: 591
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -609,6 +646,23 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1471629163542265170}
   m_Mesh: {fileID: 0}
+--- !u!114 &8546591905263509968
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1471629163542265170}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcad0e3bb65f3694fb3b8b62a66ac586, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_collectionName: LightSwitch
+  m_clipName: BigLightSwitch
+  m_playOnStart: 1
+  m_attachToPlayer: 0
+  m_type: 0
 --- !u!1 &2632905968803853668
 GameObject:
   m_ObjectHideFlags: 0
@@ -622,6 +676,7 @@ GameObject:
   - component: {fileID: 165657745005521439}
   - component: {fileID: 1978181475522838712}
   - component: {fileID: 1447610261326783986}
+  - component: {fileID: 4155623020875428037}
   m_Layer: 0
   m_Name: GroundLight4
   m_TagString: Untagged
@@ -707,7 +762,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 583
+  m_VersionIndex: 586
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -790,6 +845,23 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2632905968803853668}
   m_Mesh: {fileID: 0}
+--- !u!114 &4155623020875428037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2632905968803853668}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcad0e3bb65f3694fb3b8b62a66ac586, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_collectionName: LightSwitch
+  m_clipName: BigLightSwitch
+  m_playOnStart: 1
+  m_attachToPlayer: 0
+  m_type: 0
 --- !u!1 &3040386919721489347
 GameObject:
   m_ObjectHideFlags: 0
@@ -868,6 +940,7 @@ GameObject:
   - component: {fileID: 2211829115744458969}
   - component: {fileID: 8407226120636812808}
   - component: {fileID: 6057863415320402500}
+  - component: {fileID: 3259940391477044589}
   m_Layer: 0
   m_Name: GroundLight5
   m_TagString: Untagged
@@ -986,7 +1059,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 588
+  m_VersionIndex: 591
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -1069,6 +1142,23 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3742367062069633196}
   m_Mesh: {fileID: 0}
+--- !u!114 &3259940391477044589
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3742367062069633196}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcad0e3bb65f3694fb3b8b62a66ac586, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_collectionName: LightSwitch
+  m_clipName: BigLightSwitch
+  m_playOnStart: 1
+  m_attachToPlayer: 0
+  m_type: 0
 --- !u!1 &4038355144886867322
 GameObject:
   m_ObjectHideFlags: 0
@@ -1082,6 +1172,7 @@ GameObject:
   - component: {fileID: 3570781292769963133}
   - component: {fileID: 5576986099355617969}
   - component: {fileID: 3472940152477730869}
+  - component: {fileID: 3132321948280226596}
   m_Layer: 0
   m_Name: GroundLight6
   m_TagString: Untagged
@@ -1200,7 +1291,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 588
+  m_VersionIndex: 591
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -1283,6 +1374,23 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4038355144886867322}
   m_Mesh: {fileID: 0}
+--- !u!114 &3132321948280226596
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4038355144886867322}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcad0e3bb65f3694fb3b8b62a66ac586, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_collectionName: LightSwitch
+  m_clipName: BigLightSwitch
+  m_playOnStart: 1
+  m_attachToPlayer: 0
+  m_type: 0
 --- !u!1 &5043584417039229312
 GameObject:
   m_ObjectHideFlags: 0
@@ -1296,6 +1404,7 @@ GameObject:
   - component: {fileID: 6809490545499786762}
   - component: {fileID: 1774597388394943549}
   - component: {fileID: 3650303278586510045}
+  - component: {fileID: 8349730193144974285}
   m_Layer: 0
   m_Name: GroundLight7
   m_TagString: Untagged
@@ -1414,7 +1523,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 588
+  m_VersionIndex: 591
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -1497,6 +1606,23 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5043584417039229312}
   m_Mesh: {fileID: 0}
+--- !u!114 &8349730193144974285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5043584417039229312}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcad0e3bb65f3694fb3b8b62a66ac586, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_collectionName: LightSwitch
+  m_clipName: BigLightSwitch
+  m_playOnStart: 1
+  m_attachToPlayer: 0
+  m_type: 0
 --- !u!1 &5307529985257350770
 GameObject:
   m_ObjectHideFlags: 0
@@ -1510,6 +1636,7 @@ GameObject:
   - component: {fileID: 16928297893529275}
   - component: {fileID: 8099616200316766607}
   - component: {fileID: 7109817870478313214}
+  - component: {fileID: 1647338746362580237}
   m_Layer: 0
   m_Name: GroundLight2
   m_TagString: Untagged
@@ -1628,7 +1755,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 588
+  m_VersionIndex: 591
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -1711,6 +1838,23 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5307529985257350770}
   m_Mesh: {fileID: 0}
+--- !u!114 &1647338746362580237
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5307529985257350770}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcad0e3bb65f3694fb3b8b62a66ac586, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_collectionName: LightSwitch
+  m_clipName: BigLightSwitch
+  m_playOnStart: 1
+  m_attachToPlayer: 0
+  m_type: 0
 --- !u!1 &7179287689710039381
 GameObject:
   m_ObjectHideFlags: 0
