@@ -357,7 +357,7 @@ namespace Millivolt
                 get
                 {
                     return Physics.BoxCast(transform.position + collider.center, new Vector3(m_groundCheckRadius, m_groundCheckDistance, m_groundCheckRadius),
-                        upDirection, /*out RaycastHit hit,*/ transform.rotation, collider.height / 2, ~(1 << LayerMask.NameToLayer("Player")), QueryTriggerInteraction.Ignore);
+                        upDirection, /*out RaycastHit hit,*/ transform.rotation, collider.height / 2, m_walkableLayers, QueryTriggerInteraction.Ignore);
                 }
             }
 

@@ -21,6 +21,9 @@ namespace Millivolt
                 [Header("LaunchPad Details"), SerializeField] private Vector3 m_initialVelocity;
                 [SerializeField] private float m_snapSpeed;
                 [SerializeField] private float m_minDistanceToLaunch;
+                [SerializeField, Min(0.5f)] private float m_launchDelay;
+
+                private float m_timer = 0;
 
                 [Header("Debug"), SerializeField] private bool m_drawLines;
                 [SerializeField] private int m_debugPointsToDraw;
@@ -37,13 +40,15 @@ namespace Millivolt
                     if (m_objectToLaunch && Vector3.Distance(m_objectToLaunch.position, m_newObjectPosition) < m_minDistanceToLaunch)
                     {
                         // different behaviour if the object to launch is the player
-                        if (GameManager.Player.Controller.gameObject == m_objectToLaunch.gameObject)
+                        if (GameManager.Player.Controller.rb == m_objectToLaunch)
                         {
                             GameManager.Player.Controller.SetExternalVelocity(m_initialVelocity);
                             GameManager.Player.Controller.SetCanMove(Player.CanMoveType.LevelObject, false);
                         }
                         else
+                        {
                             m_objectToLaunch.velocity = m_initialVelocity;
+                        }
 
                         // invoke the activate events
                         m_activateEvents.Invoke();
@@ -52,24 +57,32 @@ namespace Millivolt
                         SFXController.Instance.PlayRandomSoundClip("LaunchPad", transform);
 
                         m_objectToLaunch = null;
+
+                        m_timer = 0;
                     }
+                    else
+                        m_timer += Time.deltaTime;
                 }
 
                 private void FixedUpdate()
                 {
-                    if (m_objectToLaunch)
+                    if (m_objectToLaunch != null)
                     {
                         m_objectToLaunch.MovePosition(Vector3.MoveTowards(m_objectToLaunch.position, m_newObjectPosition, m_snapSpeed * Time.fixedDeltaTime));
                     }
                 }
 
-                private void OnTriggerEnter(Collider other)
+                private void OnTriggerStay(Collider other)
                 {
                     if (!m_canInteract)
                         return;
 
+                    // if timer still going down
+                    if (m_timer < m_launchDelay)
+                        return;
+
                     // if launchpad isn't currently trying to launch something AND the object in the trigger is allowed
-                    if (!m_objectToLaunch && CanTrigger(other.gameObject))
+                    if (m_objectToLaunch == null && CanTrigger(other.gameObject))
                     {
                         m_newObjectPosition = transform.position;
                         m_newObjectPosition += other.gameObject.GetComponent<Collider>().bounds.extents.y * -Physics.gravity.normalized;
