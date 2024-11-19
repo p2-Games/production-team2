@@ -65,6 +65,9 @@ namespace Millivolt
                 // Set the value of the timer text to whatever the value of the timer is in LevelManager
                 m_currentTimeText.text = timerText;
 
+                if (!GameManager.Tasklist)
+                    return;
+
                 m_tasklistVisibilty = GameManager.Tasklist.menu.isActive;
                 if (!m_tasklistVisibilty)
                     GameManager.Tasklist.SetTaskListActive(true);
