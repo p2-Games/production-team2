@@ -271,6 +271,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Gravity Indicator Canvas
       objectReference: {fileID: 0}
+    - target: {fileID: 6791778580786126860, guid: 472a3479f9d62004693f29254c24d231,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 472a3479f9d62004693f29254c24d231, type: 3}
 --- !u!114 &524357553 stripped
@@ -443,7 +448,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Material
       value: 
-      objectReference: {fileID: 1967518506}
+      objectReference: {fileID: 1343350961}
     - target: {fileID: 231944331065544993, guid: ff2eab9ba8148954697e7c7ccf1e9783,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -1532,6 +1537,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45e653bab7fb20e499bda25e1b646fea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!134 &1343350961
+PhysicMaterial:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: DynamicMaterial
+  dynamicFriction: 0
+  staticFriction: 0
+  bounciness: 0
+  frictionCombine: 1
+  bounceCombine: 1
 --- !u!1 &1352334758
 GameObject:
   m_ObjectHideFlags: 0
@@ -2610,18 +2627,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e11929db1a29564aa2715f95a5dd701, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!134 &1967518506
-PhysicMaterial:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: DynamicMaterial
-  dynamicFriction: 0
-  staticFriction: 0
-  bounciness: 0
-  frictionCombine: 1
-  bounceCombine: 1
 --- !u!114 &2073505787 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4212235778317294377, guid: 8ea15293907ec3f42a9a3f4f115c4ec7,

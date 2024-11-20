@@ -92,10 +92,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3512962649294861489}
+  - component: {fileID: 5424739067328647813}
   - component: {fileID: 3996152080625746500}
   - component: {fileID: 2554484187837830831}
-  - component: {fileID: 5424739067328647813}
-  - component: {fileID: 6165380628394951831}
   m_Layer: 6
   m_Name: AirVent
   m_TagString: Untagged
@@ -120,35 +119,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &3996152080625746500
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4945888939728246648}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.9120872, y: 0.111617565, z: 1.9235773}
-  m_Center: {x: -0.029247284, y: 0.09199339, z: 0.009383529}
---- !u!54 &2554484187837830831
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4945888939728246648}
-  serializedVersion: 2
-  m_Mass: 15
-  m_Drag: 0.5
-  m_AngularDrag: 0.05
-  m_UseGravity: 0
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!114 &5424739067328647813
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -183,25 +153,36 @@ MonoBehaviour:
   m_deactivateSoundClipName: 
   m_objectsToDisable:
   - {fileID: 5509251084822107694}
---- !u!114 &6165380628394951831
-MonoBehaviour:
+  m_rotateSpeed: 2
+--- !u!65 &3996152080625746500
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4945888939728246648}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ffe839f3dfce614fa8dacee2a4f5dbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_dissolveColour: {r: 1, g: 1, b: 0, a: 255}
-  m_dissolveShader: {fileID: -6465566751694194690, guid: 71d109c81527461489665b7492781c97,
-    type: 3}
-  m_particle: {fileID: 0}
-  m_duration: 2
-  m_delay: 0
-  m_disableGravity: 1
+  serializedVersion: 2
+  m_Size: {x: 1.85, y: 1.85, z: 0.25}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &2554484187837830831
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4945888939728246648}
+  serializedVersion: 2
+  m_Mass: 15
+  m_Drag: 0.5
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &5509251084822107694
 GameObject:
   m_ObjectHideFlags: 0
@@ -225,8 +206,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5509251084822107694}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0.5, y: 0.5, z: 0.5, w: 0.5}
+  m_LocalPosition: {x: 0.013, y: -0.03100004, z: -0.09847859}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -234,7 +215,7 @@ Transform:
   - {fileID: 2809996995702317126}
   m_Father: {fileID: 3512962649294861489}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 90}
 --- !u!1 &6155231664825664379
 GameObject:
   m_ObjectHideFlags: 0
@@ -345,14 +326,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6895230811571423101}
-  m_LocalRotation: {x: 0.10400929, y: -0.69941556, z: 0.10400929, w: 0.69941556}
-  m_LocalPosition: {x: -0.93435675, y: 0.112957284, z: -0.65952146}
+  m_LocalRotation: {x: 0.8034521, y: -0, z: -0, w: 0.5953695}
+  m_LocalPosition: {x: -0.65635675, y: -0.92, z: 0.018}
   m_LocalScale: {x: 1.11947, y: 1.11947, z: 0.39679614}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3512962649294861489}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 16.917, y: -90, z: 0}
+  m_LocalEulerAnglesHint: {x: 73.078, y: 180, z: 180}
 --- !u!114 &4625729248265971564
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3325,8 +3306,8 @@ MonoBehaviour:
   - {x: -0.13068604, y: -0.03527288}
   - {x: 0.13068604, y: 0.03527327}
   - {x: -0.13068604, y: 0.03527327}
-  - {x: 0.032077674, y: -0.03527334}
-  - {x: -0.032077916, y: -0.035273314}
+  - {x: 0.032077678, y: -0.03527334}
+  - {x: -0.032077912, y: -0.035273314}
   - {x: 0.03207769, y: 0.03527281}
   - {x: -0.032077566, y: 0.03527284}
   - {x: -0.1306858, y: 0.0320779}
@@ -3372,8 +3353,8 @@ MonoBehaviour:
   - {x: -0.84052825, y: -0.07067649}
   - {x: -0.8819457, y: 0.029540602}
   - {x: -0.7519034, y: -0.02954061}
-  - {x: -0.7933209, y: 0.07067648}
-  - {x: 0.8819457, y: 0.029540598}
+  - {x: -0.7933209, y: 0.070676476}
+  - {x: 0.8819457, y: 0.029540597}
   - {x: 0.84052825, y: -0.07067648}
   - {x: 0.79332095, y: 0.070676476}
   - {x: 0.7519034, y: -0.029540598}
@@ -3849,9 +3830,9 @@ MonoBehaviour:
   - {x: 1, y: 0, z: 0, w: -1}
   - {x: 1, y: 0, z: 0, w: -1}
   - {x: 0, y: 0.00000023226282, z: -1, w: -1}
-  - {x: 0, y: 0.00000023226345, z: -1, w: -1}
-  - {x: 0, y: 0.00000023226345, z: -1, w: -1}
-  - {x: 0, y: 0.00000023226407, z: -1, w: -1}
+  - {x: 0, y: 0.00000023226343, z: -1, w: -1}
+  - {x: 0, y: 0.00000023226343, z: -1, w: -1}
+  - {x: 0, y: 0.00000023226406, z: -1, w: -1}
   - {x: 1, y: 0, z: 0, w: -1}
   - {x: 1, y: 0, z: 0, w: -1}
   - {x: 1, y: 0, z: 0, w: -1}
@@ -3893,9 +3874,9 @@ MonoBehaviour:
   - {x: -0.00000038138668, y: -0.008579109, z: -0.9999632, w: -1}
   - {x: -0.00000039867027, y: -0.008579112, z: -0.9999632, w: -1}
   - {x: 0, y: -0.3119719, z: -0.95009136, w: -1}
-  - {x: 0, y: -0.31197187, z: -0.95009136, w: -1}
-  - {x: 0, y: -0.31197187, z: -0.95009136, w: -1}
-  - {x: 0, y: -0.31197184, z: -0.95009136, w: -1}
+  - {x: 0, y: -0.3119718, z: -0.95009136, w: -1}
+  - {x: 0, y: -0.3119718, z: -0.95009136, w: -1}
+  - {x: 0, y: -0.31197178, z: -0.95009136, w: -1}
   - {x: 0, y: 0.31197178, z: 0.95009136, w: -1}
   - {x: 0, y: 0.31197184, z: 0.95009136, w: -1}
   - {x: 0, y: 0.31197184, z: 0.95009136, w: -1}
