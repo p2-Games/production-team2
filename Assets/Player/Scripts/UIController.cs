@@ -46,6 +46,15 @@ namespace Millivolt
                     }
                 }
             }
+
+            public void Tasklist(InputAction.CallbackContext context)
+            {
+                if (context.started && GameManager.Instance.gameState != GameState.PAUSE)
+                {
+                    if (GameManager.Tasklist.canActivate)
+                        GameManager.Tasklist.SetTaskListActive(!GameManager.Tasklist.menu.isActive);
+                }
+            }
         }
 
 	}

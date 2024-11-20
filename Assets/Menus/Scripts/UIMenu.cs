@@ -29,6 +29,8 @@ namespace Millivolt
             [SerializeField] private bool m_interactable = true;
             public bool interactable => m_interactable;
 
+            [SerializeField] private CanvasGroup m_canvasGroup;
+
             [Header("")]
             [SerializeField] private GameObject m_firstSelected;
             public GameObject firstSelected
@@ -100,7 +102,8 @@ namespace Millivolt
             /// </summary>
             public void ActivateMenu()
 			{
-                UIMenuManager.Instance.activeMenus.Insert(0, this);
+                if (interactable)
+                    UIMenuManager.Instance.activeMenus.Insert(0, this);
                 UIMenuManager.Instance.SetActiveMenu();
                 UIMenuManager.Instance.CursorLockupdate();
                 ActivateAnimation();
@@ -118,12 +121,21 @@ namespace Millivolt
 			/// </summary>
             public void DeactivateMenu()
             {
-                UIMenuManager.Instance.activeMenus.Remove(this);
+                if (m_interactable)
+                    UIMenuManager.Instance.activeMenus.Remove(this);
                 UIMenuManager.Instance.SetActiveMenu();
                 UIMenuManager.Instance.CursorLockupdate();
                 //GameManager.PlayerController.SetCanMove(true, Player.CanMoveType.Menu);
                 DeactivateAnimation();
                 m_isActive = false;
+            }
+
+            /// <summary>
+            /// Instantly set the UI as invisible
+            /// </summary>
+            public void InstantClose()
+            {
+                m_canvasGroup.alpha = 0;
             }
 
             /// <summary>
@@ -137,7 +149,10 @@ namespace Millivolt
                 {
                     if (m_uiGroup != null)
                     {
-                        gameObject.SetActive(true);
+                        if (m_interactable)
+                            gameObject.SetActive(true);
+                        else
+                            m_canvasGroup.alpha = 1;
                         m_uiGroup.transform.position = m_enableStartPos;
                         Tween.Position(m_uiGroup.transform, m_enableEndPos, m_enableTweenDuration, m_enableTweenDelay, Tween.EaseInOut, Tween.LoopType.None, null, null, false);
                     }
@@ -163,7 +178,10 @@ namespace Millivolt
 
             private void HideMenuAfterTween()
             {
-                gameObject.SetActive(false);
+                if (m_interactable)
+                    gameObject.SetActive(false);
+                else
+                    m_canvasGroup.alpha = 0;
             }
 
             private void Start()
