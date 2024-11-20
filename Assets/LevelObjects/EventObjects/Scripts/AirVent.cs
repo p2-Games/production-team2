@@ -1,7 +1,7 @@
 ///<summary>
 /// Author: Halen
 ///
-/// Drops a static object and makes it
+/// Drops a static object and makes it rotate and then it gets destroyed.
 ///
 ///</summary>
 
@@ -14,6 +14,8 @@ namespace Millivolt.LevelObjects.EventObjects
     {
         [Header("Air Vent Properties")]
         [SerializeField] GameObject[] m_objectsToDisable;
+        [SerializeField, Min(0)] private float m_rotateSpeed = 2;
+        [SerializeField, Min(0)] private float m_destroyDelay = 3;
         
         private Rigidbody m_rb;
 
@@ -26,11 +28,6 @@ namespace Millivolt.LevelObjects.EventObjects
 
         protected override void OnActivate()
         {
-            m_rb.isKinematic = false;
-            m_rb.useGravity = true;
-
-            gameObject.layer = 10;
-
             StartCoroutine(RotateForward());
 
             foreach (GameObject obj in m_objectsToDisable)
@@ -42,15 +39,20 @@ namespace Millivolt.LevelObjects.EventObjects
         private IEnumerator RotateForward()
         {
             Quaternion initialRotation = transform.rotation;
-            Quaternion targetRotation = initialRotation * Quaternion.AngleAxis(25, transform.forward);
+            Quaternion targetRotation = initialRotation * Quaternion.Euler(transform.eulerAngles.z == 180 ? -25 : 25, 0, 0);
 
             float t = 0;
             while (transform.rotation != targetRotation)
             {
                 yield return new WaitForFixedUpdate();
-                t += Time.fixedDeltaTime;
+                t += Time.fixedDeltaTime * m_rotateSpeed;
                 m_rb.MoveRotation(Quaternion.Lerp(initialRotation, targetRotation, t));
             }
+
+            m_rb.isKinematic = false;
+            m_rb.useGravity = true;
+
+            Destroy(gameObject, m_destroyDelay);
         }
     }
 }
