@@ -18,5 +18,8 @@ namespace Millivolt.UI
 		public string quoteText;
 
 		public Transform spawnPosition;
+
+		public float startDelay;
+		public float lifetimeDuration;
 	}
 }
