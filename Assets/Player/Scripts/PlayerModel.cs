@@ -77,20 +77,13 @@ namespace Millivolt
 
             public void OnGravityChange()
             {
-                Vector3 gravityDir = Physics.gravity.normalized;
-
                 // if the gravity indicator is not yet active, then activate it
                 if (!m_gravityIndicatorUI.gameObject.activeSelf)
                     m_gravityIndicatorUI.gameObject.SetActive(true);
 
-                // the game only uses direct world up and direct world down for gravity directions,
-                // so we can just compare the gravity direction with the world up to determine the direction
-                if (gravityDir == Vector3.up)
-                    m_gravityIndicatorUI.ChangeToUp();
-                else
-                    m_gravityIndicatorUI.ChangeToDown();
+                m_gravityIndicatorUI.UpdateDirection();
                 
-                StartCoroutine(RotateWithGravity(-gravityDir));
+                StartCoroutine(RotateWithGravity(-Physics.gravity.normalized));
             }
 
             private IEnumerator RotateWithGravity(Vector3 targetUp)
@@ -121,6 +114,12 @@ namespace Millivolt
             {
                 StopAllCoroutines();
                 transform.rotation = Quaternion.identity;
+            }
+
+            public void ResetModel()
+            {
+                StopAllCoroutines();
+                m_gravityIndicatorUI.UpdateDirection();
             }
         }
     }

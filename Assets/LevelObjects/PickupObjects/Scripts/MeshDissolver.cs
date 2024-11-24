@@ -30,18 +30,18 @@ namespace Millivolt
             // also get the material for the outline/fill shader
             MeshRenderer mesh = GetComponentInChildren<MeshRenderer>();
             Material[] materials = mesh.materials;
-            Material material = new Material(materials[0]);
+            Material dissolveMaterial = new Material(materials[0]);
             Material outlineMaterial = new Material(materials[1]);
 
             // set the new material's shader to the dissolve shader
-            material.shader = m_dissolveShader;
+            dissolveMaterial.shader = m_dissolveShader;
 
             // set the colour of the new material to the colour from the dissolve material
-            material.SetColor("_DissolveColour", m_dissolveColour);
-            material.SetFloat("_DissolveStrength", 0);
+            dissolveMaterial.SetColor("_DissolveColour", m_dissolveColour);
+            dissolveMaterial.SetFloat("_DissolveStrength", 0);
 
             // apply the material
-            mesh.materials = new Material[] { material, outlineMaterial };
+            mesh.materials = new Material[] { dissolveMaterial, outlineMaterial };
 
             // instantiate the particle effect if it exists
             if (m_particle)
@@ -52,8 +52,8 @@ namespace Millivolt
                 StartCoroutine(DisableGravity());
 
             // start the dissolve
-            Tween.ShaderFloat(material, "_DissolveStrength", 0.85f, m_duration, m_delay);
-            Tween.ShaderFloat(outlineMaterial, "_Scale", 0.85f, m_duration, m_delay);
+            Tween.ShaderFloat(dissolveMaterial, "_DissolveStrength", 0.85f, m_duration, m_delay);
+            Tween.ShaderFloat(outlineMaterial, "_Opacity", 0, m_duration, m_delay);
 
             // destroy the object after the delay and total dissolve duration
             Destroy(gameObject, m_delay + m_duration);
