@@ -56,7 +56,7 @@ namespace Millivolt.Player
             "Make sure the order of emotions matches the same order shown in the dropdowns.")]
         [SerializeField] private List<Emotion> m_emotions;
 
-        public string currentEmotion => nameof(m_currentEmotion.type);
+        public string currentEmotion => m_currentEmotion.type.ToString();
         private Emotion m_currentEmotion;
 
         [SerializeField, Min(0)] private float m_blinkDuration;
