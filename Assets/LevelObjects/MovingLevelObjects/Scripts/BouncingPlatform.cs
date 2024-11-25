@@ -11,9 +11,9 @@ namespace Millivolt
 {
     namespace LevelObjects
     {
-        namespace MovingLevelObjects
+        namespace MovingObjects
         {
-            public class BouncingPlatform : MovingLevelObject
+            public class BouncingPlatform : MovingObject
             {
                 [Header("Bouncing Platform Details"), Tooltip("If the platform is not at the start or end of it's path, you can choose which way it will move on Start.")]
                 [SerializeField] private bool m_startsMovingBackward;
