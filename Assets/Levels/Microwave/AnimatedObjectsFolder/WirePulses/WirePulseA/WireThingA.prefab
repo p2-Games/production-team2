@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 2962514832317344642}
   - component: {fileID: 2962514832317344643}
   - component: {fileID: 2962514832317344640}
-  - component: {fileID: 2962514832317344641}
   - component: {fileID: 6388024941539108970}
   m_Layer: 0
   m_Name: WireThingA
@@ -453,20 +452,6 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2962514832317344647}
-  m_Mesh: {fileID: 0}
---- !u!64 &2962514832317344641
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2962514832317344647}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
   m_Mesh: {fileID: 0}
 --- !u!95 &6388024941539108970
 Animator:
@@ -29896,21 +29881,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2962514832317344646}
     m_Modifications:
-    - target: {fileID: 3684489958404627924, guid: f611585cde82d884ca53fb00a4847fe6,
-        type: 3}
-      propertyPath: ShapeModule.type
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 3684489958404627924, guid: f611585cde82d884ca53fb00a4847fe6,
-        type: 3}
-      propertyPath: ShapeModule.radius.value
-      value: 0.21
-      objectReference: {fileID: 0}
-    - target: {fileID: 3684489958404627924, guid: f611585cde82d884ca53fb00a4847fe6,
-        type: 3}
-      propertyPath: ShapeModule.radiusThickness
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 6002400027407299930, guid: f611585cde82d884ca53fb00a4847fe6,
         type: 3}
       propertyPath: m_RootOrder

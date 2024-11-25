@@ -221,7 +221,7 @@ namespace Millivolt
         [ContextMenu("Reset Gravity")]
         public void ResetGravity()
         {
-            ChangeGravity(LevelManager.Instance.levelData.gravityDirection, LevelManager.Instance.levelData.gravityMagnitude);
+            Physics.gravity = Quaternion.Euler(LevelManager.Instance.levelData.gravityDirection) * Vector3.up * LevelManager.Instance.levelData.gravityMagnitude;
         }
     }
 
