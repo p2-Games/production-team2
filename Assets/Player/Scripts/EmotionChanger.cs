@@ -33,7 +33,7 @@ namespace Millivolt.Player
         private IEnumerator ChangeOnDelay(string emotionName, float delay)
         {
             yield return new WaitForSeconds(delay);
-            SetEmotion(emotionName);
+            GameManager.Player.Emotion.ChangeEmotion(emotionName);
         }
     }
 }
