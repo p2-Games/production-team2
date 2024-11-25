@@ -5,7 +5,6 @@
 ///
 ///</summary>
 
-using Millivolt.Player;
 using UnityEditor;
 using UnityEngine;
 

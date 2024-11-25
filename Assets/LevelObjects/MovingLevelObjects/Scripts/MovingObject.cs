@@ -13,9 +13,9 @@ namespace Millivolt
 {
     namespace LevelObjects
     {
-        namespace MovingLevelObjects
+        namespace MovingObjects
         {
-            public abstract class MovingLevelObject : LevelObject
+            public abstract class MovingObject : LevelObject
             {
                 [Header("Moving Object Details"), Tooltip("How fast the platform moves in units per second.")]
                 [SerializeField] protected float m_movementSpeed;
