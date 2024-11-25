@@ -37,6 +37,16 @@ namespace Millivolt
         [SerializeField, Min(0)] private float m_shrinkDuration;
         [SerializeField, Min(0)] private float m_growAndShrinkDelay;
 
+        public void UpdateDirection()
+        {
+            // the game only uses direct world up and direct world down for gravity directions,
+            // so we can just compare the gravity direction with the world up to determine the direction
+            if (Physics.gravity.normalized == Vector3.up)
+                ChangeToUp();
+            else
+                ChangeToDown();
+        }
+
 		public void ChangeToDown()
 		{
             StopAllCoroutines();

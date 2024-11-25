@@ -86,10 +86,10 @@ namespace Millivolt
 
 			public void SpawnPlayer()
 			{
-				GameManager.Player.Controller.ResetPlayer();
-				GameManager.Player.Model.StopAllCoroutines();
-
                 GameManager.Instance.SetGravity(levelData.gravityDirection, levelData.gravityMagnitude);
+				
+				GameManager.Player.Controller.ResetPlayer();
+				GameManager.Player.Model.ResetModel();
 
 				GameManager.Player.Controller.transform.position = activeCheckpoint.respawnPoint.position;
 				GameManager.Player.Model.SetHeading(activeCheckpoint.frontPosition);

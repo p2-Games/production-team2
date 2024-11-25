@@ -80,6 +80,10 @@ namespace Millivolt
                         spawnParent.AutoRespawn();
                     }
 
+                    // increase drag for effect
+                    m_rb.drag = 2.3f;
+                    m_rb.angularDrag = 1.2f;
+
                     GetComponent<MeshDissolver>().Dissolve();
                 }
             }
