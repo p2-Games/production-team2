@@ -11,9 +11,9 @@ namespace Millivolt
 {
     namespace LevelObjects
     {
-        namespace MovingLevelObjects
+        namespace MovingObjects
         {
-            public class SpinningObject : MovingLevelObject
+            public class SpinningObject : MovingObject
             {
                 protected override void FixedUpdate()
                 {

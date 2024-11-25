@@ -11,9 +11,9 @@ namespace Millivolt
 {
     namespace LevelObjects
     {
-        namespace MovingLevelObjects
+        namespace MovingObjects
         {
-            public class TriggeredPlatform : MovingLevelObject
+            public class TriggeredPlatform : MovingObject
             {
                 public override bool isActive
                 {
