@@ -430,73 +430,85 @@ MonoBehaviour:
   - nameText: 
     jobTitleText: Designers
     quoteText: 
+    bgImage: {fileID: 21300000, guid: 48d37f5fa4486d344a3f7dd7a7dda89d, type: 3}
     spawnPosition: {fileID: 830647596}
     startDelay: 1
     lifetimeDuration: 2
   - nameText: Brayden Teoh
     jobTitleText: Lead Designer & QA
     quoteText: '"I quit"'
+    bgImage: {fileID: 21300000, guid: 7569845585de08d4882da0d4936453e9, type: 3}
     spawnPosition: {fileID: 830647596}
     startDelay: 3
     lifetimeDuration: 2
   - nameText: May Shirmer
     jobTitleText: Level & Sound Designer
     quoteText: '"Stage 4 brainrot, no cure"'
+    bgImage: {fileID: 21300000, guid: 499eb518c15846a4baae4eb7ef2f0681, type: 3}
     spawnPosition: {fileID: 830647596}
     startDelay: 5
     lifetimeDuration: 2
   - nameText: Liam Gulliver
     jobTitleText: Level Concept Designer & Marketing Manager
     quoteText: '"Mj was a hit"'
-    spawnPosition: {fileID: 830647596}
+    bgImage: {fileID: 21300000, guid: 1f5d863d3ed23e444931242a7aa6b54a, type: 3}
+    spawnPosition: {fileID: 1909177070}
     startDelay: 7
     lifetimeDuration: 2
   - nameText: 
     jobTitleText: Programmers
     quoteText: 
+    bgImage: {fileID: 21300000, guid: 48d37f5fa4486d344a3f7dd7a7dda89d, type: 3}
     spawnPosition: {fileID: 830647596}
     startDelay: 9
     lifetimeDuration: 2
   - nameText: Emily McDonald
     jobTitleText: Lead programmer and UI programming
     quoteText: '"What can I say"'
+    bgImage: {fileID: 21300000, guid: dfedc7feb758cd34bb41410618fece6a, type: 3}
     spawnPosition: {fileID: 830647596}
     startDelay: 11
     lifetimeDuration: 2
   - nameText: Halen Finlay
     jobTitleText: Programmer
     quoteText: '"DROP DATABASE DATABASE_NAME"'
-    spawnPosition: {fileID: 830647596}
+    bgImage: {fileID: 21300000, guid: b07aa897cef4d214ea04efb39a5e7466, type: 3}
+    spawnPosition: {fileID: 1909177070}
     startDelay: 13
     lifetimeDuration: 2
   - nameText: 
     jobTitleText: Artists
     quoteText: 
+    bgImage: {fileID: 21300000, guid: 48d37f5fa4486d344a3f7dd7a7dda89d, type: 3}
     spawnPosition: {fileID: 830647596}
     startDelay: 15
     lifetimeDuration: 2
   - nameText: Yash Chadha
     jobTitleText: 'Lead Artist, Tech Artist, Lighting Artist '
     quoteText: '"Please hire me"'
+    bgImage: {fileID: 21300000, guid: 499eb518c15846a4baae4eb7ef2f0681, type: 3}
     spawnPosition: {fileID: 830647596}
     startDelay: 17
     lifetimeDuration: 2
   - nameText: Valeriia Holik
     jobTitleText: Character Rig Artist, Environment Artist and Animator
     quoteText: '"Insert funny quote here"'
+    bgImage: {fileID: 21300000, guid: d0c3d4c513464774985bbf957b3bedf5, type: 3}
     spawnPosition: {fileID: 830647596}
     startDelay: 19
     lifetimeDuration: 2
   - nameText: Zoe Turner Davey
     jobTitleText: Character Artist and Animator
     quoteText: '"Please also hire me"'
-    spawnPosition: {fileID: 830647596}
+    bgImage: {fileID: 21300000, guid: 499eb518c15846a4baae4eb7ef2f0681, type: 3}
+    spawnPosition: {fileID: 1909177070}
     startDelay: 21
     lifetimeDuration: 2
   - nameText: 'Jedd Strawbridge '
     jobTitleText: Environment Artist
     quoteText: '"''you sir, are a fish'' - Arthur Morgan"'
-    spawnPosition: {fileID: 830647596}
+    bgImage: {fileID: 21300000, guid: b07aa897cef4d214ea04efb39a5e7466, type: 3}
+    spawnPosition: {fileID: 1909177070}
     startDelay: 23
     lifetimeDuration: 2
   m_creditsPrefab: {fileID: 4873087790457675995, guid: 8797985565bec2245b25b7156f57580c,
@@ -534,7 +546,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -212, y: 112}
+  m_AnchoredPosition: {x: -180, y: 112}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1492115959
@@ -566,6 +578,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 830647596}
+  - {fileID: 1909177070}
   m_Father: {fileID: 826534274}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -765,3 +778,39 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1801986638}
   m_CullTransparentMesh: 1
+--- !u!1 &1909177069
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1909177070}
+  m_Layer: 5
+  m_Name: CreditPos1 (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1909177070
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1909177069}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1492115960}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 173, y: 112}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}

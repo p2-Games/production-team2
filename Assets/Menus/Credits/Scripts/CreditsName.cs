@@ -7,6 +7,7 @@
 
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Millivolt.UI
 {
@@ -16,6 +17,8 @@ namespace Millivolt.UI
 		public string nameText;
 		public string jobTitleText;
 		public string quoteText;
+
+		public Sprite bgImage;
 
 		public Transform spawnPosition;
 
