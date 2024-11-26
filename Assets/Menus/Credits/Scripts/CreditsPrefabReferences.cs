@@ -7,6 +7,7 @@
 
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Millivolt
 {
@@ -16,8 +17,12 @@ namespace Millivolt
 		[SerializeField] private TextMeshProUGUI m_jobText;
 		[SerializeField] private TextMeshProUGUI m_quoteText;
 
+		[SerializeField] private Image m_bgImage;
+
 		public TextMeshProUGUI nameText => m_nameText;
 		public TextMeshProUGUI jobText => m_jobText;
 		public TextMeshProUGUI quoteText => m_quoteText;
+
+		public Image bgImage => m_bgImage;
 	}
 }
