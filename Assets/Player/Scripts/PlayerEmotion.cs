@@ -26,7 +26,7 @@ namespace Millivolt.Player
         public class Emotion
         {
             [SerializeField] private EmotionMode m_type;
-            [SerializeField] private Color m_colour;
+            [SerializeField] private Color m_colour = new(0, 0, 0, 1);
             [SerializeField] private Material m_regularFace;
             [SerializeField] private Material m_blinkFace;
 

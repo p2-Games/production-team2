@@ -15,6 +15,7 @@ namespace Millivolt
     using Player.UI;
     using LevelObjects;
     using LevelObjects.PickupObjects;
+    using Sound;
 
     namespace Player
     {

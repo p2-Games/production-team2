@@ -54,7 +54,7 @@ namespace Millivolt
                         m_activateEvents.Invoke();
 
                         // play sound effect
-                        SFXController.Instance.PlayRandomSoundClip("LaunchPad", transform);
+                        Sound.SFXController.Instance.PlayRandomSoundClip("LaunchPad", transform);
 
                         m_objectToLaunch = null;
 

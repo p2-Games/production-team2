@@ -12,7 +12,7 @@ using UnityEngine;
 namespace Millivolt
 {
     using LevelObjects.HazardObjects;
-    using Level;
+    using Sound;
 
     namespace Player
     {
