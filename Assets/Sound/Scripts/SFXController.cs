@@ -8,7 +8,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Millivolt
+namespace Millivolt.Sound
 {
     public enum SoundType
     {

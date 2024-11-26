@@ -11,6 +11,8 @@ using UnityEngine.InputSystem;
 
 namespace Millivolt
 {
+    using Sound;
+
     namespace Player
     {
         [RequireComponent(typeof(Rigidbody), typeof(PlayerInput))]

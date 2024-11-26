@@ -88,7 +88,7 @@ namespace Millivolt
                         GameManager.Player.Interaction.DropObject();
 
                         // play a sound effect
-                        SFXController.Instance.PlayRandomSoundClip("ScrewInsert", m_respawnTransform.position);
+                        Sound.SFXController.Instance.PlayRandomSoundClip("ScrewInsert", m_respawnTransform.position);
 
                         ToggleState();
                     }

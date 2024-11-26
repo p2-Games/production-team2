@@ -10,6 +10,8 @@ using UnityEngine.Events;
 
 namespace Millivolt.LevelObjects.EventObjects
 {
+    using Sound;
+
     public abstract class EventObject : LevelObject
     {
         public override bool isActive
