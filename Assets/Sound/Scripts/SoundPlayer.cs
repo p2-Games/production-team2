@@ -8,7 +8,7 @@
 using System.Collections;
 using UnityEngine;
 
-namespace Millivolt
+namespace Millivolt.Sound
 {
     public class SoundPlayer : MonoBehaviour
     {

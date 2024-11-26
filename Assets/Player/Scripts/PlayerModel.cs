@@ -119,7 +119,8 @@ namespace Millivolt
             public void ResetModel()
             {
                 StopAllCoroutines();
-                m_gravityIndicatorUI.UpdateDirection();
+                if (m_gravityIndicatorUI.gameObject.activeSelf)
+                    m_gravityIndicatorUI.UpdateDirection();
             }
         }
     }

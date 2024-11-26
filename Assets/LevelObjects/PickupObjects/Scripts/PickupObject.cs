@@ -10,6 +10,7 @@ using UnityEngine;
 namespace Millivolt
 {
     using Player;
+    using Sound;
 
     namespace LevelObjects
     {
@@ -21,7 +22,7 @@ namespace Millivolt
                 Immovable
             }
 
-            [RequireComponent(typeof(Rigidbody))]
+            [RequireComponent(typeof(Rigidbody), typeof(Interactable))]
             public class PickupObject : LevelObject
             {
                 [Header("Pickup Object Details")]

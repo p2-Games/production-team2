@@ -8,114 +8,110 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Millivolt
+namespace Millivolt.LevelObjects.EventObjects
 {
-    namespace LevelObjects
+    using Sound;
+
+    public abstract class EventObject : LevelObject
     {
-        namespace EventObjects
+        public override bool isActive
         {
-            public abstract class EventObject : LevelObject
+            get { return m_isActive; }
+            set
             {
-                public override bool isActive
+                if (value)
                 {
-                    get { return m_isActive; }
-                    set
+                    m_activateEvents.Invoke();
+
+                    // play sound effect
+                    if (m_soundClipCollectionName != string.Empty)
                     {
-                        if (value)
-                        {
-                            m_activateEvents.Invoke();
-
-                            // play sound effect
-                            if (m_soundClipCollectionName != string.Empty)
-                            { 
-                                if (m_activateSoundClipName != string.Empty)
-                                    SFXController.Instance.PlaySoundClip(m_soundClipCollectionName, m_activateSoundClipName, transform);
-                                else
-                                    SFXController.Instance.PlayRandomSoundClip(m_soundClipCollectionName, transform);
-                            }
-
-                            OnActivate();
-                        }
+                        if (m_activateSoundClipName != string.Empty)
+                            SFXController.Instance.PlaySoundClip(m_soundClipCollectionName, m_activateSoundClipName, transform);
                         else
-                        {
-                            m_deactivateEvents.Invoke();
-
-                            // play sound effect
-                            if (m_soundClipCollectionName != string.Empty)
-                            { 
-                                if (m_deactivateSoundClipName != string.Empty)
-                                    SFXController.Instance.PlaySoundClip(m_soundClipCollectionName, m_deactivateSoundClipName, transform);
-                                else
-                                    SFXController.Instance.PlayRandomSoundClip(m_soundClipCollectionName, transform);
-                            }
-
-                            OnDeactivate();
-                        }
-
-                        if (m_togglesOnce)
-                            m_canInteract = false;
-
-                        m_isActive = value;
+                            SFXController.Instance.PlayRandomSoundClip(m_soundClipCollectionName, transform);
                     }
+
+                    OnActivate();
                 }
-
-                [Header("Event Object Details"), Tooltip("If true, the state of the object can change.")]
-                [SerializeField] protected bool m_canInteract = true;
-
-                [Tooltip("If true, the object can only be interacted with once.")]
-                [SerializeField] protected bool m_togglesOnce = false;
-
-                [Tooltip("Filter for what can interact with this object.\n" +
-                        "Accepts System Types (class names) and Tags.\n" +
-                        "If a filter begins with '!', then it will be ignored instead of accepted.")]
-                [SerializeField] protected string[] m_interactionFilter = { "Player", typeof(LevelObject).Name };
-
-                [Tooltip("The events that will occur when the object is set active.")]
-                [SerializeField] protected UnityEvent m_activateEvents;
-
-                [Tooltip("The events that will occur when the object is set inactive.")]
-                [SerializeField] protected UnityEvent m_deactivateEvents;
-
-                [Header("Sound Effects")]
-                [SerializeField] protected string m_soundClipCollectionName;
-                [SerializeField] protected string m_activateSoundClipName;
-                [SerializeField] protected string m_deactivateSoundClipName;
-
-                public virtual bool canInteract => m_canInteract;
-
-                protected bool CanTrigger(GameObject obj, bool triggeredByHeldObject = false)
+                else
                 {
-                    if (obj == gameObject)
-                        return false;
-                    
-                    // if this object cannot be triggered by the held object, and the object IS the held object, then it cannot trigger
-                    if (!triggeredByHeldObject && GameManager.Player && obj == GameManager.Player.Interaction.heldObject)
-                        return false;
+                    m_deactivateEvents.Invoke();
 
-                    foreach (string type in m_interactionFilter)
+                    // play sound effect
+                    if (m_soundClipCollectionName != string.Empty)
                     {
-                        if (type[0] == '!')
-                        {
-                            string actualType = type[1..];
-                            if (obj.tag == actualType || obj.GetComponent(actualType))
-                                return false;
-                        }
-                        else if (obj.tag == type || obj.GetComponent(type))
-                            return true;
+                        if (m_deactivateSoundClipName != string.Empty)
+                            SFXController.Instance.PlaySoundClip(m_soundClipCollectionName, m_deactivateSoundClipName, transform);
+                        else
+                            SFXController.Instance.PlayRandomSoundClip(m_soundClipCollectionName, transform);
                     }
-                    return false;
+
+                    OnDeactivate();
                 }
 
-                protected virtual void OnActivate() { }
+                if (m_togglesOnce)
+                    m_canInteract = false;
 
-                protected virtual void OnDeactivate() { }
-
-                public virtual void Interact()
-                {
-                    if (!canInteract)
-                        return;
-                }
+                m_isActive = value;
             }
+        }
+
+        [Header("Event Object Details"), Tooltip("If true, the state of the object can change.")]
+        [SerializeField] protected bool m_canInteract = true;
+
+        [Tooltip("If true, the object can only be interacted with once.")]
+        [SerializeField] protected bool m_togglesOnce = false;
+
+        [Tooltip("Filter for what can interact with this object.\n" +
+                "Accepts System Types (class names) and Tags.\n" +
+                "If a filter begins with '!', then it will be ignored instead of accepted.")]
+        [SerializeField] protected string[] m_interactionFilter = { "Player", typeof(LevelObject).Name };
+
+        [Tooltip("The events that will occur when the object is set active.")]
+        [SerializeField] protected UnityEvent m_activateEvents;
+
+        [Tooltip("The events that will occur when the object is set inactive.")]
+        [SerializeField] protected UnityEvent m_deactivateEvents;
+
+        [Header("Sound Effects")]
+        [SerializeField] protected string m_soundClipCollectionName;
+        [SerializeField] protected string m_activateSoundClipName;
+        [SerializeField] protected string m_deactivateSoundClipName;
+
+        public virtual bool canInteract => m_canInteract;
+
+        protected bool CanTrigger(GameObject obj, bool triggeredByHeldObject = false)
+        {
+            if (obj == gameObject)
+                return false;
+
+            // if this object cannot be triggered by the held object, and the object IS the held object, then it cannot trigger
+            if (!triggeredByHeldObject && GameManager.Player && obj == GameManager.Player.Interaction.heldObject)
+                return false;
+
+            foreach (string type in m_interactionFilter)
+            {
+                if (type[0] == '!')
+                {
+                    string actualType = type[1..];
+                    if (obj.tag == actualType || obj.GetComponent(actualType))
+                        return false;
+                }
+                else if (obj.tag == type || obj.GetComponent(type))
+                    return true;
+            }
+            return false;
+        }
+
+        protected virtual void OnActivate() { }
+
+        protected virtual void OnDeactivate() { }
+
+        public virtual void Interact()
+        {
+            if (!canInteract)
+                return;
         }
     }
 }
