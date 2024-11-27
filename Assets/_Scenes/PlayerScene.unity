@@ -123,18 +123,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!134 &150139179
-PhysicMaterial:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: DynamicMaterial
-  dynamicFriction: 0
-  staticFriction: 0
-  bounciness: 0
-  frictionCombine: 1
-  bounceCombine: 1
 --- !u!1 &372818521
 GameObject:
   m_ObjectHideFlags: 0
@@ -460,7 +448,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Material
       value: 
-      objectReference: {fileID: 150139179}
+      objectReference: {fileID: 843717940}
     - target: {fileID: 231944331065544993, guid: ff2eab9ba8148954697e7c7ccf1e9783,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -1250,6 +1238,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 867053960}
     m_Modifications:
+    - target: {fileID: 2582690241731788608, guid: 0b3d3948491a8114e9a077358c03c889,
+        type: 3}
+      propertyPath: m_IgnoreTag
+      value: Camera Ignore
+      objectReference: {fileID: 0}
+    - target: {fileID: 2582690241731788608, guid: 0b3d3948491a8114e9a077358c03c889,
+        type: 3}
+      propertyPath: m_TransparentLayers.m_Bits
+      value: 1032
+      objectReference: {fileID: 0}
     - target: {fileID: 2582690241731788609, guid: 0b3d3948491a8114e9a077358c03c889,
         type: 3}
       propertyPath: m_Follow
@@ -1335,6 +1333,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 770836996}
   m_PrefabAsset: {fileID: 0}
+--- !u!134 &843717940
+PhysicMaterial:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: DynamicMaterial
+  dynamicFriction: 0
+  staticFriction: 0
+  bounciness: 0
+  frictionCombine: 1
+  bounceCombine: 1
 --- !u!1 &867053959
 GameObject:
   m_ObjectHideFlags: 0
