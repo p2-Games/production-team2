@@ -1,11 +1,11 @@
 ///<summary>
 /// Author: Emily
 ///
+/// [DEPRECATED]
 /// Controls a Blit Screen shader (This will hopefully stop those commit messages from appearing)
 ///
 ///</summary>
 
-using Cyan;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
@@ -53,14 +53,14 @@ namespace Millivolt
 		{
 			if (TryGetFeature(out var feature))
 			{
-				m_shaderFloat = floatName;
-                var blitScript = feature as Blit;
+				//m_shaderFloat = floatName;
+                //var blitScript = feature as Blit;
 
-				blitScript.settings.blitMaterial = m_holdMat;
-                var material = blitScript.settings.blitMaterial;
+				//blitScript.settings.blitMaterial = m_holdMat;
+                //var material = blitScript.settings.blitMaterial;
 
-				if(material)
-					material.SetFloat(floatName, value);
+				//if(material)
+				//	material.SetFloat(floatName, value);
             }
 		}
 
@@ -84,14 +84,14 @@ namespace Millivolt
 		{
 			if (TryGetFeature(out var feature))
 			{
-				feature.SetActive(true);
-				m_renderData.SetDirty();
+				//feature.SetActive(true);
+				//m_renderData.SetDirty();
 
-				var blitScript = feature as Blit;
-				blitScript.settings.blitMaterial = m_shaderMat;
-				var material = blitScript.settings.blitMaterial;
+				//var blitScript = feature as Blit;
+				//blitScript.settings.blitMaterial = m_shaderMat;
+				//var material = blitScript.settings.blitMaterial;
 
-                material.SetFloat(m_shaderFloat, 0);
+                //material.SetFloat(m_shaderFloat, 0);
 			}
 		}
     }

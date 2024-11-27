@@ -119,7 +119,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4163509ce45c6b44e8ffe5c74000a33d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_animator: {fileID: 6809633789572600137}
+  m_animator: {fileID: 0}
 --- !u!114 &6821388206902358164
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -436,7 +436,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_head
       value: 
-      objectReference: {fileID: 3419505730268411605}
+      objectReference: {fileID: 0}
     - target: {fileID: 157044153104145292, guid: fa458ade2cca1e944ba049a9ad2c45c3,
         type: 3}
       propertyPath: m_CastShadows
@@ -729,18 +729,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fa458ade2cca1e944ba049a9ad2c45c3, type: 3}
---- !u!1 &3419505730268411605 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3849546082223061279, guid: fa458ade2cca1e944ba049a9ad2c45c3,
-    type: 3}
-  m_PrefabInstance: {fileID: 1880485512224526282}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &6809633789572600137 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 4942839432107630211, guid: fa458ade2cca1e944ba049a9ad2c45c3,
-    type: 3}
-  m_PrefabInstance: {fileID: 1880485512224526282}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6821388206192318489 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4950199202765903827, guid: fa458ade2cca1e944ba049a9ad2c45c3,
@@ -810,7 +798,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_screenShaderController
       value: 
-      objectReference: {fileID: 3812467816703768894}
+      objectReference: {fileID: 0}
     - target: {fileID: 6487815084251829567, guid: a692d36eca9d5a441b86092069b69f0b,
         type: 3}
       propertyPath: m_RootOrder
@@ -873,27 +861,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a692d36eca9d5a441b86092069b69f0b, type: 3}
---- !u!1 &5081113403343879325 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7423628954554359475, guid: a692d36eca9d5a441b86092069b69f0b,
-    type: 3}
-  m_PrefabInstance: {fileID: 2415541883755160110}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &3812467816703768894
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5081113403343879325}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 229428b5b9d69d24f9dc54b54b92108d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_renderData: {fileID: 11400000, guid: c40be3174f62c4acf8c1216858c64956, type: 2}
-  m_shaderMat: {fileID: 2100000, guid: 331419b5c2198db408a61e0faa63d484, type: 2}
-  m_shaderName: HurtStatic
 --- !u!4 &8902741228031686417 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6487815084251829567, guid: a692d36eca9d5a441b86092069b69f0b,
