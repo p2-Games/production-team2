@@ -290,18 +290,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5b19887c7b941f4bbe839ddf0df3169, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!134 &541169798
-PhysicMaterial:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: DynamicMaterial
-  dynamicFriction: 0
-  staticFriction: 0
-  bounciness: 0
-  frictionCombine: 1
-  bounceCombine: 1
 --- !u!1001 &563426704
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -460,7 +448,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Material
       value: 
-      objectReference: {fileID: 541169798}
+      objectReference: {fileID: 843717940}
     - target: {fileID: 231944331065544993, guid: ff2eab9ba8148954697e7c7ccf1e9783,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -1250,6 +1238,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 867053960}
     m_Modifications:
+    - target: {fileID: 2582690241731788608, guid: 0b3d3948491a8114e9a077358c03c889,
+        type: 3}
+      propertyPath: m_IgnoreTag
+      value: Camera Ignore
+      objectReference: {fileID: 0}
+    - target: {fileID: 2582690241731788608, guid: 0b3d3948491a8114e9a077358c03c889,
+        type: 3}
+      propertyPath: m_TransparentLayers.m_Bits
+      value: 1032
+      objectReference: {fileID: 0}
     - target: {fileID: 2582690241731788609, guid: 0b3d3948491a8114e9a077358c03c889,
         type: 3}
       propertyPath: m_Follow
@@ -1259,11 +1257,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: CM 3rdPerson
-      objectReference: {fileID: 0}
-    - target: {fileID: 2582690241731788611, guid: 0b3d3948491a8114e9a077358c03c889,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2582690241731788638, guid: 0b3d3948491a8114e9a077358c03c889,
         type: 3}
@@ -1340,6 +1333,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 770836996}
   m_PrefabAsset: {fileID: 0}
+--- !u!134 &843717940
+PhysicMaterial:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: DynamicMaterial
+  dynamicFriction: 0
+  staticFriction: 0
+  bounciness: 0
+  frictionCombine: 1
+  bounceCombine: 1
 --- !u!1 &867053959
 GameObject:
   m_ObjectHideFlags: 0
