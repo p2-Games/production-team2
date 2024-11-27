@@ -29,7 +29,8 @@ namespace Millivolt.LevelObjects.EventObjects
         protected override void OnActivate()
         {
             StartCoroutine(RotateForward());
-
+            //On activation set the objetc layer to ignore so that it wont collide with the player
+            gameObject.layer = LayerMask.NameToLayer("Ignore");
             foreach (GameObject obj in m_objectsToDisable)
             {
                 obj.SetActive(false);
