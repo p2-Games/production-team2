@@ -88,5 +88,20 @@ namespace Millivolt.UI
         {
             GameManager.Instance.ExitToMenu();
         }
+
+        public void GoToCredits()
+        {
+            GameManager.Instance.SetTimeScale(1);
+            // Call the CRT effect to player
+            m_closeScreen.SetActive(true);
+            // Invoke the scene load function after the animation has finished
+            Invoke(nameof(CallCreditsScene), 1f);
+        }
+
+        private void CallCreditsScene()
+        {
+            GameManager.Instance.gameState = GameState.MENU;
+            GameManager.Instance.LoadLevel("CreditsScene");
+        }
     }
 }

@@ -171,7 +171,7 @@ namespace Millivolt
 				yield return null;
 			isLoading = false;
 
-			if (SceneManager.GetActiveScene().name == "MenuScene")
+			if (SceneManager.GetActiveScene().name == "MenuScene" || SceneManager.GetActiveScene().name == "CreditsScene")
 				m_loadingScreen.SetActive(false);
 		}
 
