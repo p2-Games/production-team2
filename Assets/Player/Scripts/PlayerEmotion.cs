@@ -29,11 +29,13 @@ namespace Millivolt.Player
             [SerializeField] private Color m_colour = new(0, 0, 0, 1);
             [SerializeField] private Material m_regularFace;
             [SerializeField] private Material m_blinkFace;
+            [SerializeField] private bool m_canBlink = false;
 
             public EmotionMode type => m_type;
             public Color colour => m_colour;
             public Material regular => m_regularFace;
             public Material blink => m_blinkFace;
+            public bool canBlink => m_canBlink;
         }
 
         [Header("Emission Change")]
@@ -77,13 +79,16 @@ namespace Millivolt.Player
         public void Update()
         {
             // blinking logic
-            m_currentBlinkTime += Time.deltaTime;
-
-            if (m_currentBlinkTime >= m_targetBlinkInterval)
+            if (m_currentEmotion.canBlink)
             {
-                Blink();
-                m_targetBlinkInterval = m_blinkInterval + Random.Range(-m_blinkIntervalVariation, m_blinkIntervalVariation);
-                m_currentBlinkTime = 0;
+                m_currentBlinkTime += Time.deltaTime;
+
+                if (m_currentBlinkTime >= m_targetBlinkInterval)
+                {
+                    Blink();
+                    m_targetBlinkInterval = m_blinkInterval + Random.Range(-m_blinkIntervalVariation, m_blinkIntervalVariation);
+                    m_currentBlinkTime = 0;
+                }
             }
         }
 
@@ -120,13 +125,14 @@ namespace Millivolt.Player
 
             // get new emotion
             Emotion newEmotion = m_emotions[(int)newEmotionMode];
+           
+            // set the current emotion
+            m_currentEmotion = newEmotion;
+            m_currentBlinkTime = 0;
 
             // change the material to the base one by default
             ChangeFaceMaterial(newEmotion.regular);
             ChangeColour(newEmotion.colour);
-
-            // set the current emotion
-            m_currentEmotion = newEmotion;
         }
 
         public void Blink()
@@ -140,6 +146,8 @@ namespace Millivolt.Player
             StopAllCoroutines();
 
             Emotion newEmotion = m_emotions[(int)newEmotionMode];
+            m_currentEmotion = newEmotion;
+            m_currentBlinkTime = 0;
 
             ChangeFaceMaterial(newEmotion.regular);
             SetColour(newEmotion.colour);
@@ -212,6 +220,13 @@ namespace Millivolt.Player
 
                 yield return null;
             }
+        }
+
+        public void SetRandomEmotion()
+        {
+            EmotionMode randomEmotion = (EmotionMode) Random.Range(0, System.Enum.GetNames(typeof(EmotionMode)).Length);
+
+            SetEmotion(randomEmotion);
         }
 
         private void OnDisable()
