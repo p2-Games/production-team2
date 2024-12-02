@@ -10,6 +10,7 @@ using UnityEngine;
 namespace Millivolt
 {
     using Player;
+    using Sound;
 
     namespace LevelObjects
     {

@@ -12,7 +12,7 @@ using UnityEngine;
 namespace Millivolt
 {
     using LevelObjects.HazardObjects;
-    using Level;
+    using Sound;
 
     namespace Player
     {
@@ -37,11 +37,7 @@ namespace Millivolt
             private Coroutine m_regen;
 
             [Header("Hurt and Death effect references")]
-            [Tooltip("This needs the screen effect material for the hurt effect")]
-            //[SerializeField] private Material m_staticVignette;
             [SerializeField] private PlayerDeathUI m_deathScreenEffect;
-
-            private ScreenShaderController m_screenShaderController;
 
             [Header("Knockback Properties")]
             [SerializeField] private float m_horizontalForce;
@@ -51,14 +47,11 @@ namespace Millivolt
             private void Start()
             {
                 m_currentHealth = m_maxHealth;
-                m_screenShaderController = GetComponent<ScreenShaderController>();
-                UpdateVignetteEffect();
             }
 
             private void OnDestroy()
             {
                 m_currentHealth = m_maxHealth;
-                UpdateVignetteEffect();
             }
 
             /// <summary>
@@ -71,8 +64,6 @@ namespace Millivolt
                     StopCoroutine(m_regen);
 
                 m_currentHealth -= value;
-
-                UpdateVignetteEffect();
 
                 m_regen = StartCoroutine(RegenHealth());
                 if (m_currentHealth <= 0)
@@ -98,9 +89,6 @@ namespace Millivolt
 
                 // reset player health
                 m_currentHealth = m_maxHealth;
-
-                // 
-                UpdateVignetteEffect();
 
                 // toggle canvases
                 m_deathScreenEffect.gameObject.SetActive(true);
@@ -141,28 +129,12 @@ namespace Millivolt
                 while(m_currentHealth < m_maxHealth)
                 {
                     m_currentHealth += m_healthRegenAmount;
-                    UpdateVignetteEffect();
                     yield return new WaitForSeconds(m_healthRegenRate);
                 }
                 if (m_currentHealth > m_maxHealth)
                     m_currentHealth = m_maxHealth;
             }
-
-            /// <summary>
-            /// Updates the static effect for how much damage you have taken
-            /// </summary>
-            private void UpdateVignetteEffect()
-            {
-                float effectAmount = 1 - (m_currentHealth / m_maxHealth);
-
-                if (effectAmount > 0.1)
-                {
-                    //m_staticVignette.SetFloat("_VignetteIntensity", effectAmount);
-                    m_screenShaderController.UpdateShader("_VignetteIntensity", effectAmount);
-                }
-                else
-                    m_screenShaderController.UpdateShader("_VignetteIntensity", 0);
-            }
+            
         }
     }
 }

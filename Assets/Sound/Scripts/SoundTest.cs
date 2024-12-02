@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using static Millivolt.SFXController;
+using static Millivolt.Sound.SFXController;
 
-namespace Millivolt
+namespace Millivolt.Sound
 {
     public class SoundTest : MonoBehaviour
     { 

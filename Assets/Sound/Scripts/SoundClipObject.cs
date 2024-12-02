@@ -7,7 +7,7 @@
 
 using UnityEngine;
 
-namespace Millivolt
+namespace Millivolt.Sound
 {
     public class SoundClipObject : MonoBehaviour
     {

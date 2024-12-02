@@ -38,6 +38,7 @@ namespace Millivolt.UI
             CreditsPrefabReferences creditsRef = credit.GetComponent<CreditsPrefabReferences>();
             creditsRef.nameText.text = person.nameText;
             creditsRef.jobText.text = person.jobTitleText;
+            creditsRef.bgImage.sprite = person.bgImage;
             if (m_industryMode)
                 creditsRef.quoteText.text = "";
             else
