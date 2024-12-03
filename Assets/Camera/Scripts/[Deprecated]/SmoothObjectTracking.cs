@@ -60,6 +60,9 @@ namespace Millivolt
 
         private void FixedUpdate()
         {
+            if (!m_target)
+                return;
+            
             float moveSpeed = m_moveSpeed;
 
             // if at max distance, add scaled amount to speed based on distance
@@ -71,10 +74,18 @@ namespace Millivolt
             m_targetRotation = Quaternion.RotateTowards(transform.rotation, m_target.rotation, m_rotateSpeed * Time.fixedDeltaTime);
         }
 
+        private void OnEnable()
+        {
+            if (!m_target)
+                m_target = GameManager.Player.Model.transform;
+            transform.position = m_target.position;
+        }
+
         [ContextMenu("Reset position")]
         public void SetToPlayerPosition()
         {
             transform.position = m_target.position;
+
         }
 
 #if UNITY_EDITOR
