@@ -123,6 +123,18 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!134 &266534594
+PhysicMaterial:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: DynamicMaterial
+  dynamicFriction: 0
+  staticFriction: 0
+  bounciness: 0
+  frictionCombine: 1
+  bounceCombine: 1
 --- !u!1 &372818521
 GameObject:
   m_ObjectHideFlags: 0
@@ -448,7 +460,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Material
       value: 
-      objectReference: {fileID: 843717940}
+      objectReference: {fileID: 266534594}
     - target: {fileID: 231944331065544993, guid: ff2eab9ba8148954697e7c7ccf1e9783,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -1333,18 +1345,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 770836996}
   m_PrefabAsset: {fileID: 0}
---- !u!134 &843717940
-PhysicMaterial:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: DynamicMaterial
-  dynamicFriction: 0
-  staticFriction: 0
-  bounciness: 0
-  frictionCombine: 1
-  bounceCombine: 1
 --- !u!1 &867053959
 GameObject:
   m_ObjectHideFlags: 0
@@ -2948,9 +2948,19 @@ PrefabInstance:
       objectReference: {fileID: 767687914}
     - target: {fileID: 4212235778317294377, guid: 8ea15293907ec3f42a9a3f4f115c4ec7,
         type: 3}
+      propertyPath: m_resetCameraDelay
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4212235778317294377, guid: 8ea15293907ec3f42a9a3f4f115c4ec7,
+        type: 3}
       propertyPath: m_spawnScreenEffect
       value: 
       objectReference: {fileID: 404409743472094735}
+    - target: {fileID: 4212235778317294377, guid: 8ea15293907ec3f42a9a3f4f115c4ec7,
+        type: 3}
+      propertyPath: m_reactivatePlayerDelay
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4212235778317294382, guid: 8ea15293907ec3f42a9a3f4f115c4ec7,
         type: 3}
       propertyPath: m_RootOrder
