@@ -9,6 +9,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Pixelplacement;
 using Millivolt.Level;
+using Millivolt.Sound;
 
 namespace Millivolt
 {
@@ -41,6 +42,9 @@ namespace Millivolt
 
                     m_disableDelay += 1f;
                     //Destroy(gameObject, 1f);
+
+                    // play a death sound effect
+                    SFXController.Instance.PlayRandomSoundClip("PlayerDamage", transform.parent);
 
                     Invoke(nameof(DisableThis), m_disableDelay);
                 }

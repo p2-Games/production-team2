@@ -13,10 +13,15 @@ namespace Millivolt
     {
         public class PlayerAnimationEventController : MonoBehaviour
         {
+            [SerializeField] private ParticleSystem m_footstepEffect;
+
             public void PlayFootstep()
             {
                 if (GameManager.Player.Controller.isGrounded)
+                {
                     Sound.SFXController.Instance.PlayRandomSoundClip("Footsteps", transform.parent.parent);
+                    Instantiate(m_footstepEffect, GameManager.Player.Controller.feetPosition, m_footstepEffect.transform.rotation);
+                }
             }
 
             public void EnableMovementPickup()

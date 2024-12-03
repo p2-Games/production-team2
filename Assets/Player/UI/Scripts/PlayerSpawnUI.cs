@@ -5,6 +5,7 @@
 ///
 ///</summary>
 
+using Millivolt.Sound;
 using Pixelplacement;
 using UnityEngine;
 using UnityEngine.UI;
@@ -43,6 +44,9 @@ namespace Millivolt.Player.UI
             m_disableDelay += 0.5f;
 
             //Destroy(gameObject, m_startDelay + 0.7f);
+
+            // play sound effect
+            SFXController.Instance.PlaySoundClip("CRT", "CRT On", transform);
 
             Invoke(nameof(DisableThis), m_startDelay + m_disableDelay);
         }
