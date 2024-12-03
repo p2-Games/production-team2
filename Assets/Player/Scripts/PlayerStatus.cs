@@ -68,9 +68,6 @@ namespace Millivolt
                 m_regen = StartCoroutine(RegenHealth());
                 if (m_currentHealth <= 0)
                     Die();
-                else
-                    // play a damage sound effect
-                    SFXController.Instance.PlayRandomSoundClip("PlayerDamage", transform.parent);
             }
 
             /// <summary>
@@ -95,9 +92,6 @@ namespace Millivolt
 
                 // disable interaction
                 GameManager.Player.Interaction.ResetInteraction();
-
-                // play a death sound effect
-                SFXController.Instance.PlayRandomSoundClip("PlayerDamage", transform.parent);
             }
 
             /// <summary>

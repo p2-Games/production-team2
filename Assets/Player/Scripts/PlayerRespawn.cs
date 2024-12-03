@@ -8,6 +8,7 @@
 using Cinemachine;
 using Millivolt.Level;
 using Millivolt.Player.UI;
+using Millivolt.Sound;
 using System.Collections;
 using UnityEngine;
 
@@ -67,6 +68,7 @@ namespace Millivolt.Player
 
             // create particle
             m_respawnParticle = Instantiate(m_respawnParticlePrefab, spawnPosition, m_respawnParticlePrefab.transform.rotation).gameObject;
+            SFXController.Instance.PlaySoundClip("PlayerRespawn", "Respawn", transform);
 
             // start timings
             StartCoroutine(ReactivatePlayer());

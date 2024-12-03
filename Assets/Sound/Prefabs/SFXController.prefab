@@ -26,8 +26,8 @@ Transform:
   m_GameObject: {fileID: 7545175170149038806}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.5, y: 1, z: 1}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -52,7 +52,7 @@ MonoBehaviour:
     - m_clipName: MicrowaveAmbience
       m_audioClip: {fileID: 8300000, guid: cc9f5de87998e3147b72e29f00ad1998, type: 3}
       m_volume: 1
-      m_range: 10000
+      m_range: 0
       m_loop: 1
   - m_collectionName: Button
     m_soundClips:
@@ -65,8 +65,8 @@ MonoBehaviour:
     m_soundClips:
     - m_clipName: Death
       m_audioClip: {fileID: 8300000, guid: 7fab0c4f196795e46bb09cec1d48f5dd, type: 3}
-      m_volume: 0.75
-      m_range: 10
+      m_volume: 0.45
+      m_range: 0
       m_loop: 0
   - m_collectionName: Door
     m_soundClips:
@@ -78,19 +78,19 @@ MonoBehaviour:
   - m_collectionName: Footsteps
     m_soundClips:
     - m_clipName: Footstep1
-      m_audioClip: {fileID: 8300000, guid: 90bfed43fa15b80479a4e14f679e784b, type: 3}
-      m_volume: 0.75
-      m_range: 20
+      m_audioClip: {fileID: 8300000, guid: 51414a8396afeff469edef7945128e65, type: 3}
+      m_volume: 0.9
+      m_range: 0
       m_loop: 0
     - m_clipName: Footstep2
       m_audioClip: {fileID: 8300000, guid: 83fdbfefecd78104eb06a293d6e4552e, type: 3}
-      m_volume: 0.75
-      m_range: 20
+      m_volume: 0.9
+      m_range: 0
       m_loop: 0
     - m_clipName: Footstep3
       m_audioClip: {fileID: 8300000, guid: 3d2e616b546f3c3498cb8f41cf59e353, type: 3}
-      m_volume: 0.75
-      m_range: 20
+      m_volume: 0.9
+      m_range: 0
       m_loop: 0
   - m_collectionName: GravitySwitch
     m_soundClips:
@@ -120,23 +120,23 @@ MonoBehaviour:
     m_soundClips:
     - m_clipName: Jump1
       m_audioClip: {fileID: 8300000, guid: 718d263ae4761d84682974fb36859410, type: 3}
-      m_volume: 0.5
-      m_range: 10
+      m_volume: 0.35
+      m_range: 0
       m_loop: 0
     - m_clipName: Jump2
       m_audioClip: {fileID: 8300000, guid: f21aaa3469a0fdc4e88aadaa0e288868, type: 3}
-      m_volume: 0.5
-      m_range: 10
+      m_volume: 0.35
+      m_range: 0
       m_loop: 0
     - m_clipName: Jump3
       m_audioClip: {fileID: 8300000, guid: 1ad8b63ba109d9e4c97121420c5a0853, type: 3}
-      m_volume: 0.5
-      m_range: 10
+      m_volume: 0.35
+      m_range: 0
       m_loop: 0
     - m_clipName: Jump4
       m_audioClip: {fileID: 8300000, guid: 09ea221cfe3f1f64699297764b35a36c, type: 3}
-      m_volume: 0.5
-      m_range: 10
+      m_volume: 0.35
+      m_range: 0
       m_loop: 0
   - m_collectionName: LaunchPad
     m_soundClips:
@@ -176,34 +176,34 @@ MonoBehaviour:
     - m_clipName: Menu
       m_audioClip: {fileID: 8300000, guid: 1ff56899f5f65744babfde407ee5b10e, type: 3}
       m_volume: 0.25
-      m_range: 10
+      m_range: 0
       m_loop: 1
     - m_clipName: Level1
       m_audioClip: {fileID: 8300000, guid: 28fadf4ab4060484c85e6cb107c9e043, type: 3}
       m_volume: 0.2
-      m_range: 10000
+      m_range: 0
       m_loop: 1
     - m_clipName: Credits
       m_audioClip: {fileID: 8300000, guid: 8ebaef1fd2ea77d4983bae50bb93bc89, type: 3}
       m_volume: 0.2
-      m_range: 10000
+      m_range: 0
       m_loop: 1
   - m_collectionName: PlayerDamage
     m_soundClips:
     - m_clipName: PlayerHurt
       m_audioClip: {fileID: 8300000, guid: 1bcf26ee708b80744a405c28a303e0d8, type: 3}
       m_volume: 0.75
-      m_range: 10
+      m_range: 0
       m_loop: 0
     - m_clipName: PlayerHurt2
       m_audioClip: {fileID: 8300000, guid: b30bc3905e16f7e46add38f7c22c6f19, type: 3}
       m_volume: 0.75
-      m_range: 10
+      m_range: 0
       m_loop: 0
     - m_clipName: PlayerHurt3
       m_audioClip: {fileID: 8300000, guid: d61bd739a5b540740814b7b08062bec9, type: 3}
       m_volume: 0.75
-      m_range: 10
+      m_range: 0
       m_loop: 0
   - m_collectionName: PressurePlate
     m_soundClips:
@@ -264,4 +264,18 @@ MonoBehaviour:
       m_audioClip: {fileID: 8300000, guid: 9b1b788d0061d3e4dbcb91505407b4d6, type: 3}
       m_volume: 0.75
       m_range: 15
+      m_loop: 0
+  - m_collectionName: CRT
+    m_soundClips:
+    - m_clipName: CRT On
+      m_audioClip: {fileID: 8300000, guid: af60696e95c616e4d9befd0628e75b6b, type: 3}
+      m_volume: 0.75
+      m_range: 0
+      m_loop: 0
+  - m_collectionName: PlayerRespawn
+    m_soundClips:
+    - m_clipName: Respawn
+      m_audioClip: {fileID: 8300000, guid: d9e8ffb1a7b3b064986c5ef52b5c4db7, type: 3}
+      m_volume: 0.5
+      m_range: 0
       m_loop: 0

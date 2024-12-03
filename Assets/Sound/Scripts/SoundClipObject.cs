@@ -28,14 +28,17 @@ namespace Millivolt.Sound
             m_source.clip = soundClip.audioClip;
             m_source.playOnAwake = true;
 
-            // set variables
-            m_source.volume = soundClip.volume;
-            m_source.maxDistance = soundClip.range;
+            m_type = type;
             m_source.loop = soundClip.loop;
 
-            m_originalVolume = m_source.volume;
-            m_type = type;
+            // set range/if sound is 2D
+            if (soundClip.range <= 0)
+                m_source.spatialBlend = 0;
+            else
+                m_source.maxDistance = soundClip.range;
 
+            m_source.volume = soundClip.volume;
+            m_originalVolume = m_source.volume;
             // global volume
             switch (type)
             {
@@ -64,7 +67,6 @@ namespace Millivolt.Sound
             if (m_source.loop)
                 return;
 
-                
             // destroy SoundClipObject when clip finishes playing
             if (m_isPlaying && !m_source.isPlaying)
                 Destroy(gameObject);

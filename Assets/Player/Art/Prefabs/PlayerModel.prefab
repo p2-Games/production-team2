@@ -75,18 +75,22 @@ MonoBehaviour:
     m_colour: {r: 0.21568628, g: 0.64705884, b: 0.83137256, a: 1}
     m_regularFace: {fileID: 2100000, guid: 9fb1a15119a1e7e42a91b0ade9fd5ba2, type: 2}
     m_blinkFace: {fileID: 2100000, guid: b599b704078f422428d73f7c767f8c8c, type: 2}
+    m_canBlink: 1
   - m_type: 1
     m_colour: {r: 0, g: 0.7490196, b: 0.09019608, a: 1}
     m_regularFace: {fileID: 2100000, guid: b773c2709856a124ba55ccab172cd132, type: 2}
     m_blinkFace: {fileID: 2100000, guid: b773c2709856a124ba55ccab172cd132, type: 2}
+    m_canBlink: 0
   - m_type: 2
     m_colour: {r: 0.7490196, g: 0.7490196, b: 0, a: 1}
     m_regularFace: {fileID: 2100000, guid: 82421996649fc9f41b1e3f4370da87c3, type: 2}
     m_blinkFace: {fileID: 2100000, guid: 82421996649fc9f41b1e3f4370da87c3, type: 2}
+    m_canBlink: 0
   - m_type: 3
     m_colour: {r: 0.09620862, g: 0.32979512, b: 0.4339623, a: 1}
     m_regularFace: {fileID: 2100000, guid: 4df6f84cd6a4acd4b8b9bf642778a34e, type: 2}
     m_blinkFace: {fileID: 2100000, guid: 4df6f84cd6a4acd4b8b9bf642778a34e, type: 2}
+    m_canBlink: 0
   m_blinkDuration: 0.15
   m_blinkInterval: 5
   m_blinkIntervalVariation: 2
@@ -398,3 +402,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5804c3916656c414dbb37b17ecc1d3d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_footstepEffect: {fileID: 4202076554144099707, guid: 635d3515363f5f0419b4ea686a17fab0,
+    type: 3}

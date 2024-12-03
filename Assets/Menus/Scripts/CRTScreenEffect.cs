@@ -8,6 +8,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using Pixelplacement;
+using Millivolt.Sound;
 
 namespace Millivolt
 {
@@ -25,6 +26,8 @@ namespace Millivolt
 
                 private void OnEnable()
                 {
+                    SFXController.Instance.PlaySoundClip("Death", "Death", transform);
+                    SFXController.Instance.PlayRandomSoundClip("PlayerDamage", transform);
 
                     Vector2 screenStartSize = m_shrinkScreen.rectTransform.sizeDelta;
                     Vector2 screenEndSize = new Vector2(m_shrinkScreen.rectTransform.sizeDelta.x, 5.0f);
