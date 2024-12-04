@@ -27,9 +27,13 @@ namespace Millivolt.LevelObjects.EventObjects
                     if (m_soundClipCollectionName != string.Empty)
                     {
                         if (m_activateSoundClipName != string.Empty)
+                        {
                             SFXController.Instance.PlaySoundClip(m_soundClipCollectionName, m_activateSoundClipName, transform);
+                        }
                         else
+                        {
                             SFXController.Instance.PlayRandomSoundClip(m_soundClipCollectionName, transform);
+                        }
                     }
 
                     OnActivate();
