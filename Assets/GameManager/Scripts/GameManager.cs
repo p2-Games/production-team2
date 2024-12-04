@@ -127,9 +127,11 @@ namespace Millivolt
 			Tasklist = FindObjectOfType<TaskListManager>();
 
 			m_cameraController = FindObjectOfType<CameraController>();
+			m_cameraController.GetComponent<AudioListener>().enabled = true;
 
 			SceneManager.SetActiveScene(SceneManager.GetSceneByName(m_currentSceneName));
             LevelManager.Instance.LevelSetup();
+
         }
 
         public void LoadLevel(string levelName)
