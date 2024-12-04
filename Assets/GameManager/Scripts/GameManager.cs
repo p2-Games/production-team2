@@ -38,6 +38,8 @@ namespace Millivolt
 
 		public static TaskListManager Tasklist;
 
+		private float m_sfxVolume = 0;
+
         private void Awake()
         {
 			if (!Instance)
@@ -117,6 +119,8 @@ namespace Millivolt
         public void LevelSetup()
 		{
 			m_loadingScreen.SetActive(false);
+			PlayerSettings.Instance.AdjustSFXVolume(m_sfxVolume);
+
 			// destroy original Player references component
 			if (Player)
 				Destroy(Player);
@@ -127,15 +131,17 @@ namespace Millivolt
 			Tasklist = FindObjectOfType<TaskListManager>();
 
 			m_cameraController = FindObjectOfType<CameraController>();
-			m_cameraController.GetComponent<AudioListener>().enabled = true;
 
-			SceneManager.SetActiveScene(SceneManager.GetSceneByName(m_currentSceneName));
+            SceneManager.SetActiveScene(SceneManager.GetSceneByName(m_currentSceneName));
             LevelManager.Instance.LevelSetup();
 
         }
 
         public void LoadLevel(string levelName)
 		{
+			m_sfxVolume = PlayerSettings.Instance.sfxVolume;
+			PlayerSettings.Instance.AdjustSFXVolume(0);
+
 			m_currentSceneName = levelName;
 			UIMenuManager.Instance.ClearActiveMenus();
             isLoading = true;
@@ -174,7 +180,10 @@ namespace Millivolt
 			isLoading = false;
 
 			if (SceneManager.GetActiveScene().name == "MenuScene" || SceneManager.GetActiveScene().name == "CreditsScene")
+			{
 				m_loadingScreen.SetActive(false);
+				PlayerSettings.Instance.AdjustSFXVolume(m_sfxVolume);
+			}
 		}
 
 		private IEnumerator UnloadSceneAsync(string sceneName)

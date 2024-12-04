@@ -29,6 +29,8 @@ namespace Millivolt.Sound
         private IEnumerator StartSound()
         {
             yield return new WaitUntil(() => SFXController.Instance != null);
+            yield return null;
+            print(name + " Played a sound");
             PlaySound();
         }
 

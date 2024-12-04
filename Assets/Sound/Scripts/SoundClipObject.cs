@@ -26,7 +26,6 @@ namespace Millivolt.Sound
                 return;
 
             m_source.clip = soundClip.audioClip;
-            m_source.playOnAwake = true;
 
             m_type = type;
             m_source.loop = soundClip.loop;
@@ -37,21 +36,9 @@ namespace Millivolt.Sound
             else
                 m_source.maxDistance = soundClip.range;
 
-            m_source.volume = soundClip.volume;
-            m_originalVolume = m_source.volume;
-            // global volume
-            switch (type)
-            {
-                case SoundType.Effect:
-                    m_source.volume *= PlayerSettings.Instance.sfxVolume;
-                    break;
-                case SoundType.Music:
-                    m_source.spatialBlend = 0;
-                    m_source.volume *= PlayerSettings.Instance.musicVolume;
-                    break;
-                case SoundType.Voice:
-                    break;
-            }
+            m_originalVolume = soundClip.volume;
+            
+            VolumeCheck();
 
             // play clip
             m_source.Play();
