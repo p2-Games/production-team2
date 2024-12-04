@@ -54,13 +54,22 @@ namespace Millivolt.UI
         {
             yield return new WaitForSeconds(person.startDelay + m_initialDelay);
 
+            // Create credit prefab
             GameObject credit = Instantiate(m_creditsPrefab, gameObject.transform);
             credit.transform.position = person.spawnPosition.position;
             CreditsPrefabReferences creditsRef = credit.GetComponent<CreditsPrefabReferences>();
+
+            // Fade in Credit
             Tween.CanvasGroupAlpha(creditsRef.GetComponent<CanvasGroup>(), 1, m_creditNameFadeInTime, 0);
             creditsRef.nameText.text = person.nameText;
             creditsRef.jobText.text = person.jobTitleText;
-            creditsRef.bgImage.sprite = person.bgImage;
+
+            // If there is no bg image then disable the image component on the prefab
+            if (person.bgImage != null)
+                creditsRef.bgImage.sprite = person.bgImage;
+            else
+                creditsRef.bgImage.enabled = false;
+
             if (m_industryMode)
                 creditsRef.quoteText.text = "";
             else
@@ -77,6 +86,7 @@ namespace Millivolt.UI
                 m_playingCredits = false;
             }
 
+            //Fade out credit then destroy after finish
             Tween.CanvasGroupAlpha(creditsRef.GetComponent<CanvasGroup>(), 0, m_creditNameFadeOutTime, 0, null, Tween.LoopType.None, null, () => { DestroyCredit(credit); });
             yield return null;
         }
