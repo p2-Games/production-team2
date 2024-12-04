@@ -114,6 +114,9 @@ namespace Millivolt.UI
         public void SkipCredits()
         {
             StopAllCoroutines();
+            var remainingCredits = FindObjectsByType<CreditsPrefabReferences>(FindObjectsSortMode.None);
+            foreach (var credit in remainingCredits) 
+                Destroy(credit.gameObject);
             m_menuButton.gameObject.SetActive(true);
             Tween.CanvasGroupAlpha(m_menuButton.GetComponent<CanvasGroup>(), 1, 1, 0, null, Tween.LoopType.None, null, () => { SelectButton(); });
             Tween.CanvasGroupAlpha(m_creditsWallCG, 1, m_creditsWallFadeTime, 0);
