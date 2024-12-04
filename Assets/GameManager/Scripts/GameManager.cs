@@ -127,7 +127,6 @@ namespace Millivolt
 			Tasklist = FindObjectOfType<TaskListManager>();
 
 			m_cameraController = FindObjectOfType<CameraController>();
-			m_cameraController.GetComponent<AudioListener>().enabled = true;
 
 			SceneManager.SetActiveScene(SceneManager.GetSceneByName(m_currentSceneName));
             LevelManager.Instance.LevelSetup();
@@ -136,6 +135,7 @@ namespace Millivolt
 
         public void LoadLevel(string levelName)
 		{
+			Destroy(Camera.main.gameObject.GetComponent<AudioListener>());
 			m_currentSceneName = levelName;
 			UIMenuManager.Instance.ClearActiveMenus();
             isLoading = true;
