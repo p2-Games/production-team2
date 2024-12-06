@@ -35,6 +35,10 @@ namespace Millivolt.Player
         [SerializeField, Min(0)] private float m_resetCameraDelay;
         [SerializeField, Min(0)] private float m_giveControlBackDelay;
 
+        [Space]
+
+        [SerializeField, Min(0)] private float m_spawnSoundDelay = 1.5f; 
+
         [Header("Camera")]
         [SerializeField] private CinemachineVirtualCamera m_vcam;
         [SerializeField] private float m_lookOffset = 1f;
@@ -68,10 +72,10 @@ namespace Millivolt.Player
 
             // create particle
             m_respawnParticle = Instantiate(m_respawnParticlePrefab, spawnPosition, m_respawnParticlePrefab.transform.rotation).gameObject;
-            SFXController.Instance.PlaySoundClip("PlayerRespawn", "Respawn", transform);
 
             // start timings
             StartCoroutine(ReactivatePlayer());
+            StartCoroutine(PlaySpawnSound());
         }
 
         private IEnumerator ReactivatePlayer()
@@ -92,6 +96,12 @@ namespace Millivolt.Player
             yield return new WaitForSeconds(m_giveControlBackDelay);
             GameManager.Player.Controller.SetCanMove(CanMoveType.Dead, true);
             GameManager.Player.Interaction.SetInteractionState(true);
+        }
+
+        private IEnumerator PlaySpawnSound()
+        {
+            yield return new WaitForSeconds(m_spawnSoundDelay);
+            SFXController.Instance.PlaySoundClip("PlayerRespawn", "Respawn", transform);
         }
 
         private void OnValidate()
