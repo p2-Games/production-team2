@@ -74,6 +74,8 @@ namespace Millivolt.Player
 
             m_currentEmotion = m_emotions[0];
             SetEmotion(0);
+
+            m_targetBlinkInterval = m_blinkInterval + Random.Range(-m_blinkIntervalVariation, m_blinkIntervalVariation);
         }
 
         public void Update()
@@ -94,6 +96,7 @@ namespace Millivolt.Player
 
         public void CycleEmotion(InputAction.CallbackContext context)
         {
+#if UNITY_EDITOR
             if (context.performed)
             {
                 int emotionChoice = (int)m_currentEmotion.type + 1;
@@ -101,6 +104,7 @@ namespace Millivolt.Player
                     emotionChoice = 0;
                 ChangeEmotion((EmotionMode)emotionChoice);
             }
+#endif
         }
 
         public void ChangeEmotion(string emotionName)
